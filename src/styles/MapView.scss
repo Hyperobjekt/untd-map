@@ -1,0 +1,46 @@
+.view-map {
+  width: 100%;
+  height: 100%;
+}
+
+.view-parent {
+  &.display-feeder {
+    .layout-view-map {
+      width: 0 !important;
+      display: none !important;
+      visibility: none !important;
+      pointer-events: none !important;
+      & > div {
+        display: none !important;
+        visibility: none !important;
+        pointer-events: none !important;
+      }
+      iframe,
+      .mapboxgl-map {
+        width: 0 !important;
+        display: none !important;
+        pointer-events: none !important;
+      }
+    }
+  }
+}
+
+// Manage z-index for items in the .overlay map space,
+// so the popup can lay over all of them.
+.view-parent {
+  &.display-map {
+    .map {
+      .overlay {
+        .map-legend {
+          z-index: 250;
+        }
+        .map-layer-toggle {
+          z-index: 200;
+        }
+        .map__zoom {
+          z-index: 1;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+.popup-content {
+  padding: 24px;
+  margin: 0 !important;
+  width: 252px;
+  border-radius: 0;
+  h4 {
+    font-family: halyard-text;
+    font-size: 1.6rem;
+    line-height: 2.3rem;
+    color: $turtle-green;
+  }
+  h5 {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    margin-bottom: 14px;
+  }
+  .n-i-scale {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    padding-right: 1px;
+    padding-left: 1px;
+    &:after,
+    &:before {
+      display: none;
+    }
+    .n-i-scale-quintiles {
+      width: 100%;
+      top: -5px !important;
+      // The line through the quintiles.
+      border: 1px solid #ccc;
+      height: 10px;
+      box-sizing: content-box;
+      margin-top: 0.6rem;
+      &:after,
+      &:before {
+        display: none !important;
+      }
+      .n-i-scale-quintile {
+        height: 12px;
+        border-right: 1px solid #ccc;
+        top: -1px;
+        width: 16.665%;
+        &.quintile-4 {
+          border-right: 0;
+        }
+        &:before,
+        &:after {
+          display: none !important;
+        }
+      }
+    }
+  }
+  .popup-metric-label {
+    color: $turtle-green;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    .metric-value {
+      color: $turtle-green;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1.5rem;
+      line-height: 1.6rem;
+    }
+  }
+  .click-school-prompt {
+    color: $turtle-green;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin-bottom: 1.6rem;
+  }
+}
+.mapboxgl-popup {
+  // Set z-index to make tooltip overlay any other controls.
+  z-index: 5000 !important;
+  border-radius: 0;
+  box-shadow: 3px 3px 5px #ccc;
+  // Reset padding and margins.
+  padding: 0 !important;
+  margin: 0 !important;
+  .mapboxgl-popup-content {
+    // Reset padding and margins.
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0;
+  }
+  // If touch device, don't automatically position the tooltip.
+  // &.is-touch {
+  //   position: fixed !important;
+  //   // left: 0 !important;
+  //   // top: 128px !important;
+  //   transform: none !important;
+  //   position: fixed !important;
+  //   left: calc(50vw - 125px) !important;
+  //   top: calc(50vh - 210px) !important;
+  //   max-height: 420px;
+  //   .mapboxgl-popup-content {
+  //     .mapboxgl-popup-close-button {
+  //       font-size: 20px;
+  //       margin-top: 0.25rem;
+  //     }
+  //   }
+  // }
+}
+
+.mapboxgl-popup.school-interact-hint {
+  .mapboxgl-popup-content {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    padding: 8px !important;
+    // margin: 4rem;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+    color: #fff !important;
+    font-weight: 300;
+  }
+}

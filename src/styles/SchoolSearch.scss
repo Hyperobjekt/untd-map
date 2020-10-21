@@ -1,0 +1,98 @@
+// @include media-breakpoint-up(md) {
+.search-autosuggest {
+  display: flex; // block !important;
+  .icon-search {
+    display: inline-block !important;
+  }
+}
+// }
+
+.search-autosuggest {
+  @include media-breakpoint-up(md) {
+    max-width: 300px;
+  }
+  margin-right: 5px;
+  margin-left: auto;
+  border: 0.5px solid #ccc;
+  display: flex;
+  flex-wrap: nowrap;
+  .icon-search {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #bbb;
+  }
+  .button-search-clear {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    background-color: #fff;
+  }
+  .react-autosuggest__container {
+    flex: 1 1 80%;
+    .react-autosuggest__input {
+      padding-left: 16px;
+      height: 30px;
+      font-size: 15px;
+    }
+    ::-webkit-search-cancel-button {
+      display: none;
+    }
+    .react-autosuggest__suggestions-container {
+      top: 30px;
+      z-index: 3000;
+      background-color: transparent;
+      width: 100%;
+      .react-autosuggest__suggestions-list {
+        border: 1px solid #ddd;
+        max-width: 300px;
+        background-color: #fff;
+        .react-autosuggest__suggestion {
+          height: 30px;
+          // color: #ddd;
+          line-height: 30px;
+          padding-left: 16px;
+          font-size: 15px;
+          font-weight: 300;
+          & > div {
+            width: 100%; // 264px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        .react-autosuggest__suggestion--highlighted {
+          background-color: $cpal-orange-light; // rgba(153, 192, 255, 0.6);
+        }
+        .react-autosuggest__suggestions-container--open {
+          top: auto;
+        }
+      }
+    }
+  }
+}
+
+.react-autosuggest__container--open {
+  // max-width: 350px;
+}
+
+@media only screen and (min-width: 768px) {
+  .menu-search {
+    min-width: 450px;
+  }
+}
+
+// container:                'react-autosuggest__container',
+//   containerOpen:            'react-autosuggest__container--open',
+//   input:                    'react-autosuggest__input',
+//   inputOpen:                'react-autosuggest__input--open',
+//   inputFocused:             'react-autosuggest__input--focused',
+//   suggestionsContainer:     'react-autosuggest__suggestions-container',
+//   suggestionsContainerOpen: 'react-autosuggest__suggestions-container--open',
+//   suggestionsList:          'react-autosuggest__suggestions-list',
+//   suggestion:               'react-autosuggest__suggestion',
+//   suggestionFirst:          'react-autosuggest__suggestion--first',
+//   suggestionHighlighted:    'react-autosuggest__suggestion--highlighted',
+//   sectionContainer:         'react-autosuggest__section-container',
+//   sectionContainerFirst:    'react-autosuggest__section-container--first',
+//   sectionTitle:             'react-autosuggest__section-title'

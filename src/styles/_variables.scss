@@ -1,0 +1,83 @@
+// _______________ COLORS _______________ //
+// name with http://chir.ag/projects/name-that-color/#D8CCFF
+$color-primary: #20232a; // comes with template
+
+$white: #ffffff;
+$bridal-heath: #fffbf3;
+$alabaster: #f7f7f7;
+$old-lace: #fdf5e9;
+$magnolia: #fbfaff;
+$green-white: #ebede3;
+$alto: #d7d7d7;
+$boulder: #757575;
+$cape-cod: #3c4748;
+$cod-gray: #181818;
+$dk-gray: #4b4b4b;
+$firefly: #08131f;
+$black: #000000;
+
+$logo-text-color: #8f9287;
+$tower-gray: #9dbab7;
+$flax-smoke: #818967;
+$chalet-green: #4a6f34;
+$turtle-green: #2c390b;
+$shark: #292d33;
+$cinnabar: #e94f34;
+$orange-roughy: #d4441c; // consolidate with cinnabar?
+$fog: #d8ccff;
+$deluge: #7768ae;
+
+$cri-color-1: #7b53ef;
+$cri-color-3: #cabbf5;
+$bar-highlight: #e94f34;
+// Distrib chart height.
+// Also used for legend height and bar chart collection parent height.
+$distrib-chart-height: 260px;
+$feeder-background-color: #fcfcf8;
+$feeder-panes-border: #e8eae4;
+$cp-label-color: #606b44;
+$cpal-orange: #e55934;
+$cpal-orange-light: #ffeee5;
+// $cpal-gray:
+// $orange-bg:
+$navbar-height: 64px;
+
+// _______________ SPACING _______________ //
+// space elements in increments of .8rem (8px)
+$spacer: 0.8rem;
+
+// can be used with <Row noGutters /> to selectively add margins
+// (and avoid shrinking column content)
+$gutter: 16px;
+
+// inside Cols that don't take up the full screen width,
+// use $column to apply margins etc that are increments
+// of the screen-scoped columns (helps to mirror figma layout)
+$column: 8.333333vw; // 100/12
+
+$sm-start: 320px;
+$md-start: 768px; //\\
+$lg-start: 992px;
+$xl-start: 1280px; //\\
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: $sm-start,
+  md: $md-start,
+  lg: $lg-start,
+  xl: $xl-start,
+);
+
+$font-weight-bolder: 500;
+$font-weight-bold: 400;
+$font-weight-light: 300;
+$font-weight-lighter: 200;
+
+$hero-wide-img-width-md: 9 * $column;
+$hero-wide-img-width-xl: 7 * $column;
+$sticky-header-height: 64px; // keep in sync with stickyHeaderHeight in consts.js
+
+// Explorer-specific variables
+$feeder-schools-chart-height: 250px;
+
+$control-panel-width: 72px;
