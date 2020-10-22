@@ -41,7 +41,7 @@ const CoreButton = ({ children, ...props }) => {
       aria-label={props.label}
       onClick={props.onClick}
       color={props.color}
-      {...props}
+      label={props.label}
       className={clsx('button-core', props.className)}
     >
       {children}
@@ -53,6 +53,9 @@ const CoreButton = ({ children, ...props }) => {
           toggle={toggle}
           autohide={props.tooltipAutoHide}
           trigger="hover"
+          className={
+            props.tooltipCss ? props.tooltipCss : ''
+          }
         >
           {props.label}
         </Tooltip>

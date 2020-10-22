@@ -10,7 +10,9 @@ import {
   FiLayers,
 } from 'react-icons/fi'
 import { AiOutlineControl } from 'react-icons/ai'
+import { css, cx } from 'emotion'
 
+import { theme } from './../theme'
 import useStore from './../store'
 import {
   Divider,
@@ -227,6 +229,7 @@ const ControlPanel = ({ children }) => {
                 ? 'active'
                 : '',
             )}
+            tooltipCss={cx(theme.elements.tooltip)}
           >
             <AiOutlineControl />
             <span className="sr-only">

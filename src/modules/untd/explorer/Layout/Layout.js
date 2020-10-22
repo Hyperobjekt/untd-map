@@ -12,6 +12,7 @@ import {
   Canvas,
   View,
   CoreButton,
+  MenuIcon,
 } from './../../../core'
 import SchoolSearch from './../SchoolSearch/SchoolSearch'
 import ControlPanel from './../ControlPanel/ControlPanel'
@@ -27,6 +28,7 @@ import {
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
 import { ROUTE_SET } from './../../../../constants/metrics'
+import * as menuIcon from './../assets/images/menu-icon.svg'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -83,7 +85,7 @@ const Layout = ({ children, ...props }) => {
           className="button-toggle-menu"
         >
           <span className="menu-icon-group">
-            <span className="menu-icon svg-base"></span>
+            <MenuIcon />
             {i18n.translate(`BUTTON_MENU`)}
           </span>
         </CoreButton>
@@ -116,3 +118,10 @@ const Layout = ({ children, ...props }) => {
 Layout.propTypes = {}
 
 export default Layout
+
+const menuButtonCss = css`
+  display: inline-block;
+  width: 20px;
+  height: 9px;
+  margin-right: 4px;
+`

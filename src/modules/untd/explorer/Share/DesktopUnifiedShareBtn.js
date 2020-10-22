@@ -37,7 +37,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         autohide={false}
         trigger="hover"
         className={clsx(
-          cx(css(theme.elements.tooltipCustomShare)),
+          cx(theme.elements.tooltipCustomShare),
         )}
       >
         <div className="tooltip-custom-content">
