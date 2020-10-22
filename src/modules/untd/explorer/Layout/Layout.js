@@ -28,7 +28,6 @@ import {
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
 import { ROUTE_SET } from './../../../../constants/metrics'
-import * as menuIcon from './../assets/images/menu-icon.svg'
 
 /**
  * Layout sets up the basic layout for the explorer.

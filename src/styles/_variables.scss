@@ -109,3 +109,39 @@ $breakpoints: (
         + "Available breakpoints are: #{map-keys($breakpoints)}.";
   }
 }
+
+// @media only screen and (min-width: 200px) and (max-width: 767px)  {
+//     //Put your CSS here for 200px to 767px width devices (cover all mobile portrait width //
+//
+//     }
+
+@function get-next-in-breakpoints($map, $key) {
+  @if $key == 'xs' {
+    @return map-get($breakpoints, 'sm');
+  }
+  @if $key == 'sm' {
+    @return map-get($breakpoints, 'md');
+  }
+  @if $key == 'md' {
+    @return map-get($breakpoints, 'lg');
+  }
+  @if $key == 'lg' {
+    @return map-get($breakpoints, 'xl');
+  }
+}
+
+@mixin respond-to-only($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (min-width: map-get($breakpoints, $breakpoint)) and (max-width: get-next-in-breakpoints($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
