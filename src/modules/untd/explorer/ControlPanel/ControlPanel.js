@@ -17,17 +17,7 @@ import {
   CoreButton,
   Select,
 } from './../../../core'
-import SchoolSearch from './../SchoolSearch/SchoolSearch'
-import FeederView from './../FeederView/FeederView'
-import MapView from './../MapView/MapView'
-import RouteManager from './../RouteManager/RouteManager'
-import SlideoutPanel from './../SlideoutPanel/SlideoutPanel'
 import {
-  TwitterShareBtn,
-  FacebookShareBtn,
-  MailShareBtn,
-  LinkShareBtn,
-  ShareLinkModal,
   UnifiedShareBtn,
   DesktopUnifiedShareBtn,
 } from './../Share'
@@ -71,22 +61,6 @@ const ControlPanel = ({ children }) => {
   const handleClick = e => {
     e.preventDefault()
     // console.log('Button clicked, ', e.currentTarget.id)
-    if (
-      e.currentTarget.id === 'button_view_feeder' ||
-      e.currentTarget.id === 'button_view_map'
-    ) {
-      const val = String(e.currentTarget.id).replace(
-        'button_view_',
-        '',
-      )
-      setStoreValues({
-        activeView: val,
-        slideoutPanel: {
-          active: false,
-          panel: '',
-        },
-      })
-    }
   }
 
   /**
@@ -181,24 +155,6 @@ const ControlPanel = ({ children }) => {
     })
   }
 
-  const shareHash = useStore(state => state.shareHash)
-  const constructShareLink = () => {
-    // If hash === default hash, send back only the root url.
-    if (!!shareHash) {
-      return (
-        window.location.origin +
-        window.location.pathname +
-        shareHash
-      )
-    } else {
-      return (
-        window.location.origin +
-        window.location.pathname +
-        defaultRoute
-      )
-    }
-  }
-
   /**
    * Determines control panel button position based on breakpoint
    * @param  {String} breakpoint
@@ -251,57 +207,6 @@ const ControlPanel = ({ children }) => {
           : 'display-map',
       )}
     >
-      <Select
-        id="select_view"
-        color="primary"
-        className={`select-view`}
-        label={i18n.translate(`SELECT_VIEW`)}
-        items={viewSelectItems}
-        handleSelect={handleSelect}
-        title={i18n.translate(`SELECT_VIEW`)}
-        active={'select_view_' + activeView}
-      />
-      <div className="control-label">
-        {i18n.translate('CONTROL_PANEL_VIEW')}
-      </div>
-      <CoreButton
-        id="button_view_map"
-        label={i18n.translate(`BUTTON_VIEW_MAP`)}
-        onClick={handleClick}
-        color="none"
-        className={clsx(
-          'button-core',
-          'button-view-map',
-          activeView && activeView === 'map'
-            ? 'active'
-            : '',
-        )}
-        tooltip={buttonTooltipPosition}
-      >
-        <FiMap />
-        <span className="sr-only">
-          {i18n.translate(`BUTTON_VIEW_MAP`)}
-        </span>
-      </CoreButton>
-      <CoreButton
-        id="button_view_feeder"
-        label={i18n.translate(`BUTTON_VIEW_FEEDER`)}
-        onClick={handleClick}
-        color="none"
-        className={clsx(
-          'button-view-feeder',
-          activeView && activeView === 'feeder'
-            ? 'active'
-            : '',
-        )}
-        tooltip={buttonTooltipPosition}
-      >
-        <FiList />
-        <span className="sr-only">
-          {i18n.translate(`BUTTON_VIEW_FEEDER`)}
-        </span>
-      </CoreButton>
-      <Divider />
       {activeView === 'map' ? (
         <>
           <div className="control-label">

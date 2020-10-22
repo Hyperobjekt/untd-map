@@ -22,7 +22,6 @@ html {
 @import 'App';
 @import 'Layout';
 @import 'ControlPanel';
-@import 'FeederView';
 @import 'MapView';
 @import 'Map';
 @import 'MapLegend';
@@ -45,21 +44,3 @@ html {
 // Intro Modal
 @import 'Modal';
 @import 'ShareLinkModal';
-
-.svg-base {
-  background-size: 100%;
-  display: inline-block;
-}
-
-.inline-svg {
-  display: inline-block;
-  &.down-chevron {
-    position: relative;
-    bottom: 3px;
-    left: 7px;
-  }
-}
-
-a.logo-link {
-  text-decoration: none;
-}

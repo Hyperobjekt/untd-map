@@ -3,8 +3,10 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { Tooltip } from 'reactstrap'
+import { css, cx } from 'emotion'
 
 import useStore from './../store'
+import { theme } from './../theme'
 import { CoreButton } from './../../../core'
 import TwitterShareBtn from './TwitterShareBtn'
 import { FacebookShareBtn } from '.'
@@ -34,7 +36,9 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         toggle={toggle}
         autohide={false}
         trigger="hover"
-        className="tooltip-custom-share"
+        className={clsx(
+          cx(css(theme.elements.tooltipCustomShare)),
+        )}
       >
         <div className="tooltip-custom-content">
           <div className="item">

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import { css, cx } from 'emotion'
 
 import useStore from './../store'
 import {
@@ -14,7 +15,6 @@ import {
 } from './../../../core'
 import SchoolSearch from './../SchoolSearch/SchoolSearch'
 import ControlPanel from './../ControlPanel/ControlPanel'
-import FeederView from './../FeederView/FeederView'
 import MapView from './../MapView/MapView'
 import RouteManager from './../RouteManager/RouteManager'
 import SlideoutPanel from './../SlideoutPanel/SlideoutPanel'
@@ -101,7 +101,6 @@ const Layout = ({ children, ...props }) => {
             )}
           >
             <MapView />
-            <FeederView />
           </div>
           <ShareLinkModal className="modal-share-link" />
           <UnifiedShareModal className="modal-u-share" />

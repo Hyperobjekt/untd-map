@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Explorer } from './modules/cpal'
+import { Explorer } from './modules/untd'
 
 import './styles/style.scss'
 
