@@ -8,6 +8,9 @@ import Layout from '../Layout/Layout'
 import en_US from './../../../../constants/en_US'
 import { BREAKPOINTS } from './../../../../constants/layers'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { DataLoader } from './../DataLoader'
+import RouteManager from './../RouteManager/RouteManager'
+import { ROUTE_SET } from './../../../../constants/metrics'
 
 /**
  * App is the base component for the explorer.
@@ -163,7 +166,13 @@ const App = props => {
     })()
   }, [])
 
-  return <Layout></Layout>
+  return (
+    <>
+      <DataLoader />
+      <RouteManager routeSet={ROUTE_SET} />
+      <Layout></Layout>
+    </>
+  )
 }
 
 App.propTypes = {}

@@ -2,6 +2,15 @@
  * default viewport on map view
  */
 
+// Data files to load from remote.
+export const DATA_FILES = [
+  'schools',
+  'demotracts',
+  'districts',
+  'feeders',
+  'TXDallas1937Redline',
+]
+
 export const DEFAULT_ROUTE =
   '/map/cri_weight/1,1,1,1,1///0,0,0,0,0,0,0/32.76/-96.792/10/'
 

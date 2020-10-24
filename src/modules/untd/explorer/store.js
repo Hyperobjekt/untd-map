@@ -13,6 +13,22 @@ import {
 const [useStore] = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
   setStoreValues: obj => set({ ...obj }),
+  // Track loading of remote data files.
+  allDataLoaded: false,
+  // Percent loaded for remote data files.
+  dataLoadedPercent: 0,
+  // Error flag for loading failure.
+  dataLoaderFailed: false,
+  // General path to all s3 folders in bucket.
+  // Where the whole path would look about like so:
+  // https://untd-test.s3.us-east-2.amazonaws.com/development/schools.json
+  s3Path: 'https://untd-test.s3.us-east-2.amazonaws.com/',
+  remoteJson: {},
+  setRemoteJson: json =>
+    set(state => ({
+      remoteJson: { ...state.remoteJson, ...json },
+    })),
+  // Default route.
   defaultRoute: DEFAULT_ROUTE,
   siteHref: '/',
   logoSrc: null,

@@ -17,7 +17,6 @@ import {
 import SchoolSearch from './../SchoolSearch/SchoolSearch'
 import ControlPanel from './../ControlPanel/ControlPanel'
 import MapView from './../MapView/MapView'
-import RouteManager from './../RouteManager/RouteManager'
 import SlideoutPanel from './../SlideoutPanel/SlideoutPanel'
 import IntroModal from './../IntroModal/IntroModal'
 import PanelModal from './../PanelModal/PanelModal'
@@ -27,7 +26,6 @@ import {
 } from './../Share'
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
-import { ROUTE_SET } from './../../../../constants/metrics'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -54,6 +52,15 @@ const Layout = ({ children, ...props }) => {
   const breakpoint = useStore(state => state.breakpoint)
   const browserWidth = useStore(state => state.browserWidth)
 
+  const remoteJson = useStore(state => state.remoteJson)
+  const dataLoadedPercent = useStore(
+    state => state.dataLoadedPercent,
+  )
+  useEffect(() => {
+    // console.log('remoteJson changed: ', remoteJson)
+    // console.log('loaded percent: ', dataLoadedPercent)
+  }, [remoteJson])
+
   // Handle clicks to any control panel button.
   const handleClick = e => {
     e.preventDefault()
@@ -71,7 +78,6 @@ const Layout = ({ children, ...props }) => {
       className={clsx('layout', 'breakpoint-' + breakpoint)}
       {...props}
     >
-      <RouteManager routeSet={ROUTE_SET} />
       <Tracking />
       <Header>
         <Logo {...logoProps} />

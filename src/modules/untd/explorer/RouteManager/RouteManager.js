@@ -218,6 +218,7 @@ const getLayersString = activeLayers => {
 }
 
 const RouteManager = props => {
+  // console.log('RouteManager!!!!!')
   // track if initial route has loaded
   const isLoaded = useRef(false)
   // Generic store value setter.
