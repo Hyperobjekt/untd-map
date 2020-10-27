@@ -1,5 +1,6 @@
 const en_US = {
-  SITE_TITLE: `Community Resource Explorer`,
+  SITE_TITLE: `UNTD Map`,
+  LOADING_DATA: `Loading map data`,
   TEA_ID: `TEA identification number`,
   TERM_SCHOOL: `school`,
   BUTTON_VIEW_FEEDER: `Toggle feeder view`,

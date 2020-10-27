@@ -1,13 +1,5 @@
 import { css } from 'emotion'
 
-// const redBorder = css({ border: '1px solid red' })
-// const blueBg = css`
-//   background-color: blue;
-//   header {
-//     height: 12px;
-//   }
-// `
-//
 export const variables = {
   colors: {
     primary: '#20232a',
