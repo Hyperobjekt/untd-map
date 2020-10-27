@@ -9,10 +9,18 @@ import useStore from './../store.js'
 import { DATA_FILES } from './../../../../constants/map'
 import { variables } from './../theme'
 
-const PercentLoaded = ({ ...props }) => {}
+// TODO:
+// - Error notification
+// - Hide animation
+// - Why is the percent thing running twice?
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('variables, ', variables)
+  //
+  const dataLoadedPercent = useStore(
+    state => state.dataLoadedPercent,
+  )
+
   const dataLoaderStyles = css`
     position: absolute;
     left: 0;
@@ -26,7 +34,10 @@ const DataLoaderContent = ({ ...props }) => {
     align-items: center;
   `
   const dataLoaderContentStyles = css`
-    width: 60%;
+    width: 90%;
+    @media (min-width: ${variables.breakpoints[2]}px) {
+      width: 60%;
+    }
   `
   const dataLoaderDotStyles = css`
     @keyframes opacity {
@@ -89,7 +100,7 @@ const DataLoaderContent = ({ ...props }) => {
             .
           </span>
         </h2>
-        <Progress value={80} />
+        <Progress value={dataLoadedPercent} />
       </div>
     </div>
   )
