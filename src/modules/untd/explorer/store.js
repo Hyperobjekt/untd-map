@@ -22,7 +22,7 @@ const [useStore] = create((set, get) => ({
   // General path to all s3 folders in bucket.
   // Where the whole path would look about like so:
   // https://untd-test.s3.us-east-2.amazonaws.com/development/schools.json
-  s3Path: 'https://untd-test.s3.us-east-2.amazonaws.com/',
+  s3Path: 'https://untd-map.s3.us-east-2.amazonaws.com/',
   remoteJson: {},
   setRemoteJson: json =>
     set(state => ({
