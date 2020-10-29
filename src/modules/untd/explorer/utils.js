@@ -4,7 +4,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './store.js'
-import { schools } from './../../../data/schools'
+// import { schools } from './../../../data/schools'
 import {
   CPAL_METRICS,
   CPAL_FEEDERS,
@@ -351,6 +351,9 @@ const sortSchoolsAlpha = (a, b) => {
  */
 export const getSchoolSet = feeder => {
   // console.log('getSchoolSet')
+  const schools = useStore(
+    state => state.remoteJson.schools,
+  )
   const set = schools.filter(el => {
     return Number(el.HIGH_SLN) === Number(feeder)
   })
@@ -377,7 +380,7 @@ export const getSchoolSet = feeder => {
  * Generates geojson object with school zones (2 mile radius)
  * @return  Object   GeoJSON Object of all schools in client-supplied data
  */
-export const getSchoolGeojson = () => {
+export const getSchoolGeojson = schools => {
   // console.log('getSchoolGeojson()')
   const data = schools
   const newJson = {
@@ -417,7 +420,7 @@ export const getSchoolGeojson = () => {
   return newJson
 }
 
-export const getSchoolZones = () => {
+export const getSchoolZones = schools => {
   // console.log('getSchoolZones')
   const data = schools
   // const origJson = schoolsGeojson

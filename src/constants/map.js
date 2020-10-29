@@ -8,7 +8,7 @@ export const DATA_FILES = [
   'demotracts',
   'districts',
   'feeders',
-  'TXDallas1937Redline',
+  'redlines',
 ]
 
 export const DEFAULT_ROUTE =

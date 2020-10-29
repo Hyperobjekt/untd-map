@@ -1,7 +1,8 @@
 import React, { useMemo, useEffect, useRef } from 'react'
+import { fromJS } from 'immutable'
 import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
-import { getLayers, CPAL_SOURCES } from './selectors'
+import { getLayers } from './selectors'
 import MapBase, { useIdMap } from './../Map'
 
 import { CPAL_METRICS } from './../../../../constants/metrics'
@@ -9,7 +10,13 @@ import {
   getMetric,
   getQuintilesPhrase,
   getFeatureProperty,
+  getSchoolZones,
+  getSchoolGeojson,
 } from './../utils'
+// import {
+//   getSchoolZones,
+//   getSchoolGeojson,
+// } from './../utils'
 import useStore from './../store'
 
 const MapView = props => {
@@ -41,6 +48,53 @@ const MapView = props => {
   const coords = useStore(state => state.coords)
   const setHovered = useStore(state => state.setHovered)
 
+  // GeoJson sources of data, loaded into store when files load.
+  const districts = useStore(
+    state => state.remoteJson.districts,
+  )
+  const redlines = useStore(
+    state => state.remoteJson.redlines,
+  )
+  const schools = useStore(
+    state => state.remoteJson.schools,
+  )
+  const demotracts = useStore(
+    state => state.remoteJson.demotracts,
+  )
+  const feeders = useStore(
+    state => state.remoteJson.feeders,
+  )
+  // Tracks when all data sources are loaded.
+  const allDataLoaded = useStore(
+    state => state.allDataLoaded,
+  )
+  const CPAL_SOURCES = fromJS({
+    districts: {
+      type: `geojson`,
+      data: districts ? districts : null,
+    },
+    redlines: {
+      type: `geojson`,
+      data: redlines ? redlines : null,
+    },
+    schoolzones: {
+      type: `geojson`,
+      data: !!schools ? getSchoolZones(schools) : null,
+    },
+    schools: {
+      type: `geojson`,
+      data: !!schools ? getSchoolGeojson(schools) : null,
+    },
+    demotracts: {
+      type: `geojson`,
+      data: demotracts ? demotracts : null,
+    },
+    feeders: {
+      type: `geojson`,
+      data: feeders ? feeders : null,
+    },
+  })
+
   // Default affix for features in school zones layer
   const schoolZonesAffix = useStore(
     state => state.schoolZonesAffix,
@@ -60,12 +114,17 @@ const MapView = props => {
 
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
-    if (!metric || !activeQuintiles || !activeLayers) {
+    if (
+      !metric ||
+      !activeQuintiles ||
+      !activeLayers ||
+      !allDataLoaded
+    ) {
       return []
     }
     const context = { metric, activeQuintiles }
     return getLayers(context, activeLayers)
-  }, [metric, activeQuintiles, activeLayers])
+  }, [allDataLoaded, metric, activeQuintiles, activeLayers])
 
   /** aria label for screen readers */
   const ariaLabel = i18n.translate('UI_MAP_SR', {
@@ -161,7 +220,7 @@ const MapView = props => {
 
   return (
     <MapBase
-      sources={CPAL_SOURCES}
+      sources={!!allDataLoaded ? CPAL_SOURCES : null}
       layers={layers}
       idMap={idMap}
       hoveredId={hoveredId ? hoveredId : undefined}

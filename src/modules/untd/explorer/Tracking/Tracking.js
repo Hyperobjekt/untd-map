@@ -3,7 +3,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './../store'
-import { schools } from './../../../../data/schools'
+// import { schools } from './../../../../data/schools'
 import { CPAL_FEEDERS } from './../../../../constants/metrics'
 import { CPAL_LAYERS } from './../../../../constants/layers'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
@@ -79,6 +79,9 @@ const Tracking = ({ ...props }) => {
 
   // Get school from schools collection.
   const getSchool = id => {
+    const schools = useStore(
+      state => state.remoteJson.schools,
+    )
     return schools.filter(el => {
       return Number(el.TEA) === Number(id)
     })[0]

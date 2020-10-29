@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import { getRoundedValue, useDebounce } from './../utils'
-import { schools } from './../../../../data/schools'
+// import { schools } from './../../../../data/schools'
 import {
   CPAL_METRICS,
   CPAL_FEEDERS,
@@ -224,6 +224,10 @@ const RouteManager = props => {
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
+  )
+  // Schools as set by data loading.
+  const schools = useStore(
+    state => state.remoteJson.schools,
   )
   // Active view.
   const activeView = useStore(state => state.activeView)

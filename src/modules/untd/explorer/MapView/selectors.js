@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable'
 // import { getDistrictColor } from './../selectors'
-import {
-  getSchoolZones,
-  getSchoolGeojson,
-} from './../utils'
+// import {
+//   getSchoolZones,
+//   getSchoolGeojson,
+// } from './../utils'
 import {
   DISTRICT_COLORS,
   SCHOOL_ZONE_COLORS,
@@ -19,10 +19,10 @@ import {
   getQuintile,
   isInActiveQuintile,
 } from './../utils'
-import { redlines } from './../../../../data/TXDallas1937Redline.js'
-import { districts } from './../../../../data/districts.js'
-import { feeders } from './../../../../data/feeders.js'
-import { demotracts } from './../../../../data/demotracts.js'
+// import { redlines } from './../../../../data/TXDallas1937Redline.js'
+// import { districts } from './../../../../data/districts.js'
+// import { feeders } from './../../../../data/feeders.js'
+// import { demotracts } from './../../../../data/demotracts.js'
 import useStore from './../store'
 
 const noDataFill = '#ccc'
@@ -540,30 +540,3 @@ export const getLayers = (context, activeLayers) => {
     ...getCircleLayers(context),
   ]
 }
-
-export const CPAL_SOURCES = fromJS({
-  districts: {
-    type: `geojson`,
-    data: districts,
-  },
-  redlines: {
-    type: `geojson`,
-    data: redlines,
-  },
-  schoolzones: {
-    type: `geojson`,
-    data: getSchoolZones(),
-  },
-  schools: {
-    type: `geojson`,
-    data: getSchoolGeojson(),
-  },
-  demotracts: {
-    type: `geojson`,
-    data: demotracts,
-  },
-  feeders: {
-    type: `geojson`,
-    data: feeders,
-  },
-})

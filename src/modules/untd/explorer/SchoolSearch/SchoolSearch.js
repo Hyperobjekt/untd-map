@@ -8,7 +8,7 @@ import { MdClose } from 'react-icons/md'
 
 import { CoreButton } from './../../../core'
 import useStore from './../store'
-import { schools } from './../../../../data/schools'
+// import { schools } from './../../../../data/schools'
 
 /**
  * MenuSearch: Autosuggest search input for header.
@@ -32,6 +32,9 @@ const SchoolSearch = ({ ...props }) => {
   // Track intro modal display and update.
   const showIntroModal = useStore(
     state => state.showIntroModal,
+  )
+  const schools = useStore(
+    state => state.remoteJson.schools,
   )
   // Tracking autosuggest suggestions
   const [suggestions, setSuggestions] = useState([])
