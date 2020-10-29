@@ -15,11 +15,18 @@ import { variables } from './../theme'
 // - Why is the percent thing running twice?
 
 const DataLoaderContent = ({ ...props }) => {
-  // console.log('variables, ', variables)
+  // console.log('DataLoaderContent, ', variables)
   //
   const dataLoadedPercent = useStore(
     state => state.dataLoadedPercent,
   )
+  const allDataLoaded = useStore(
+    state => state.allDataLoaded,
+  )
+
+  const allDataLoadedStyles = css`
+    top: -100vh;
+  `
 
   const dataLoaderStyles = css`
     position: absolute;
@@ -32,6 +39,7 @@ const DataLoaderContent = ({ ...props }) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: top 1000ms ease-in-out 500ms;
   `
   const dataLoaderContentStyles = css`
     width: 90%;
@@ -57,7 +65,13 @@ const DataLoaderContent = ({ ...props }) => {
 
   return (
     <div
-      className={clsx('data-loader', cx(dataLoaderStyles))}
+      className={clsx(
+        'data-loader',
+        cx(
+          dataLoaderStyles,
+          !!allDataLoaded ? allDataLoadedStyles : '',
+        ),
+      )}
     >
       <div
         className="center"
@@ -139,13 +153,19 @@ const DataLoader = ({ ...props }) => {
         if (xhr.status === 200) {
           // Increment counter for loaded files.
           loadedCount++
+          // console.log(
+          //   'file loaded ',
+          //   i,
+          //   (loadedCount / files.length) * 100,
+          // )
           let obj = {}
           obj[el] = JSON.parse(xhr.responseText)
           setRemoteJson(obj)
           setStoreValues({
-            dataLoadedPercent: (i + 1 / files.length) * 100,
+            dataLoadedPercent:
+              (loadedCount / files.length) * 100,
             allDataLoaded:
-              i + 1 === files.length ? true : false,
+              loadedCount === files.length ? true : false,
           })
         } else {
           // console.error(xhr.statusText)
