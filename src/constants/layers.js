@@ -112,6 +112,21 @@ export const CPAL_LAYERS = [
   },
 ]
 
+export const POINT_ICONS = [
+  {
+    id: `grocery`,
+    source: ``,
+  },
+  {
+    id: `bank`,
+    source: ``,
+  },
+  {
+    id: `health`,
+    source: ``,
+  },
+]
+
 export const BREAKPOINTS = [
   {
     id: 'xs',

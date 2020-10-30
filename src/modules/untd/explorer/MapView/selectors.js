@@ -627,13 +627,50 @@ export const getPolygonLayers = (
   ]
 }
 
-export const getLayers = (context, activeLayers) => {
+export const getLayers = (
+  sources,
+  context,
+  activeLayers,
+) => {
   // console.log('getLayers', context, activeLayers)
-  return [
-    // Use these to build the actual polygons.
-    ...getPolygonLayers('zips', context, activeLayers),
-    ...getPolygonLayers('tracts', context, activeLayers),
-    ...getPolygonLayers('counties', context, activeLayers),
-    ...getPolygonLayers('places', context, activeLayers),
-  ]
+  const layers = []
+
+  if (!!sources.zips) {
+    layers.push(
+      ...getPolygonLayers('zips', context, activeLayers),
+    )
+  }
+  if (!!sources.tracts) {
+    layers.push(
+      ...getPolygonLayers('tracts', context, activeLayers),
+    )
+  }
+  if (!!sources.counties) {
+    layers.push(
+      ...getPolygonLayers(
+        'counties',
+        context,
+        activeLayers,
+      ),
+    )
+  }
+  if (!!sources.places) {
+    layers.push(
+      ...getPolygonLayers('places', context, activeLayers),
+    )
+  }
+  if (!!sources.points) {
+    // layers.push(
+    // ...getPointLayers('points', context, activeLayers),
+    // )
+  }
+
+  // return [
+  //   // Use these to build the actual polygons.
+  //   ...getPolygonLayers('zips', context, activeLayers),
+  //   ...getPolygonLayers('tracts', context, activeLayers),
+  //   ...getPolygonLayers('counties', context, activeLayers),
+  //   ...getPolygonLayers('places', context, activeLayers),
+  // ]
+  return layers
 }

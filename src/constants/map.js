@@ -24,6 +24,11 @@ export const DATA_FILES = [
     filename: 'sm_zcta',
     ext: 'geojson',
   },
+  {
+    id: 'points',
+    filename: 'points',
+    ext: 'geojson',
+  },
 ]
 
 export const DEFAULT_ROUTE =

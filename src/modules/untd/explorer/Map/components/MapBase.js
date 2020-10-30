@@ -587,6 +587,10 @@ const MapBase = ({
     console.log('popup clicked, ', e.currentTarget)
     e.preventDefault()
   }
+
+  // TODO: Add images for icons for layer.
+  // https://github.com/visgl/react-map-gl/issues/1118#issuecomment-667809962
+
   return (
     <div
       id="map"
