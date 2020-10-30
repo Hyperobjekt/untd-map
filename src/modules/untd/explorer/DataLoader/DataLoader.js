@@ -39,7 +39,7 @@ const DataLoaderContent = ({ ...props }) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: top 1000ms ease-in-out 500ms;
+    transition: top 1000ms ease-in-out 1500ms;
   `
   const dataLoaderContentStyles = css`
     width: 90%;
@@ -144,7 +144,12 @@ const DataLoader = ({ ...props }) => {
   files.forEach((el, i) => {
     const xhr = new XMLHttpRequest()
     const path =
-      s3Path + process.env.NODE_ENV + '/' + el + '.json'
+      s3Path +
+      process.env.NODE_ENV +
+      '/' +
+      el.filename +
+      '.' +
+      el.ext
     // console.log('path, ', path)
     xhr.open('GET', path, true)
     xhr.onload = function (e) {
@@ -159,7 +164,11 @@ const DataLoader = ({ ...props }) => {
           //   (loadedCount / files.length) * 100,
           // )
           let obj = {}
-          obj[el] = JSON.parse(xhr.responseText)
+          obj[el.id] = {
+            type: `geojson`,
+            data: JSON.parse(xhr.responseText),
+          }
+          // obj[el.id] = JSON.parse(xhr.responseText)
           setRemoteJson(obj)
           setStoreValues({
             dataLoadedPercent:

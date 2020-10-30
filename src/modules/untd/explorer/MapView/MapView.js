@@ -48,52 +48,46 @@ const MapView = props => {
   const coords = useStore(state => state.coords)
   const setHovered = useStore(state => state.setHovered)
 
-  // GeoJson sources of data, loaded into store when files load.
-  const districts = useStore(
-    state => state.remoteJson.districts,
-  )
-  const redlines = useStore(
-    state => state.remoteJson.redlines,
-  )
-  const schools = useStore(
-    state => state.remoteJson.schools,
-  )
-  const demotracts = useStore(
-    state => state.remoteJson.demotracts,
-  )
-  const feeders = useStore(
-    state => state.remoteJson.feeders,
-  )
+  const sources = useStore(state => state.remoteJson)
+  console.log(sources)
   // Tracks when all data sources are loaded.
   const allDataLoaded = useStore(
     state => state.allDataLoaded,
   )
-  const CPAL_SOURCES = fromJS({
-    districts: {
-      type: `geojson`,
-      data: districts ? districts : null,
-    },
-    redlines: {
-      type: `geojson`,
-      data: redlines ? redlines : null,
-    },
-    schoolzones: {
-      type: `geojson`,
-      data: !!schools ? getSchoolZones(schools) : null,
-    },
-    schools: {
-      type: `geojson`,
-      data: !!schools ? getSchoolGeojson(schools) : null,
-    },
-    demotracts: {
-      type: `geojson`,
-      data: demotracts ? demotracts : null,
-    },
-    feeders: {
-      type: `geojson`,
-      data: feeders ? feeders : null,
-    },
-  })
+  // const CPAL_SOURCES = fromJS({
+  // zips: {
+  //   type: `geojson`,
+  //   data:
+  // }
+  // districts: {
+  //   type: `geojson`,
+  //   data: sources.districts ? sources.districts : null,
+  // },
+  // redlines: {
+  //   type: `geojson`,
+  //   data: sources.redlines ? sources.redlines : null,
+  // },
+  // schoolzones: {
+  //   type: `geojson`,
+  //   data: !!sources.schools
+  //     ? getSchoolZones(sources.schools)
+  //     : null,
+  // },
+  // schools: {
+  //   type: `geojson`,
+  //   data: !!sources.schools
+  //     ? getSchoolGeojson(sources.schools)
+  //     : null,
+  // },
+  // demotracts: {
+  //   type: `geojson`,
+  //   data: sources.demotracts ? sources.demotracts : null,
+  // },
+  // feeders: {
+  //   type: `geojson`,
+  //   data: sources.feeders ? sources.feeders : null,
+  // },
+  // })
 
   // Default affix for features in school zones layer
   const schoolZonesAffix = useStore(
@@ -220,7 +214,7 @@ const MapView = props => {
 
   return (
     <MapBase
-      sources={!!allDataLoaded ? CPAL_SOURCES : null}
+      sources={!!allDataLoaded ? sources : null}
       layers={layers}
       idMap={idMap}
       hoveredId={hoveredId ? hoveredId : undefined}

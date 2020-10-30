@@ -4,11 +4,26 @@
 
 // Data files to load from remote.
 export const DATA_FILES = [
-  'schools',
-  'demotracts',
-  'districts',
-  'feeders',
-  'redlines',
+  {
+    id: 'counties',
+    filename: 'sm_counties',
+    ext: 'geojson',
+  },
+  {
+    id: 'places',
+    filename: 'sm_places',
+    ext: 'geojson',
+  },
+  {
+    id: 'tracts',
+    filename: 'sm_tracts',
+    ext: 'geojson',
+  },
+  {
+    id: 'zips',
+    filename: 'sm_zcta',
+    ext: 'geojson',
+  },
 ]
 
 export const DEFAULT_ROUTE =
