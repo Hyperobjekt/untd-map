@@ -289,6 +289,7 @@ const MapBase = ({
   const handleViewportChange = useCallback(
     (vp, options = {}) => {
       // console.log('handleViewportChange, vp = ', vp)
+      // console.log('BOUNDS, ', BOUNDS)
       if (!loaded) return
       // If zoom is below min, reset zoom to min.
       if (vp.zoom && vp.zoom <= BOUNDS.zoom.min) {

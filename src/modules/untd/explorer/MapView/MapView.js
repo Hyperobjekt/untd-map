@@ -48,46 +48,13 @@ const MapView = props => {
   const coords = useStore(state => state.coords)
   const setHovered = useStore(state => state.setHovered)
 
+  // Data sources constructed as files load.
   const sources = useStore(state => state.remoteJson)
-  console.log(sources)
+  // console.log(sources)
   // Tracks when all data sources are loaded.
   const allDataLoaded = useStore(
     state => state.allDataLoaded,
   )
-  // const CPAL_SOURCES = fromJS({
-  // zips: {
-  //   type: `geojson`,
-  //   data:
-  // }
-  // districts: {
-  //   type: `geojson`,
-  //   data: sources.districts ? sources.districts : null,
-  // },
-  // redlines: {
-  //   type: `geojson`,
-  //   data: sources.redlines ? sources.redlines : null,
-  // },
-  // schoolzones: {
-  //   type: `geojson`,
-  //   data: !!sources.schools
-  //     ? getSchoolZones(sources.schools)
-  //     : null,
-  // },
-  // schools: {
-  //   type: `geojson`,
-  //   data: !!sources.schools
-  //     ? getSchoolGeojson(sources.schools)
-  //     : null,
-  // },
-  // demotracts: {
-  //   type: `geojson`,
-  //   data: sources.demotracts ? sources.demotracts : null,
-  // },
-  // feeders: {
-  //   type: `geojson`,
-  //   data: sources.feeders ? sources.feeders : null,
-  // },
-  // })
 
   // Default affix for features in school zones layer
   const schoolZonesAffix = useStore(

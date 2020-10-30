@@ -476,55 +476,153 @@ export const getRedlineLayers = (context, activeLayers) => {
   ]
 }
 
-export const getDemographicLayers = (
+// export const getDemographicLayers = (
+//   context,
+//   activeLayers,
+// ) => {
+//   // console.log('getRedlineLayers', context)
+//   return [
+//     {
+//       z: 42,
+//       style: getDemographicShapes(context, activeLayers),
+//       idMap: true,
+//       hasFeatureId: null, // isCircleId,
+//       type: `demoShapes`,
+//     },
+//     {
+//       z: 43,
+//       style: getDemographicLines(context, activeLayers),
+//       idMap: true,
+//       hasFeatureId: null, // isCircleId,
+//       type: `demoLines`,
+//     },
+//   ]
+// }
+
+// export const getAssetLayers = context => {
+//   // console.log('getAssetLayers', context)
+// }
+//
+// export const getSchoolZoneLayers = context => {
+//   // console.log('getSchoolZoneLayers', context)
+//   return [
+//     {
+//       z: 260,
+//       style: getSchoolZoneShapes(context),
+//       idMap: true,
+//       hasFeatureId: isSchoolZoneId,
+//       type: `schoolzones`,
+//     },
+//   ]
+// }
+//
+// export const getCircleLayers = context => {
+//   // console.log('getCircleLayers', context)
+//   return [
+//     {
+//       z: 250,
+//       style: getSchoolCircleLayer(context),
+//       idMap: true,
+//       hasFeatureId: isSchoolCircleId,
+//       type: `schools`,
+//     },
+//   ]
+// }
+//
+
+const polygonColors = [
+  {
+    type: 'zips',
+    color: 'blue',
+  },
+  {
+    type: 'tracts',
+    color: 'red',
+  },
+  {
+    type: 'counties',
+    color: 'orange',
+  },
+  {
+    type: 'places',
+    color: 'green',
+  },
+]
+
+// console.log(
+//   'polygonColors, ',
+//   polygonColors.find(el => el.type === 'zips').color,
+// )
+
+export const getPolygonLines = (
+  type,
+  context,
+  activeLayers,
+) => {
+  // console.log('getPolygonLines()')
+  return fromJS({
+    id: `${type}Lines`,
+    source: type,
+    type: 'line',
+    layout: {
+      visibility: 'visible',
+    },
+    interactive: true,
+    paint: {
+      'line-color': polygonColors.find(
+        el => el.type === type,
+      ).color,
+      'line-width': 1,
+    },
+  })
+}
+
+export const getPolygonShapes = (
+  type,
+  context,
+  activeLayers,
+) => {
+  // console.log('getPolygonShapes()')
+  return fromJS({
+    id: `${type}Shapes`,
+    source: type,
+    type: 'fill',
+    layout: {
+      visibility: 'visible',
+    },
+    interactive: true,
+    paint: {
+      'fill-color': polygonColors.find(
+        el => el.type === type,
+      ).color,
+      'fill-opacity': 0.1,
+    },
+  })
+}
+
+let z = 45
+
+export const getPolygonLayers = (
+  type,
   context,
   activeLayers,
 ) => {
   // console.log('getRedlineLayers', context)
+  z = z + 2
   return [
     {
-      z: 42,
-      style: getDemographicShapes(context, activeLayers),
+      z: z,
+      style: getPolygonShapes(type, context, activeLayers),
       idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `demoShapes`,
+      hasFeatureId: true, // isCircleId,
+      type: `${type}Shapes`,
     },
     {
-      z: 43,
-      style: getDemographicLines(context, activeLayers),
+      z: z + 1,
+      style: getPolygonLines(type, context, activeLayers),
       idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `demoLines`,
-    },
-  ]
-}
-
-export const getAssetLayers = context => {
-  // console.log('getAssetLayers', context)
-}
-
-export const getSchoolZoneLayers = context => {
-  // console.log('getSchoolZoneLayers', context)
-  return [
-    {
-      z: 260,
-      style: getSchoolZoneShapes(context),
-      idMap: true,
-      hasFeatureId: isSchoolZoneId,
-      type: `schoolzones`,
-    },
-  ]
-}
-
-export const getCircleLayers = context => {
-  // console.log('getCircleLayers', context)
-  return [
-    {
-      z: 250,
-      style: getSchoolCircleLayer(context),
-      idMap: true,
-      hasFeatureId: isSchoolCircleId,
-      type: `schools`,
+      hasFeatureId: true, // isCircleId,
+      type: `${type}Lines`,
     },
   ]
 }
@@ -532,11 +630,10 @@ export const getCircleLayers = context => {
 export const getLayers = (context, activeLayers) => {
   // console.log('getLayers', context, activeLayers)
   return [
-    // ...getSchoolZoneLayers(context),
-    ...getDistrictLayers(context, activeLayers),
-    ...getFeedersLayers(context, activeLayers),
-    ...getRedlineLayers(context, activeLayers),
-    ...getDemographicLayers(context, activeLayers),
-    ...getCircleLayers(context),
+    // Use these to build the actual polygons.
+    ...getPolygonLayers('zips', context, activeLayers),
+    ...getPolygonLayers('tracts', context, activeLayers),
+    ...getPolygonLayers('counties', context, activeLayers),
+    ...getPolygonLayers('places', context, activeLayers),
   ]
 }

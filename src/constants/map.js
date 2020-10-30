@@ -27,27 +27,27 @@ export const DATA_FILES = [
 ]
 
 export const DEFAULT_ROUTE =
-  '/map/cri_weight/1,1,1,1,1///0,0,0,0,0,0,0/32.76/-96.792/10/'
+  '/map/cri_weight/1,1,1,1,1///0,0,0,0,0,0,0/32.912/-96.866/8/'
 
 export const BOUNDS = {
   lat: {
-    max: 33.26625,
-    min: 32.486597,
+    max: 33.75, // 33.26625,
+    min: 31.5, // 32.486597,
   },
   lng: {
-    min: -97.222586,
-    max: -96.410091,
+    min: -98, // -97.222586,
+    max: -95.5, // -96.410091,
   },
   zoom: {
-    min: 9,
-    max: 14,
+    min: 6,
+    max: 24,
   },
 }
 
 export const DEFAULT_VIEWPORT = {
-  latitude: 32.7603525,
-  longitude: -96.791731,
-  zoom: 10,
+  latitude: 32.912, // 32.7603525,
+  longitude: -96.866, // -96.791731,
+  zoom: 8,
   bearing: 0,
   pitch: 0,
   dragPan: true,
