@@ -665,12 +665,5 @@ export const getLayers = (
     // )
   }
 
-  // return [
-  //   // Use these to build the actual polygons.
-  //   ...getPolygonLayers('zips', context, activeLayers),
-  //   ...getPolygonLayers('tracts', context, activeLayers),
-  //   ...getPolygonLayers('counties', context, activeLayers),
-  //   ...getPolygonLayers('places', context, activeLayers),
-  // ]
   return layers
 }
