@@ -27,7 +27,7 @@ jobs:
           GATSBY_MAPBOX_USER=${{secrets.GATSBY_MAPBOX_USER
           }}
           GATSBY_MAPBOX_API_TOKEN=${{secrets.GATSBY_MAPBOX_API_TOKEN
-          }} >> $GITHUB_ENV
+          }}" >> $GITHUB_ENV
 
       - name: Install and Build 🔧
         run: |
