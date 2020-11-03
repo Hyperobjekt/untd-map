@@ -32,18 +32,22 @@ jobs:
       - name: Install nwb globally
         run: npm install nwb -g
 
-      - name: Run nwb build
-        run:
-          NODE_ENV=$NODE_ENV
-          GATSBY_MAPBOX_USER=$GATSBY_MAPBOX_USER
-          GATSBY_MAPBOX_API_TOKEN=$GATSBY_MAPBOX_API_TOKEN
-          nwb build-react-component --copy-files
+      - name: Create .env file
+        run: |
+          touch .env
+          echo NODE_ENV=${{ secrets.STAGING_NODE_ENV }} >> .env
+          echo GATSBY_MAPBOX_USER=${{ secrets.GATSBY_MAPBOX_USER }} >> .env
+          echo GATSBY_MAPBOX_API_TOKEN=${{ secrets.GATSBY_MAPBOX_API_TOKEN }} >> .env
+          cat .env
         env:
           NODE_ENV: ${{ secrets.STAGING_NODE_ENV }}
           GATSBY_MAPBOX_USER:
             ${{ secrets.GATSBY_MAPBOX_USER }}
           GATSBY_MAPBOX_API_TOKEN:
             ${{ secrets.GATSBY_MAPBOX_API_TOKEN }}
+
+      - name: Run nwb build
+        run: nwb build-react-component --copy-files
 
       - name: Deploy 🚀
         uses: crazy-max/ghaction-github-pages@v1

@@ -46,20 +46,10 @@ This library can be published via NPM.
 4. Update the plugin in the site where you're using it: `git checkout -b update-explorer ; npm update untd-map`.
 5. Commit that update, merge to master, and push. `git add * ; git commit -a -m 'Update untd-map' ; git checkout master ; git merge update-explorer ; git push origin master`
 
-## Updating schools data
+## Updating data
 
-The client supplies a CSV to us with all the schools data, and this data changes frequently. These are the steps required to switch out this data.
+Several client-supplied data files are stored in s3 buckets. These files are loaded from different locations depending upon the `NODE_ENV`.
 
-1. Download the CSV from the shared client folder.
-2. [Convert it from CSV to JSON](https://csvjson.com/csv2json). Select the minify option. Download the converted JSON file.
-3. Files should be named as followed, ending with the `.json` extension.
-  a. schools
-  b. demotracts
-  c. districts
-  e. feeders
-  f. redlines
-4. Files are uploaded to an AWS s3 bucket. There are 3 folders in the bucket, for 3 different environments. This allows us to upload new data and test the new data before moving to staging and production: 
-  a. development
-  b. staging
-  c. production
-5. The app will call files from these different folders depending upon the `NODE_ENV` variable set in your dev or build environment.
+* `development`: These files are loaded for local development environments.
+* `staging`: These file are are loaded by the app when staged at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/untd-map).
+* `production`: These files are loaded by the app when loaded into the production environment.
