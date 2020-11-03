@@ -4,8 +4,8 @@ name: Staging CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: staging
+  pull_request:
+    branches: master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -40,11 +40,3 @@ jobs:
 
       - name: Run nwb build
         run: nwb build-react-component --copy-files
-
-      - name: Deploy 🚀
-        uses: crazy-max/ghaction-github-pages@v1
-        with:
-          target_branch: gh-pages
-          build_dir: demo/dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
