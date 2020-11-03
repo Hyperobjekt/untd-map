@@ -46,10 +46,15 @@ This library can be published via NPM.
 4. Update the plugin in the site where you're using it: `git checkout -b update-explorer ; npm update untd-map`.
 5. Commit that update, merge to master, and push. `git add * ; git commit -a -m 'Update untd-map' ; git checkout master ; git merge update-explorer ; git push origin master`
 
+## Contributing
+
+1. To contribute, check out a new branch off of the `master` branch.
+2. When you have finished, submit your changes as a pull request relative to the `master` branch.
+
 ## Updating data
 
-Several client-supplied data files are stored in s3 buckets. These files are loaded from different locations depending upon the `NODE_ENV`.
+Several client-supplied data files are stored in s3 buckets. These files are loaded from different locations depending upon the `NODE_ENV` provided to the build script.
 
 * `development`: These files are loaded for local development environments.
-* `staging`: These file are are loaded by the app when staged at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/untd-map).
+* `staging`: These file are staged at [https://hyperobjekt.github.io/untd-map](https://hyperobjekt.github.io/untd-map) when new commits are pushed to the `staging` branch.
 * `production`: These files are loaded by the app when loaded into the production environment.
