@@ -35,11 +35,17 @@ jobs:
       - name: Install npm packages
         run: npm install
 
-      - name: Debug
-        run: npm list | grep nwb
+      - name: Install nwb globally
+        run: npm install nwb -g
 
       - name: Run nwb build
         run: nwb build-react-component --copy-files
+        env:
+          NODE_ENV: ${{ secrets.STAGING_NODE_ENV }}
+          GATSBY_MAPBOX_USER:
+            ${{secrets.GATSBY_MAPBOX_USER }}
+          GATSBY_MAPBOX_API_TOKEN:
+            ${{secrets.GATSBY_MAPBOX_API_TOKEN }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.6.2
