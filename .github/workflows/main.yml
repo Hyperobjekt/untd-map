@@ -54,3 +54,7 @@ jobs:
           build_dir: demo/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GATSBY_MAPBOX_USER:
+            ${{secrets.GATSBY_MAPBOX_USER }}
+          GATSBY_MAPBOX_API_TOKEN:
+            ${{secrets.GATSBY_MAPBOX_API_TOKEN }}
