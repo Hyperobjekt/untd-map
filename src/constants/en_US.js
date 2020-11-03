@@ -223,7 +223,7 @@ const en_US = {
   UI_FEEDER_DIST_LEGEND_HIGHLIGHT: `Highlighted school`,
   UI_FEEDER_DIST_LEGEND_FEEDER: `Schools in the selected feeder pattern`,
   UI_MAP_SEE_LEGEND: `Show legend`,
-  MAP_UI_POWERED_BY: `Powered by the&nbsp;<a href="https://childpovertyactionlab.org/" target="_blank" rel="noreferrer">Child Poverty Action Lab (CPAL)</a>`,
+  MAP_UI_POWERED_BY: `Powered by&nbsp;<a href="https://google.com/" target="_blank" rel="noreferrer">Custom Attribution</a>`,
   FEEDER_UI_CLICK_FOR_ADDL: `Click for additional information`,
   TOUR_UI_ACTIONS_BACK: `Back`,
   TOUR_UI_ACTIONS_CLOSE: `Close`,
