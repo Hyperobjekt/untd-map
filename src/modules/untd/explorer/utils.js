@@ -11,7 +11,7 @@ import {
   DEFAULT_ROUTE,
 } from './../../../constants/metrics'
 import { BOUNDS } from './../../../constants/map'
-import { CPAL_LAYERS } from './../../../constants/layers'
+import { UNTD_LAYERS } from './../../../constants/layers'
 
 /**
  * Loads map features based on a string of locations

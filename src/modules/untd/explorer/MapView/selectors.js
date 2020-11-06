@@ -12,7 +12,10 @@ import {
   FEEDER_LAYER_COLOR,
   DEMO_COLORS,
 } from './../../../../constants/colors'
-import { DEMO_MAX_PERCENTS } from './../../../../constants/layers'
+import {
+  DEMO_MAX_PERCENTS,
+  UNTD_LAYERS,
+} from './../../../../constants/layers'
 import { CPAL_METRICS } from './../../../../constants/metrics'
 import {
   getMetric,
@@ -560,12 +563,16 @@ export const getPolygonLines = (
   activeLayers,
 ) => {
   // console.log('getPolygonLines()')
+  const isVisible =
+    activeLayers[
+      UNTD_LAYERS.findIndex(el => el.id === type)
+    ] === 1
   return fromJS({
     id: `${type}Lines`,
     source: type,
     type: 'line',
     layout: {
-      visibility: 'visible',
+      visibility: !!isVisible ? 'visible' : 'none',
     },
     interactive: true,
     paint: {
@@ -582,13 +589,23 @@ export const getPolygonShapes = (
   context,
   activeLayers,
 ) => {
-  // console.log('getPolygonShapes()')
+  // console.log(
+  //   'getPolygonShapes(), ',
+  //   type,
+  //   activeLayers,
+  //   UNTD_LAYERS.findIndex(el => el.id === type),
+  // )
+  const isVisible =
+    activeLayers[
+      UNTD_LAYERS.findIndex(el => el.id === type)
+    ] === 1
+  // console.log('isVisible, ', isVisible)
   return fromJS({
     id: `${type}Shapes`,
     source: type,
     type: 'fill',
     layout: {
-      visibility: 'visible',
+      visibility: !!isVisible ? 'visible' : 'none',
     },
     interactive: true,
     paint: {

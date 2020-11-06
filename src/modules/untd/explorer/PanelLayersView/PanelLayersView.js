@@ -15,7 +15,7 @@ import { MdCallSplit } from 'react-icons/md'
 
 import useStore from './../store'
 import {
-  CPAL_LAYERS,
+  UNTD_LAYERS,
   CPAL_LAYER_GROUPS,
 } from './../../../../constants/layers'
 
@@ -31,7 +31,7 @@ const PanelLayersView = ({ ...props }) => {
   )
 
   const getLayerLabel = id => {
-    const layer = CPAL_LAYERS.find(gr => gr.id === id)
+    const layer = UNTD_LAYERS.find(gr => gr.id === id)
     return layer.label
   }
 
@@ -49,7 +49,7 @@ const PanelLayersView = ({ ...props }) => {
       // console.log('it is an only-one')
       const name = dataset.onlyOneName
       // Remove all the matching only-ones from the activeLayers array.
-      CPAL_LAYERS.forEach((el, i) => {
+      UNTD_LAYERS.forEach((el, i) => {
         if (
           el.only_one === true &&
           el.only_one_name === name &&
@@ -109,7 +109,7 @@ const PanelLayersView = ({ ...props }) => {
                 )}
                 key={'layer-group-layers-' + i}
               >
-                {CPAL_LAYERS.filter(item => {
+                {UNTD_LAYERS.filter(item => {
                   return item.group === el.id
                 }).map((layer, i) => {
                   // to manage tooltip state

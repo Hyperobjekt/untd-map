@@ -90,7 +90,7 @@ const [useStore] = create((set, get) => ({
     }))
   },
   schoolZonesAffix: `200`,
-  activeLayers: [0, 0, 0, 0, 0, 0, 0],
+  activeLayers: [1, 0, 0, 0],
   defaultMetric: 'cri_weight',
   activeMetric: 'cri_weight',
   activeQuintiles: [1, 1, 1, 1, 1],

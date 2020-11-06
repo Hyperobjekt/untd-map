@@ -13,7 +13,7 @@ import {
   BOUNDS,
   DEFAULT_ROUTE,
 } from './../../../../constants/map'
-import { CPAL_LAYERS } from './../../../../constants/layers'
+import { UNTD_LAYERS } from './../../../../constants/layers'
 
 /**
  * Get a route parameters object based on the string
@@ -124,7 +124,7 @@ const isLayersValid = layers => {
   if (!layers) return true
   const arr = layers.split(',')
   // console.log('arr, ', arr)
-  if (arr.length !== 7) return false
+  if (arr.length !== 4) return false
   let t = true
   arr.forEach((el, i) => {
     const n = Number(el)
@@ -132,14 +132,14 @@ const isLayersValid = layers => {
       t = false
     }
     if (
-      CPAL_LAYERS[i].only_one === true &&
+      UNTD_LAYERS[i].only_one === true &&
       Number(arr[i]) === 1
     ) {
       // Get the name
-      const name = CPAL_LAYERS[i].only_one_name
+      const name = UNTD_LAYERS[i].only_one_name
       // If others with same name are true in layers, return false.
       // console.log('only one loop, others = ', others)
-      CPAL_LAYERS.forEach((item, index) => {
+      UNTD_LAYERS.forEach((item, index) => {
         if (
           i !== index &&
           item.only_one === true &&

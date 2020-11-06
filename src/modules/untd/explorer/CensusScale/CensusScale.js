@@ -6,7 +6,7 @@ import i18n from '@pureartisan/simple-i18n'
 import useStore from './../store'
 import {
   DEMO_MAX_PERCENTS,
-  CPAL_LAYERS,
+  UNTD_LAYERS,
 } from './../../../../constants/layers'
 import { DEMO_COLORS } from './../../../../constants/colors'
 import { getRoundedValue } from './../utils'
@@ -32,7 +32,7 @@ const CensusScale = ({ ...props }) => {
     let max = 6
     for (var i = min; i < max + 1; i++) {
       if (activeLayers[i] === 1) {
-        setScaleLabel(i18n.translate(CPAL_LAYERS[i].label))
+        setScaleLabel(i18n.translate(UNTD_LAYERS[i].label))
       }
     }
     let newMax = null
@@ -40,7 +40,7 @@ const CensusScale = ({ ...props }) => {
       case !!activeLayers[2]:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[2].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[2].metric] * 100,
             2,
             false,
           ),
@@ -49,7 +49,7 @@ const CensusScale = ({ ...props }) => {
       case !!activeLayers[3]:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[3].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[3].metric] * 100,
             2,
             false,
           ),
@@ -58,7 +58,7 @@ const CensusScale = ({ ...props }) => {
       case !!activeLayers[4]:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[4].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[4].metric] * 100,
             2,
             false,
           ),
@@ -67,7 +67,7 @@ const CensusScale = ({ ...props }) => {
       case !!activeLayers[5]:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[5].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[5].metric] * 100,
             2,
             false,
           ),
@@ -76,7 +76,7 @@ const CensusScale = ({ ...props }) => {
       case !!activeLayers[6]:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[6].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[6].metric] * 100,
             2,
             false,
           ),
@@ -85,7 +85,7 @@ const CensusScale = ({ ...props }) => {
       default:
         setScaleMax(
           getRoundedValue(
-            DEMO_MAX_PERCENTS[CPAL_LAYERS[2].metric] * 100,
+            DEMO_MAX_PERCENTS[UNTD_LAYERS[2].metric] * 100,
             2,
             false,
           ),
