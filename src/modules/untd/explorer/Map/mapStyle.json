@@ -1,5 +1,4 @@
-// prettier-ignore
-export default {
+{
     "version": 8,
     "name": "CRE v5",
     "metadata": {
@@ -378,7 +377,12 @@ export default {
                             ],
                             "text-letter-spacing": 0.1,
                             "icon-size": 0.6,
-                            "icon-image": {"remove": true}
+                            "icon-image": {"remove": true},
+                            "text-field": [
+                                "coalesce",
+                                ["get", "name_en"],
+                                ["get", "name"]
+                            ]
                         },
                         "paint": {"text-color": "#73683b", "icon-opacity": 0.5}
                     }
@@ -639,8 +643,8 @@ export default {
             "type": "vector"
         }
     },
-    "sprite": "mapbox://sprites/cpal/ckd7i4sex01xb1io2dwpuevpl/53scw41v5rj9y91shygngdd49",
-    "glyphs": "mapbox://fonts/cpal/{fontstack}/{range}.pbf",
+    "sprite": "mapbox://sprites/untd/ckh5hvx3w0cer1apdnkxbolud/53scw41v5rj9y91shygngdd49",
+    "glyphs": "mapbox://fonts/untd/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "land",
@@ -3271,10 +3275,10 @@ export default {
             }
         }
     ],
-    "created": "2020-07-29T15:06:12.073Z",
-    "id": "ckd7i4sex01xb1io2dwpuevpl",
-    "modified": "2020-07-30T20:04:54.733Z",
-    "owner": "cpal",
+    "created": "2020-11-06T00:02:35.602Z",
+    "modified": "2020-11-06T00:22:26.521Z",
+    "id": "ckh5hvx3w0cer1apdnkxbolud",
+    "owner": "untd",
     "visibility": "private",
     "draft": false
 }
