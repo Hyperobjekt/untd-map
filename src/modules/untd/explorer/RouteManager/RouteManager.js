@@ -49,8 +49,8 @@ export const isEmptyRoute = route =>
  * @return Boolean
  */
 const isViewValid = view => {
-  // console.log('isViewValid')
-  return ['feeder', 'map'].indexOf(view) > -1
+  // console.log('isViewValid, ', view)
+  return ['explorer', 'embed'].indexOf(view) > -1
 }
 
 /**
@@ -301,21 +301,21 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    // console.log('setStateFromHash()')
+    // console.log('setStateFromHash(), ', params)
 
     if (!!params.view) {
       // setActiveView(params.view)
-      const newViewSelect = viewSelect.map(el => {
-        if (String(el.id).indexOf(params.view) >= 0) {
-          el.active = true
-        } else {
-          el.active = false
-        }
-        return el
-      })
+      // const newViewSelect = viewSelect.map(el => {
+      //   if (String(el.id).indexOf(params.view) >= 0) {
+      //     el.active = true
+      //   } else {
+      //     el.active = false
+      //   }
+      //   return el
+      // })
       setStoreValues({
         activeView: params.view,
-        viewSelect: newViewSelect,
+        // viewSelect: newViewSelect,
       })
     }
     if (!!params.metric) {

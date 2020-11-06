@@ -75,30 +75,40 @@ const Layout = ({ children, ...props }) => {
 
   return (
     <div
-      className={clsx('layout', 'breakpoint-' + breakpoint)}
+      className={clsx(
+        'layout',
+        'breakpoint-' + breakpoint,
+        'view-' + activeView,
+      )}
       {...props}
     >
       <Tracking />
-      <Header>
-        <Logo {...logoProps} />
-        <SchoolSearch />
-        <CoreButton
-          id="button_toggle_menu"
-          aria-label={i18n.translate(`BUTTON_MENU`)}
-          onClick={handleClick}
-          color="none"
-          className="button-toggle-menu"
-        >
-          <span className="menu-icon-group">
-            <MenuIcon />
-            {i18n.translate(`BUTTON_MENU`)}
-          </span>
-        </CoreButton>
-      </Header>
+      {activeView === 'explorer' && (
+        <Header>
+          <Logo {...logoProps} />
+          <SchoolSearch />
+          <CoreButton
+            id="button_toggle_menu"
+            aria-label={i18n.translate(`BUTTON_MENU`)}
+            onClick={handleClick}
+            color="none"
+            className="button-toggle-menu"
+          >
+            <span className="menu-icon-group">
+              <MenuIcon />
+              {i18n.translate(`BUTTON_MENU`)}
+            </span>
+          </CoreButton>
+        </Header>
+      )}
       <main>
         <Canvas>
-          <SlideoutPanel />
-          <ControlPanel></ControlPanel>
+          {activeView === 'explorer' && (
+            <>
+              <SlideoutPanel />
+              <ControlPanel></ControlPanel>
+            </>
+          )}
           <div
             className={clsx(
               'view-parent',
@@ -109,11 +119,15 @@ const Layout = ({ children, ...props }) => {
           >
             <MapView />
           </div>
-          <ShareLinkModal className="modal-share-link" />
-          <UnifiedShareModal className="modal-u-share" />
-          <IntroModal />
-          <Tour />
-          <PanelModal />
+          {activeView === 'explorer' && (
+            <>
+              <ShareLinkModal className="modal-share-link" />
+              <UnifiedShareModal className="modal-u-share" />
+              <IntroModal />
+              <Tour />
+              <PanelModal />
+            </>
+          )}
         </Canvas>
       </main>
     </div>

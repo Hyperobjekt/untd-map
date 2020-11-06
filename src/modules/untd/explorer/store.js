@@ -33,19 +33,19 @@ const [useStore] = create((set, get) => ({
   siteHref: '/',
   logoSrc: null,
   activeLang: `en_us`,
-  activeView: `map`, // Map or feeder
-  viewSelect: [
-    {
-      label: `SELECT_ITEM_MAP`,
-      id: `select_view_map`,
-      active: true,
-    },
-    {
-      label: `SELECT_ITEM_FEEDER`,
-      id: `select_view_feeder`,
-      active: false,
-    },
-  ],
+  activeView: `explorer`, // View type, explorer or embed
+  // viewSelect: [
+  //   {
+  //     label: `SELECT_ITEM_MAP`,
+  //     id: `select_view_map`,
+  //     active: true,
+  //   },
+  //   {
+  //     label: `SELECT_ITEM_FEEDER`,
+  //     id: `select_view_feeder`,
+  //     active: false,
+  //   },
+  // ],
   viewport: {
     latitude: 32.7603525,
     longitude: -96.791731,
@@ -156,7 +156,7 @@ const [useStore] = create((set, get) => ({
   setUpTour: () => {
     set(state => ({
       // Return view to map.
-      activeView: 'map',
+      activeView: 'explorer',
       // Reset metric.
       activeMetric: state.defaultMetric,
       // Reset quintiles.

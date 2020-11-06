@@ -35,12 +35,8 @@ const ControlPanel = ({ children }) => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  // Active view, map or feeder
+  // Active view, explorer or embed
   const activeView = useStore(state => state.activeView)
-  // Array of objects, one for each select dropdown item
-  const viewSelectItems = useStore(
-    state => state.viewSelect,
-  )
   // Slideout panel
   const slideoutPanel = useStore(
     state => state.slideoutPanel,
@@ -132,30 +128,6 @@ const ControlPanel = ({ children }) => {
       })
     }
   }
-  // Handle select in dropdown
-  const handleSelect = e => {
-    e.preventDefault()
-    // console.log('View selected, ', e.currentTarget.id)
-    const val = String(e.currentTarget.id).replace(
-      'select_view_',
-      '',
-    )
-    setStoreValues({
-      activeView: val,
-      viewSelect: [
-        {
-          label: `SELECT_ITEM_MAP`,
-          id: `select_view_map`,
-          active: val === 'map' ? true : false,
-        },
-        {
-          label: `SELECT_ITEM_FEEDER`,
-          id: `select_view_feeder`,
-          active: val === 'feeder' ? true : false,
-        },
-      ],
-    })
-  }
 
   /**
    * Determines control panel button position based on breakpoint
@@ -209,63 +181,59 @@ const ControlPanel = ({ children }) => {
           : 'display-map',
       )}
     >
-      {activeView === 'map' ? (
-        <>
-          <div className="control-label">
-            {i18n.translate('CONTROL_PANEL_METRICS')}
-          </div>
-          <CoreButton
-            id="button_toggle_panel_filters"
-            label={i18n.translate(
-              `BUTTON_TOGGLE_PANEL_FILTERS`,
-            )}
-            onClick={handlePanel}
-            color="none"
-            tooltip={buttonTooltipPosition}
-            className={clsx(
-              'button-panel-filters',
-              slideoutPanel.active &&
-                slideoutPanel.panel === 'filters'
-                ? 'active'
-                : '',
-            )}
-            tooltipCss={cx(theme.elements.tooltip)}
-          >
-            <AiOutlineControl />
-            <span className="sr-only">
-              {i18n.translate(`BUTTON_TOGGLE_FILTERS`)}
-            </span>
-          </CoreButton>
-          <Divider />
-          <div className="control-label">
-            {i18n.translate('CONTROL_PANEL_LAYERS')}
-          </div>
-          <CoreButton
-            id="button_toggle_panel_layers"
-            label={i18n.translate(
-              `BUTTON_TOGGLE_PANEL_LAYERS`,
-            )}
-            onClick={handlePanel}
-            color="none"
-            tooltip={buttonTooltipPosition}
-            className={clsx(
-              'button-panel-layers',
-              slideoutPanel.active &&
-                slideoutPanel.panel === 'layers'
-                ? 'active'
-                : '',
-            )}
-          >
-            <FiLayers />
-            <span className="sr-only">
-              {i18n.translate(`BUTTON_TOGGLE_PANEL_LAYERS`)}
-            </span>
-          </CoreButton>
-          <Divider />
-        </>
-      ) : (
-        ''
-      )}
+      <>
+        <div className="control-label">
+          {i18n.translate('CONTROL_PANEL_METRICS')}
+        </div>
+        <CoreButton
+          id="button_toggle_panel_filters"
+          label={i18n.translate(
+            `BUTTON_TOGGLE_PANEL_FILTERS`,
+          )}
+          onClick={handlePanel}
+          color="none"
+          tooltip={buttonTooltipPosition}
+          className={clsx(
+            'button-panel-filters',
+            slideoutPanel.active &&
+              slideoutPanel.panel === 'filters'
+              ? 'active'
+              : '',
+          )}
+          tooltipCss={cx(theme.elements.tooltip)}
+        >
+          <AiOutlineControl />
+          <span className="sr-only">
+            {i18n.translate(`BUTTON_TOGGLE_FILTERS`)}
+          </span>
+        </CoreButton>
+        <Divider />
+        <div className="control-label">
+          {i18n.translate('CONTROL_PANEL_LAYERS')}
+        </div>
+        <CoreButton
+          id="button_toggle_panel_layers"
+          label={i18n.translate(
+            `BUTTON_TOGGLE_PANEL_LAYERS`,
+          )}
+          onClick={handlePanel}
+          color="none"
+          tooltip={buttonTooltipPosition}
+          className={clsx(
+            'button-panel-layers',
+            slideoutPanel.active &&
+              slideoutPanel.panel === 'layers'
+              ? 'active'
+              : '',
+          )}
+        >
+          <FiLayers />
+          <span className="sr-only">
+            {i18n.translate(`BUTTON_TOGGLE_PANEL_LAYERS`)}
+          </span>
+        </CoreButton>
+        <Divider />
+      </>
       <div className="control-label">
         {i18n.translate('CONTROL_PANEL_INFO')}
       </div>

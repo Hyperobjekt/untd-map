@@ -3,9 +3,9 @@
 import { CRI_COLORS } from './colors'
 
 export const ROUTE_SET = [
-  'view', // View, 'map' or 'feeder'
+  'view', // View type, 'explorer' or 'embed'
   'metric', // Metric ID to set for active metric.
-  'quintiles', // quintiles that are active and inactive. Always length fo 5.
+  'quintiles', // quintiles that are active and inactive. Always length of 5.
   'feeder', // TEA_ID of feeder that will be "locked" in feeder view.
   'school', // TEA_ID of a school that will be highlighted in feeder view.
   'layers', // To determine active layers, 'district_boundaries' and/or 'redlining'
