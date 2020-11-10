@@ -42,7 +42,7 @@ const CoreButton = ({ children, ...props }) => {
       onClick={props.onClick}
       color={props.color}
       label={props.label}
-      className={clsx('button-core', props.className)}
+      className={clsx(props.className, 'button-core')}
     >
       {children}
       {props.tooltip && props.tooltip.length > 0 ? (

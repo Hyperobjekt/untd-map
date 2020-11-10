@@ -35,6 +35,8 @@ export const variables = {
   },
   dimensions: {
     navbarHeight: '64px',
+    controlPanelWidth: '72px',
+    spacer: `0.8rem`,
   },
   breakpoints: [0, 320, 768, 992, 1280],
   fonts: {

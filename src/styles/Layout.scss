@@ -90,38 +90,38 @@ html,
 body {
   height: 100%;
 }
-main {
-  height: calc(100vh - 64px);
-}
-.view-parent {
-  height: 100%;
-  @include media-breakpoint-up(lg) {
-    padding-left: 72px; // padding-left: 64px;
-  }
-  &.display-feeder {
-    background-color: $feeder-background-color;
-    .layout-view-map {
-      display: none;
-    }
-  }
-  &.display-map {
-    .layout-view-feeder {
-      display: none;
-    }
-  }
-  .layout-view-map {
-    .map-legend-btn {
-      position: absolute;
-      top: calc(#{$navbar-height} + 20px);
-      left: 50%;
-      width: 164px;
-      height: 44px;
-      border-radius: 22px;
-      margin-left: -82px;
-      background-color: $white;
-      font-size: 1.4rem;
-      font-weight: 400;
-      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-    }
-  }
-}
+// main {
+//   height: calc(100vh - 64px);
+// }
+// .view-parent {
+// height: 100%;
+// @include media-breakpoint-up(lg) {
+//   padding-left: 72px; // padding-left: 64px;
+// }
+// &.display-feeder {
+//   background-color: $feeder-background-color;
+//   .layout-view-map {
+//     display: none;
+//   }
+// }
+// &.display-map {
+//   .layout-view-feeder {
+//     display: none;
+//   }
+// }
+// .layout-view-map {
+//   .map-legend-btn {
+//     position: absolute;
+//     top: calc(#{$navbar-height} + 20px);
+//     left: 50%;
+//     width: 164px;
+//     height: 44px;
+//     border-radius: 22px;
+//     margin-left: -82px;
+//     background-color: $white;
+//     font-size: 1.4rem;
+//     font-weight: 400;
+//     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
+//   }
+// }
+// }

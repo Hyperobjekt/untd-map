@@ -26,6 +26,7 @@ import {
 } from './../Share'
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
+import { variables } from './../theme'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -73,6 +74,30 @@ const Layout = ({ children, ...props }) => {
     }
   }
 
+  const mainStyles = css`
+    height: ${activeView === 'explorer'
+      ? `calc(100vh - ` +
+        variables.dimensions.navbarHeight +
+        `)`
+      : `100vh`};
+  `
+
+  const mapViewStyles = css`
+    height: 100%;
+    padding-left: ${(breakpoint === 'lg' ||
+      breakpoint === 'xl') &&
+    activeView === 'explorer'
+      ? variables.dimensions.controlPanelWidth
+      : 0};
+  `
+
+  const menuButtonCss = css`
+    display: inline-block;
+    width: 20px;
+    height: 9px;
+    margin-right: 4px;
+  `
+
   return (
     <div
       className={clsx(
@@ -101,7 +126,7 @@ const Layout = ({ children, ...props }) => {
           </CoreButton>
         </Header>
       )}
-      <main>
+      <main className={clsx(cx(mainStyles))}>
         <Canvas>
           {activeView === 'explorer' && (
             <>
@@ -115,6 +140,7 @@ const Layout = ({ children, ...props }) => {
               activeView
                 ? 'display-' + activeView
                 : 'display-map',
+              cx(mapViewStyles),
             )}
           >
             <MapView />
@@ -137,10 +163,3 @@ const Layout = ({ children, ...props }) => {
 Layout.propTypes = {}
 
 export default Layout
-
-const menuButtonCss = css`
-  display: inline-block;
-  width: 20px;
-  height: 9px;
-  margin-right: 4px;
-`
