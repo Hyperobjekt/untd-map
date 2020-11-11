@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import { css, cx } from 'emotion'
 import { MdPhotoCamera } from 'react-icons/md'
 import { CoreButton } from './../../../../core'
 import { Tooltip } from 'reactstrap'
 
 import useStore from './../../store'
+import { theme } from './../../theme'
 
 /**
  * Button that captures map canvas and triggers download
@@ -38,12 +40,17 @@ const MapCaptureButton = ({ currentMap, ...props }) => {
     setStoreValues({ eventMapCapture: eventMapCapture + 1 })
   }
 
+  const borderTop = css`
+    border-top: 1px solid #ddd !important;
+  `
+
   return (
     <CoreButton
       color="none"
       active={true}
       id="map_capture_button"
       className={clsx(
+        cx(theme.elements.mapButton, borderTop),
         `map-capture-btn`,
         `mapboxgl-ctrl-icon`,
       )}
@@ -51,7 +58,9 @@ const MapCaptureButton = ({ currentMap, ...props }) => {
       label={i18n.translate(`UI_MAP_CAPTURE`)}
       tooltip={!interactionsMobile ? 'left' : ''}
     >
-      <MdPhotoCamera className="icon" />
+      <MdPhotoCamera
+        className={clsx(cx(theme.elements.icon))}
+      />
       <span className="sr-only">
         {i18n.translate(`UI_MAP_CAPTURE`)}
       </span>

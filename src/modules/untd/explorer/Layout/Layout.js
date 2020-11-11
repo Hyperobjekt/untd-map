@@ -74,6 +74,11 @@ const Layout = ({ children, ...props }) => {
     }
   }
 
+  const canvasStyles = css`
+    position: relative;
+    height: 100%;
+  `
+
   const mainStyles = css`
     height: ${activeView === 'explorer'
       ? `calc(100vh - ` +
@@ -127,7 +132,7 @@ const Layout = ({ children, ...props }) => {
         </Header>
       )}
       <main className={clsx(cx(mainStyles))}>
-        <Canvas>
+        <Canvas className={clsx(cx(canvasStyles))}>
           {activeView === 'explorer' && (
             <>
               <SlideoutPanel />

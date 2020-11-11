@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import { cx } from 'emotion'
 import { MdRefresh } from 'react-icons/md'
 
 import { DEFAULT_VIEWPORT } from './../../../../../constants/map'
 import { CoreButton } from './../../../../core'
 import useStore from './../../store'
+import { theme } from './../../theme'
 
 /**
  * Button to reset zoom and pan to default viewport settings
@@ -42,6 +44,7 @@ const MapResetButton = ({ ...props }) => {
       active={true}
       id="map_reset_button"
       className={clsx(
+        cx(theme.elements.mapButton),
         `map-reset-btn`,
         `mapboxgl-ctrl-icon`,
       )}
@@ -51,7 +54,9 @@ const MapResetButton = ({ ...props }) => {
       label={i18n.translate(`UI_MAP_RESET`)}
       tooltip={!!interactionsMobile ? '' : 'left'}
     >
-      <MdRefresh className="icon" />
+      <MdRefresh
+        className={clsx(cx(theme.elements.icon))}
+      />
       <span className="sr-only">
         {i18n.translate(`UI_MAP_RESET`)}
       </span>

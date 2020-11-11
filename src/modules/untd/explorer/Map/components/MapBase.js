@@ -16,6 +16,7 @@ import { fromJS } from 'immutable'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
+import { css, cx } from 'emotion'
 
 import { defaultMapStyle } from '../selectors'
 import { getClosest } from '../utils'
@@ -31,6 +32,8 @@ import LegendToggleBtn from './LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
 import { BOUNDS } from './../../../../../constants/map'
 import useStore from './../../store'
+import { variables } from './../../theme'
+import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
 
 /**
  * Returns an array of layer ids for layers that have the
@@ -116,6 +119,8 @@ const MapBase = ({
   )
   // Active layers in the map
   const activeLayers = useStore(state => state.activeLayers)
+  // Active view
+  const activeView = useStore(state => state.activeView)
   // Breakpoint of the explorer
   const breakpoint = useStore(state => state.breakpoint)
 
@@ -700,20 +705,26 @@ const MapBase = ({
             }}
           ></span>
         </div>
-        <div className="map__zoom">
-          <NavigationControl
-            showCompass={false}
-            onViewportChange={setViewport}
-            captureClick={true}
-          ></NavigationControl>
-          <MapResetButton
-            resetViewport={handleResetViewport}
-          />
-          <MapCaptureButton currentMap={currentMap} />
+        <div
+          className={clsx('map__zoom', cx(mapZoomStyles))}
+        >
+          {activeView === 'explorer' && (
+            <>
+              <NavigationControl
+                showCompass={false}
+                onViewportChange={setViewport}
+                captureClick={true}
+              ></NavigationControl>
+              <MapResetButton
+                resetViewport={handleResetViewport}
+              />
+              <MapCaptureButton currentMap={currentMap} />
+            </>
+          )}
         </div>
         {children}
       </ReactMapGL>
-      <LegendToggleBtn />
+      {activeView === 'explorer' && <LegendToggleBtn />}
       <MapMobileModal hoveredFeature={hoveredFeature} />
     </div>
   )
@@ -741,3 +752,58 @@ MapBase.propTypes = {
 }
 
 export default MapBase
+
+const mapZoomStyles = css`
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  left: auto;
+  right: 16px;
+  height: 200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  // Explorer mapbox css overrides
+  .mapboxgl-ctrl
+    button.mapboxgl-ctrl-zoom-out
+    .mapboxgl-ctrl-icon {
+    background-image: url(${ZoomOut});
+  }
+  .mapboxgl-ctrl
+    button.mapboxgl-ctrl-zoom-in
+    .mapboxgl-ctrl-icon {
+    background-image: url(${ZoomIn});
+  }
+  > .mapboxgl-ctrl-group {
+    box-shadow: 1px 1px 3px #ccc;
+    border-radius: 0;
+    background-color: ${variables.colors.white};
+    margin-bottom: 8px;
+    .mapboxgl-control-icon {
+      background-color: ${variables.colors.white};
+      box-shadow: 1px 1px 3px #ccc;
+      border-radius: 0;
+      height: 29px;
+      width: 29px;
+    }
+    &:not(:empty) {
+      border-radius: 0;
+      box-shadow: 1px 1px 3px #ccc;
+    }
+  }
+  // > .btn {
+  //   background-color: ${variables.colors.white};
+  //   box-shadow: 1px 1px 3px #ccc;
+  //   border-radius: 0;
+  //   height: 29px;
+  //   width: 29px;
+  // }
+  > .mapboxgl-ctrl-icon {
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+`
