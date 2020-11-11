@@ -76,6 +76,25 @@ export const CPAL_FEEDER_TIP_ITEMS = [
   },
 ]
 
+export const indicator_cats = [
+  {
+    id: `id`,
+    title: `title`,
+  },
+]
+
+export const indicators = [
+  {
+    id: `id`,
+    title: `title`,
+    desc: `desc`,
+    category: `category`,
+    scale_type: `type`,
+    range: [0, 100], // [min, max]
+    value: 1,
+  },
+]
+
 export const CPAL_METRICS = [
   {
     id: 'cri_weight',
