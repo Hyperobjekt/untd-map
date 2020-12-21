@@ -58,15 +58,8 @@ documentation is generated correctly.
         comment that describes each prop along with its type
       - should contain a `defaultProps` definition that sets
         default values to any props that need them.
-   2. A `.css` file corresponding to the component name that
-      contains the base styles for the component. (e.g.
-      `Header.css`)
    3. A `.md` file corresponding to the component name that
       contains examples of how to use the component, and any
       other relevant documentation (e.g. `Header.md`)
    4. A `index.js` file that exports the component, and any
       other sub-components that need to be shared
-
-See `/src/modules/core/Header`
-([link](https://github.com/Hyperobjekt/cpal-components/tree/master/src/modules/core/Header))
-for an example of what a component should look like.
