@@ -5,29 +5,69 @@
 // Data files to load from remote.
 export const DATA_FILES = [
   {
+    id: 'en_US',
+    filename: 'DataDictionary',
+    ext: 'csv',
+    type: 'dict', // It's  dictionary file.
+    lang: 'en_US', // Merge into this language.
+    lang_key: 'Variable Name', // Table header to use when fetching variables.
+    lang_value: 'Description', // Table header to use when featching lang strings.
+    ind_key: 'Type', // Table header to use when determining if it's an indicator.
+    ind_flag: 'sdcut', // Value that indicates that a value is an indicator.
+  },
+  {
     id: 'counties',
-    filename: 'sm_counties',
+    filename: 'Data/geojson/sm_counties',
     ext: 'geojson',
+    type: 'polygon',
+  },
+  {
+    id: 'banks',
+    filename: 'Data/geojson/sm_feature_banks',
+    ext: 'geojson',
+    type: 'point',
+  },
+  {
+    id: 'banks',
+    filename: 'Data/geojson/sm_feature_communitycenters',
+    ext: 'geojson',
+    type: 'point',
+  },
+  {
+    id: 'creditu',
+    filename: 'Data/geojson/sm_feature_creditunions',
+    ext: 'geojson',
+    type: 'point',
+  },
+  {
+    id: 'playgr',
+    filename: 'Data/geojson/sm_feature_playgrounds',
+    ext: 'geojson',
+    type: 'point',
+  },
+  {
+    id: 'smarket',
+    filename: 'Data/geojson/sm_feature_supermarkets',
+    ext: 'geojson',
+    type: 'point',
   },
   {
     id: 'places',
-    filename: 'sm_places',
+    filename: 'Data/geojson/sm_places',
     ext: 'geojson',
+    type: 'polygon',
   },
   {
     id: 'tracts',
-    filename: 'sm_tracts',
+    filename: 'Data/geojson/sm_tracts',
     ext: 'geojson',
+    type: 'polygon',
   },
   {
     id: 'zips',
-    filename: 'sm_zcta',
+    filename: 'Data/geojson/sm_zcta',
     ext: 'geojson',
-  },
-  {
-    id: 'points',
-    filename: 'points',
-    ext: 'geojson',
+    type: 'polygon',
   },
 ]
 

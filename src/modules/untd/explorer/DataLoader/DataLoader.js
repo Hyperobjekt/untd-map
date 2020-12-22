@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { css, cx } from 'emotion'
 import { Progress } from 'reactstrap'
 import clsx from 'clsx'
+import * as Papa from 'papaparse'
 
 import useStore from './../store.js'
 import { DATA_FILES } from './../../../../constants/map'
@@ -130,8 +131,16 @@ const DataLoader = ({ ...props }) => {
   const setRemoteJson = useStore(
     state => state.setRemoteJson,
   )
-  const s3Path = useStore(state => state.s3Path)
-
+  // Set one lang locale object
+  const setLang = useStore(state => state.setLang)
+  // Counter for language pack updates.
+  const incrementLangUpdates = useStore(
+    state => state.incrementLangUpdates,
+  )
+  // Push an array of indicators to indicators array in store.
+  const addIndicators = useStore(
+    state => state.addIndicators,
+  )
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
   // Counter for loaded files.
@@ -143,13 +152,7 @@ const DataLoader = ({ ...props }) => {
   // Update overall loading tracking.
   files.forEach((el, i) => {
     const xhr = new XMLHttpRequest()
-    const path =
-      s3Path +
-      process.env.NODE_ENV +
-      '/' +
-      el.filename +
-      '.' +
-      el.ext
+    const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
     // console.log('path, ', path)
     xhr.open('GET', path, true)
     xhr.onload = function (e) {
@@ -163,13 +166,57 @@ const DataLoader = ({ ...props }) => {
           //   i,
           //   (loadedCount / files.length) * 100,
           // )
-          let obj = {}
-          obj[el.id] = {
-            type: `geojson`,
-            data: JSON.parse(xhr.responseText),
-          }
           // obj[el.id] = JSON.parse(xhr.responseText)
-          setRemoteJson(obj)
+          if (el.type !== 'dict') {
+            let obj = {}
+            obj[el.id] = {
+              type: `geojson`,
+              data: JSON.parse(xhr.responseText),
+            }
+            setRemoteJson(obj)
+          } else {
+            // Parse the file and merge with lang file.
+            const lang = Papa.parse(xhr.responseText, {
+              header: true,
+              complete: result => {
+                console.log(
+                  'parse done, result: ',
+                  result.data,
+                )
+
+                const strings = {}
+                const indicators = []
+                result.data.forEach(r => {
+                  // Build lang string.
+                  if (r[el.lang_key] && r[el.lang_value]) {
+                    // console.log(
+                    //   'Lang strings present, adding.',
+                    // )
+                    strings[r[el.lang_key]] =
+                      r[el.lang_value]
+                  }
+                  // Build indicator list, array of objects.
+                  if (r[el.ind_key] === el.ind_flag) {
+                    indicators.push({
+                      id: r[el.lang_key],
+                      title: r[el.lang_value],
+                      min: r['Min'],
+                      max: r['Max'],
+                      placeTypes: r['Place']
+                        .toLowerCase()
+                        .replace(/ /g, '')
+                        .split(','),
+                    })
+                  }
+                })
+                // Save strings to string list.
+                setLang('en_US', strings)
+                incrementLangUpdates()
+                // Save indicators to indicator list.
+                addIndicators(indicators)
+              },
+            })
+          }
           setStoreValues({
             dataLoadedPercent:
               (loadedCount / files.length) * 100,

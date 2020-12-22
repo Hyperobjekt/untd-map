@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { isMobile } from 'react-device-detect'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import { theme } from './../theme'
@@ -12,22 +13,58 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
 import { ROUTE_SET } from './../../../../constants/metrics'
+import LangManager from './../LangManager/LangManager'
 
 /**
  * App is the base component for the explorer.
  * @param Object props Any props passed into the component
  */
 const App = props => {
-  // Initialize translation utility
-  i18n.init({
-    locale: 'en_US',
-    languages: {
-      en_US: en_US,
-    },
-  })
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  // Set default lang.
+  const {
+    // activeLang,
+    // getLang,
+    // setLang,
+    setStoreValues,
+    // langUpdates,
+  } = useStore(
+    state => ({
+      // activeLang: state.activeLang,
+      // getLang: state.getLang,
+      // setLang: state.setLang,
+      setStoreValues: state.setStoreValues,
+      // langUpdates: state.langUpdates,
+    }),
+    shallow,
   )
+  // // const langs = useStore(state => state.langs)
+  // // const en = useStore(state =>
+  // //   Object.keys(state.langs['en_US']),
+  // // )
+  // // Set initial en_US from constants file.
+  // // setLang('en_US', en_US)
+  // // Initialize translation utility.
+  // // i18n.init({
+  // //   locale: activeLang,
+  // //   languages: {
+  // //     en_us: getLang(activeLang),
+  // //   },
+  // // })
+  // //
+  // const initLang = () => {
+  //   i18n.init({
+  //     locale: activeLang,
+  //     languages: {
+  //       en_us: getLang(activeLang),
+  //     },
+  //   })
+  // }
+  // useEffect(() => {
+  //   console.log('langs changed, ')
+  //   initLang()
+  // }, [langUpdates])
+  // initLang()
+
   // Updates menu state and calls handler in parent component.
   if (!!props.toggleMenu) {
     // console.log(
@@ -169,6 +206,7 @@ const App = props => {
 
   return (
     <>
+      <LangManager />
       <DataLoader />
       <RouteManager routeSet={ROUTE_SET} />
       <Layout></Layout>

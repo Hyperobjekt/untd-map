@@ -3,6 +3,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { FlyToInterpolator } from 'react-map-gl'
 import WebMercatorViewport from 'viewport-mercator-project'
 import * as ease from 'd3-ease'
+import merge from 'deepmerge'
 
 import en_US from './../../../constants/en_US'
 import {
@@ -13,16 +14,47 @@ import {
 const [useStore] = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
   setStoreValues: obj => set({ ...obj }),
+  // Active language
+  activeLang: `en_US`,
+  // Counter for lang pack updates.
+  langUpdates: 0,
+  incrementLangUpdates: () => {
+    set(state => ({
+      langUpdates: state.langUpdates + 1,
+    }))
+  },
+  // Languages store.
+  langs: {
+    en_US: en_US,
+  },
+  // Get a language.
+  getLang: loc => {
+    return get().langs[loc]
+  },
+  // Set languages.
+  setLang: (loc, lang) => {
+    console.log('setLang')
+    const newLangs = get().langs
+    console.log('newLangs, ', newLangs)
+    newLangs[loc] = merge(newLangs[loc], lang)
+    set({ langs: newLangs })
+    console.log('after set: ', get().langs)
+  },
+  // List of indicator objects.
+  indicators: [],
+  // Push items to indicator list.
+  addIndicators: inds => {
+    set(state => ({
+      indicators: [...state.indicators, ...inds],
+    }))
+  },
   // Track loading of remote data files.
   allDataLoaded: false,
   // Percent loaded for remote data files.
   dataLoadedPercent: 0,
   // Error flag for loading failure.
   dataLoaderFailed: false,
-  // General path to all s3 folders in bucket.
-  // Where the whole path would look about like so:
-  // https://untd-test.s3.us-east-2.amazonaws.com/development/schools.json
-  s3Path: 'https://untd-map.s3.us-east-2.amazonaws.com/',
+  // Set JSON loaded from remote location.
   remoteJson: {},
   setRemoteJson: json =>
     set(state => ({
@@ -32,20 +64,7 @@ const [useStore] = create((set, get) => ({
   defaultRoute: DEFAULT_ROUTE,
   siteHref: '/',
   logoSrc: null,
-  activeLang: `en_us`,
   activeView: `explorer`, // View type, explorer or embed
-  // viewSelect: [
-  //   {
-  //     label: `SELECT_ITEM_MAP`,
-  //     id: `select_view_map`,
-  //     active: true,
-  //   },
-  //   {
-  //     label: `SELECT_ITEM_FEEDER`,
-  //     id: `select_view_feeder`,
-  //     active: false,
-  //   },
-  // ],
   viewport: {
     latitude: 32.7603525,
     longitude: -96.791731,
