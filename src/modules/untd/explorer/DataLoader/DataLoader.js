@@ -179,11 +179,10 @@ const DataLoader = ({ ...props }) => {
             const lang = Papa.parse(xhr.responseText, {
               header: true,
               complete: result => {
-                console.log(
-                  'parse done, result: ',
-                  result.data,
-                )
-
+                // console.log(
+                //   'parse done, result: ',
+                //   result.data,
+                // )
                 const strings = {}
                 const indicators = []
                 result.data.forEach(r => {

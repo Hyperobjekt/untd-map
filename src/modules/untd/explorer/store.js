@@ -33,12 +33,12 @@ const [useStore] = create((set, get) => ({
   },
   // Set languages.
   setLang: (loc, lang) => {
-    console.log('setLang')
+    // console.log('setLang')
     const newLangs = get().langs
-    console.log('newLangs, ', newLangs)
+    // console.log('newLangs, ', newLangs)
     newLangs[loc] = merge(newLangs[loc], lang)
     set({ langs: newLangs })
-    console.log('after set: ', get().langs)
+    // console.log('after set: ', get().langs)
   },
   // List of indicator objects.
   indicators: [],
@@ -109,7 +109,7 @@ const [useStore] = create((set, get) => ({
     }))
   },
   schoolZonesAffix: `200`,
-  activeLayers: [1, 0, 0, 0],
+  activeLayers: [1, 0, 0, 0, 0, 0, 0, 0, 0],
   defaultMetric: 'cri_weight',
   activeMetric: 'cri_weight',
   activeQuintiles: [1, 1, 1, 1, 1],

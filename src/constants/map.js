@@ -22,13 +22,31 @@ export const DATA_FILES = [
     type: 'polygon',
   },
   {
+    id: 'places',
+    filename: 'Data/geojson/sm_places',
+    ext: 'geojson',
+    type: 'polygon',
+  },
+  {
+    id: 'tracts',
+    filename: 'Data/geojson/sm_tracts',
+    ext: 'geojson',
+    type: 'polygon',
+  },
+  {
+    id: 'zips',
+    filename: 'Data/geojson/sm_zcta',
+    ext: 'geojson',
+    type: 'polygon',
+  },
+  {
     id: 'banks',
     filename: 'Data/geojson/sm_feature_banks',
     ext: 'geojson',
     type: 'point',
   },
   {
-    id: 'banks',
+    id: 'commc',
     filename: 'Data/geojson/sm_feature_communitycenters',
     ext: 'geojson',
     type: 'point',
@@ -51,28 +69,10 @@ export const DATA_FILES = [
     ext: 'geojson',
     type: 'point',
   },
-  {
-    id: 'places',
-    filename: 'Data/geojson/sm_places',
-    ext: 'geojson',
-    type: 'polygon',
-  },
-  {
-    id: 'tracts',
-    filename: 'Data/geojson/sm_tracts',
-    ext: 'geojson',
-    type: 'polygon',
-  },
-  {
-    id: 'zips',
-    filename: 'Data/geojson/sm_zcta',
-    ext: 'geojson',
-    type: 'polygon',
-  },
 ]
 
 export const DEFAULT_ROUTE =
-  '/map/cri_weight/1,1,1,1,1///0,0,0,0,0,0,0/32.912/-96.866/8/'
+  '/map/cri_weight/1,1,1,1,1///1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
 
 export const BOUNDS = {
   lat: {

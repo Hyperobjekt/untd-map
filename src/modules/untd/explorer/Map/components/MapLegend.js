@@ -53,23 +53,6 @@ const MapLegend = ({ ...props }) => {
     state => [...state.activeLayers],
     shallow,
   )
-  const [showCensusScale, setShowCensusScale] = useState(
-    false,
-  )
-  useEffect(() => {
-    // console.log(
-    //   'activelayers changed, updating census data scale in legend',
-    // )
-    const showScale =
-      !!activeLayers[2] |
-      !!activeLayers[3] |
-      !!activeLayers[4] |
-      !!activeLayers[5] |
-      !!activeLayers[6]
-        ? true
-        : false
-    setShowCensusScale(showScale)
-  }, [activeLayers])
 
   const slideoutPanel = useStore(
     state => state.slideoutPanel,
@@ -206,7 +189,6 @@ const MapLegend = ({ ...props }) => {
           {i18n.translate(`UI_MAP_LEGEND_SCHOOL_ZONE`)}
         </div>
       </div>
-      {!!showCensusScale && <CensusScale />}
     </div>
   )
 }

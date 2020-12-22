@@ -56,17 +56,16 @@ const en_US = {
   UI_MAP_LAYERS_COUNTIES: `Counties`,
   UI_MAP_LAYERS_TRACTS: `Census tracts`,
   UI_MAP_LAYERS_PLACES: `Places`,
-
-  // UI_MAP_LAYERS_REDLINING: `Historical redlining`,
-  // UI_MAP_LAYERS_FEEDERS: `School feeder patterns`,
-  // UI_MAP_LAYERS_REDLINING_TIP: `Neighborhood zones created for the purpose of discriminatory lending and resource distribution. <a href="/faq/" target="_blank">See FAQ page for more.</a>`,
-  // UI_MAP_LAYERS_DISTRICTS: `District boundaries`,
   UI_MAP_LAYER_0_TITLE: `Geographic Layers`,
   UI_MAP_LAYER_0_DESC: `<p>Toggle these layers on and off to learn more about the region.</p>`,
-  // UI_MAP_LAYER_1_TITLE: `Census Data`,
-  // UI_MAP_LAYER_1_DESC: `<p>The layers below are based on recent census data. Toggle them off to see the concentrations of various racial and ethnic demographics in Dallas.</p>`,
+  UI_MAP_LAYER_1_TITLE: `Point Features`,
+  UI_MAP_LAYER_1_DESC: `<p>Toggle these layers on and off to see individual neighborhood assets.</p>`,
+  UI_MAP_LAYERS_BANKS: `Banks`,
+  UI_MAP_LAYERS_COMMCS: `Community Centers`,
+  UI_MAP_LAYERS_CREDITUS: `Credit Unions`,
+  UI_MAP_LAYERS_PLAYGRS: `Playgrounds`,
+  UI_MAP_LAYERS_SMARKETS: `Supermarkets`,
 
-  // UI_MAP_METRIC_TITLE_CRI: `Weighted Community Resource Index`,
   UI_MAP_METRIC_ABBREV_CRI: `CRI`,
   UI_MAP_METRIC_TITLE_CRI: `Community Resource Index`,
   UI_MAP_METRIC_DESC_CRI: `<p>The Community Resource Index is an average of all Index categories (economics, education, family, health, and community). It presents an overall view of the resources available to each school’s surrounding community.</p>`,
@@ -197,15 +196,15 @@ const en_US = {
   UI_PANEL_INFO_MAP: `<h5>Exploring in the map view</h5>
 
   <p>The map displays 189 Dallas ISD schools, each color-coded to show their score within the metrics that make up the Community Resource Index. The color scale has 5 blocks, each representing a quintile within the scale. The lighter the color, the higher the score.</p>
-  
+
   <p>You can change the metric shown on the map by clicking the METRICS button and making selections. You can also use this feature to filter schools on the map by quintiles.</p>
-  
+
   <p>To see the entire list of metrics for a school, click its dot on the map. A full report about this school will appear in a new tab in your browser.</p>
-  
+
   <p>Use the “toggle map layers” feature to see historical redlining zones (<a href="/faq/#use-2" target="_blank">see FAQ for more</a>) and toggle district boundaries on and off.</p>
-  
+
   <p>You can also grab a snapshot of your screen using the camera button, and share a custom link to your current Explorer view via the SHARE buttons.</p>
-  
+
   <p>Questions? Visit our <a href="/faq" target="_blank">FAQ</a>.</p>`,
   UI_PANEL_INFO_FEEDER: `<h5>Exploring in the Feeder Pattern View</h5><p>A feeder pattern is the sequence of schools a student attends as they advance from grade to grade, based on where they live.</p><p>The first chart shows each feeder pattern’s average Community Resource Index on a scale from 0-100.</p><p>The second chart shows the distribution of campuses across the range of the Community Resource Index.</p> <p>Hover and click within the charts to see more data about each feeder pattern and its schools. You can also use the search bar to find a school and highlight its feeder pattern and campus.</p>`,
   UI_MAP_CLICK_SCHOOL_PROMPT: `Click on school to view full report.`,

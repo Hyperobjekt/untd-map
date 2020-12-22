@@ -8,11 +8,17 @@ export const DEMO_MAX_PERCENTS = {
 }
 
 // Array of layers groups.
-export const CPAL_LAYER_GROUPS = [
+export const UNTD_LAYER_GROUPS = [
   {
     id: 0,
     title: `UI_MAP_LAYER_0_TITLE`,
     desc: `UI_MAP_LAYER_0_DESC`,
+    census_legend: 0,
+  },
+  {
+    id: 1,
+    title: `UI_MAP_LAYER_1_TITLE`,
+    desc: `UI_MAP_LAYER_1_DESC`,
     census_legend: 0,
   },
 ]
@@ -60,6 +66,61 @@ export const UNTD_LAYERS = [
     // metric: `dem_perbl`,
     group: 0,
     index: 3,
+  },
+  {
+    id: `banks`,
+    label: `UI_MAP_LAYERS_BANKS`,
+    types: [`demoShapes`, `demoLines`],
+    tooltip: null,
+    only_one: false,
+    // only_one_name: `basic_geo`,
+    // metric: `dem_perbl`,
+    group: 1,
+    index: 0,
+  },
+  {
+    id: `commc`,
+    label: `UI_MAP_LAYERS_COMMCS`,
+    types: [`demoShapes`, `demoLines`],
+    tooltip: null,
+    only_one: false,
+    // only_one_name: `basic_geo`,
+    // metric: `dem_perbl`,
+    group: 1,
+    index: 1,
+  },
+  {
+    id: `creditu`,
+    label: `UI_MAP_LAYERS_CREDITUS`,
+    types: [`demoShapes`, `demoLines`],
+    tooltip: null,
+    only_one: false,
+    // only_one_name: `basic_geo`,
+    // metric: `dem_perbl`,
+    group: 1,
+    index: 2,
+  },
+  {
+    id: `playgr`,
+    label: `UI_MAP_LAYERS_PLAYGRS`,
+    types: [`demoShapes`, `demoLines`],
+    tooltip: null,
+    only_one: false,
+    // only_one_name: `basic_geo`,
+    // metric: `dem_perbl`,
+    group: 1,
+    index: 3,
+  },
+  {
+    id: `smarket`,
+    label: `UI_MAP_LAYERS_SMARKETS`,
+    types: [`demoShapes`, `demoLines`],
+    tooltip: null,
+    only_one: false,
+    // only_one_name: `basic_geo`,
+    // metric: `dem_perbl`,
+    group: 1,
+    index: 4,
   },
 ]
 
