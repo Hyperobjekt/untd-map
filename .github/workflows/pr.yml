@@ -36,6 +36,8 @@ jobs:
           echo NODE_ENV=${{ secrets.STAGING_NODE_ENV }} >> .env
           echo GATSBY_MAPBOX_USER=${{ secrets.GATSBY_MAPBOX_USER }} >> .env
           echo GATSBY_MAPBOX_API_TOKEN=${{ secrets.GATSBY_MAPBOX_API_TOKEN }} >> .env
+          echo GATSBY_DATA_ENDPOINT=${{ secrets.GATSBY_DATA_ENDPOINT }} >> .env
+          echo GATSBY_DATA_BRANCH=${{ secrets.GATSBY_DATA_BRANCH }} >> .env
           cat .env
 
       - name: Run nwb build
