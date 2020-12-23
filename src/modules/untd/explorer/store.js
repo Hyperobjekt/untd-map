@@ -195,6 +195,8 @@ const [useStore] = create((set, get) => ({
       runTour: true,
     }))
   },
+  // Have images been added for map symbol layers?
+  mapImagesAdded: 0,
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,

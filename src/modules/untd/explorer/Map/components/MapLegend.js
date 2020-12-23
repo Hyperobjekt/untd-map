@@ -12,7 +12,6 @@ import { CoreButton } from './../../../../core/'
 import { CPAL_METRICS } from './../../../../../constants/metrics'
 import { SCHOOL_ZONE_COLORS } from './../../../../../constants/colors'
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { CensusScale } from './../../CensusScale'
 import {
   getRoundedValue,
   getMetric,

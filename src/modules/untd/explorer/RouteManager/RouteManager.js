@@ -124,7 +124,7 @@ const isLayersValid = layers => {
   if (!layers) return true
   const arr = layers.split(',')
   // console.log('arr, ', arr)
-  if (arr.length !== 10) return false
+  if (arr.length < UNTD_LAYERS.length) return false
   let t = true
   arr.forEach((el, i) => {
     const n = Number(el)

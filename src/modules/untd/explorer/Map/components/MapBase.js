@@ -30,6 +30,7 @@ import MapCaptureButton from './MapCaptureButton'
 import MapLegend from './MapLegend'
 import LegendToggleBtn from './LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
+import AddMapImages from './AddMapImages'
 import { BOUNDS } from './../../../../../constants/map'
 import useStore from './../../store'
 import { variables } from './../../theme'
@@ -634,6 +635,7 @@ const MapBase = ({
         {...viewport}
         {...rest}
       >
+        <AddMapImages map={currentMap} />
         {!!hoveredId &&
           !(
             breakpoint === 'xs' ||

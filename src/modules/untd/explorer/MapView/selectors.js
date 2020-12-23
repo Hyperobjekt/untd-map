@@ -556,6 +556,60 @@ const polygonColors = [
 //   'polygonColors, ',
 //   polygonColors.find(el => el.type === 'zips').color,
 // )
+//
+
+export const getPointIcons = (
+  type,
+  context,
+  activeLayers,
+) => {
+  console.log('getPointIcons, ', type)
+  const isVisible =
+    activeLayers[
+      UNTD_LAYERS.findIndex(el => el.id === type)
+    ] === 1
+  console.log('isVisible, ', isVisible)
+  return fromJS({
+    id: `${type}Points`,
+    source: type,
+    type: 'circle', // 'symbol',
+    layout: {
+      visibility: 'visible', // !!isVisible ? 'visible' : 'none',
+      // 'icon-image': `banks-icon`,
+      // 'icon-size': 50,
+    },
+    // interactive: true,
+    paint: {
+      'circle-color': '#000',
+      'circle-opacity': 1,
+      'circle-radius': 120,
+      // 'icon-color': 'red',
+      // [
+      //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+      //   ['get', 'STORE_TYPE'], // Use the result 'STORE_TYPE' property
+      //   'Convenience Store',
+      //   '#FF8C00',
+      //   'Convenience Store With Gas',
+      //   '#FF8C00',
+      //   'Pharmacy',
+      //   '#FF8C00',
+      //   'Specialty Food Store',
+      //   '#9ACD32',
+      //   'Small Grocery Store',
+      //   '#008000',
+      //   'Supercenter',
+      //   '#008000',
+      //   'Superette',
+      //   '#008000',
+      //   'Supermarket',
+      //   '#008000',
+      //   'Warehouse Club Store',
+      //   '#008000',
+      //   '#FF0000', // any other store type
+      // ],
+    },
+  })
+}
 
 export const getPolygonLines = (
   type,
@@ -644,43 +698,89 @@ export const getPolygonLayers = (
   ]
 }
 
+export const getPointLayers = (
+  type,
+  context,
+  activeLayers,
+) => {
+  // console.log('getRedlineLayers', context)
+  z = z + 3
+  return [
+    {
+      z: z,
+      style: getPointIcons(type, context, activeLayers),
+      idMap: true,
+      hasFeatureId: true, // isCircleId,
+      type: `${type}Points`,
+    },
+    // {
+    //   z: z + 1,
+    //   style: getPointLines(type, context, activeLayers),
+    //   idMap: true,
+    //   hasFeatureId: true, // isCircleId,
+    //   type: `${type}Lines`,
+    // },
+  ]
+}
+
 export const getLayers = (
   sources,
   context,
   activeLayers,
 ) => {
-  // console.log('getLayers', context, activeLayers)
+  console.log('getLayers', sources, context, activeLayers)
   const layers = []
+  const sourceKeys = Object.keys(sources)
+  sourceKeys.forEach((key, i) => {
+    const types = UNTD_LAYERS.find(el => {
+      return el.id === key
+    })['types']
 
-  if (!!sources.zips) {
-    layers.push(
-      ...getPolygonLayers('zips', context, activeLayers),
-    )
-  }
-  if (!!sources.tracts) {
-    layers.push(
-      ...getPolygonLayers('tracts', context, activeLayers),
-    )
-  }
-  if (!!sources.counties) {
-    layers.push(
-      ...getPolygonLayers(
-        'counties',
-        context,
-        activeLayers,
-      ),
-    )
-  }
-  if (!!sources.places) {
-    layers.push(
-      ...getPolygonLayers('places', context, activeLayers),
-    )
-  }
-  if (!!sources.points) {
-    // layers.push(
-    // ...getPointLayers('points', context, activeLayers),
-    // )
-  }
+    switch (true) {
+      case types.indexOf('polygons') > -1:
+        layers.push(
+          ...getPolygonLayers(key, context, activeLayers),
+        )
+        break
+      case types.indexOf('points') > -1:
+        layers.push(
+          ...getPointLayers(key, context, activeLayers),
+        )
+        break
+      default:
+        console.log(`No match for geojson source ${key}.`)
+    }
+  })
+
+  // if (!!sources.zips) {
+  //   layers.push(
+  //     ...getPolygonLayers('zips', context, activeLayers),
+  //   )
+  // }
+  // if (!!sources.tracts) {
+  //   layers.push(
+  //     ...getPolygonLayers('tracts', context, activeLayers),
+  //   )
+  // }
+  // if (!!sources.counties) {
+  //   layers.push(
+  //     ...getPolygonLayers(
+  //       'counties',
+  //       context,
+  //       activeLayers,
+  //     ),
+  //   )
+  // }
+  // if (!!sources.places) {
+  //   layers.push(
+  //     ...getPolygonLayers('places', context, activeLayers),
+  //   )
+  // }
+  // if (!!sources.points) {
+  //   // layers.push(
+  //   // ...getPointLayers('points', context, activeLayers),
+  //   // )
+  // }
 
   return layers
 }
