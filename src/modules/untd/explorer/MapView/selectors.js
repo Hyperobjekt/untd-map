@@ -11,6 +11,7 @@ import {
   REDLINE_STROKE_COLORS,
   FEEDER_LAYER_COLOR,
   DEMO_COLORS,
+  CRI_COLORS,
 } from './../../../../constants/colors'
 import {
   DEMO_MAX_PERCENTS,
@@ -22,11 +23,6 @@ import {
   getQuintile,
   isInActiveQuintile,
 } from './../utils'
-// import { redlines } from './../../../../data/TXDallas1937Redline.js'
-// import { districts } from './../../../../data/districts.js'
-// import { feeders } from './../../../../data/feeders.js'
-// import { demotracts } from './../../../../data/demotracts.js'
-import useStore from './../store'
 
 const noDataFill = '#ccc'
 
@@ -410,129 +406,6 @@ export const getDemographicLines = (
   })
 }
 
-const isSchoolCircleId = id => {
-  // console.log('isSchoolCircleId')
-  if (!id) {
-    return false
-  }
-  // const featureRegion = getRegionFromLocationId(id)
-  // return featureRegion === 'schools'
-  return 'schools'
-}
-
-const isSchoolZoneId = id => {
-  // console.log('isSchoolZoneId')
-  if (!id) {
-    return false
-  }
-  // const featureRegion = getRegionFromLocationId(id)
-  // return featureRegion === 'schools'
-  return 'schoolzones'
-}
-
-export const getFeedersLayers = (context, activeLayers) => {
-  // console.log('getDistrictLayers', context)
-  return [
-    {
-      z: 150,
-      style: getFeedersOutlines(context, activeLayers),
-      idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `feeders`,
-    },
-  ]
-}
-
-export const getDistrictLayers = (
-  context,
-  activeLayers,
-) => {
-  // console.log('getDistrictLayers', context)
-  return [
-    {
-      z: 150,
-      style: getDistrictOutline(context, activeLayers),
-      idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `districts`,
-    },
-  ]
-}
-
-export const getRedlineLayers = (context, activeLayers) => {
-  // console.log('getRedlineLayers', context)
-  return [
-    {
-      z: 100,
-      style: getRedlineShapes(context, activeLayers),
-      idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `redlineShapes`,
-    },
-    {
-      z: 101,
-      style: getRedlineLines(context, activeLayers),
-      idMap: true,
-      hasFeatureId: null, // isCircleId,
-      type: `redlineLines`,
-    },
-  ]
-}
-
-// export const getDemographicLayers = (
-//   context,
-//   activeLayers,
-// ) => {
-//   // console.log('getRedlineLayers', context)
-//   return [
-//     {
-//       z: 42,
-//       style: getDemographicShapes(context, activeLayers),
-//       idMap: true,
-//       hasFeatureId: null, // isCircleId,
-//       type: `demoShapes`,
-//     },
-//     {
-//       z: 43,
-//       style: getDemographicLines(context, activeLayers),
-//       idMap: true,
-//       hasFeatureId: null, // isCircleId,
-//       type: `demoLines`,
-//     },
-//   ]
-// }
-
-// export const getAssetLayers = context => {
-//   // console.log('getAssetLayers', context)
-// }
-//
-// export const getSchoolZoneLayers = context => {
-//   // console.log('getSchoolZoneLayers', context)
-//   return [
-//     {
-//       z: 260,
-//       style: getSchoolZoneShapes(context),
-//       idMap: true,
-//       hasFeatureId: isSchoolZoneId,
-//       type: `schoolzones`,
-//     },
-//   ]
-// }
-//
-// export const getCircleLayers = context => {
-//   // console.log('getCircleLayers', context)
-//   return [
-//     {
-//       z: 250,
-//       style: getSchoolCircleLayer(context),
-//       idMap: true,
-//       hasFeatureId: isSchoolCircleId,
-//       type: `schools`,
-//     },
-//   ]
-// }
-//
-
 const polygonColors = [
   {
     type: 'zips',
@@ -544,19 +417,13 @@ const polygonColors = [
   },
   {
     type: 'counties',
-    color: 'orange',
+    color: 'purple',
   },
   {
     type: 'places',
     color: 'green',
   },
 ]
-
-// console.log(
-//   'polygonColors, ',
-//   polygonColors.find(el => el.type === 'zips').color,
-// )
-//
 
 export const getPointIcons = (
   type,
@@ -630,10 +497,24 @@ export const getPolygonLines = (
     },
     interactive: true,
     paint: {
-      'line-color': polygonColors.find(
-        el => el.type === type,
-      ).color,
-      'line-width': 1,
+      'line-color': [
+        'case',
+        ['==', ['get', context.metric], 0],
+        CRI_COLORS[0],
+        ['==', ['get', context.metric], 1],
+        CRI_COLORS[1],
+        ['==', ['get', context.metric], 2],
+        CRI_COLORS[2],
+        ['==', ['get', context.metric], 3],
+        CRI_COLORS[3],
+        ['==', ['get', context.metric], 4],
+        CRI_COLORS[4],
+        CRI_COLORS[2],
+      ],
+      // 'line-color': polygonColors.find(
+      //   el => el.type === type,
+      // ).color,
+      'line-width': 2,
     },
   })
 }
@@ -643,12 +524,13 @@ export const getPolygonShapes = (
   context,
   activeLayers,
 ) => {
-  // console.log(
-  //   'getPolygonShapes(), ',
-  //   type,
-  //   activeLayers,
-  //   UNTD_LAYERS.findIndex(el => el.id === type),
-  // )
+  console.log(
+    'getPolygonShapes(), ',
+    type,
+    context,
+    activeLayers,
+  )
+  console.log('CRI_COLORS', CRI_COLORS)
   const isVisible =
     activeLayers[
       UNTD_LAYERS.findIndex(el => el.id === type)
@@ -663,15 +545,31 @@ export const getPolygonShapes = (
     },
     interactive: true,
     paint: {
-      'fill-color': polygonColors.find(
-        el => el.type === type,
-      ).color,
-      'fill-opacity': 0.1,
+      'fill-color': [
+        'case',
+        ['==', ['get', context.metric], 0],
+        CRI_COLORS[0],
+        ['==', ['get', context.metric], 1],
+        CRI_COLORS[1],
+        ['==', ['get', context.metric], 2],
+        CRI_COLORS[2],
+        ['==', ['get', context.metric], 3],
+        CRI_COLORS[3],
+        ['==', ['get', context.metric], 4],
+        CRI_COLORS[4],
+        CRI_COLORS[2],
+      ],
+      'fill-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        0.4,
+        0.2,
+      ],
     },
   })
 }
 
-let z = 45
+let z = 20
 
 export const getPolygonLayers = (
   type,
@@ -732,9 +630,16 @@ export const getLayers = (
   const layers = []
   const sourceKeys = Object.keys(sources)
   sourceKeys.forEach((key, i) => {
-    const types = UNTD_LAYERS.find(el => {
+    const layer = UNTD_LAYERS.find(el => {
       return el.id === key
-    })['types']
+    })
+    const types = layer.types
+    // If the layer isn't supposed to be visible,
+    // don't process it at all. Save some time.
+    const index = UNTD_LAYERS.indexOf(layer)
+    const isVisible = activeLayers[index] === 1
+    // console.log(`isVisible is ${isVisible}.`)
+    if (!isVisible) return
 
     switch (true) {
       case types.indexOf('polygons') > -1:
@@ -751,36 +656,6 @@ export const getLayers = (
         console.log(`No match for geojson source ${key}.`)
     }
   })
-
-  // if (!!sources.zips) {
-  //   layers.push(
-  //     ...getPolygonLayers('zips', context, activeLayers),
-  //   )
-  // }
-  // if (!!sources.tracts) {
-  //   layers.push(
-  //     ...getPolygonLayers('tracts', context, activeLayers),
-  //   )
-  // }
-  // if (!!sources.counties) {
-  //   layers.push(
-  //     ...getPolygonLayers(
-  //       'counties',
-  //       context,
-  //       activeLayers,
-  //     ),
-  //   )
-  // }
-  // if (!!sources.places) {
-  //   layers.push(
-  //     ...getPolygonLayers('places', context, activeLayers),
-  //   )
-  // }
-  // if (!!sources.points) {
-  //   // layers.push(
-  //   // ...getPointLayers('points', context, activeLayers),
-  //   // )
-  // }
 
   return layers
 }

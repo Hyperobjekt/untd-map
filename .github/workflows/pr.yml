@@ -42,3 +42,11 @@ jobs:
 
       - name: Run nwb build
         run: nwb build-react-component --copy-files
+
+      - name: Deploy 🚀
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-pages-pr
+          build_dir: demo/dist/pr/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

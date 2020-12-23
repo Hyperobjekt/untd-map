@@ -201,7 +201,7 @@ export const getHashLeft = (value, min, max) => {
  * @return {[type]}        [description]
  */
 export const getMetric = (metric, metrics) => {
-  // console.log('getMetric, ', metric)
+  // console.log('getMetric, ', metric, metrics)
   const metricData = metrics.find(m => {
     return m.id === metric
   })

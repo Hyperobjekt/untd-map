@@ -58,7 +58,7 @@ const isViewValid = view => {
  * @param  {String}  metric String that corresponds to metric ID in constants
  * @return {Boolean}
  */
-const isMetricValid = metric => {
+const isMetricValid = (metric, indicators) => {
   // Check if it's in the metrics list
   // console.log('isMetricValid')
   // If it's empty, just return true. We'll use the default.
@@ -188,12 +188,12 @@ const isZoomValid = zoom => {
  * @param  {Object}  params [description]
  * @return {Boolean}        [description]
  */
-const isRouteValid = params => {
+const isRouteValid = (params, routeSet, indicators) => {
   // console.log('isRouteValid(), ', params)
   let isValid = true
   if (
     !isViewValid(params.view) ||
-    !isMetricValid(params.metric) ||
+    !isMetricValid(params.metric, indicators) ||
     !isQuintilesValid(params.quintiles) ||
     !isFeederValid(params.feeder) ||
     !isSchoolValid(params.school) ||
@@ -257,6 +257,8 @@ const RouteManager = props => {
   const feederLocked = useStore(state => state.feederLocked)
   // Track share hash and update when it changes
   const shareHash = useStore(state => state.shareHash)
+  // List of indicators
+  const indicators = useStore(state => state.indicators)
 
   /**
    * Returns a hash based on state
@@ -385,7 +387,11 @@ const RouteManager = props => {
         )
         if (
           !isEmptyRoute(path) &&
-          isRouteValid(params, props.routeSet) &&
+          isRouteValid(
+            params,
+            props.routeSet,
+            indicators,
+          ) &&
           path !== shareHash
         ) {
           // console.log('updating hash')
@@ -435,7 +441,7 @@ const RouteManager = props => {
       )
       if (
         !isEmptyRoute(path) &&
-        isRouteValid(params, props.routeSet)
+        isRouteValid(params, props.routeSet, indicators)
       ) {
         // Update state based on params
         setStateFromHash(params)
@@ -445,7 +451,13 @@ const RouteManager = props => {
             localStorageHash,
             props.routeSet,
           )
-          if (isRouteValid(lsparams, props.routeSet)) {
+          if (
+            isRouteValid(
+              lsparams,
+              props.routeSet,
+              indicators,
+            )
+          ) {
             setStateFromHash(lsparams)
           }
         }

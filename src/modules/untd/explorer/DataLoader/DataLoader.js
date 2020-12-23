@@ -195,12 +195,26 @@ const DataLoader = ({ ...props }) => {
                       r[el.lang_value]
                   }
                   // Build indicator list, array of objects.
-                  if (r[el.ind_key] === el.ind_flag) {
+                  const exists =
+                    indicators.length === 0
+                      ? false
+                      : !!indicators.find(item => {
+                          return item.id === r[el.lang_key]
+                        })
+                  // console.log('exists: ', exists)
+                  if (
+                    !exists &&
+                    r[el.lang_key].length > 0 &&
+                    r[el.ind_key] === el.ind_flag
+                  ) {
                     indicators.push({
                       id: r[el.lang_key],
-                      title: r[el.lang_value],
-                      min: r['Min'],
-                      max: r['Max'],
+                      min: r['Min'] ? r['Min'] : 0,
+                      max: r['Max'] ? r['Max'] : 100,
+                      high_is_good: 1, // TODO: Pipe in from data dict?
+                      is_currency: 0, // TODO: Pipe in from data dict?
+                      is_percent: 0, // TODO: Pipe in from data dict?
+                      decimals: 0, // TODO: Pipe in from data dict?
                       placeTypes: r['Place']
                         .toLowerCase()
                         .replace(/ /g, '')
@@ -209,9 +223,11 @@ const DataLoader = ({ ...props }) => {
                   }
                 })
                 // Save strings to string list.
+                // console.log('strings, ', strings)
                 setLang('en_US', strings)
                 incrementLangUpdates()
                 // Save indicators to indicator list.
+                // console.log('indicators, ', indicators)
                 addIndicators(indicators)
               },
             })

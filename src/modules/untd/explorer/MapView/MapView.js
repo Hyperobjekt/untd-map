@@ -13,10 +13,6 @@ import {
   getSchoolZones,
   getSchoolGeojson,
 } from './../utils'
-// import {
-//   getSchoolZones,
-//   getSchoolGeojson,
-// } from './../utils'
 import useStore from './../store'
 
 const MapView = props => {
@@ -89,9 +85,7 @@ const MapView = props => {
 
   /** aria label for screen readers */
   const ariaLabel = i18n.translate('UI_MAP_SR', {
-    metric: i18n.translate(
-      getMetric(metric, CPAL_METRICS).title,
-    ),
+    metric: i18n.translate(metric),
     quintiles: getQuintilesPhrase(activeQuintiles),
   })
 

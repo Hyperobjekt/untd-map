@@ -24,12 +24,12 @@ const AddMapImages = ({ map, ...props }) => {
   )
   if (!!mapImagesAdded) return null
   UNTD_LAYERS.forEach(el => {
-    console.log(`adding icon for ${el.id}`)
+    // console.log(`adding icon for ${el.id}`)
     if (isAPointLayer(el) && !!el.icon) {
       let img = new Image(20, 20)
       img.onload = () => map.addImage(`${el.id}-icon`, img)
       img.src = TourIcon // window[el.icon] // Pipe in matching svgs later.
-      console.log('img, ', img)
+      // console.log('img, ', img)
     }
   })
   setStoreValues({

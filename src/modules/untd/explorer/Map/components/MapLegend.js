@@ -10,7 +10,10 @@ import { MdClose } from 'react-icons/md'
 import useStore from './../../store'
 import { CoreButton } from './../../../../core/'
 import { CPAL_METRICS } from './../../../../../constants/metrics'
-import { SCHOOL_ZONE_COLORS } from './../../../../../constants/colors'
+import {
+  SCHOOL_ZONE_COLORS,
+  CRI_COLORS,
+} from './../../../../../constants/colors'
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
 import {
   getRoundedValue,
@@ -76,21 +79,45 @@ const MapLegend = ({ ...props }) => {
     }
   }
 
-  // const intl = useStore(state => state.intl)
-  const metricData = getMetric(activeMetric, CPAL_METRICS)
-  const schoolStyle = {
-    backgroundColor: metricData.colors[0],
-    borderColor: '1px solid #fff',
-  }
-  const schoolZoneStyle = {
-    backgroundColor: metricData.colors[4], // SCHOOL_ZONE_COLORS.fill,
-    borderColor: '1px solid ' + metricData.colors[4], // SCHOOL_ZONE_COLORS.outline,
-    opacity: 0.2,
-  }
-  const schoolZoneKnockoutStyle = {
-    backgroundColor: metricData.colors[0],
-    borderColor: '1px solid #fff',
-  }
+  const indicators = useStore(state => state.indicators)
+  const metricData = getMetric(activeMetric, indicators)
+
+  // const schoolStyle = {
+  //   backgroundColor: CRI_COLORS[0],
+  //   borderColor: '1px solid #fff',
+  // }
+  // const schoolZoneStyle = {
+  //   backgroundColor: CRI_COLORS[4], // SCHOOL_ZONE_COLORS.fill,
+  //   borderColor: '1px solid ' + CRI_COLORS[4], // SCHOOL_ZONE_COLORS.outline,
+  //   opacity: 0.2,
+  // }
+  // const schoolZoneKnockoutStyle = {
+  //   backgroundColor: CRI_COLORS[0],
+  //   borderColor: '1px solid #fff',
+  // }
+  // <div className="map-legend-school-dot">
+  //   <div
+  //     className="map-legend-school-dot-icon"
+  //     style={schoolStyle}
+  //   ></div>
+  //   <div className="map-legend-school-dot-descr">
+  //     {i18n.translate(`UI_MAP_LEGEND_SCHOOL_DOT`)}
+  //   </div>
+  // </div>
+  // <div className="map-legend-school-zone">
+  //   <div className="map-legend-school-zone-icon">
+  //     <div
+  //       className="map-legend-school-zone-icon-background"
+  //       style={schoolZoneStyle}
+  //     ></div>
+  //     <div
+  //       className="map-legend-school-zone-icon-knockout"
+  //       style={schoolZoneKnockoutStyle}
+  //     ></div>
+  //   </div>
+  //   <div className="map-legend-school-zone-descr">
+  //     {i18n.translate(`UI_MAP_LEGEND_SCHOOL_ZONE`)}
+  //   </div>
 
   return (
     <div
@@ -135,7 +162,7 @@ const MapLegend = ({ ...props }) => {
         </div>
       )}
       <div className="map-legend-metric-title">
-        {i18n.translate(metricData.title)}
+        {i18n.translate(activeMetric)}
       </div>
       <div className="map-legend-zone-labels">
         <div className="fewer">
@@ -157,37 +184,13 @@ const MapLegend = ({ ...props }) => {
       <NonInteractiveScale
         metric={activeMetric}
         quintiles={activeQuintiles}
-        colors={metricData.colors}
+        colors={CRI_COLORS}
         showHash={false}
         hashLeft={null}
         showMinMax={true}
-        min={metricData.range[0]}
-        max={metricData.range[1]}
+        min={0}
+        max={100}
       />
-      <div className="map-legend-school-dot">
-        <div
-          className="map-legend-school-dot-icon"
-          style={schoolStyle}
-        ></div>
-        <div className="map-legend-school-dot-descr">
-          {i18n.translate(`UI_MAP_LEGEND_SCHOOL_DOT`)}
-        </div>
-      </div>
-      <div className="map-legend-school-zone">
-        <div className="map-legend-school-zone-icon">
-          <div
-            className="map-legend-school-zone-icon-background"
-            style={schoolZoneStyle}
-          ></div>
-          <div
-            className="map-legend-school-zone-icon-knockout"
-            style={schoolZoneKnockoutStyle}
-          ></div>
-        </div>
-        <div className="map-legend-school-zone-descr">
-          {i18n.translate(`UI_MAP_LEGEND_SCHOOL_ZONE`)}
-        </div>
-      </div>
     </div>
   )
 }
