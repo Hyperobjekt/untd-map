@@ -5,13 +5,18 @@ import shallow from 'zustand/shallow'
 import { getLayers } from './selectors'
 import MapBase, { useIdMap } from './../Map'
 
-import { CPAL_METRICS } from './../../../../constants/metrics'
+// import { CPAL_METRICS } from './../../../../constants/metrics'
+import { DATA_FILES } from './../../../../constants/map'
 import {
   getMetric,
   getQuintilesPhrase,
   getFeatureProperty,
   getSchoolZones,
   getSchoolGeojson,
+  getFeatureId,
+  getFeatureTypeObj,
+  getFeatureSource,
+  getFeatureType,
 } from './../utils'
 import useStore from './../store'
 
@@ -98,29 +103,52 @@ const MapView = props => {
     //   geoCoords,
     // )
     if (!!interactionsMobile) return
-    let type = null
-    let id = null
-    if (
-      feature &&
-      feature.layer &&
-      feature.layer.id === 'schools-districts-outline'
-    ) {
-      // console.log('District border hovered.')
-      type = `district`
+    // let type =
+    //   feature && feature.source ? feature.source : null
+    // const source =
+    //   feature && feature.source ? feature.source : null
+    // let id =
+    //   feature && feature.layer && feature.layer.id
+    //     ? feature.layer.id
+    //     : null
+    // const source_data = DATA_FILES.find(el => {
+    //   return el.id === source
+    // })
+
+    const source = getFeatureSource(feature)
+    const source_data = getFeatureTypeObj(feature)
+    console.log('source_data, ', source_data)
+    if (source_data && !!source_data.popup) {
+      // const id = getFeatureProperty(
+      //   feature,
+      //   getFeatureId(feature),
+      // )
+      const id = getFeatureId(feature)
+      const type = getFeatureType(feature)
+      console.log('setting hovered, ', feature, id)
+      setHovered(id, type, geoCoords, feature)
     }
-    if (
-      feature &&
-      feature.layer &&
-      feature.layer.id === 'schools-circle'
-    ) {
-      // console.log('School circle hovered.', feature)
-      type = `schools`
-      // console.log('handleHover, ', feature, coords)
-      id = getFeatureProperty(feature, 'TEA')
-      // setHovered(id, type, geoCoords, feature)
-    }
+    // if (
+    //   feature &&
+    //   feature.layer &&
+    //   feature.layer.id === 'tractsShapes'
+    // ) {
+    //   console.log('Tract shape hovered.')
+    //   // type = `district`
+    // }
+    // if (
+    //   feature &&
+    //   feature.layer &&
+    //   feature.layer.id === 'schools-circle'
+    // ) {
+    //   // console.log('School circle hovered.', feature)
+    //   type = `schools`
+    //   // console.log('handleHover, ', feature, coords)
+    //   id = getFeatureProperty(feature, 'TEA')
+    //   // setHovered(id, type, geoCoords, feature)
+    // }
     // console.log('handleHover, ', id)
-    setHovered(id, type, geoCoords, feature)
+    // setHovered(id, type, geoCoords, feature)
   }
 
   /** handler for map click */

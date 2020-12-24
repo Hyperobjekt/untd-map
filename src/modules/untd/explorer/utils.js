@@ -12,6 +12,7 @@ import {
 } from './../../../constants/metrics'
 import { BOUNDS } from './../../../constants/map'
 import { UNTD_LAYERS } from './../../../constants/layers'
+import { DATA_FILES } from './../../../constants/map'
 
 /**
  * Loads map features based on a string of locations
@@ -455,6 +456,79 @@ export const getSchoolZones = schools => {
  * @param {string} propName property name to grab
  */
 export const getFeatureProperty = (feature, propName) => {
+  if (
+    feature &&
+    feature.properties &&
+    feature.properties[propName] !== -999
+  ) {
+    return feature.properties[propName]
+  }
+  return null
+}
+
+/**
+ * Returns the feature type (from feature.source)
+ */
+export const getFeatureType = feature => {
+  return feature && feature.source ? feature.source : null
+}
+
+/**
+ * Gets feature source
+ * @param  {[type]} feature [description]
+ * @return {[type]}         [description]
+ */
+export const getFeatureSource = feature => {
+  return feature && feature.source ? feature.source : null
+}
+
+/**
+ * [getFeatureTypeInfo description]
+ * @param  {[type]} feature [description]
+ * @return {[type]}         [description]
+ */
+export const getFeatureTypeObj = feature => {
+  const source = getFeatureSource(feature)
+  return source
+    ? DATA_FILES.find(el => {
+        return el.id === source
+      })
+    : null
+}
+
+/**
+ * Returns feature Id from properties field identified in
+ * data map.
+ */
+export const getFeatureId = feature => {
+  const info = getFeatureTypeObj(feature)
+  return feature.properties[info.id_key]
+}
+
+/**
+ * Returns feature label from a properties field
+ * designated in data map.
+ */
+export const getFeatureLabel = feature => {
+  const info = getFeatureTypeObj(feature)
+  return !!info ? feature.properties[info.label_key] : null
+}
+
+export const isFeaturePoint = feature => {
+  return feature.geometry.type === 'Point'
+}
+
+/**
+ * Gets a property from a feature, returns null if not found
+ * @param {Feature} feature GeoJSON feature
+ * @param {string} propName property name to grab
+ */
+export const getFeaturePropertyFromSet = (
+  feature,
+  propName,
+) => {
+  DATA_FILES
+
   if (
     feature &&
     feature.properties &&

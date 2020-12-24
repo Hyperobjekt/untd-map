@@ -12,6 +12,7 @@ import ReactMapGL, {
   Popup,
 } from 'react-map-gl'
 import destination from '@turf/destination'
+import centerOfMass from '@turf/center-of-mass'
 import { fromJS } from 'immutable'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
@@ -20,7 +21,7 @@ import { css, cx } from 'emotion'
 
 import { defaultMapStyle } from '../selectors'
 import { getClosest } from '../utils'
-import { usePrevious } from './../../utils'
+import { usePrevious, isFeaturePoint } from './../../utils'
 import { useMapViewport, useFlyToReset } from '../store'
 import useMapStore from '../store'
 import PopupContent from './PopupContent'
@@ -402,20 +403,20 @@ const MapBase = ({
 
   // set hovered feature state when hoveredId changes
   useEffect(() => {
-    // console.log('hoveredId changed, hoveredId', hoveredId)
+    console.log('hoveredId changed, hoveredId', hoveredId)
     if (prev && prev.hoveredId && prev.hoveredType) {
       // Set state for unhovered school.
       setFeatureState(prev.hoveredId, prev.hoveredType, {
         hover: false,
       })
       // Set state for unhovered school zone.
-      setFeatureState(
-        schoolZonesAffix + prev.hoveredId,
-        'schoolzones',
-        {
-          hover: false,
-        },
-      )
+      // setFeatureState(
+      //   schoolZonesAffix + prev.hoveredId,
+      //   'schoolzones',
+      //   {
+      //     hover: false,
+      //   },
+      // )
     }
     if (hoveredId) {
       // Set state for hovered school.
@@ -423,13 +424,13 @@ const MapBase = ({
         hover: true,
       })
       // Set state for hovered school zone.
-      setFeatureState(
-        schoolZonesAffix + hoveredId,
-        'schoolzones',
-        {
-          hover: true,
-        },
-      )
+      // setFeatureState(
+      //   schoolZonesAffix + hoveredId,
+      //   'schoolzones',
+      //   {
+      //     hover: true,
+      //   },
+      // )
     }
     // eslint-disable-next-line
   }, [hoveredId, loaded]) // update only when hovered id changes
@@ -494,7 +495,15 @@ const MapBase = ({
       distance = 0.4
     }
     // Set point for hovered feature.
-    const point = hoveredFeature.geometry.coordinates
+    let point = null
+    const isPoint = isFeaturePoint(hoveredFeature)
+    if (isPoint) {
+      point = hoveredFeature.geometry.coordinates
+    } else {
+      point = centerOfMass(hoveredFeature).geometry
+        .coordinates
+    }
+
     var options = { units: 'miles' }
     // Get coords for edge of zone at cardinal directions for hovered feature latlng
     const offsets = {

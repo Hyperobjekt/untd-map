@@ -152,12 +152,12 @@ const [useStore] = create((set, get) => ({
     feature,
     options = { showTooltip: true, showMarkers: true },
   ) => {
-    // console.log(
-    //   'setHovered',
-    //   hoveredId,
-    //   hoveredType,
-    //   coords,
-    // )
+    console.log(
+      'setHovered',
+      hoveredId,
+      hoveredType,
+      coords,
+    )
     set(state => ({
       hovered: hoveredId,
       type: hoveredType,

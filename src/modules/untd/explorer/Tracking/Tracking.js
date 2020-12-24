@@ -7,7 +7,11 @@ import useStore from './../store'
 import { CPAL_FEEDERS } from './../../../../constants/metrics'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
-import { useDebounce } from './../utils'
+import {
+  useDebounce,
+  getFeatureLabel,
+  getFeatureId,
+} from './../utils'
 import { constructShareLink } from './../Share/Share'
 
 const Tracking = ({ ...props }) => {
@@ -166,8 +170,8 @@ const Tracking = ({ ...props }) => {
             ? flyToSchoolSLN
             : highlightedSchool
         if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
+          eventLabel = getFeatureLabel(id)
+            ? getFeatureLabel(id)
             : null
           eventValue = id
         }
@@ -187,8 +191,8 @@ const Tracking = ({ ...props }) => {
         eventAction = 'View school details (hover or touch)'
         var id = hovered ? hovered : false
         if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
+          eventLabel = getFeatureLabel(id)
+            ? getFeatureLabel(id)
             : null
           eventValue = id
         }
@@ -199,8 +203,8 @@ const Tracking = ({ ...props }) => {
         var id =
           activeView === 'map' ? hovered : accessedSchool
         if (!!id) {
-          eventLabel = getSchool(id).SCHOOLNAME
-            ? getSchool(id).SCHOOLNAME
+          eventLabel = getFeatureLabel(id)
+            ? getFeatureLabel(id)
             : null
           eventValue = id
         }
