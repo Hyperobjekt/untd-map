@@ -478,6 +478,43 @@ export const getPointIcons = (
   })
 }
 
+const getFilter = type => {
+  switch (true) {
+    case type === 'tracts':
+      return [
+        'all',
+        ['!=', ['number', ['get', 'fid']], ['number', 568]],
+        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+      ]
+      break
+    case type === 'zips':
+      return [
+        'all',
+        ['!=', ['number', ['get', 'fid']], ['number', 568]],
+        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+      ]
+      break
+    case type === 'counties':
+      return [
+        'all',
+        ['!=', ['number', ['get', 'fid']], ['number', 568]],
+        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+      ]
+      // code block
+      break
+    case type === 'places':
+      return [
+        'all',
+        ['!=', ['number', ['get', 'fid']], ['number', 568]],
+        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+      ]
+      // code block
+      break
+    default:
+    // code block
+  }
+}
+
 export const getPolygonLines = (
   type,
   context,
@@ -516,6 +553,7 @@ export const getPolygonLines = (
       // ).color,
       'line-width': 2,
     },
+    filter: getFilter(type),
   })
 }
 
@@ -563,9 +601,10 @@ export const getPolygonShapes = (
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         0.4,
-        0.2,
+        0.6,
       ],
     },
+    filter: getFilter(type),
   })
 }
 
