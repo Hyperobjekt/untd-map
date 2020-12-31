@@ -36,7 +36,7 @@ const LangManager = ({ ...props }) => {
     })
   }
   useEffect(() => {
-    // console.log('langs changed, ', langs)
+    // console.log('langs changed, ', getLang(activeLang))
     initLang()
   }, [langUpdates])
   initLang()

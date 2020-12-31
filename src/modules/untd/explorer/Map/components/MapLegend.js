@@ -82,117 +82,86 @@ const MapLegend = ({ ...props }) => {
   const indicators = useStore(state => state.indicators)
   const metricData = getMetric(activeMetric, indicators)
 
-  // const schoolStyle = {
-  //   backgroundColor: CRI_COLORS[0],
-  //   borderColor: '1px solid #fff',
-  // }
-  // const schoolZoneStyle = {
-  //   backgroundColor: CRI_COLORS[4], // SCHOOL_ZONE_COLORS.fill,
-  //   borderColor: '1px solid ' + CRI_COLORS[4], // SCHOOL_ZONE_COLORS.outline,
-  //   opacity: 0.2,
-  // }
-  // const schoolZoneKnockoutStyle = {
-  //   backgroundColor: CRI_COLORS[0],
-  //   borderColor: '1px solid #fff',
-  // }
-  // <div className="map-legend-school-dot">
-  //   <div
-  //     className="map-legend-school-dot-icon"
-  //     style={schoolStyle}
-  //   ></div>
-  //   <div className="map-legend-school-dot-descr">
-  //     {i18n.translate(`UI_MAP_LEGEND_SCHOOL_DOT`)}
-  //   </div>
-  // </div>
-  // <div className="map-legend-school-zone">
-  //   <div className="map-legend-school-zone-icon">
-  //     <div
-  //       className="map-legend-school-zone-icon-background"
-  //       style={schoolZoneStyle}
-  //     ></div>
-  //     <div
-  //       className="map-legend-school-zone-icon-knockout"
-  //       style={schoolZoneKnockoutStyle}
-  //     ></div>
-  //   </div>
-  //   <div className="map-legend-school-zone-descr">
-  //     {i18n.translate(`UI_MAP_LEGEND_SCHOOL_ZONE`)}
-  //   </div>
-
-  return (
-    <div
-      className={clsx(
-        'map-legend',
-        !!showMobileLegend ? 'show-mobile' : 'hide-mobile',
-      )}
-    >
-      {(breakpoint === 'xs' || breakpoint === 'sm') && (
-        <CoreButton
-          id="button_close_legend"
-          label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
-          onClick={handleClose}
-          color="none"
-          className={clsx(
-            'button-core',
-            'button-close-legend',
-          )}
-        >
-          <MdClose />
-          <span className="sr-only">
-            {i18n.translate(`BUTTON_CLOSE_PANEL`)}
-          </span>
-        </CoreButton>
-      )}
-      {!(breakpoint === 'xs' || breakpoint === 'sm') && (
-        <div className="map-legend-label">
-          {i18n.translate(`UI_MAP_LEGEND_TITLE`)}
-          <span
-            id="map_legend_open_filter"
+  if (!!metricData) {
+    return (
+      <div
+        className={clsx(
+          'map-legend',
+          !!showMobileLegend
+            ? 'show-mobile'
+            : 'hide-mobile',
+        )}
+      >
+        {(breakpoint === 'xs' || breakpoint === 'sm') && (
+          <CoreButton
+            id="button_close_legend"
+            label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
+            onClick={handleClose}
+            color="none"
             className={clsx(
-              'map-legend-open-filter-panel',
-              !!slideoutPanel.active &&
-                slideoutPanel.panel === 'filters'
-                ? 'disabled'
-                : '',
+              'button-core',
+              'button-close-legend',
             )}
-            onClick={toggleFilterPanel}
           >
-            {i18n.translate('LINK_OPEN_FILTER_PANEL')}
-          </span>
+            <MdClose />
+            <span className="sr-only">
+              {i18n.translate(`BUTTON_CLOSE_PANEL`)}
+            </span>
+          </CoreButton>
+        )}
+        {!(breakpoint === 'xs' || breakpoint === 'sm') && (
+          <div className="map-legend-label">
+            {i18n.translate(`UI_MAP_LEGEND_TITLE`)}
+            <span
+              id="map_legend_open_filter"
+              className={clsx(
+                'map-legend-open-filter-panel',
+                !!slideoutPanel.active &&
+                  slideoutPanel.panel === 'filters'
+                  ? 'disabled'
+                  : '',
+              )}
+              onClick={toggleFilterPanel}
+            >
+              {i18n.translate('LINK_OPEN_FILTER_PANEL')}
+            </span>
+          </div>
+        )}
+        <div className="map-legend-metric-title">
+          {i18n.translate(activeMetric)}
         </div>
-      )}
-      <div className="map-legend-metric-title">
-        {i18n.translate(activeMetric)}
+        <div className="map-legend-zone-labels">
+          <div className="fewer">
+            <div className="vertically-center">
+              {i18n.translate(`UI_MAP_LEGEND_FEWER`)}
+            </div>
+          </div>
+          <div className="avg">
+            <div className="vertically-center">
+              {i18n.translate(`UI_MAP_LEGEND_AVG`)}
+            </div>
+          </div>
+          <div className="more">
+            <div className="vertically-center">
+              {i18n.translate(`UI_MAP_LEGEND_MORE`)}
+            </div>
+          </div>
+        </div>
+        <NonInteractiveScale
+          metric={activeMetric}
+          quintiles={activeQuintiles}
+          colors={CRI_COLORS}
+          showHash={false}
+          hashLeft={null}
+          showMinMax={true}
+          min={0}
+          max={100}
+        />
       </div>
-      <div className="map-legend-zone-labels">
-        <div className="fewer">
-          <div className="vertically-center">
-            {i18n.translate(`UI_MAP_LEGEND_FEWER`)}
-          </div>
-        </div>
-        <div className="avg">
-          <div className="vertically-center">
-            {i18n.translate(`UI_MAP_LEGEND_AVG`)}
-          </div>
-        </div>
-        <div className="more">
-          <div className="vertically-center">
-            {i18n.translate(`UI_MAP_LEGEND_MORE`)}
-          </div>
-        </div>
-      </div>
-      <NonInteractiveScale
-        metric={activeMetric}
-        quintiles={activeQuintiles}
-        colors={CRI_COLORS}
-        showHash={false}
-        hashLeft={null}
-        showMinMax={true}
-        min={0}
-        max={100}
-      />
-    </div>
-  )
+    )
+  } else {
+    return null
+  }
 }
 
 MapLegend.defaultProps = {

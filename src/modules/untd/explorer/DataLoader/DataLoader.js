@@ -187,12 +187,15 @@ const DataLoader = ({ ...props }) => {
                 const indicators = []
                 result.data.forEach(r => {
                   // Build lang string.
-                  if (r[el.lang_key] && r[el.lang_value]) {
+                  if (r[el.lang_key]) {
                     // console.log(
-                    //   'Lang strings present, adding.',
+                    //   'Lang strings present, adding, ',
+                    //   r[el.lang_value],
                     // )
                     strings[r[el.lang_key]] =
-                      r[el.lang_value]
+                      r[el.lang_value].length > 0
+                        ? r[el.lang_value]
+                        : r[el.lang_key]
                   }
                   // Build indicator list, array of objects.
                   const exists =
@@ -201,7 +204,11 @@ const DataLoader = ({ ...props }) => {
                       : !!indicators.find(item => {
                           return item.id === r[el.lang_key]
                         })
-                  // console.log('exists: ', exists)
+                  // console.log(
+                  //   'exists: ',
+                  //   exists,
+                  //   indicators,
+                  // )
                   if (
                     !exists &&
                     r[el.lang_key].length > 0 &&
@@ -223,7 +230,7 @@ const DataLoader = ({ ...props }) => {
                   }
                 })
                 // Save strings to string list.
-                // console.log('strings, ', strings)
+                console.log('strings, ', strings)
                 setLang('en_US', strings)
                 incrementLangUpdates()
                 // Save indicators to indicator list.

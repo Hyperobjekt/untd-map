@@ -209,7 +209,7 @@ export const getMetric = (metric, metrics) => {
   if (!!metricData) {
     return metricData
   } else {
-    console.error(`Unable to get metric ${metric}.`)
+    return false
   }
 }
 
