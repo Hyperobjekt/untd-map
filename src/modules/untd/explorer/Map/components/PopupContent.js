@@ -33,12 +33,17 @@ const PopupContent = ({ ...props }) => {
   )
   const indicators = useStore(state => state.indicators)
   const breakpoint = useStore(state => state.breakpoint)
+  const activeMetric = useStore(state => state.activeMetric)
 
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
   })
 
   console.log('source = ', source)
+
+  const metric = indicators.find(item => {
+    return item.id === activeMetric
+  })
 
   // For tracking access school page events.
   // const eventSchoolPage = useStore(
@@ -53,8 +58,10 @@ const PopupContent = ({ ...props }) => {
   // })
 
   const setActiveQuintile = quintile => {
+    console.log('setActiveQuintile, ', quintile)
     const arr = [0, 0, 0, 0, 0]
     arr[quintile] = 1
+    console.log(arr)
     return arr
   }
 
@@ -98,63 +105,67 @@ const PopupContent = ({ ...props }) => {
   // )}
 
   if (!!props.feature) {
+    // const metricData = getMetric(metric, indicators)
+    // console.log('metric, ', metric)
+    const featureLabel = props.feature.properties[
+      source.label_key
+    ]
+      ? props.feature.properties[source.label_key]
+      : false
+    const label = i18n.translate(metric.id)
+    const value = String(
+      props.feature.properties[
+        String(metric.id).replace('_sd', '')
+      ],
+    )
+    console.log('value = ', value)
+    const min = metric.min
+    const max = metric.max
+    const high_is_good = metric.high_is_good
+    // console.log(
+    //   'sd is , ',
+    //   props.feature.properties[activeMetric],
+    // )
     return (
       <div className="popup-content">
-        <div className="popup-school-name">
-          <h4>
-            {props.feature.properties[source.label_key]}
-          </h4>
-        </div>
-        {indicators.map(metric => {
-          // const metricData = getMetric(metric, indicators)
-          console.log('metric, ', metric)
-          const label = i18n.translate(metric.id)
-          const value = String(
-            props.feature.properties[
-              String(metric.id).replace('_sd', '')
-            ],
-          )
-          const min = metric.min
-          const max = metric.max
-          const high_is_good = metric.high_is_good
-          if (value.length > 0) {
-            return (
-              <div
-                className="popup-metric"
-                key={`popup-metric-${metric.id}`}
-              >
-                <div className="popup-metric-label">
-                  {label}&nbsp;&nbsp;
-                  <span className="metric-value">
-                    {!!value
-                      ? getRoundedValue(value, 0, false)
-                      : ''}
-                  </span>
-                </div>
-                <div className="popup-metric-scale">
-                  <NonInteractiveScale
-                    metric={metric}
-                    showHash={false}
-                    quintiles={setActiveQuintile(
-                      getQuintile(
-                        value,
-                        min,
-                        max,
-                        high_is_good,
-                      ),
-                    )}
-                    colors={CRI_COLORS}
-                    showMinMax={false}
-                    min={min}
-                    max={max}
-                  />
-                </div>
-              </div>
-            )
-          } else {
-            return ''
-          }
-        })}
+        {!!featureLabel && (
+          <div className="popup-school-name">
+            <h4>
+              {props.feature.properties[source.label_key]}
+            </h4>
+          </div>
+        )}
+        {value.length > 0 && (
+          <div
+            className="popup-metric"
+            key={`popup-metric-${metric.id}`}
+          >
+            <div className="popup-metric-label">
+              {label}
+              <br />
+              <span className="metric-value">
+                {!!value
+                  ? getRoundedValue(value, 0, false)
+                  : ''}
+              </span>
+            </div>
+            <div className="popup-metric-scale">
+              <NonInteractiveScale
+                metric={activeMetric}
+                showHash={false}
+                quintiles={setActiveQuintile(
+                  Number(
+                    props.feature.properties[activeMetric],
+                  ),
+                )}
+                colors={CRI_COLORS}
+                showMinMax={false}
+                min={min}
+                max={max}
+              />
+            </div>
+          </div>
+        )}
       </div>
     )
   } else {

@@ -31,7 +31,8 @@ export const DATA_FILES = [
     type: 'polygon',
     popup: 1,
     id_key: 'PLACENS',
-    label_key: 'NAMELSAD',
+    label_key: 'NAME.y',
+    type_label_key: `UI_MAP_FEATURE_PLACE`,
   },
   {
     id: 'tracts',
@@ -50,7 +51,8 @@ export const DATA_FILES = [
     type: 'polygon',
     popup: 1,
     id_key: 'GEOID',
-    label_key: 'NAME',
+    label_key: 'ZIP',
+    type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
   {
     id: 'banks',

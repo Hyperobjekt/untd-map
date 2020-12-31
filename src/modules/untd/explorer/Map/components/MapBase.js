@@ -516,10 +516,11 @@ const MapBase = ({
     if (isPoint) {
       point = hoveredFeature.geometry.coordinates
     } else {
-      console.log('mouseCoords, ', mouseCoords)
+      // console.log('mouseCoords, ', mouseCoords)
       point = mouseLngLat
       // centerOfMass(hoveredFeature).geometry.coordinates
     }
+    if (!point) return false
 
     var options = { units: 'miles' }
     // Get coords for edge of zone at cardinal directions for hovered feature latlng
@@ -663,6 +664,7 @@ const MapBase = ({
       >
         <AddMapImages map={currentMap} />
         {!!hoveredId &&
+          !!mouseLngLat &&
           !(
             breakpoint === 'xs' ||
             breakpoint === 'sm' ||

@@ -1,8 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
 
 import { getRoundedValue, getMetric } from './../utils'
-import { CPAL_METRICS } from './../../../../constants/metrics'
+// import { CPAL_METRICS } from './../../../../constants/metrics'
 import useStore from './../store'
 
 const NonInteractiveScale = ({
@@ -15,11 +16,6 @@ const NonInteractiveScale = ({
 }) => {
   const indicators = useStore(state => state.indicators)
   const metricData = getMetric(metric, indicators)
-
-  // console.log(
-  //   'NonInteractiveScale, metricData.colors ',
-  //   metricData,
-  // )
   const styles = [
     {
       backgroundColor: !!quintiles[0]
@@ -125,6 +121,10 @@ const NonInteractiveScale = ({
       </div>
     )
   }
+}
+
+NonInteractiveScale.propTypes = {
+  metric: PropTypes.string,
 }
 
 export default NonInteractiveScale
