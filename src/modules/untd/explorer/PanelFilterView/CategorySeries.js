@@ -7,7 +7,7 @@ import FilterSeries from './FilterSeries'
 import InteractiveScale from './InteractiveScale'
 
 const CategorySeries = ({ ...props }) => {
-  console.log('CategorySeries, ', props)
+  // console.log('CategorySeries, ', props)
   /**
    * Returns tab description transl and markup if one is provided
    * @param  Object metric Object with metric data

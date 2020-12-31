@@ -51,36 +51,37 @@ const PanelFilterView = ({ ...props }) => {
   })
 
   /** Returns title translation placeholder for a tab **/
-  const getTabTitle = id => {
-    const obj = DEFAULT_CATEGORIES.find(el => el.id === id)
-    return obj.title
-  }
+  // const getTabTitle = id => {
+  //   const obj = DEFAULT_CATEGORIES.find(el => el.id === id)
+  //   return obj.title
+  // }
 
   /** Process select items for tabs **/
   const selectItems = []
-  tabs.forEach(el => {
-    const item = indicators.find(i => {
-      return i.id === el
-    })
+  DEFAULT_CATEGORIES.forEach(el => {
+    // const item = indicators.find(i => {
+    //   return i.id === el
+    // })
     selectItems.push({
-      id: item.id,
-      label: getTabTitle(item.tab),
-      active: item.tab === activeFilterTab ? true : false,
+      id: el.id,
+      label: el.title, // getTabTitle(item.tab),
+      active: el.id === activeFilterTab ? true : false,
     })
   })
 
   const handleSelect = e => {
     // console.log('category selected, ', e.currentTarget.id)
-    const tabId = indicators.find(i => {
-      return i.id === e.currentTarget.id
-    }).tab
-    const default_metric = DEFAULT_CATEGORIES.find(
-      el => el.id === tabId,
-    ).default_metric
+    // const tabId = indicators.find(i => {
+    //   return i.id === e.currentTarget.id
+    // }).tab
+    const tabId = e.currentTarget.id
+    // const default_metric = DEFAULT_CATEGORIES.find(
+    //   el => el.id === tabId,
+    // ).default_metric
     // console.log('default_metric, ', default_metric)
     setStoreValues({
       activeFilterTab: tabId,
-      activeMetric: default_metric,
+      // activeMetric: default_metric, // TODO: Set metric using first indicator in tab list.
       activeQuintiles: [1, 1, 1, 1, 1],
     })
   }

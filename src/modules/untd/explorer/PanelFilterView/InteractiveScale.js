@@ -16,7 +16,7 @@ import {
 import { getQuintileDesc } from './../utils'
 
 const InteractiveScale = ({ ...props }) => {
-  console.log('InteractiveScale, ', props)
+  // console.log('InteractiveScale, ', props)
   const isLoaded = useRef(false)
   // Generic state setter.
   const setStoreValues = useStore(

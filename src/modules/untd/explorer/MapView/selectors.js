@@ -406,24 +406,24 @@ export const getDemographicLines = (
   })
 }
 
-const polygonColors = [
-  {
-    type: 'zips',
-    color: 'blue',
-  },
-  {
-    type: 'tracts',
-    color: 'red',
-  },
-  {
-    type: 'counties',
-    color: 'purple',
-  },
-  {
-    type: 'places',
-    color: 'green',
-  },
-]
+// const polygonColors = [
+//   {
+//     type: 'zips',
+//     color: 'blue',
+//   },
+//   {
+//     type: 'tracts',
+//     color: 'red',
+//   },
+//   {
+//     type: 'counties',
+//     color: 'purple',
+//   },
+//   {
+//     type: 'places',
+//     color: 'green',
+//   },
+// ]
 
 export const getPointIcons = (
   type,
@@ -478,20 +478,64 @@ export const getPointIcons = (
   })
 }
 
-const getFilter = type => {
+const getFilter = (type, metric, activeQuintiles) => {
   switch (true) {
     case type === 'tracts':
       return [
-        'all',
-        ['!=', ['number', ['get', 'fid']], ['number', 568]],
-        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+        'let',
+        'quintile',
+        ['number', ['get', metric]],
+        [
+          'all',
+          [
+            '==',
+            [
+              'at',
+              ['var', 'quintile'],
+              ['literal', activeQuintiles],
+            ],
+            1,
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 568],
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 526],
+          ],
+        ],
       ]
       break
     case type === 'zips':
       return [
-        'all',
-        ['!=', ['number', ['get', 'fid']], ['number', 568]],
-        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+        'let',
+        'quintile',
+        ['number', ['get', metric]],
+        [
+          'all',
+          [
+            '==',
+            [
+              'at',
+              ['var', 'quintile'],
+              ['literal', activeQuintiles],
+            ],
+            1,
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 568],
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 526],
+          ],
+        ],
       ]
       break
     case type === 'counties':
@@ -504,9 +548,31 @@ const getFilter = type => {
       break
     case type === 'places':
       return [
-        'all',
-        ['!=', ['number', ['get', 'fid']], ['number', 568]],
-        ['!=', ['number', ['get', 'fid']], ['number', 526]],
+        'let',
+        'quintile',
+        ['number', ['get', metric]],
+        [
+          'all',
+          [
+            '==',
+            [
+              'at',
+              ['var', 'quintile'],
+              ['literal', activeQuintiles],
+            ],
+            1,
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 568],
+          ],
+          [
+            '!=',
+            ['number', ['get', 'fid']],
+            ['number', 526],
+          ],
+        ],
       ]
       // code block
       break
@@ -520,7 +586,7 @@ export const getPolygonLines = (
   context,
   activeLayers,
 ) => {
-  // console.log('getPolygonLines()')
+  console.log('getPolygonLines(), ', context)
   const isVisible =
     activeLayers[
       UNTD_LAYERS.findIndex(el => el.id === type)
@@ -553,7 +619,11 @@ export const getPolygonLines = (
       // ).color,
       'line-width': 2,
     },
-    filter: getFilter(type),
+    filter: getFilter(
+      type,
+      context.metric,
+      context.activeQuintiles,
+    ),
   })
 }
 
@@ -604,7 +674,11 @@ export const getPolygonShapes = (
         0.6,
       ],
     },
-    filter: getFilter(type),
+    filter: getFilter(
+      type,
+      context.metric,
+      context.activeQuintiles,
+    ),
   })
 }
 
