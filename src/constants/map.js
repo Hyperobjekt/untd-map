@@ -41,6 +41,7 @@ export const DATA_FILES = [
     popup: 1,
     id_key: 'Geoid2',
     label_key: 'NAME.y',
+    type_label_key: `UI_MAP_FEATURE_TRACT`,
   },
   {
     id: 'zips',

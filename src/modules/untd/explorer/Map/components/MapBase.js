@@ -332,11 +332,27 @@ const MapBase = ({
     null,
     null,
   ])
+  const [mouseLngLat, setMouseLngLat] = useState([
+    null,
+    null,
+  ])
 
   // handler for feature hover
-  const handleHover = ({ features, point, srcEvent }) => {
-    // console.log('handleHover, ', features, point)
+  const handleHover = ({
+    features,
+    point,
+    lngLat,
+    srcEvent,
+  }) => {
+    console.log(
+      'handleHover, ',
+      features,
+      point,
+      lngLat,
+      srcEvent,
+    )
     setMouseCoords(point)
+    setMouseLngLat(lngLat)
     const newHoveredFeature =
       features && features.length > 0 ? features[0] : null
     const coords =
@@ -500,8 +516,9 @@ const MapBase = ({
     if (isPoint) {
       point = hoveredFeature.geometry.coordinates
     } else {
-      point = centerOfMass(hoveredFeature).geometry
-        .coordinates
+      console.log('mouseCoords, ', mouseCoords)
+      point = mouseLngLat
+      // centerOfMass(hoveredFeature).geometry.coordinates
     }
 
     var options = { units: 'miles' }

@@ -5,7 +5,8 @@ import { FaExternalLinkSquareAlt } from 'react-icons/fa'
 
 import { CoreButton } from './../../../../core'
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { CPAL_METRICS } from './../../../../../constants/metrics'
+import { CRI_COLORS } from './../../../../../constants/colors'
+import { DATA_FILES } from './../../../../../constants/map'
 import {
   getRoundedValue,
   getMetric,
@@ -18,10 +19,10 @@ import useStore from './../../store'
  * Returns popup contents for map feature mouseover
  */
 const PopupContent = ({ ...props }) => {
-  // if (props.feature) {
-  //   console.log('props.feature exists')
-  //   console.log('props.feature, ', props.feature)
-  // }
+  if (props.feature) {
+    console.log('props.feature exists')
+    console.log('props.feature, ', props.feature)
+  }
   // Generic state updates for store.
   // Accepts an object of values to update.
   const setStoreValues = useStore(
@@ -30,18 +31,26 @@ const PopupContent = ({ ...props }) => {
   const interactionsMobile = useStore(
     state => state.interactionsMobile,
   )
+  const indicators = useStore(state => state.indicators)
   const breakpoint = useStore(state => state.breakpoint)
-  // For tracking access school page events.
-  const eventSchoolPage = useStore(
-    state => state.eventSchoolPage,
-  )
 
-  const metrics = []
-  CPAL_METRICS.forEach(el => {
-    if (el.tab_level === 0) {
-      metrics.push(el.id)
-    }
+  const source = DATA_FILES.find(item => {
+    return item.id === props.feature.source
   })
+
+  console.log('source = ', source)
+
+  // For tracking access school page events.
+  // const eventSchoolPage = useStore(
+  //   state => state.eventSchoolPage,
+  // )
+
+  // const metrics = []
+  // CPAL_METRICS.forEach(el => {
+  //   if (el.tab_level === 0) {
+  //     metrics.push(el.id)
+  //   }
+  // })
 
   const setActiveQuintile = quintile => {
     const arr = [0, 0, 0, 0, 0]
@@ -49,50 +58,70 @@ const PopupContent = ({ ...props }) => {
     return arr
   }
 
-  const navigateToSchool = e => {
-    e.preventDefault()
-    // console.log('navigateToSchool()')
-    if (!!window) {
-      // console.log('navigateToSchool() window exists')
-      const href =
-        window.location.origin +
-        '/schools/' +
-        props.feature.properties.SLN +
-        '/'
-      // console.log('navigateToSchool() href is ', href)
-      window.open(href, '_blank')
-      setStoreValues({
-        eventSchoolPage: eventSchoolPage + 1,
-        accessedSchool: props.feature.properties.SLN,
-      })
-    }
-  }
+  // const navigateToSchool = e => {
+  //   e.preventDefault()
+  //   // console.log('navigateToSchool()')
+  //   if (!!window) {
+  //     // console.log('navigateToSchool() window exists')
+  //     const href =
+  //       window.location.origin +
+  //       '/schools/' +
+  //       props.feature.properties.SLN +
+  //       '/'
+  //     // console.log('navigateToSchool() href is ', href)
+  //     window.open(href, '_blank')
+  //     setStoreValues({
+  //       eventSchoolPage: eventSchoolPage + 1,
+  //       accessedSchool: props.feature.properties.SLN,
+  //     })
+  //   }
+  // }
+  //
+  // {!!(
+  //   breakpoint === 'xs' ||
+  //   breakpoint === 'sm' ||
+  //   breakpoint === 'md' ||
+  //   interactionsMobile
+  // ) && (
+  //   <CoreButton
+  //     id="modal_access_school"
+  //     className="click-school-prompt"
+  //     onClick={navigateToSchool}
+  //     aira-label={i18n.translate(
+  //       'UI_MAP_SCHOOL_ACCESS_LINK',
+  //     )}
+  //     color="light"
+  //   >
+  //     <FaExternalLinkSquareAlt />
+  //     {i18n.translate('UI_MAP_SCHOOL_ACCESS_LINK')}
+  //   </CoreButton>
+  // )}
 
   if (!!props.feature) {
     return (
       <div className="popup-content">
         <div className="popup-school-name">
-          <h4>{props.feature.properties.SCHOOLNAME}</h4>
-          <h5>
-            {i18n.translate('UI_MAP_TOOLTIP_FEEDER', {
-              name: props.feature.properties.Feeder,
-            })}
-          </h5>
+          <h4>
+            {props.feature.properties[source.label_key]}
+          </h4>
         </div>
-        {metrics.map(metric => {
-          const metricData = getMetric(metric, CPAL_METRICS)
-          const label = i18n.translate(metricData.title)
+        {indicators.map(metric => {
+          // const metricData = getMetric(metric, indicators)
+          console.log('metric, ', metric)
+          const label = i18n.translate(metric.id)
           const value = String(
-            props.feature.properties[metric],
+            props.feature.properties[
+              String(metric.id).replace('_sd', '')
+            ],
           )
-          const min = metricData.range[0]
-          const max = metricData.range[1]
-          const high_is_good = metricData.high_is_good
+          const min = metric.min
+          const max = metric.max
+          const high_is_good = metric.high_is_good
           if (value.length > 0) {
             return (
               <div
                 className="popup-metric"
-                key={`popup-metric-${metric}`}
+                key={`popup-metric-${metric.id}`}
               >
                 <div className="popup-metric-label">
                   {label}&nbsp;&nbsp;
@@ -114,7 +143,7 @@ const PopupContent = ({ ...props }) => {
                         high_is_good,
                       ),
                     )}
-                    colors={metricData.colors}
+                    colors={CRI_COLORS}
                     showMinMax={false}
                     min={min}
                     max={max}
@@ -126,25 +155,6 @@ const PopupContent = ({ ...props }) => {
             return ''
           }
         })}
-        {!!(
-          breakpoint === 'xs' ||
-          breakpoint === 'sm' ||
-          breakpoint === 'md' ||
-          interactionsMobile
-        ) && (
-          <CoreButton
-            id="modal_access_school"
-            className="click-school-prompt"
-            onClick={navigateToSchool}
-            aira-label={i18n.translate(
-              'UI_MAP_SCHOOL_ACCESS_LINK',
-            )}
-            color="light"
-          >
-            <FaExternalLinkSquareAlt />
-            {i18n.translate('UI_MAP_SCHOOL_ACCESS_LINK')}
-          </CoreButton>
-        )}
       </div>
     )
   } else {

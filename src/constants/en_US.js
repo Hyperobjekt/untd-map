@@ -55,6 +55,7 @@ const en_US = {
   UI_MAP_LAYERS_ZIPS: `Zip codes`,
   UI_MAP_LAYERS_COUNTIES: `Counties`,
   UI_MAP_LAYERS_TRACTS: `Census tracts`,
+  UI_MAP_FEATURE_TRACT: `Census tract`,
   UI_MAP_LAYERS_PLACES: `Places`,
   UI_MAP_LAYER_0_TITLE: `Geographic Layers`,
   UI_MAP_LAYER_0_DESC: `<p>Toggle these layers on and off to learn more about the region.</p>`,

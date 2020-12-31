@@ -129,20 +129,20 @@ export const UNTD_LAYERS = [
   },
 ]
 
-export const POINT_ICONS = [
-  {
-    id: `grocery`,
-    source: ``,
-  },
-  {
-    id: `bank`,
-    source: ``,
-  },
-  {
-    id: `health`,
-    source: ``,
-  },
-]
+// export const POINT_ICONS = [
+//   {
+//     id: `grocery`,
+//     source: ``,
+//   },
+//   {
+//     id: `bank`,
+//     source: ``,
+//   },
+//   {
+//     id: `health`,
+//     source: ``,
+//   },
+// ]
 
 export const BREAKPOINTS = [
   {
