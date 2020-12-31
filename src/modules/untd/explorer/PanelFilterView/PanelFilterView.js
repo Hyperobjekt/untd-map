@@ -13,10 +13,12 @@ import { MdRefresh } from 'react-icons/md'
 import { CoreButton, Select } from './../../../core'
 import useStore from './../store.js'
 import {
-  CPAL_METRICS,
-  CPAL_FILTER_TABS,
+  // CPAL_METRICS,
+  // CPAL_FILTER_TABS,
+  DEFAULT_CATEGORIES,
 } from './../../../../constants/metrics'
-import TabSeries from './TabSeries'
+// import TabSeries from './TabSeries'
+import CategorySeries from './CategorySeries'
 
 const PanelFilterView = ({ ...props }) => {
   // Generic state setter.
@@ -37,10 +39,12 @@ const PanelFilterView = ({ ...props }) => {
   )
   // Active metric
   const activeMetric = useStore(state => state.activeMetric)
+  // Indicators
+  const indicators = useStore(state => state.indicators)
 
   // Generate tabs for every metric with tab_level set to 0
   const tabs = []
-  CPAL_METRICS.forEach(el => {
+  indicators.forEach(el => {
     if (el.tab_level === 0) {
       tabs.push(el.id)
     }
@@ -48,14 +52,14 @@ const PanelFilterView = ({ ...props }) => {
 
   /** Returns title translation placeholder for a tab **/
   const getTabTitle = id => {
-    const obj = CPAL_FILTER_TABS.find(el => el.id === id)
+    const obj = DEFAULT_CATEGORIES.find(el => el.id === id)
     return obj.title
   }
 
   /** Process select items for tabs **/
   const selectItems = []
   tabs.forEach(el => {
-    const item = CPAL_METRICS.find(i => {
+    const item = indicators.find(i => {
       return i.id === el
     })
     selectItems.push({
@@ -67,10 +71,10 @@ const PanelFilterView = ({ ...props }) => {
 
   const handleSelect = e => {
     // console.log('category selected, ', e.currentTarget.id)
-    const tabId = CPAL_METRICS.find(i => {
+    const tabId = indicators.find(i => {
       return i.id === e.currentTarget.id
     }).tab
-    const default_metric = CPAL_FILTER_TABS.find(
+    const default_metric = DEFAULT_CATEGORIES.find(
       el => el.id === tabId,
     ).default_metric
     // console.log('default_metric, ', default_metric)
@@ -92,12 +96,18 @@ const PanelFilterView = ({ ...props }) => {
 
   const getSelectLabel = () => {
     // console.log('getSelectLabel')
-    const tab = CPAL_FILTER_TABS.find(
+    const tab = DEFAULT_CATEGORIES.find(
       el => el.id === activeFilterTab,
     )
     // console.log('tab, ', tab)
     return tab ? i18n.translate(tab.title) : null
   }
+
+  // <TabSeries
+  //   tabs={tabs}
+  //   metrics={indicators}
+  //   activeTab={activeFilterTab}
+  // />
 
   return (
     <div
@@ -149,9 +159,9 @@ const PanelFilterView = ({ ...props }) => {
         }}
       ></div>
       <div className="filters-panel-parent">
-        <TabSeries
-          tabs={tabs}
-          metrics={CPAL_METRICS}
+        <CategorySeries
+          tabs={DEFAULT_CATEGORIES}
+          metrics={indicators}
           activeTab={activeFilterTab}
         />
       </div>

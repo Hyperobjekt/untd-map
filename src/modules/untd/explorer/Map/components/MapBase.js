@@ -344,13 +344,13 @@ const MapBase = ({
     lngLat,
     srcEvent,
   }) => {
-    console.log(
-      'handleHover, ',
-      features,
-      point,
-      lngLat,
-      srcEvent,
-    )
+    // console.log(
+    //   'handleHover, ',
+    //   features,
+    //   point,
+    //   lngLat,
+    //   srcEvent,
+    // )
     setMouseCoords(point)
     setMouseLngLat(lngLat)
     const newHoveredFeature =

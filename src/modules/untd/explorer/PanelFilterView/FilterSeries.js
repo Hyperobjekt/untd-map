@@ -6,10 +6,12 @@ import PropTypes from 'prop-types'
 import InteractiveScale from './InteractiveScale'
 
 const FilterSeries = ({ ...props }) => {
+  console.log('FilterSeries, tab = ', props.tab)
   // Get all of the items in the metrics array with matching tab node.
   const filters = props.metrics.filter(m => {
-    return m.tab === props.tab && m.tab_level === 1
+    return m.cat === props.tab
   })
+  console.log('filters = ', filters)
   // Alphabetize them by title
   filters.sort((a, b) => {
     return a.order - b.order
@@ -24,7 +26,7 @@ const FilterSeries = ({ ...props }) => {
           {filters.map(f => {
             return (
               <div className="filter" key={f.id}>
-                <h6>{i18n.translate(f.title)}</h6>
+                <h6>{i18n.translate(f.id)}</h6>
                 <InteractiveScale metric={f} />
               </div>
             )

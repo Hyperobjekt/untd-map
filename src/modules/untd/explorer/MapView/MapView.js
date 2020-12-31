@@ -117,7 +117,7 @@ const MapView = props => {
 
     const source = getFeatureSource(feature)
     const source_data = getFeatureTypeObj(feature)
-    console.log('source_data, ', source_data)
+    // console.log('source_data, ', source_data)
     if (source_data && !!source_data.popup) {
       // const id = getFeatureProperty(
       //   feature,
@@ -125,7 +125,7 @@ const MapView = props => {
       // )
       const id = getFeatureId(feature)
       const type = getFeatureType(feature)
-      console.log('setting hovered, ', feature, id)
+      // console.log('setting hovered, ', feature, id)
       setHovered(id, type, geoCoords, feature)
     }
     // if (

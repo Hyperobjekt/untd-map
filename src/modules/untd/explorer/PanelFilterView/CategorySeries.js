@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 import FilterSeries from './FilterSeries'
 import InteractiveScale from './InteractiveScale'
 
-const TabSeries = ({ ...props }) => {
-  console.log('TabSeries, ', props)
+const CategorySeries = ({ ...props }) => {
+  console.log('CategorySeries, ', props)
   /**
    * Returns tab description transl and markup if one is provided
    * @param  Object metric Object with metric data
@@ -41,35 +41,43 @@ const TabSeries = ({ ...props }) => {
       )}
     >
       {props.tabs.map(t => {
-        const metric = props.metrics.find(m => {
-          return m.id === t
-        })
-        const tabLabel = i18n.translate(metric.title)
-        const tabId = metric.tab
+        // const metric = props.metrics.find(m => {
+        //   return m.id === t
+        // })
+        const tabLabel = i18n.translate(t.title)
+        const tabDesc = i18n.translate(t.desc)
+        const tabId = t.id
+        const categoryIndicators = props.metrics.filter(
+          el => {
+            return el.cat === t.id
+          },
+        )
+        // <div
+        //   className={clsx(
+        //     'filter-select',
+        //     'tab-' + tabId,
+        //   )}
+        //   key={t}
+        // >
+        //   <InteractiveScale metric={metric} />
+        // </div>
         return (
           <div
             className={clsx(
               'filter-tab-category',
-              metric.tab
-                ? 'tab-category-' + metric.tab
-                : '',
+              tabId ? 'tab-category-' + tabId : '',
             )}
-            key={metric.tab}
+            key={tabId}
           >
             <h5>{tabLabel}</h5>
-            {getTabDesc(metric)}
-            <div
-              className={clsx(
-                'filter-select',
-                'tab-' + tabId,
-              )}
-              key={t}
-            >
-              <InteractiveScale metric={metric} />
-            </div>
+            <h6
+              dangerouslySetInnerHTML={{
+                __html: tabDesc,
+              }}
+            ></h6>
             <FilterSeries
               tab={tabId}
-              metrics={props.metrics}
+              metrics={categoryIndicators}
             />
           </div>
         )
@@ -90,4 +98,4 @@ FilterSeries.defaultProps = {
   activeTab: 'cri',
 }
 
-export default TabSeries
+export default CategorySeries

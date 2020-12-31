@@ -16,6 +16,7 @@ import {
 import { getQuintileDesc } from './../utils'
 
 const InteractiveScale = ({ ...props }) => {
+  console.log('InteractiveScale, ', props)
   const isLoaded = useRef(false)
   // Generic state setter.
   const setStoreValues = useStore(
@@ -36,7 +37,7 @@ const InteractiveScale = ({ ...props }) => {
 
   const getBgColor = (metric, quintile) => {
     // console.log('getBgColor')
-    return metric.colors[quintile]
+    return CRI_COLORS[quintile]
   }
 
   const getQuintileAriaLabel = quintile => {

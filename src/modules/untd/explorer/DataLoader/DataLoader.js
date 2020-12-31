@@ -222,6 +222,7 @@ const DataLoader = ({ ...props }) => {
                       is_currency: 0, // TODO: Pipe in from data dict?
                       is_percent: 0, // TODO: Pipe in from data dict?
                       decimals: 0, // TODO: Pipe in from data dict?
+                      cat: 'cri', // TODO: Pipe in from data dict? (category)
                       placeTypes: r['Place']
                         .toLowerCase()
                         .replace(/ /g, '')
@@ -230,7 +231,7 @@ const DataLoader = ({ ...props }) => {
                   }
                 })
                 // Save strings to string list.
-                console.log('strings, ', strings)
+                // console.log('strings, ', strings)
                 setLang('en_US', strings)
                 incrementLangUpdates()
                 // Save indicators to indicator list.

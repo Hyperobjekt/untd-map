@@ -1,17 +1,16 @@
-// import LANG from './en'
-
 import { CRI_COLORS } from './colors'
 
-export const ROUTE_SET = [
-  'view', // View type, 'explorer' or 'embed'
-  'metric', // Metric ID to set for active metric.
-  'quintiles', // quintiles that are active and inactive. Always length of 5.
-  'feeder', // TEA_ID of feeder that will be "locked" in feeder view.
-  'school', // TEA_ID of a school that will be highlighted in feeder view.
-  'layers', // To determine active layers, 'district_boundaries' and/or 'redlining'
-  'lat', // Latitude
-  'lng', // Longitude
-  'zoom', // Zoom level
+export const DEFAULT_CATEGORIES = [
+  {
+    id: 'cri',
+    title: 'UI_MAP_METRIC_TITLE_CRI',
+    desc: `UI_MAP_METRIC_DESC_CRI`,
+  },
+  {
+    id: 'econ',
+    title: 'UI_MAP_METRIC_TITLE_ECON',
+    desc: `UI_MAP_METRIC_DESC_ECON`,
+  },
 ]
 
 export const CPAL_FILTER_TABS = [
@@ -73,25 +72,6 @@ export const CPAL_FEEDER_TIP_ITEMS = [
   {
     id: 'hi_weight',
     title: 'UI_MAP_METRIC_TITLE_HEAL',
-  },
-]
-
-export const indicator_cats = [
-  {
-    id: `id`,
-    title: `title`,
-  },
-]
-
-export const indicators = [
-  {
-    id: `id`,
-    title: `title`,
-    desc: `desc`,
-    category: `category`,
-    scale_type: `type`,
-    range: [0, 100], // [min, max]
-    value: 1,
   },
 ]
 
