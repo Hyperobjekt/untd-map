@@ -110,8 +110,8 @@ const [useStore] = create((set, get) => ({
   },
   schoolZonesAffix: `200`,
   activeLayers: [1, 0, 0, 0, 0, 0, 0, 0, 0],
-  defaultMetric: 'tot.popE_13_sd', // Default metric.
-  activeMetric: 'tot.popE_13_sd', // Active metric applied to map.
+  defaultMetric: 'tot_popE_13_sd', // Default metric.
+  activeMetric: 'tot_popE_13_sd', // Active metric applied to map.
   activeQuintiles: [1, 1, 1, 1, 1],
   slideoutPanel: {
     active: false,

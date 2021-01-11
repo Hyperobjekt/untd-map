@@ -431,50 +431,51 @@ export const getPointIcons = (
   activeLayers,
 ) => {
   console.log('getPointIcons, ', type)
-  const isVisible =
-    activeLayers[
-      UNTD_LAYERS.findIndex(el => el.id === type)
-    ] === 1
-  console.log('isVisible, ', isVisible)
+  // const isVisible =
+  //   activeLayers[
+  //     UNTD_LAYERS.findIndex(el => el.id === type)
+  //   ] === 1
+  // console.log('isVisible, ', isVisible)
   return fromJS({
     id: `${type}Points`,
     source: type,
-    type: 'circle', // 'symbol',
+    type: 'circle', // 'symbol', //
     layout: {
-      visibility: 'visible', // !!isVisible ? 'visible' : 'none',
+      // visibility: 'visible',
       // 'icon-image': `banks-icon`,
-      // 'icon-size': 50,
+      // 'icon-size': 20,
     },
-    // interactive: true,
+    interactive: true,
     paint: {
-      'circle-color': '#000',
+      'circle-color': 'blue',
       'circle-opacity': 1,
-      'circle-radius': 120,
-      // 'icon-color': 'red',
-      // [
-      //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-      //   ['get', 'STORE_TYPE'], // Use the result 'STORE_TYPE' property
-      //   'Convenience Store',
-      //   '#FF8C00',
-      //   'Convenience Store With Gas',
-      //   '#FF8C00',
-      //   'Pharmacy',
-      //   '#FF8C00',
-      //   'Specialty Food Store',
-      //   '#9ACD32',
-      //   'Small Grocery Store',
-      //   '#008000',
-      //   'Supercenter',
-      //   '#008000',
-      //   'Superette',
-      //   '#008000',
-      //   'Supermarket',
-      //   '#008000',
-      //   'Warehouse Club Store',
-      //   '#008000',
-      //   '#FF0000', // any other store type
-      // ],
+      'circle-radius': 5,
     },
+    // 'icon-color': 'red',
+    // [
+    //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+    //   ['get', 'STORE_TYPE'], // Use the result 'STORE_TYPE' property
+    //   'Convenience Store',
+    //   '#FF8C00',
+    //   'Convenience Store With Gas',
+    //   '#FF8C00',
+    //   'Pharmacy',
+    //   '#FF8C00',
+    //   'Specialty Food Store',
+    //   '#9ACD32',
+    //   'Small Grocery Store',
+    //   '#008000',
+    //   'Supercenter',
+    //   '#008000',
+    //   'Superette',
+    //   '#008000',
+    //   'Supermarket',
+    //   '#008000',
+    //   'Warehouse Club Store',
+    //   '#008000',
+    //   '#FF0000', // any other store type
+    // ],
+    // },
   })
 }
 
@@ -741,34 +742,20 @@ export const getLayers = (
 ) => {
   console.log('getLayers', sources, context, activeLayers)
   const layers = []
-  const sourceKeys = Object.keys(sources)
-  sourceKeys.forEach((key, i) => {
-    const layer = UNTD_LAYERS.find(el => {
-      return el.id === key
-    })
-    const types = layer.types
-    // If the layer isn't supposed to be visible,
-    // don't process it at all. Save some time.
-    const index = UNTD_LAYERS.indexOf(layer)
-    const isVisible = activeLayers[index] === 1
-    // console.log(`isVisible is ${isVisible}.`)
-    if (!isVisible) return
-
-    switch (true) {
-      case types.indexOf('polygons') > -1:
-        layers.push(
-          ...getPolygonLayers(key, context, activeLayers),
-        )
-        break
-      case types.indexOf('points') > -1:
-        layers.push(
-          ...getPointLayers(key, context, activeLayers),
-        )
-        break
-      default:
-        console.log(`No match for geojson source ${key}.`)
-    }
-  })
-
+  layers.push(
+    ...getPolygonLayers('counties', context, activeLayers),
+  )
+  layers.push(
+    ...getPolygonLayers('zips', context, activeLayers),
+  )
+  layers.push(
+    ...getPolygonLayers('tracts', context, activeLayers),
+  )
+  layers.push(
+    ...getPolygonLayers('places', context, activeLayers),
+  )
+  layers.push(
+    ...getPointLayers('points', context, activeLayers),
+  )
   return layers
 }

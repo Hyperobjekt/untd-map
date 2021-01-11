@@ -55,54 +55,18 @@ export const DATA_FILES = [
     type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
   {
-    id: 'banks',
-    filename: 'Data/geojson/sm_feature_banks',
+    id: 'points',
+    filename: 'Data/geojson/sm_featureset',
     ext: 'geojson',
     type: 'point',
     popup: 1,
-    id_key: 'OBJECTID',
-    label_key: 'Name',
-  },
-  {
-    id: 'commc',
-    filename: 'Data/geojson/sm_feature_communitycenters',
-    ext: 'geojson',
-    type: 'point',
-    popup: 1,
-    id_key: 'OBJECTID',
-    label_key: 'Name',
-  },
-  {
-    id: 'creditu',
-    filename: 'Data/geojson/sm_feature_creditunions',
-    ext: 'geojson',
-    type: 'point',
-    popup: 1,
-    id_key: 'OBJECTID',
-    label_key: 'Name',
-  },
-  {
-    id: 'playgr',
-    filename: 'Data/geojson/sm_feature_playgrounds',
-    ext: 'geojson',
-    type: 'point',
-    popup: 1,
-    id_key: 'OBJECTID',
-    label_key: 'Name',
-  },
-  {
-    id: 'smarket',
-    filename: 'Data/geojson/sm_feature_supermarkets',
-    ext: 'geojson',
-    type: 'point',
-    popup: 1,
-    id_key: 'OBJECTID',
-    label_key: 'Name',
+    id_key: 'Type',
+    label_key: 'Type',
   },
 ]
 
 export const DEFAULT_ROUTE =
-  '/explorer/tot.popE_13_sd/1,1,1,1,1/1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
+  '/explorer/tot_popE_13_sd/1,1,1,1,1/1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
 
 export const ROUTE_SET = [
   'view', // View type, 'explorer' or 'embed'

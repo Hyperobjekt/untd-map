@@ -153,10 +153,10 @@ const DataLoader = ({ ...props }) => {
   files.forEach((el, i) => {
     const xhr = new XMLHttpRequest()
     const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
-    // console.log('path, ', path)
+    console.log('path, ', path)
     xhr.open('GET', path, true)
     xhr.onload = function (e) {
-      // console.log('loaded, ', xhr)
+      console.log('loaded, ', xhr)
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           // Increment counter for loaded files.
@@ -204,13 +204,14 @@ const DataLoader = ({ ...props }) => {
                       : !!indicators.find(item => {
                           return item.id === r[el.lang_key]
                         })
-                  // console.log(
-                  //   'exists: ',
-                  //   exists,
-                  //   indicators,
-                  // )
+                  console.log(
+                    'exists: ',
+                    exists,
+                    indicators,
+                  )
                   if (
                     !exists &&
+                    r[el.lang_key] &&
                     r[el.lang_key].length > 0 &&
                     r[el.ind_key] === el.ind_flag
                   ) {

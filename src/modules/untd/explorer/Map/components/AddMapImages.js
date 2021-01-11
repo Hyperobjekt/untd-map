@@ -15,6 +15,7 @@ const isAPointLayer = layer => {
 }
 
 const AddMapImages = ({ map, ...props }) => {
+  // console.log('AddMapImages, ', map, props)
   const { mapImagesAdded, setStoreValues } = useStore(
     state => ({
       mapImagesAdded: state.mapImagesAdded,
@@ -22,14 +23,20 @@ const AddMapImages = ({ map, ...props }) => {
     }),
     shallow,
   )
+  // const mapImagesAdded = useStore(
+  //   store => store.mapImagesAdded,
+  // )
+  // const setStoreValues = useStore(
+  //   store => store.setStoreValues,
+  // )
   if (!!mapImagesAdded) return null
   UNTD_LAYERS.forEach(el => {
-    // console.log(`adding icon for ${el.id}`)
+    console.log(`adding icon for ${el.id}`)
     if (isAPointLayer(el) && !!el.icon) {
       let img = new Image(20, 20)
       img.onload = () => map.addImage(`${el.id}-icon`, img)
       img.src = TourIcon // window[el.icon] // Pipe in matching svgs later.
-      // console.log('img, ', img)
+      console.log('img, ', img)
     }
   })
   setStoreValues({
