@@ -195,11 +195,15 @@ const DataLoader = ({ ...props }) => {
                     strings[r[el.lang_key]] =
                       r[el.lang_label].length > 0
                         ? r[el.lang_label]
-                        : r[el.lang_key]
+                        : `${
+                            r[el.lang_key]
+                          } label not provided`
                     strings[`${r[el.lang_key]}_desc`] =
                       r[el.lang_desc].length > 0
                         ? r[el.lang_desc]
-                        : `${r[el.lang_key]}_desc`
+                        : `${
+                            r[el.lang_key]
+                          } description not provided`
                   }
                   // Build indicator list, array of objects.
                   const exists =

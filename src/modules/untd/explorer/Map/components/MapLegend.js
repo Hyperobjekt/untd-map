@@ -80,9 +80,17 @@ const MapLegend = ({ ...props }) => {
   }
 
   const indicators = useStore(state => state.indicators)
-  const metricData = getMetric(activeMetric, indicators)
+  const metric = getMetric(activeMetric, indicators)
+  const metricLabel = metric => {
+    if (!metric) return ''
+    return !!i18n.translate(metric.id).length > 0
+      ? i18n.translate(metric.id)
+      : metric.id
+  }
 
-  if (!!metricData) {
+  console.log('legend, metric: ', metric)
+
+  if (!!metric) {
     return (
       <div
         className={clsx(
@@ -128,7 +136,7 @@ const MapLegend = ({ ...props }) => {
           </div>
         )}
         <div className="map-legend-metric-title">
-          {i18n.translate(activeMetric)}
+          {metricLabel(metric)}
         </div>
         <div className="map-legend-zone-labels">
           <div className="fewer">
