@@ -45,15 +45,11 @@ const FilterSeries = ({ ...props }) => {
     color: #2c390b;
   `
 
-  // {
-  // font-family: halyard-text;
-  // font-weight: 300;
-  // font-size: 16px;
-  // line-height: 20px;
-  // display: flex;
-  // align-items: center;
-  // color: #2c390b;
-  // }
+  const filterStyles = css`
+    &:last-child {
+      padding-bottom: 10rem;
+    }
+  `
 
   if (filters && filters.length > 0) {
     // If the activeMetric is not in the list of indicators here,
@@ -73,7 +69,10 @@ const FilterSeries = ({ ...props }) => {
         <div className="filter-panel-filter-series">
           {filters.map(f => {
             return (
-              <div className="filter" key={f.id}>
+              <div
+                className={clsx('filter', cx(filterStyles))}
+                key={f.id}
+              >
                 <h6
                   className={clsx(cx(filterHeadingStyles))}
                 >

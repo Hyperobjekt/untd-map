@@ -121,6 +121,10 @@ const PanelFilterView = ({ ...props }) => {
     color: #2c390b;
   `
 
+  const filtersPanelParentStyles = css`
+    overflow-y: scroll;
+  `
+
   return (
     <div
       className={clsx(
@@ -131,9 +135,6 @@ const PanelFilterView = ({ ...props }) => {
       )}
     >
       <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
-      <h5 className={clsx(cx(filterListHeadingStyles))}>
-        {i18n.translate('UI_MAP_FILTERS_INDICATORS')}
-      </h5>
       <div
         className="map-panel-instructions"
         dangerouslySetInnerHTML={{
@@ -149,7 +150,12 @@ const PanelFilterView = ({ ...props }) => {
           ),
         }}
       ></div>
-      <div className="filters-panel-parent">
+      <div
+        className={clsx(
+          'filters-panel-parent',
+          cx(filtersPanelParentStyles),
+        )}
+      >
         <FilterSeries tab={'cri'} metrics={indicators} />
       </div>
     </div>
