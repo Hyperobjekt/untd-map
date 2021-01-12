@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import { css, cx } from 'emotion'
 import {
   FiFilter,
   FiMap,
@@ -112,6 +113,14 @@ const PanelFilterView = ({ ...props }) => {
     return tab ? i18n.translate(tab.title) : null
   }
 
+  const filterListHeadingStyles = css`
+    margin-bottom: 1.6rem;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: #2c390b;
+  `
+
   return (
     <div
       className={clsx(
@@ -122,6 +131,9 @@ const PanelFilterView = ({ ...props }) => {
       )}
     >
       <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
+      <h5 className={clsx(cx(filterListHeadingStyles))}>
+        {i18n.translate('UI_MAP_FILTERS_INDICATORS')}
+      </h5>
       <div
         className="map-panel-instructions"
         dangerouslySetInnerHTML={{

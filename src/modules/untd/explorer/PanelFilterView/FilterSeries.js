@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
+import { css, cx } from 'emotion'
 
 import useStore from './../store.js'
 import InteractiveScale from './InteractiveScale'
@@ -31,6 +32,28 @@ const FilterSeries = ({ ...props }) => {
   //     activeMetric: filters[0].id,
   //   })
   // }
+  //
+  //
+
+  const filterHeadingStyles = css`
+    font-family: halyard-text;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #2c390b;
+  `
+
+  // {
+  // font-family: halyard-text;
+  // font-weight: 300;
+  // font-size: 16px;
+  // line-height: 20px;
+  // display: flex;
+  // align-items: center;
+  // color: #2c390b;
+  // }
 
   if (filters && filters.length > 0) {
     // If the activeMetric is not in the list of indicators here,
@@ -47,14 +70,15 @@ const FilterSeries = ({ ...props }) => {
     }
     return (
       <>
-        <h5>
-          {i18n.translate('UI_MAP_FILTERS_INDICATORS')}
-        </h5>
         <div className="filter-panel-filter-series">
           {filters.map(f => {
             return (
               <div className="filter" key={f.id}>
-                <h6>{i18n.translate(f.id)}</h6>
+                <h6
+                  className={clsx(cx(filterHeadingStyles))}
+                >
+                  {i18n.translate(f.id)}
+                </h6>
                 <InteractiveScale metric={f} />
               </div>
             )
