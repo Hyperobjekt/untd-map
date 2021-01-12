@@ -193,9 +193,13 @@ const DataLoader = ({ ...props }) => {
                     //   r[el.lang_value],
                     // )
                     strings[r[el.lang_key]] =
-                      r[el.lang_value].length > 0
-                        ? r[el.lang_value]
+                      r[el.lang_label].length > 0
+                        ? r[el.lang_label]
                         : r[el.lang_key]
+                    strings[`${r[el.lang_key]}_desc`] =
+                      r[el.lang_desc].length > 0
+                        ? r[el.lang_desc]
+                        : `${r[el.lang_key]}_desc`
                   }
                   // Build indicator list, array of objects.
                   const exists =
@@ -208,26 +212,34 @@ const DataLoader = ({ ...props }) => {
                     'exists: ',
                     exists,
                     indicators,
+                    r,
                   )
                   if (
                     !exists &&
-                    r[el.lang_key] &&
-                    r[el.lang_key].length > 0 &&
                     r[el.ind_key] === el.ind_flag
                   ) {
+                    console.log('adding an indicator')
                     indicators.push({
-                      id: r[el.lang_key],
-                      min: r['Min'] ? r['Min'] : 0,
-                      max: r['Max'] ? r['Max'] : 100,
-                      high_is_good: 1, // TODO: Pipe in from data dict?
+                      id: r[el.lang_key]
+                        ? r[el.lang_key]
+                        : r.variable,
+                      min: r['min'] ? r['min'] : 0,
+                      max: r['max'] ? r['max'] : 100,
+                      range: r['range'] ? r['range'] : null,
+                      mean: r['mean'] ? r['mean'] : null,
+                      high_is_good:
+                        r['highisgood'] === 'Yes' ? 1 : 0,
                       is_currency: 0, // TODO: Pipe in from data dict?
                       is_percent: 0, // TODO: Pipe in from data dict?
                       decimals: 0, // TODO: Pipe in from data dict?
                       cat: 'cri', // TODO: Pipe in from data dict? (category)
-                      placeTypes: r['Place']
+                      placeTypes: r['place']
                         .toLowerCase()
                         .replace(/ /g, '')
-                        .split(','),
+                        .split(',')
+                        .map(type => {
+                          return `${type}s`
+                        }),
                     })
                   }
                 })
@@ -236,7 +248,7 @@ const DataLoader = ({ ...props }) => {
                 setLang('en_US', strings)
                 incrementLangUpdates()
                 // Save indicators to indicator list.
-                // console.log('indicators, ', indicators)
+                console.log('indicators, ', indicators)
                 addIndicators(indicators)
               },
             })

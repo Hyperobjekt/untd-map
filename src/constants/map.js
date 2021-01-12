@@ -10,10 +10,11 @@ export const DATA_FILES = [
     ext: 'csv',
     type: 'dict', // It's  dictionary file.
     lang: 'en_US', // Merge into this language.
-    lang_key: 'Variable Name', // Table header to use when fetching variables.
-    lang_value: 'Description', // Table header to use when featching lang strings.
-    ind_key: 'Type', // Table header to use when determining if it's an indicator.
-    ind_flag: 'sdcut', // Value that indicates that a value is an indicator.
+    lang_key: 'variable', // Table header to use when fetching variables.
+    lang_label: 'display_name', // Table header to use when featching lang strings.
+    lang_desc: 'description',
+    ind_key: 'type', // Table header to use when determining if it's an indicator.
+    ind_flag: 'sd', // Column value that indicates that a value is an indicator.
   },
   {
     id: 'counties',

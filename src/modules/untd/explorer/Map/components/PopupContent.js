@@ -38,9 +38,6 @@ const PopupContent = ({ ...props }) => {
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
   })
-
-  console.log('source = ', source)
-
   const metric = indicators.find(item => {
     return item.id === activeMetric
   })
@@ -105,19 +102,14 @@ const PopupContent = ({ ...props }) => {
   // )}
 
   if (!!props.feature) {
-    // const metricData = getMetric(metric, indicators)
-    // console.log('metric, ', metric)
     const featureLabel = props.feature.properties[
       source.label_key
     ]
       ? props.feature.properties[source.label_key]
       : false
-    const label = i18n.translate(metric.id)
-    const value = String(
-      props.feature.properties[
-        String(metric.id).replace('_sd', '')
-      ],
-    )
+    const value = props.feature.properties[activeMetric]
+      ? String(props.feature.properties[activeMetric])
+      : activeMetric
     console.log('value = ', value)
     const min = metric.min
     const max = metric.max
@@ -141,7 +133,7 @@ const PopupContent = ({ ...props }) => {
             key={`popup-metric-${metric.id}`}
           >
             <div className="popup-metric-label">
-              {label}
+              {featureLabel}
               <br />
               <span className="metric-value">
                 {!!value
