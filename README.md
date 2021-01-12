@@ -59,7 +59,7 @@ This app draws data files from the [Child Poverty Action Lab Social Mobility git
 2. The `staging` branch of the Social Mobility dataset is loaded here: TBD Netlify
 3. The `production` branch of the Social Mobility dataset is loaded here: TBD Netlify
 
-To test updates to the dataset (and make sure they don't break the app ::fire::), follow these steps:
+To test updates to the dataset (:microscope: and make sure they don't break the app :fire:), follow these steps:
 
 1. Make your changes to `master`.
 ```bash
