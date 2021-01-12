@@ -42,18 +42,6 @@ const PopupContent = ({ ...props }) => {
     return item.id === activeMetric
   })
 
-  // For tracking access school page events.
-  // const eventSchoolPage = useStore(
-  //   state => state.eventSchoolPage,
-  // )
-
-  // const metrics = []
-  // CPAL_METRICS.forEach(el => {
-  //   if (el.tab_level === 0) {
-  //     metrics.push(el.id)
-  //   }
-  // })
-
   const setActiveQuintile = quintile => {
     console.log('setActiveQuintile, ', quintile)
     const arr = [0, 0, 0, 0, 0]
@@ -62,55 +50,21 @@ const PopupContent = ({ ...props }) => {
     return arr
   }
 
-  // const navigateToSchool = e => {
-  //   e.preventDefault()
-  //   // console.log('navigateToSchool()')
-  //   if (!!window) {
-  //     // console.log('navigateToSchool() window exists')
-  //     const href =
-  //       window.location.origin +
-  //       '/schools/' +
-  //       props.feature.properties.SLN +
-  //       '/'
-  //     // console.log('navigateToSchool() href is ', href)
-  //     window.open(href, '_blank')
-  //     setStoreValues({
-  //       eventSchoolPage: eventSchoolPage + 1,
-  //       accessedSchool: props.feature.properties.SLN,
-  //     })
-  //   }
-  // }
-  //
-  // {!!(
-  //   breakpoint === 'xs' ||
-  //   breakpoint === 'sm' ||
-  //   breakpoint === 'md' ||
-  //   interactionsMobile
-  // ) && (
-  //   <CoreButton
-  //     id="modal_access_school"
-  //     className="click-school-prompt"
-  //     onClick={navigateToSchool}
-  //     aira-label={i18n.translate(
-  //       'UI_MAP_SCHOOL_ACCESS_LINK',
-  //     )}
-  //     color="light"
-  //   >
-  //     <FaExternalLinkSquareAlt />
-  //     {i18n.translate('UI_MAP_SCHOOL_ACCESS_LINK')}
-  //   </CoreButton>
-  // )}
-
   if (!!props.feature) {
     const featureLabel = props.feature.properties[
       source.label_key
     ]
       ? props.feature.properties[source.label_key]
       : false
-    const value = props.feature.properties[activeMetric]
-      ? String(props.feature.properties[activeMetric])
-      : activeMetric
+    const rawValueHandle = String(activeMetric).replace(
+      '_sd',
+      '',
+    )
+    const value = props.feature.properties[rawValueHandle]
+      ? String(props.feature.properties[rawValueHandle])
+      : `Raw value not available.`
     console.log('value = ', value)
+    const valueLabel = i18n.translate(rawValueHandle)
     const min = metric.min
     const max = metric.max
     const high_is_good = metric.high_is_good
@@ -136,9 +90,11 @@ const PopupContent = ({ ...props }) => {
               {featureLabel}
               <br />
               <span className="metric-value">
-                {!!value
-                  ? getRoundedValue(value, 0, false)
-                  : ''}
+                {`${valueLabel}: ${
+                  !!value
+                    ? getRoundedValue(value, 0, false)
+                    : 'Not available'
+                }`}
               </span>
             </div>
             <div className="popup-metric-scale">

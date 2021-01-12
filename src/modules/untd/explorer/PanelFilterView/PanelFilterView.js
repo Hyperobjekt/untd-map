@@ -17,8 +17,9 @@ import {
   // CPAL_FILTER_TABS,
   DEFAULT_CATEGORIES,
 } from './../../../../constants/metrics'
+import { UNTD_LAYERS } from './../../../../constants/layers'
 // import TabSeries from './TabSeries'
-import CategorySeries from './CategorySeries'
+import FilterSeries from './FilterSeries'
 
 const PanelFilterView = ({ ...props }) => {
   // Generic state setter.
@@ -39,6 +40,8 @@ const PanelFilterView = ({ ...props }) => {
   )
   // Active metric
   const activeMetric = useStore(state => state.activeMetric)
+  // Active layers
+  const activeLayers = useStore(state => state.activeLayers)
   // Indicators
   const indicators = useStore(state => state.indicators)
 
@@ -50,11 +53,16 @@ const PanelFilterView = ({ ...props }) => {
     }
   })
 
-  /** Returns title translation placeholder for a tab **/
-  // const getTabTitle = id => {
-  //   const obj = DEFAULT_CATEGORIES.find(el => el.id === id)
-  //   return obj.title
-  // }
+  const getLayerId = () => {
+    let layer = ''
+    for (var i = 1; i < 4; i++) {
+      if (activeLayers[i] === 1) {
+        layer = UNTD_LAYERS[i].id
+      }
+      break
+    }
+    return layer
+  }
 
   /** Process select items for tabs **/
   const selectItems = []
@@ -104,12 +112,6 @@ const PanelFilterView = ({ ...props }) => {
     return tab ? i18n.translate(tab.title) : null
   }
 
-  // <TabSeries
-  //   tabs={tabs}
-  //   metrics={indicators}
-  //   activeTab={activeFilterTab}
-  // />
-
   return (
     <div
       className={clsx(
@@ -120,51 +122,23 @@ const PanelFilterView = ({ ...props }) => {
       )}
     >
       <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
-      <p id="label_filter_select">
-        {i18n.translate('UI_MAP_PANEL_SELECT')}
-      </p>
-      <div className="map-panel-controls">
-        <Select
-          label={getSelectLabel()}
-          items={selectItems}
-          handleSelect={e => handleSelect(e)}
-          ariaLabelledby="label_filter_select"
-          ariaLabel={i18n.translate('UI_MAP_PANEL_SELECT')}
-        ></Select>
-        <CoreButton
-          id="button_reset_filter"
-          label={i18n.translate(
-            `UI_MAP_BUTTON_RESET_FILTER`,
-          )}
-          tooltip="right"
-          onClick={handleResetClick}
-          color="light"
-          className={clsx('map-panel-filter-reset')}
-        >
-          <MdRefresh />
-          <span className="sr-only">
-            {i18n.translate(`UI_MAP_BUTTON_RESET_FILTER`)}
-          </span>
-        </CoreButton>
-      </div>
       <div
         className="map-panel-instructions"
         dangerouslySetInnerHTML={{
           __html: i18n.translate(
-            'UI_MAP_FILTER_INSTRUCTIONS',
+            'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
             {
-              icon:
-                '<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"></path></svg>',
+              shapeType: i18n.translate(
+                String(
+                  `UI_MAP_LAYERS_${getLayerId()}`,
+                ).toUpperCase(),
+              ),
             },
           ),
         }}
       ></div>
       <div className="filters-panel-parent">
-        <CategorySeries
-          tabs={DEFAULT_CATEGORIES}
-          metrics={indicators}
-          activeTab={activeFilterTab}
-        />
+        <FilterSeries tab={'cri'} metrics={indicators} />
       </div>
     </div>
   )

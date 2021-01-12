@@ -18,6 +18,7 @@ import {
   UNTD_LAYERS,
   UNTD_LAYER_GROUPS,
 } from './../../../../constants/layers'
+import { toSentenceCase } from './../utils'
 
 const PanelLayersView = ({ ...props }) => {
   // Generic store value setter.
@@ -156,8 +157,10 @@ const PanelLayersView = ({ ...props }) => {
                             }}
                           />
                           <div className="checkmark"></div>
-                          {i18n.translate(
-                            getLayerLabel(layer.id),
+                          {toSentenceCase(
+                            i18n.translate(
+                              getLayerLabel(layer.id),
+                            ),
                           )}
                           {!!el.tooltip &&
                             el.tooltip.length > 0 && (

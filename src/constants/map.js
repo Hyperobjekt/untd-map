@@ -67,7 +67,7 @@ export const DATA_FILES = [
 ]
 
 export const DEFAULT_ROUTE =
-  '/explorer/tot_popE_13_sd/1,1,1,1,1/1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
+  '/explorer/tot_popE_18_sd/1,1,1,1,1/1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
 
 export const ROUTE_SET = [
   'view', // View type, 'explorer' or 'embed'

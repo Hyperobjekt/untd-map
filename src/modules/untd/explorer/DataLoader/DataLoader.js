@@ -227,6 +227,14 @@ const DataLoader = ({ ...props }) => {
                       id: r[el.lang_key]
                         ? r[el.lang_key]
                         : r.variable,
+                      // TODO: REDO THIS LATER.
+                      display:
+                        String(r.variable).indexOf('18') > 0
+                          ? 1
+                          : 0,
+                      // r['display_variable'] === 'Yes'
+                      //   ? 1
+                      //   : 0,
                       min: r['min'] ? r['min'] : 0,
                       max: r['max'] ? r['max'] : 100,
                       range: r['range'] ? r['range'] : null,
@@ -237,6 +245,10 @@ const DataLoader = ({ ...props }) => {
                       is_percent: 0, // TODO: Pipe in from data dict?
                       decimals: 0, // TODO: Pipe in from data dict?
                       cat: 'cri', // TODO: Pipe in from data dict? (category)
+                      years: r['years']
+                        .toLowerCase()
+                        .replace(/ /g, '')
+                        .split(','),
                       placeTypes: r['place']
                         .toLowerCase()
                         .replace(/ /g, '')

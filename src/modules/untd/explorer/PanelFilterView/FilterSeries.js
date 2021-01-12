@@ -19,7 +19,7 @@ const FilterSeries = ({ ...props }) => {
   )
   // Get all of the items in the metrics array with matching tab node.
   const filters = props.metrics.filter(m => {
-    return m.cat === props.tab
+    return m.cat === props.tab && m.display === 1
   })
   // Alphabetize them by title
   filters.sort((a, b) => {

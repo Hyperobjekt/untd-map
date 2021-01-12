@@ -15,6 +15,18 @@ import { UNTD_LAYERS } from './../../../constants/layers'
 import { DATA_FILES } from './../../../constants/map'
 
 /**
+ * Builds a sentence case string from lowercase string.
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
+export const toSentenceCase = str => {
+  let first = str.slice(0, 1)
+  let rest = str.slice(1)
+  first = first.toUpperCase()
+  return first + rest
+}
+
+/**
  * Loads map features based on a string of locations
  * @param {string} locations locations formed as `{id},{lat},{lon}` separated by a `+`
  * @returns {Promise<Array<Feature>>}

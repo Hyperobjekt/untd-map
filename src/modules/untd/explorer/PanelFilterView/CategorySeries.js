@@ -86,13 +86,13 @@ const CategorySeries = ({ ...props }) => {
   )
 }
 
-FilterSeries.propTypes = {
+CategorySeries.propTypes = {
   tabs: PropTypes.array,
   metrics: PropTypes.array,
   activeTab: PropTypes.string,
 }
 
-FilterSeries.defaultProps = {
+CategorySeries.defaultProps = {
   tabs: [],
   metrics: [],
   activeTab: 'cri',
