@@ -74,4 +74,4 @@ git merge master
 git push origin testing
 ```
 3. Check https://hyperobjekt.github.io/untd-map/ to make sure nothing has broken in the app. Test the features (tooltips, filtering, layer selection) and verify that all of the choropleths and point features are still displayed and filtered correctly.
-4. Repeat for the subsequent branches.
+4. Repeat for the subsequent branches, moving changes to `staging`, testing the staging instance of the app, then moving changes to `production` and testing once again.
