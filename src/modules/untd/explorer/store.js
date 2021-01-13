@@ -110,6 +110,9 @@ const [useStore] = create((set, get) => ({
   },
   schoolZonesAffix: `200`,
   activeLayers: [1, 0, 0, 0, 0, 0, 0, 0, 0],
+  pointTypes: [],
+  activePointTypesKey: [],
+  activePointTypes: [],
   defaultMetric: 'tot_popE_18_sd', // Default metric.
   activeMetric: 'tot_popE_18_sd', // Active metric applied to map.
   activeQuintiles: [1, 1, 1, 1, 1],
@@ -117,8 +120,8 @@ const [useStore] = create((set, get) => ({
     active: false,
     panel: '', // 'filters', 'layers', or 'info'
   },
-  defaultFilterTab: 'cri',
-  activeFilterTab: 'cri',
+  // defaultFilterTab: 'cri',
+  // activeFilterTab: 'cri',
   feederSchools: [],
   activeFeeder: null,
   feederLocked: false,

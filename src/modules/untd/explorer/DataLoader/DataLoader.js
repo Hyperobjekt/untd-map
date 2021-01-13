@@ -185,6 +185,9 @@ const DataLoader = ({ ...props }) => {
                 // )
                 const strings = {}
                 const indicators = []
+                const pointTypes = []
+                const activePointTypes = []
+                const activePointTypesKey = []
                 result.data.forEach(r => {
                   // Build lang string.
                   if (r[el.lang_key]) {
@@ -205,6 +208,22 @@ const DataLoader = ({ ...props }) => {
                             r[el.lang_key]
                           } description not provided`
                   }
+
+                  // Build point types list
+                  if (r.type === 'point') {
+                    pointTypes.push({
+                      id: r.variable,
+                      label: r.variable,
+                      types: [`points`],
+                      tooltip: `${r.variable}_desc`,
+                      only_one: false,
+                      group: 1,
+                      index: pointTypes.length,
+                      icon: `${r.variable}-icon`,
+                    })
+                    activePointTypes.push(1)
+                    activePointTypesKey.push(r.variable)
+                  }
                   // Build indicator list, array of objects.
                   const exists =
                     indicators.length === 0
@@ -212,17 +231,17 @@ const DataLoader = ({ ...props }) => {
                       : !!indicators.find(item => {
                           return item.id === r[el.lang_key]
                         })
-                  console.log(
-                    'exists: ',
-                    exists,
-                    indicators,
-                    r,
-                  )
+                  // console.log(
+                  //   'exists: ',
+                  //   exists,
+                  //   indicators,
+                  //   r,
+                  // )
                   if (
                     !exists &&
                     r[el.ind_key] === el.ind_flag
                   ) {
-                    console.log('adding an indicator')
+                    // console.log('adding an indicator')
                     indicators.push({
                       id: r[el.lang_key]
                         ? r[el.lang_key]
@@ -266,6 +285,12 @@ const DataLoader = ({ ...props }) => {
                 // Save indicators to indicator list.
                 console.log('indicators, ', indicators)
                 addIndicators(indicators)
+                // Save point types to point type list
+                setStoreValues({
+                  pointTypes: pointTypes,
+                  activePointTypes: activePointTypes,
+                  activePointTypesKey: activePointTypesKey,
+                })
               },
             })
           }

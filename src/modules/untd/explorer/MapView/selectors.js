@@ -428,7 +428,8 @@ export const getDemographicLines = (
 export const getPointIcons = (
   type,
   context,
-  activeLayers,
+  activePointTypes,
+  activePointTypesKey,
 ) => {
   console.log('getPointIcons, ', type)
   // const isVisible =
@@ -439,18 +440,39 @@ export const getPointIcons = (
   return fromJS({
     id: `${type}Points`,
     source: type,
-    type: 'circle', // 'symbol', //
+    type: 'symbol', //
     layout: {
-      // visibility: 'visible',
-      // 'icon-image': `banks-icon`,
-      // 'icon-size': 20,
+      visibility: 'visible', // isVisible ? 'visible' : 'none',
+      'icon-image': [
+        'concat',
+        ['get', 'variable'],
+        '-icon',
+      ],
+      'icon-size': 1.5,
     },
     interactive: true,
     paint: {
-      'circle-color': 'blue',
-      'circle-opacity': 1,
-      'circle-radius': 5,
+      'icon-color': 'orange',
+      // 'icon-halo-color': 'red',
+      'icon-halo-width': 3,
+
+      //   'circle-color': 'blue',
+      //   'circle-opacity': 1,
+      //   'circle-radius': 5,
     },
+    filter: [
+      '==',
+      [
+        'at',
+        [
+          'index-of',
+          ['get', 'variable'],
+          ['literal', activePointTypesKey],
+        ],
+        ['literal', activePointTypes],
+      ],
+      1,
+    ],
     // 'icon-color': 'red',
     // [
     //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
@@ -713,14 +735,20 @@ export const getPolygonLayers = (
 export const getPointLayers = (
   type,
   context,
-  activeLayers,
+  activePointTypes,
+  activePointTypesKey,
 ) => {
   // console.log('getRedlineLayers', context)
   z = z + 3
   return [
     {
       z: z,
-      style: getPointIcons(type, context, activeLayers),
+      style: getPointIcons(
+        type,
+        context,
+        activePointTypes,
+        activePointTypesKey,
+      ),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Points`,
@@ -739,6 +767,8 @@ export const getLayers = (
   sources,
   context,
   activeLayers,
+  activePointTypes,
+  activePointTypesKey,
 ) => {
   console.log('getLayers', sources, context, activeLayers)
   const layers = []
@@ -755,7 +785,12 @@ export const getLayers = (
     ...getPolygonLayers('places', context, activeLayers),
   )
   layers.push(
-    ...getPointLayers('points', context, activeLayers),
+    ...getPointLayers(
+      'points',
+      context,
+      activePointTypes,
+      activePointTypesKey,
+    ),
   )
   return layers
 }

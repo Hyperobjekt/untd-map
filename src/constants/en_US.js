@@ -63,7 +63,7 @@ const en_US = {
   UI_MAP_LAYER_0_TITLE: `Geographic Layers`,
   UI_MAP_LAYER_0_DESC: `<p>Toggle these layers on and off to learn more about the region.</p>`,
   UI_MAP_LAYER_1_TITLE: `Point Features`,
-  UI_MAP_LAYER_1_DESC: `<p>Toggle these layers on and off to see individual neighborhood assets.</p>`,
+  UI_MAP_LAYER_1_DESC: `<p>Toggle these point features on and off to see individual neighborhood assets.</p>`,
   UI_MAP_LAYERS_BANKS: `Banks`,
   UI_MAP_LAYERS_COMMCS: `Community Centers`,
   UI_MAP_LAYERS_CREDITUS: `Credit Unions`,

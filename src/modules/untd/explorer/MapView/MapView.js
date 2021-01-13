@@ -68,6 +68,14 @@ const MapView = props => {
     state => [...state.activeLayers],
     shallow,
   )
+  // Active point types
+  const activePointTypes = useStore(
+    state => [...state.activePointTypes],
+    shallow,
+  )
+  const activePointTypesKey = useStore(
+    state => state.activePointTypesKey,
+  )
   // Active view
   const activeView = useStore(state => state.activeView)
 
@@ -85,8 +93,20 @@ const MapView = props => {
       return []
     }
     const context = { metric, activeQuintiles }
-    return getLayers(sources, context, activeLayers)
-  }, [allDataLoaded, metric, activeQuintiles, activeLayers])
+    return getLayers(
+      sources,
+      context,
+      activeLayers,
+      activePointTypes,
+      activePointTypesKey,
+    )
+  }, [
+    allDataLoaded,
+    metric,
+    activeQuintiles,
+    activeLayers,
+    activePointTypes,
+  ])
 
   /** aria label for screen readers */
   const ariaLabel = i18n.translate('UI_MAP_SR', {
