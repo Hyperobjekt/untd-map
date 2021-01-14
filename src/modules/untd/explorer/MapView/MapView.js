@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow'
 import { getLayers } from './selectors'
 import MapBase, { useIdMap } from './../Map'
 
-// import { CPAL_METRICS } from './../../../../constants/metrics'
+import { HOVER_LAYERS } from './../../../../constants/layers'
 import { DATA_FILES } from './../../../../constants/map'
 import {
   getMetric,
@@ -143,10 +143,13 @@ const MapView = props => {
       //   feature,
       //   getFeatureId(feature),
       // )
-      const id = getFeatureId(feature)
-      const type = getFeatureType(feature)
-      // console.log('setting hovered, ', feature, id)
-      setHovered(id, type, geoCoords, feature)
+      // Verify that this is a hoverable feature.
+      if (HOVER_LAYERS.indexOf(source) > -1) {
+        const id = getFeatureId(feature)
+        const type = getFeatureType(feature)
+        // console.log('setting hovered, ', feature, id)
+        setHovered(id, type, geoCoords, feature)
+      }
     }
     // if (
     //   feature &&

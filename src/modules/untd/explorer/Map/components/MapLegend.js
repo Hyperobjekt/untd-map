@@ -88,7 +88,7 @@ const MapLegend = ({ ...props }) => {
       : metric.id
   }
 
-  console.log('legend, metric: ', metric)
+  // console.log('legend, metric: ', metric)
 
   if (!!metric) {
     return (

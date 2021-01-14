@@ -12,6 +12,7 @@ import {
   getMetric,
   getHashLeft,
   getQuintile,
+  generateFeatureId,
 } from './../../utils'
 import useStore from './../../store'
 
@@ -51,71 +52,96 @@ const PopupContent = ({ ...props }) => {
   }
 
   if (!!props.feature) {
-    const featureLabel = props.feature.properties[
-      source.label_key
-    ]
-      ? props.feature.properties[source.label_key]
-      : false
-    const rawValueHandle = String(activeMetric).replace(
-      '_sd',
-      '',
-    )
-    const value = props.feature.properties[rawValueHandle]
-      ? String(props.feature.properties[rawValueHandle])
-      : `Raw value not available.`
-    console.log('value = ', value)
-    const valueLabel = i18n.translate(rawValueHandle)
-    const min = metric.min
-    const max = metric.max
-    const high_is_good = metric.high_is_good
-    // console.log(
-    //   'sd is , ',
-    //   props.feature.properties[activeMetric],
-    // )
-    return (
-      <div className="popup-content">
-        {!!featureLabel && (
+    if (props.feature.layer.source === 'points') {
+      console.log(`it's a points feature`)
+      return (
+        <div className="popup-content">
           <div className="popup-school-name">
-            <h4>
-              {props.feature.properties[source.label_key]}
-            </h4>
+            <h4>{props.feature.properties.Name}</h4>
           </div>
-        )}
-        {value.length > 0 && (
           <div
             className="popup-metric"
-            key={`popup-metric-${metric.id}`}
+            key={`popup-point-${generateFeatureId(
+              props.feature,
+            )}`}
           >
             <div className="popup-metric-label">
-              {featureLabel}
+              {props.feature.properties.Display}
               <br />
-              <span className="metric-value">
-                {`${valueLabel}: ${
-                  !!value
-                    ? getRoundedValue(value, 0, false)
-                    : 'Not available'
-                }`}
-              </span>
-            </div>
-            <div className="popup-metric-scale">
-              <NonInteractiveScale
-                metric={activeMetric}
-                showHash={false}
-                quintiles={setActiveQuintile(
-                  Number(
-                    props.feature.properties[activeMetric],
-                  ),
-                )}
-                colors={CRI_COLORS}
-                showMinMax={false}
-                min={min}
-                max={max}
-              />
+              {`${props.feature.properties.Address}, ${props.feature.properties.City}`}
             </div>
           </div>
-        )}
-      </div>
-    )
+        </div>
+      )
+    } else {
+      const featureLabel = props.feature.properties[
+        source.label_key
+      ]
+        ? props.feature.properties[source.label_key]
+        : false
+      const rawValueHandle = String(activeMetric).replace(
+        '_sd',
+        '',
+      )
+      const value = props.feature.properties[rawValueHandle]
+        ? String(props.feature.properties[rawValueHandle])
+        : `Raw value not available.`
+      console.log('value = ', value)
+      const valueLabel = i18n.translate(rawValueHandle)
+      const min = metric.min
+      const max = metric.max
+      const high_is_good = metric.high_is_good
+      // console.log(
+      //   'sd is , ',
+      //   props.feature.properties[activeMetric],
+      // )
+      return (
+        <div className="popup-content">
+          {!!featureLabel && (
+            <div className="popup-school-name">
+              <h4>
+                {props.feature.properties[source.label_key]}
+              </h4>
+            </div>
+          )}
+          {value.length > 0 && (
+            <div
+              className="popup-metric"
+              key={`popup-metric-${metric.id}`}
+            >
+              <div className="popup-metric-label">
+                {featureLabel}
+                <br />
+                <span className="metric-value">
+                  {`${valueLabel}: ${
+                    !!value
+                      ? getRoundedValue(value, 0, false)
+                      : 'Not available'
+                  }`}
+                </span>
+              </div>
+              <div className="popup-metric-scale">
+                <NonInteractiveScale
+                  metric={activeMetric}
+                  showHash={false}
+                  quintiles={setActiveQuintile(
+                    Number(
+                      props.feature.properties[
+                        activeMetric
+                      ],
+                    ),
+                  )}
+                  colors={CRI_COLORS}
+                  showMinMax={false}
+                  min={min}
+                  max={max}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
   } else {
     setStoreValues({ showMapModal: false })
     return null

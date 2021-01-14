@@ -508,13 +508,32 @@ export const getFeatureTypeObj = feature => {
     : null
 }
 
+export const generateFeatureId = feature => {
+  const lat = Math.round(
+    Math.abs(feature.properties.Latitude) * 10000000,
+  )
+  const lng = Math.round(
+    Math.abs(feature.properties.Longitude) * 10000000,
+  )
+  const id = Number(String(lng) + String(lat))
+  return id
+}
+
 /**
  * Returns feature Id from properties field identified in
  * data map.
  */
 export const getFeatureId = feature => {
-  const info = getFeatureTypeObj(feature)
-  return feature.properties[info.id_key]
+  // console.log('getFeatureId, ', feature)
+  if (feature.layer.source === 'points') {
+    // Calculate an ID for the point based on its latlng,
+    // because no ID is provided by the feature.
+    const id = generateFeatureId(feature)
+    return id
+  } else {
+    const info = getFeatureTypeObj(feature)
+    return feature.properties[info.id_key]
+  }
 }
 
 /**

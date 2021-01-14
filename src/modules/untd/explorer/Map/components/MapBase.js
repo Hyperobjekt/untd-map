@@ -507,9 +507,9 @@ const MapBase = ({
     // console.log('zoom = ', zoom)
     // Distance = 2 miles.
     let distance = 2
-    if (zoom >= 12) {
-      distance = 0.4
-    }
+    // if (zoom >= 12) {
+    //   distance = 0.4
+    // }
     // Set point for hovered feature.
     let point = null
     const isPoint = isFeaturePoint(hoveredFeature)
@@ -679,14 +679,14 @@ const MapBase = ({
               longitude={
                 getTooltipOffset(hoveredFeature).coords[0]
               }
+              anchor={
+                getTooltipOffset(hoveredFeature).anchor
+              }
               onClick={handlePopupClick}
               closeButton={false}
               closeOnClick={false}
               onClose={() =>
                 this.setState({ showPopup: false })
-              }
-              anchor={
-                getTooltipOffset(hoveredFeature).anchor
               }
               tipSize={0}
               dynamicPosition={false}
