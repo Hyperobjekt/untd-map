@@ -77,8 +77,8 @@
     "not ie <= 10",
     "not op_mini all"
   ],
-  "author": "",
-  "homepage": "",
+  "author": "Lou Groshek",
+  "homepage": "https://hyperobjekt.com",
   "license": "MIT",
   "keywords": [
     "react-component"

@@ -51,6 +51,15 @@ This library can be published via NPM.
 1. To contribute, check out a new branch off of the `master` branch.
 2. When you have finished, submit your changes as a pull request relative to the `master` branch.
 
+## Implementation Details
+
+- Base components:
+  [reactstrap](https://reactstrap.github.io/)
+- State management:
+  [zustand](https://github.com/react-spring/zustand)
+  - manage state using a store for each module that need to
+    share state between components
+
 ## Updating data
 
 This app draws data files from the [Child Poverty Action Lab Social Mobility github repository](https://github.com/childpovertyactionlab/Social-Mobility). Use the branches in that repository to roll out data updates across a series of staging and production sites:
