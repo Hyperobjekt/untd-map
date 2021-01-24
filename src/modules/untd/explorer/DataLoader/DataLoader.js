@@ -150,174 +150,181 @@ const DataLoader = ({ ...props }) => {
   // Set each file to the store.
   // Update loaded percent.
   // Update overall loading tracking.
-  files.forEach((el, i) => {
-    const xhr = new XMLHttpRequest()
-    const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
-    console.log('path, ', path)
-    xhr.open('GET', path, true)
-    xhr.onload = function (e) {
-      console.log('loaded, ', xhr)
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          // Increment counter for loaded files.
-          loadedCount++
-          // console.log(
-          //   'file loaded ',
-          //   i,
-          //   (loadedCount / files.length) * 100,
-          // )
-          // obj[el.id] = JSON.parse(xhr.responseText)
-          if (el.type !== 'dict') {
-            let obj = {}
-            obj[el.id] = {
-              type: `geojson`,
-              data: JSON.parse(xhr.responseText),
-            }
-            setRemoteJson(obj)
-          } else {
-            // Parse the file and merge with lang file.
-            const lang = Papa.parse(xhr.responseText, {
-              header: true,
-              complete: result => {
-                // console.log(
-                //   'parse done, result: ',
-                //   result.data,
-                // )
-                const strings = {}
-                const indicators = []
-                const pointTypes = []
-                const activePointTypes = []
-                const activePointTypesKey = []
-                result.data.forEach(r => {
-                  // Build lang string.
-                  if (r[el.lang_key]) {
-                    // console.log(
-                    //   'Lang strings present, adding, ',
-                    //   r[el.lang_value],
-                    // )
-                    strings[r[el.lang_key]] =
-                      r[el.lang_label].length > 0
-                        ? r[el.lang_label]
-                        : `${
-                            r[el.lang_key]
-                          } label not provided`
-                    strings[`${r[el.lang_key]}_desc`] =
-                      r[el.lang_desc].length > 0
-                        ? r[el.lang_desc]
-                        : `${
-                            r[el.lang_key]
-                          } description not provided`
-                  }
-
-                  // Build point types list
-                  if (r.type === 'point') {
-                    pointTypes.push({
-                      id: r.variable,
-                      label: r.variable,
-                      types: [`points`],
-                      tooltip: `${r.variable}_desc`,
-                      only_one: false,
-                      group: 1,
-                      index: pointTypes.length,
-                      icon: `${r.variable}-icon`,
-                    })
-                    activePointTypes.push(1)
-                    activePointTypesKey.push(r.variable)
-                  }
-                  // Build indicator list, array of objects.
-                  const exists =
-                    indicators.length === 0
-                      ? false
-                      : !!indicators.find(item => {
-                          return item.id === r[el.lang_key]
-                        })
+  useEffect(() => {
+    files.forEach((el, i) => {
+      const xhr = new XMLHttpRequest()
+      const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
+      console.log('path, ', path)
+      xhr.open('GET', path, true)
+      xhr.onload = function (e) {
+        console.log('loaded, ', xhr)
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Increment counter for loaded files.
+            loadedCount++
+            // console.log(
+            //   'file loaded ',
+            //   i,
+            //   (loadedCount / files.length) * 100,
+            // )
+            // obj[el.id] = JSON.parse(xhr.responseText)
+            if (el.type !== 'dict') {
+              let obj = {}
+              obj[el.id] = {
+                type: `geojson`,
+                data: JSON.parse(xhr.responseText),
+              }
+              setRemoteJson(obj)
+            } else {
+              // Parse the file and merge with lang file.
+              const lang = Papa.parse(xhr.responseText, {
+                header: true,
+                complete: result => {
                   // console.log(
-                  //   'exists: ',
-                  //   exists,
-                  //   indicators,
-                  //   r,
+                  //   'parse done, result: ',
+                  //   result.data,
                   // )
-                  if (
-                    !exists &&
-                    r[el.ind_key] === el.ind_flag
-                  ) {
-                    // console.log('adding an indicator')
-                    indicators.push({
-                      id: r[el.lang_key]
-                        ? r[el.lang_key]
-                        : r.variable,
-                      // TODO: REDO THIS LATER.
-                      display:
-                        String(r.variable).indexOf('18') > 0
-                          ? 1
-                          : 0,
-                      // r['display_variable'] === 'Yes'
-                      //   ? 1
-                      //   : 0,
-                      min: r['min'] ? r['min'] : 0,
-                      max: r['max'] ? r['max'] : 100,
-                      range: r['range'] ? r['range'] : null,
-                      mean: r['mean'] ? r['mean'] : null,
-                      high_is_good:
-                        r['highisgood'] === 'Yes' ? 1 : 0,
-                      is_currency: 0, // TODO: Pipe in from data dict?
-                      is_percent: 0, // TODO: Pipe in from data dict?
-                      decimals: 0, // TODO: Pipe in from data dict?
-                      cat: 'cri', // TODO: Pipe in from data dict? (category)
-                      years: r['years']
-                        .toLowerCase()
-                        .replace(/ /g, '')
-                        .split(','),
-                      placeTypes: r['place']
-                        .toLowerCase()
-                        .replace(/ /g, '')
-                        .split(',')
-                        .map(type => {
-                          return `${type}s`
-                        }),
-                    })
-                  }
-                })
-                // Save strings to string list.
-                // console.log('strings, ', strings)
-                setLang('en_US', strings)
-                incrementLangUpdates()
-                // Save indicators to indicator list.
-                console.log('indicators, ', indicators)
-                addIndicators(indicators)
-                // Save point types to point type list
-                setStoreValues({
-                  pointTypes: pointTypes,
-                  activePointTypes: activePointTypes,
-                  activePointTypesKey: activePointTypesKey,
-                })
-              },
+                  const strings = {}
+                  const indicators = []
+                  const pointTypes = []
+                  const activePointTypes = []
+                  const activePointTypesKey = []
+                  result.data.forEach(r => {
+                    // Build lang string.
+                    if (r[el.lang_key]) {
+                      // console.log(
+                      //   'Lang strings present, adding, ',
+                      //   r[el.lang_value],
+                      // )
+                      strings[r[el.lang_key]] =
+                        r[el.lang_label].length > 0
+                          ? r[el.lang_label]
+                          : `${
+                              r[el.lang_key]
+                            } label not provided`
+                      strings[`${r[el.lang_key]}_desc`] =
+                        r[el.lang_desc].length > 0
+                          ? r[el.lang_desc]
+                          : `${
+                              r[el.lang_key]
+                            } description not provided`
+                    }
+
+                    // Build point types list
+                    if (r.type === 'point') {
+                      pointTypes.push({
+                        id: r.variable,
+                        label: r.variable,
+                        types: [`points`],
+                        tooltip: `${r.variable}_desc`,
+                        only_one: false,
+                        group: 1,
+                        index: pointTypes.length,
+                        icon: `${r.variable}-icon`,
+                      })
+                      activePointTypes.push(1)
+                      activePointTypesKey.push(r.variable)
+                    }
+                    // Build indicator list, array of objects.
+                    const exists =
+                      indicators.length === 0
+                        ? false
+                        : !!indicators.find(item => {
+                            return (
+                              item.id === r[el.lang_key]
+                            )
+                          })
+                    // console.log(
+                    //   'exists: ',
+                    //   exists,
+                    //   indicators,
+                    //   r,
+                    // )
+                    if (
+                      !exists &&
+                      r[el.ind_key] === el.ind_flag
+                    ) {
+                      // console.log('adding an indicator')
+                      indicators.push({
+                        id: r[el.lang_key]
+                          ? r[el.lang_key]
+                          : r.variable,
+                        // TODO: REDO THIS LATER.
+                        display:
+                          String(r.variable).indexOf('18') >
+                          0
+                            ? 1
+                            : 0,
+                        // r['display_variable'] === 'Yes'
+                        //   ? 1
+                        //   : 0,
+                        min: r['min'] ? r['min'] : 0,
+                        max: r['max'] ? r['max'] : 100,
+                        range: r['range']
+                          ? r['range']
+                          : null,
+                        mean: r['mean'] ? r['mean'] : null,
+                        high_is_good:
+                          r['highisgood'] === 'Yes' ? 1 : 0,
+                        is_currency: 0, // TODO: Pipe in from data dict?
+                        is_percent: 0, // TODO: Pipe in from data dict?
+                        decimals: 0, // TODO: Pipe in from data dict?
+                        cat: 'cri', // TODO: Pipe in from data dict? (category)
+                        years: r['years']
+                          .toLowerCase()
+                          .replace(/ /g, '')
+                          .split(','),
+                        placeTypes: r['place']
+                          .toLowerCase()
+                          .replace(/ /g, '')
+                          .split(',')
+                          .map(type => {
+                            return `${type}s`
+                          }),
+                      })
+                    }
+                  })
+                  // Save strings to string list.
+                  // console.log('strings, ', strings)
+                  setLang('en_US', strings)
+                  incrementLangUpdates()
+                  // Save indicators to indicator list.
+                  console.log('indicators, ', indicators)
+                  addIndicators(indicators)
+                  // Save point types to point type list
+                  setStoreValues({
+                    pointTypes: pointTypes,
+                    activePointTypes: activePointTypes,
+                    activePointTypesKey: activePointTypesKey,
+                  })
+                },
+              })
+            }
+            setStoreValues({
+              dataLoadedPercent:
+                (loadedCount / files.length) * 100,
+              allDataLoaded:
+                loadedCount === files.length ? true : false,
+            })
+          } else {
+            // console.error(xhr.statusText)
+            // Flag something failed.
+            setStoreValues({
+              dataLoaderFailed: true,
             })
           }
-          setStoreValues({
-            dataLoadedPercent:
-              (loadedCount / files.length) * 100,
-            allDataLoaded:
-              loadedCount === files.length ? true : false,
-          })
-        } else {
-          // console.error(xhr.statusText)
-          // Flag something failed.
-          setStoreValues({
-            dataLoaderFailed: true,
-          })
         }
       }
-    }
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText)
-      // Flag something failed.
-      setStoreValues({
-        dataLoaderFailed: true,
-      })
-    }
-    xhr.send(null)
-  })
+      xhr.onerror = function (e) {
+        console.error(xhr.statusText)
+        // Flag something failed.
+        setStoreValues({
+          dataLoaderFailed: true,
+        })
+      }
+      xhr.send(null)
+    })
+  }, [])
 
   return <DataLoaderContent />
 }
