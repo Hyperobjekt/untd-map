@@ -4,32 +4,34 @@ import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import { getRoundedValue, useDebounce } from './../utils'
-// import { schools } from './../../../../data/schools'
-import {
-  CPAL_METRICS,
-  CPAL_FEEDERS,
-} from './../../../../constants/metrics'
 import {
   BOUNDS,
   DEFAULT_ROUTE,
+  ROUTE_SET,
 } from './../../../../constants/map'
 import { UNTD_LAYERS } from './../../../../constants/layers'
+import { validateRouteOption } from './utils/utils'
 
 /**
  * Get a route parameters object based on the string
  * @param {string} path
  * @returns {object} e.g. { region: 'counties', metric: 'avg', ... }
  */
-export const getParamsFromPathname = (path, routeVars) => {
+export const getParamsFromPathname = path => {
   // console.log('getParamsFromPathname()')
   // strip starting "#" and "/" chars
   const route = path.replace(/^#\/+/g, '')
+  const routeArr = path.split('/')
+  // routeArr.map((el, i) => {
+  //   return DEFAULT_ROUTE[i].id
+  // })
   // Construct object from hash
   return route.split('/').reduce(
     (acc, curr, i) => ({
       ...acc,
-      [routeVars[i]]:
-        ['zoom', 'lat', 'lon'].indexOf(routeVars[i]) > -1
+      [DEFAULT_ROUTE[i]]:
+        ['zoom', 'lat', 'lon'].indexOf(DEFAULT_ROUTE[i]) >
+        -1
           ? parseFloat(curr)
           : curr,
     }),
@@ -43,120 +45,96 @@ export const getStrippedRoute = route =>
 export const isEmptyRoute = route =>
   getStrippedRoute(route).length === 0
 
+// const isParamValid = ()
+
 /**
  * Verify that view contains one of the two views.
  * @param  String view View string
  * @return Boolean
  */
-const isViewValid = view => {
-  // console.log('isViewValid, ', view)
-  return ['explorer', 'embed'].indexOf(view) > -1
-}
+// const isViewValid = view => {
+//   // console.log('isViewValid, ', view)
+//   return ['explorer', 'embed'].indexOf(view) > -1
+// }
 
 /**
  * Verifies that metric exists in metric collection.
  * @param  {String}  metric String that corresponds to metric ID in constants
  * @return {Boolean}
  */
-const isMetricValid = (metric, indicators) => {
-  // Check if it's in the metrics list
-  // console.log('isMetricValid')
-  // If it's empty, just return true. We'll use the default.
-  if (metric.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the metrics collection.
-    const filter = CPAL_METRICS.find(el => {
-      return el.id === metric
-    })
-    return !!filter ? true : false
-  }
-}
+// const isMetricValid = (metric, indicators) => {
+//   // Check if it's in the metrics list
+//   // console.log('isMetricValid')
+//   // If it's empty, just return true. We'll use the default.
+//   if (metric.length === 0) {
+//     return true
+//   } else {
+//     // If not empty, verify that it's in the metrics collection.
+//     // const filter = CPAL_METRICS.find(el => {
+//     //   return el.id === metric
+//     // })
+//     // return !!filter ? true : false
+//   }
+// }
 
 /**
  * Verifies that quintiles string can be converted into array of quintiles.
  * @param  {String}  quintiles String of comma-separated numbers
  * @return {Boolean}
  */
-const isQuintilesValid = quintiles => {
-  // console.log('isQuintilesValid')
-  if (!quintiles) return true
-  if (quintiles.length < 5) return false
-  const arr = quintiles.split(',')
-  let t = true
-  arr.forEach(el => {
-    const n = Number(el)
-    if (n !== 1 && n !== 0) {
-      t = false
-    }
-  })
-  return t
-}
+// const isQuintilesValid = quintiles => {
+//   // console.log('isQuintilesValid')
+//   if (!quintiles) return true
+//   if (quintiles.length < 5) return false
+//   const arr = quintiles.split(',')
+//   let t = true
+//   arr.forEach(el => {
+//     const n = Number(el)
+//     if (n !== 1 && n !== 0) {
+//       t = false
+//     }
+//   })
+//   return t
+// }
 
-const isFeederValid = feeder => {
-  // console.log('isFeederValid()')
-  if (!feeder || feeder.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the feeders collection.
-    const filter = CPAL_FEEDERS.find(el => {
-      return Number(el.id) === Number(feeder)
-    })
-    return !!filter ? true : false
-  }
-}
-
-const isSchoolValid = school => {
-  // console.log('isSchoolValid()')
-  if (!school || school.length === 0) {
-    return true
-  } else {
-    // If not empty, verify that it's in the feeders collection.
-    const filter = schools.find(el => {
-      return Number(el.SLN) === Number(school)
-    })
-    return !!filter ? true : false
-  }
-}
-
-const isLayersValid = layers => {
-  // console.log('isLayersValid()')
-  if (!layers) return true
-  const arr = layers.split(',')
-  // console.log('arr, ', arr)
-  if (arr.length < UNTD_LAYERS.length) return false
-  let t = true
-  arr.forEach((el, i) => {
-    const n = Number(el)
-    if (n !== 1 && n !== 0) {
-      t = false
-    }
-    if (
-      UNTD_LAYERS[i].only_one === true &&
-      Number(arr[i]) === 1
-    ) {
-      // Get the name
-      const name = UNTD_LAYERS[i].only_one_name
-      // If others with same name are true in layers, return false.
-      // console.log('only one loop, others = ', others)
-      UNTD_LAYERS.forEach((item, index) => {
-        if (
-          i !== index &&
-          item.only_one === true &&
-          item.only_one_name === name
-        ) {
-          // console.log('matching up the other only-ones')
-          if (Number(arr[index]) === 1) {
-            // console.log("there's another true")
-            t = false
-          }
-        }
-      })
-    }
-  })
-  // console.log('isLayersValid(), ', t)
-  return t
-}
+// const isLayersValid = layers => {
+//   // console.log('isLayersValid()')
+//   if (!layers) return true
+//   const arr = layers.split(',')
+//   // console.log('arr, ', arr)
+//   if (arr.length < UNTD_LAYERS.length) return false
+//   let t = true
+//   arr.forEach((el, i) => {
+//     const n = Number(el)
+//     if (n !== 1 && n !== 0) {
+//       t = false
+//     }
+//     if (
+//       UNTD_LAYERS[i].only_one === true &&
+//       Number(arr[i]) === 1
+//     ) {
+//       // Get the name
+//       const name = UNTD_LAYERS[i].only_one_name
+//       // If others with same name are true in layers, return false.
+//       // console.log('only one loop, others = ', others)
+//       UNTD_LAYERS.forEach((item, index) => {
+//         if (
+//           i !== index &&
+//           item.only_one === true &&
+//           item.only_one_name === name
+//         ) {
+//           // console.log('matching up the other only-ones')
+//           if (Number(arr[index]) === 1) {
+//             // console.log("there's another true")
+//             t = false
+//           }
+//         }
+//       })
+//     }
+//   })
+//   // console.log('isLayersValid(), ', t)
+//   return t
+// }
 
 const isLatLngValid = (lat, lng) => {
   // console.log('isLatLngValid()')
@@ -195,9 +173,8 @@ const isRouteValid = (params, routeSet, indicators) => {
     !isViewValid(params.view) ||
     !isMetricValid(params.metric, indicators) ||
     !isQuintilesValid(params.quintiles) ||
-    !isFeederValid(params.feeder) ||
-    !isSchoolValid(params.school) ||
     !isLayersValid(params.layers) ||
+    !isPointsValid(params.points) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
@@ -222,43 +199,57 @@ const RouteManager = props => {
   // track if initial route has loaded
   const isLoaded = useRef(false)
   // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Schools as set by data loading.
-  const schools = useStore(
-    state => state.remoteJson.schools,
-  )
-  // Active view.
-  const activeView = useStore(state => state.activeView)
-  // Update view select control
-  const viewSelect = useStore(state => state.viewSelect)
-  // Active metric.
-  const activeMetric = useStore(state => state.activeMetric)
-  // Active standard deviations.
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
-  )
-  // Active feeder.
-  const activeFeeder = useStore(state => state.activeFeeder)
-  // Highlighted school.
-  const highlightedSchool = useStore(
-    state => state.highlightedSchool,
-  )
-  // Active layers.
-  const activeLayers = useStore(
-    state => [...state.activeLayers],
+  const {
+    setStoreValues,
+    activeView,
+    viewSelect,
+    activeMetric,
+    activeQuintiles,
+    activeLayers,
+    viewport,
+    setViewport,
+    shareHash,
+    indicators,
+    activePointTypes,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      // Active view type.
+      activeView: state.activeView,
+      // Update view select control
+      viewSelect: state.viewSelect,
+      // Metric.
+      activeMetric: state.activeMetric,
+      // Active standard deviations.
+      activeQuintiles: state.activeQuintiles,
+      activeLayers: state.activeLayers,
+      viewport: state.viewport,
+      setViewport: state.setViewport,
+      shareHash: state.shareHash,
+      indicators: state.indicators,
+      activePointTypes: state.activePointTypes,
+    }),
     shallow,
   )
+
+  // Active layers.
+  // const activeLayers = useStore(
+  //   state => [...state.activeLayers],
+  //   shallow,
+  // )
   // Viewport.
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
+  // const viewport = useStore(state => state.viewport)
+  // const setViewport = useStore(state => state.setViewport)
   // Feeder is locked.
-  const feederLocked = useStore(state => state.feederLocked)
+  // const feederLocked = useStore(state => state.feederLocked)
   // Track share hash and update when it changes
-  const shareHash = useStore(state => state.shareHash)
+  // const shareHash = useStore(state => state.shareHash)
   // List of indicators
-  const indicators = useStore(state => state.indicators)
+  // const indicators = useStore(state => state.indicators)
+
+  // const activePointTypes = useStore(
+  //   state => state.activePointTypes,
+  // )
 
   /**
    * Returns a hash based on state
@@ -272,15 +263,9 @@ const RouteManager = props => {
       '/' +
       activeQuintiles.toString() +
       '/' +
-      (!!activeFeeder && !!feederLocked
-        ? activeFeeder
-        : '') +
-      '/' +
-      (!!highlightedSchool && !!feederLocked
-        ? highlightedSchool
-        : '') +
-      '/' +
       getLayersString(activeLayers) +
+      '/' +
+      activePointTypes.toString() +
       '/' +
       getRoundedValue(viewport.latitude, 4) +
       '/' +
@@ -322,12 +307,13 @@ const RouteManager = props => {
     }
     if (!!params.metric) {
       setStoreValues({ activeMetric: params.metric })
-      const tab = CPAL_METRICS.filter(
-        el => el.id === params.metric,
-      )[0].tab
-      if (!!tab) {
-        setStoreValues({ activeFilterTab: tab })
-      }
+      // TODO: Update this for new indicators list.
+      // const tab = CPAL_METRICS.filter(
+      //   el => el.id === params.metric,
+      // )[0].tab
+      // if (!!tab) {
+      //   setStoreValues({ activeFilterTab: tab })
+      // }
       // console.log('setting metric, ', params.metric, tab)
     }
     if (params.quintiles && params.quintiles.length > 0) {
@@ -338,22 +324,20 @@ const RouteManager = props => {
         }),
       })
     }
-    if (!!params.feeder) {
-      setStoreValues({
-        activeFeeder: params.feeder,
-        feederLocked: true,
-      })
-    }
-    if (!!params.school) {
-      setStoreValues({
-        highlightedSchool: params.school,
-        feederLocked: true,
-      })
-    }
+
     if (params.layers && params.layers.length > 0) {
       const getLayers = params.layers.split(',')
       setStoreValues({
         activeLayers: getLayers.map(el => {
+          return Number(el)
+        }),
+      })
+    }
+
+    if (params.points && params.points.length > 0) {
+      const getPoints = params.points.split(',')
+      setStoreValues({
+        activePointTypes: getPoints.map(el => {
           return Number(el)
         }),
       })

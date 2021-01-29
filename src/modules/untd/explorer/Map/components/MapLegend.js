@@ -9,7 +9,6 @@ import { MdClose } from 'react-icons/md'
 
 import useStore from './../../store'
 import { CoreButton } from './../../../../core/'
-import { CPAL_METRICS } from './../../../../../constants/metrics'
 import {
   SCHOOL_ZONE_COLORS,
   CRI_COLORS,

@@ -4,12 +4,6 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './store.js'
-// import { schools } from './../../../data/schools'
-import {
-  CPAL_METRICS,
-  CPAL_FEEDERS,
-  DEFAULT_ROUTE,
-} from './../../../constants/metrics'
 import { BOUNDS } from './../../../constants/map'
 import { UNTD_LAYERS } from './../../../constants/layers'
 import { DATA_FILES } from './../../../constants/map'
@@ -331,21 +325,6 @@ export const getFeederAverage = (metric, schoolSet) => {
   let total = 0
   values.forEach(v => (total = total + v))
   return total / values.length
-}
-
-/**
- * Gets label for the feeder
- * @param  String tea TEA id for school
- * @return String     Label for the feeder
- */
-export const getFeederLabel = tea => {
-  // console.log('getFeederLabel()', tea, feeders)
-  // Slice out feeders to avoid rewrites
-  const feeders = CPAL_FEEDERS.slice()
-  const feeder = feeders.find(el => {
-    return Number(el.id) === Number(tea)
-  })
-  return feeder && feeder.title ? feeder.title : ''
 }
 
 /**

@@ -13,11 +13,6 @@ import { MdRefresh } from 'react-icons/md'
 
 import { CoreButton, Select } from './../../../core'
 import useStore from './../store.js'
-import {
-  // CPAL_METRICS,
-  // CPAL_FILTER_TABS,
-  DEFAULT_CATEGORIES,
-} from './../../../../constants/metrics'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 // import TabSeries from './TabSeries'
 import FilterSeries from './FilterSeries'
@@ -65,29 +60,12 @@ const PanelFilterView = ({ ...props }) => {
     return layer
   }
 
-  /** Process select items for tabs **/
-  const selectItems = []
-  DEFAULT_CATEGORIES.forEach(el => {
-    // const item = indicators.find(i => {
-    //   return i.id === el
-    // })
-    selectItems.push({
-      id: el.id,
-      label: el.title, // getTabTitle(item.tab),
-      active: el.id === activeFilterTab ? true : false,
-    })
-  })
-
   const handleSelect = e => {
     // console.log('category selected, ', e.currentTarget.id)
     // const tabId = indicators.find(i => {
     //   return i.id === e.currentTarget.id
     // }).tab
     const tabId = e.currentTarget.id
-    // const default_metric = DEFAULT_CATEGORIES.find(
-    //   el => el.id === tabId,
-    // ).default_metric
-    // console.log('default_metric, ', default_metric)
     setStoreValues({
       activeFilterTab: tabId,
       // activeMetric: default_metric, // TODO: Set metric using first indicator in tab list.
@@ -102,15 +80,6 @@ const PanelFilterView = ({ ...props }) => {
       activeMetric: defaultMetric,
       activeQuintiles: [1, 1, 1, 1, 1],
     })
-  }
-
-  const getSelectLabel = () => {
-    // console.log('getSelectLabel')
-    const tab = DEFAULT_CATEGORIES.find(
-      el => el.id === activeFilterTab,
-    )
-    // console.log('tab, ', tab)
-    return tab ? i18n.translate(tab.title) : null
   }
 
   const filterListHeadingStyles = css`

@@ -10,6 +10,7 @@ import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,
   DEFAULT_ACTIVE_LAYERS,
+  ROUTE_SET,
 } from './../../../constants/map'
 
 const [useStore] = create((set, get) => ({
@@ -63,6 +64,8 @@ const [useStore] = create((set, get) => ({
     })),
   // Default route.
   defaultRoute: DEFAULT_ROUTE,
+  // Route set with constants for route validation.
+  routeSet: ROUTE_SET,
   siteHref: '/',
   logoSrc: null,
   activeView: `explorer`, // View type, explorer or embed
@@ -110,30 +113,32 @@ const [useStore] = create((set, get) => ({
     }))
   },
   schoolZonesAffix: `200`,
-  activeLayers: DEFAULT_ACTIVE_LAYERS,
+  activeLayers: ROUTE_SET.find(el => {
+    return el.id === 'layers'
+  }).defaultValue,
+  // Stores types of points.
   pointTypes: [],
-  activePointTypesKey: [],
+  // Stores active point types.
   activePointTypes: [],
-  defaultMetric: 'tot_popE_18_sd', // Default metric.
-  activeMetric: 'tot_popE_18_sd', // Active metric applied to map.
-  activeQuintiles: [1, 1, 1, 1, 1],
+  defaultMetric: ROUTE_SET.find(el => {
+    return el.id === 'metric'
+  }).defaultValue, // Default metric.
+  activeMetric: ROUTE_SET.find(el => {
+    return el.id === 'metric'
+  }).defaultValue, // Active metric applied to map.
+  activeQuintiles: ROUTE_SET.find(el => {
+    return el.id === 'quintiles'
+  }).defaultValue,
   slideoutPanel: {
     active: false,
     panel: '', // 'filters', 'layers', or 'info'
   },
-  // defaultFilterTab: 'cri',
-  // activeFilterTab: 'cri',
-  feederSchools: [],
-  activeFeeder: null,
-  feederLocked: false,
-  highlightedSchool: '',
   shareLinkModal: false,
   unifiedShareModal: false,
   handleToggleMenu: null,
   shareHash: null,
   breakpoint: null,
   browserWidth: null,
-  flyToSchoolSLN: null,
   schoolHint: null,
   showIntroModal: false,
   showPanelModal: false,
@@ -212,8 +217,6 @@ const [useStore] = create((set, get) => ({
   eventShareLink: 0,
   eventMapReset: 0,
   eventMapCapture: 0,
-  eventSchoolSearch: 0,
-  eventSchoolPage: 0,
   eventLaunchTour: 0,
   eventCloseTour: 0,
   eventCloseTourStep: null,
@@ -228,8 +231,6 @@ const [useStore] = create((set, get) => ({
       eventCloseTourStep: state.tourStepIndex,
     }))
   },
-  // Not counters.
-  accessedSchool: null,
   eventError: 0,
 }))
 

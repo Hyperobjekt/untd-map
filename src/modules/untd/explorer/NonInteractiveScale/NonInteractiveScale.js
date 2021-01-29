@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import PropTypes from 'prop-types'
 
 import { getRoundedValue, getMetric } from './../utils'
-// import { CPAL_METRICS } from './../../../../constants/metrics'
 import useStore from './../store'
 
 const NonInteractiveScale = ({

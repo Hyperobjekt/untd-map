@@ -66,35 +66,26 @@ export const DATA_FILES = [
   },
 ]
 
-export const DEFAULT_ROUTE =
-  '/explorer/tot_popE_18_sd/1,1,1,1,1/1,0,0,0,0,0,0,0,0/32.912/-96.866/8/'
+// export const DEFAULT_ROUTE =
+//   '/explorer/tot_popE_18_sd/1,1,1,1,1/0,0,1,0//32.912/-96.866/8/'
 
-export const ROUTE_SET = [
-  'view', // View type, 'explorer' or 'embed'
-  'metric', // Metric ID to set for active metric.
-  'quintiles', // quintiles that are active and inactive. Always length of 5.
-  'layers', // To determine active layers, 'district_boundaries' and/or 'redlining'
-  'lat', // Latitude
-  'lng', // Longitude
-  'zoom', // Zoom level
-]
+// export const ROUTE_SET = [
+//   'view', // View type, 'explorer' or 'embed'
+//   'metric', // Metric ID to set for active metric.
+//   'quintiles', // quintiles that are active and inactive. Always length of 5.
+//   'layers', // To determine active layers, 'district_boundaries' and/or 'redlining'
+//   'points', // Point types that are active
+//   'lat', // Latitude
+//   'lng', // Longitude
+//   'zoom', // Zoom level
+// ]
 
-export const DEFAULT_ACTIVE_LAYERS = [
-  0,
-  0,
-  1,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-]
+// export const DEFAULT_ACTIVE_LAYERS = [0, 0, 1, 0]
 
 export const BOUNDS = {
   lat: {
-    max: 33.75, // 33.26625,
     min: 31.5, // 32.486597,
+    max: 33.75, // 33.26625,
   },
   lng: {
     min: -98, // -97.222586,
@@ -117,3 +108,58 @@ export const DEFAULT_VIEWPORT = {
   touchRotate: true,
   preserveDrawingBuffer: true,
 }
+
+export const ROUTE_SET = [
+  {
+    id: 'view',
+    options: ['explorer', 'embed'],
+    validate: 'one_exact_match',
+    defaultValue: 'explorer',
+  },
+  {
+    id: 'metric',
+    options: [],
+    validate: 'contains_only',
+    defaultValue: 'tot_popE_18_sd',
+  },
+  {
+    id: 'quintiles',
+    options: [1, 0],
+    validate: 'contains_only',
+    length: 5,
+    defaultValue: [1, 1, 1, 1, 1],
+  },
+  {
+    id: 'layers',
+    options: [1, 0],
+    validate: 'contains_only',
+    defaultValue: [0, 0, 1, 0],
+  },
+  {
+    id: 'points',
+    options: [1, 0],
+    validate: 'contains_only',
+    defaultValue: [],
+  },
+  {
+    id: 'lat',
+    options: [BOUNDS.lat.min, BOUNDS.lat.max],
+    validate: 'between_options',
+    defaultValue: DEFAULT_VIEWPORT.latitude,
+  },
+  {
+    id: 'lng',
+    options: [BOUNDS.lng.min, BOUNDS.lng.max],
+    validate: 'between_options',
+    defaultValue: DEFAULT_VIEWPORT.longitude,
+  },
+  {
+    id: 'zoom',
+    options: [BOUNDS.zoom.min, BOUNDS.zoom.max],
+    validate: 'between_options',
+    defaultValue: DEFAULT_VIEWPORT.zoom,
+  },
+]
+
+// '/explorer/tot_popE_18_sd/1,1,1,1,1/0,0,1,0//32.912/-96.866/8/'
+export const DEFAULT_ROUTE = `/${ROUTE_SET[0].defaultValue}/${ROUTE_SET[1].defaultValue}/${ROUTE_SET[2].defaultValue}/${ROUTE_SET[3].defaultValue}/${ROUTE_SET[4].defaultValue}/${ROUTE_SET[5].defaultValue}/${ROUTE_SET[6].defaultValue}/${ROUTE_SET[7].defaultValue}/`

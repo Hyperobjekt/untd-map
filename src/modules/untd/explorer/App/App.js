@@ -12,7 +12,7 @@ import { BREAKPOINTS } from './../../../../constants/layers'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
-import { ROUTE_SET } from './../../../../constants/map'
+// import { ROUTE_SET } from './../../../../constants/map'
 import LangManager from './../LangManager/LangManager'
 
 /**
@@ -208,7 +208,7 @@ const App = props => {
     <>
       <LangManager />
       <DataLoader />
-      <RouteManager routeSet={ROUTE_SET} />
+      <RouteManager />
       <Layout></Layout>
     </>
   )

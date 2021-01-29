@@ -3,8 +3,6 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './../store'
-// import { schools } from './../../../../data/schools'
-import { CPAL_FEEDERS } from './../../../../constants/metrics'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 import {
@@ -23,12 +21,12 @@ const Tracking = ({ ...props }) => {
   )
   const activeLayers = useStore(state => state.activeLayers)
   const hovered = useStore(state => state.hovered)
-  const activeFeeder = useStore(state => state.activeFeeder)
+  // const activeFeeder = useStore(state => state.activeFeeder)
   const viewport = useStore(state => state.viewport)
-  const feederLocked = useStore(state => state.feederLocked)
-  const highlightedSchool = useStore(
-    state => state.highlightedSchool,
-  )
+  // const feederLocked = useStore(state => state.feederLocked)
+  // const highlightedSchool = useStore(
+  //   state => state.highlightedSchool,
+  // )
   const eventShareTwitter = useStore(
     state => state.eventShareTwitter,
   )
@@ -47,18 +45,18 @@ const Tracking = ({ ...props }) => {
   const eventMapCapture = useStore(
     state => state.eventMapCapture,
   )
-  const eventSchoolSearch = useStore(
-    state => state.eventSchoolSearch,
-  )
-  const eventSchoolPage = useStore(
-    state => state.eventSchoolPage,
-  )
-  const flyToSchoolSLN = useStore(
-    state => state.flyToSchoolSLN,
-  )
-  const accessedSchool = useStore(
-    state => state.accessedSchool,
-  )
+  // const eventSchoolSearch = useStore(
+  //   state => state.eventSchoolSearch,
+  // )
+  // const eventSchoolPage = useStore(
+  //   state => state.eventSchoolPage,
+  // )
+  // const flyToSchoolSLN = useStore(
+  //   state => state.flyToSchoolSLN,
+  // )
+  // const accessedSchool = useStore(
+  //   state => state.accessedSchool,
+  // )
   const eventError = useStore(state => state.eventError)
   // Tour is launched.
   const eventLaunchTour = useStore(
@@ -82,14 +80,14 @@ const Tracking = ({ ...props }) => {
   )
 
   // Get school from schools collection.
-  const getSchool = id => {
-    const schools = useStore(
-      state => state.remoteJson.schools,
-    )
-    return schools.filter(el => {
-      return Number(el.TEA) === Number(id)
-    })[0]
-  }
+  // const getSchool = id => {
+  //   const schools = useStore(
+  //     state => state.remoteJson.schools,
+  //   )
+  //   return schools.filter(el => {
+  //     return Number(el.TEA) === Number(id)
+  //   })[0]
+  // }
 
   const trackCustomEvent = data => {
     // console.log('trackCustomEvent, ', data)
@@ -137,16 +135,16 @@ const Tracking = ({ ...props }) => {
         eventAction = 'Copy share link'
         eventLabel = shareHash
         break
-      case params.type === 'select_view_map':
-        eventCategory = 'Select view'
-        eventAction = 'Select map view'
-        eventLabel = 'map'
-        break
-      case params.type === 'select_view_feeder':
-        eventCategory = 'Select view'
-        eventAction = 'Select feeder view'
-        eventLabel = 'feeder'
-        break
+      // case params.type === 'select_view_map':
+      //   eventCategory = 'Select view'
+      //   eventAction = 'Select map view'
+      //   eventLabel = 'map'
+      //   break
+      // case params.type === 'select_view_feeder':
+      //   eventCategory = 'Select view'
+      //   eventAction = 'Select feeder view'
+      //   eventLabel = 'feeder'
+      //   break
       case params.type === 'select_active_metric':
         eventCategory = 'Configure map view'
         eventAction = 'Select active metric'
@@ -162,53 +160,53 @@ const Tracking = ({ ...props }) => {
         eventAction = 'Update layers'
         eventLabel = activeLayers.toString()
         break
-      case params.type === 'search_school':
-        eventCategory = 'Interact with school'
-        eventAction = 'Search for school'
-        var id =
-          activeView === 'map'
-            ? flyToSchoolSLN
-            : highlightedSchool
-        if (!!id) {
-          eventLabel = getFeatureLabel(id)
-            ? getFeatureLabel(id)
-            : null
-          eventValue = id
-        }
-        break
-      case params.type === 'select_feeder':
-        eventCategory = 'Update feeder view'
-        eventAction = 'Select a feeder'
-        const feeder = CPAL_FEEDERS.filter(el => {
-          return Number(el.id) === Number(activeFeeder)
-        })[0]
-        eventLabel = feeder.title
-        eventValue = activeFeeder
-        // code block
-        break
-      case params.type === 'view_school_details':
-        eventCategory = 'Interact with school'
-        eventAction = 'View school details (hover or touch)'
-        var id = hovered ? hovered : false
-        if (!!id) {
-          eventLabel = getFeatureLabel(id)
-            ? getFeatureLabel(id)
-            : null
-          eventValue = id
-        }
-        break
-      case params.type === 'access_school_page':
-        eventCategory = 'Interact with school'
-        eventAction = 'Navigate to school page (click)'
-        var id =
-          activeView === 'map' ? hovered : accessedSchool
-        if (!!id) {
-          eventLabel = getFeatureLabel(id)
-            ? getFeatureLabel(id)
-            : null
-          eventValue = id
-        }
-        break
+      // case params.type === 'search_school':
+      //   eventCategory = 'Interact with school'
+      //   eventAction = 'Search for school'
+      //   var id =
+      //     activeView === 'map'
+      //       ? flyToSchoolSLN
+      //       : highlightedSchool
+      //   if (!!id) {
+      //     eventLabel = getFeatureLabel(id)
+      //       ? getFeatureLabel(id)
+      //       : null
+      //     eventValue = id
+      //   }
+      //   break
+      // case params.type === 'select_feeder':
+      //   eventCategory = 'Update feeder view'
+      //   eventAction = 'Select a feeder'
+      //   const feeder = CPAL_FEEDERS.filter(el => {
+      //     return Number(el.id) === Number(activeFeeder)
+      //   })[0]
+      //   eventLabel = feeder.title
+      //   eventValue = activeFeeder
+      //   // code block
+      //   break
+      // case params.type === 'view_school_details':
+      //   eventCategory = 'Interact with school'
+      //   eventAction = 'View school details (hover or touch)'
+      //   var id = hovered ? hovered : false
+      //   if (!!id) {
+      //     eventLabel = getFeatureLabel(id)
+      //       ? getFeatureLabel(id)
+      //       : null
+      //     eventValue = id
+      //   }
+      //   break
+      // case params.type === 'access_school_page':
+      //   eventCategory = 'Interact with school'
+      //   eventAction = 'Navigate to school page (click)'
+      //   var id =
+      //     activeView === 'map' ? hovered : accessedSchool
+      //   if (!!id) {
+      //     eventLabel = getFeatureLabel(id)
+      //       ? getFeatureLabel(id)
+      //       : null
+      //     eventValue = id
+      //   }
+      //   break
       case params.type === 'map_zoom':
         eventCategory = 'Use map controls'
         eventAction = 'Zoom in or out'
@@ -296,9 +294,9 @@ const Tracking = ({ ...props }) => {
     trackEvent({ type: 'share_link' })
   }, [eventShareLink])
   // When activeView changes, record the change.
-  useEffect(() => {
-    trackEvent({ type: 'select_view_' + activeView })
-  }, [activeView])
+  // useEffect(() => {
+  //   trackEvent({ type: 'select_view_' + activeView })
+  // }, [activeView])
   // When activeMetric changes, record the change.
   useEffect(() => {
     trackEvent({ type: 'select_active_metric' })
@@ -312,21 +310,15 @@ const Tracking = ({ ...props }) => {
   }, [debouncedQuintiles])
   // When school hovered, record the changes.
   // TODO: Address edge cases where hovered is changed for another reason (search).
-  useEffect(() => {
-    if (!!hovered) {
-      trackEvent({ type: 'view_school_details' })
-    }
-  }, [hovered])
+  // useEffect(() => {
+  //   if (!!hovered) {
+  //     trackEvent({ type: 'view_school_details' })
+  //   }
+  // }, [hovered])
   // When layers change, record the changes.
   useEffect(() => {
     trackEvent({ type: 'update_layers' })
   }, [activeLayers])
-  // When feeder locked in, record the changes.
-  useEffect(() => {
-    if (!!feederLocked && highlightedSchool.length === 0) {
-      trackEvent({ type: 'select_feeder' })
-    }
-  }, [activeFeeder])
   // When zoom changes, record the change.
   // Debounce the value to avoid recording every
   // minor transition during a zoom action.
@@ -369,15 +361,15 @@ const Tracking = ({ ...props }) => {
     trackEvent({ type: 'map_screencap' })
   }, [eventMapCapture])
   // When school searched, record.
-  useEffect(() => {
-    trackEvent({ type: 'search_school' })
-  }, [eventSchoolSearch])
-  // When school page accessed, record.
-  useEffect(() => {
-    if (!!hovered || !!accessedSchool) {
-      trackEvent({ type: 'access_school_page' })
-    }
-  }, [eventSchoolPage])
+  // useEffect(() => {
+  //   trackEvent({ type: 'search_school' })
+  // }, [eventSchoolSearch])
+  // // When school page accessed, record.
+  // useEffect(() => {
+  //   if (!!hovered || !!accessedSchool) {
+  //     trackEvent({ type: 'access_school_page' })
+  //   }
+  // }, [eventSchoolPage])
   // Detect and submit errors.
   useEffect(() => {
     trackEvent({ type: 'error' })

@@ -18,7 +18,6 @@ import {
   UNTD_LAYERS,
   POINT_TYPES_COLORS,
 } from './../../../../constants/layers'
-import { CPAL_METRICS } from './../../../../constants/metrics'
 import {
   getMetric,
   getQuintile,

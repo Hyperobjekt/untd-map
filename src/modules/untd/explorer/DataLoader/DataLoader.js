@@ -5,9 +5,13 @@ import { css, cx } from 'emotion'
 import { Progress } from 'reactstrap'
 import clsx from 'clsx'
 import * as Papa from 'papaparse'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store.js'
-import { DATA_FILES } from './../../../../constants/map'
+import {
+  DATA_FILES,
+  ROUTE_SET,
+} from './../../../../constants/map'
 import { variables } from './../theme'
 
 // TODO:
@@ -17,12 +21,12 @@ import { variables } from './../theme'
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
-  //
-  const dataLoadedPercent = useStore(
-    state => state.dataLoadedPercent,
-  )
-  const allDataLoaded = useStore(
-    state => state.allDataLoaded,
+
+  const { dataLoadedPercent, allDataLoaded } = useStore(
+    state => ({
+      dataLoadedPercent: state.dataLoadedPercent,
+      allDataLoaded: state.allDataLoaded,
+    }),
   )
 
   const allDataLoadedStyles = css`
@@ -123,24 +127,40 @@ const DataLoaderContent = ({ ...props }) => {
 
 const DataLoader = ({ ...props }) => {
   // console.log("Hey, it's the DataLoader!!!!!!")
+  const {
+    setStoreValues,
+    setRemoteJson,
+    setLang,
+    incrementLangUpdates,
+    addIndicators,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      setRemoteJson: state.setRemoteJson,
+      setLang: state.setLang,
+      incrementLangUpdates: state.incrementLangUpdates,
+      addIndicators: state.addIndicators,
+    }),
+    shallow,
+  )
   // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
+  // const setStoreValues = useStore(
+  //   state => state.setStoreValues,
+  // )
   // Special setter to merge loaded json into existing obj.
-  const setRemoteJson = useStore(
-    state => state.setRemoteJson,
-  )
+  // const setRemoteJson = useStore(
+  //   state => state.setRemoteJson,
+  // )
   // Set one lang locale object
-  const setLang = useStore(state => state.setLang)
+  // const setLang = useStore(state => state.setLang)
   // Counter for language pack updates.
-  const incrementLangUpdates = useStore(
-    state => state.incrementLangUpdates,
-  )
+  // const incrementLangUpdates = useStore(
+  //   state => state.incrementLangUpdates,
+  // )
   // Push an array of indicators to indicators array in store.
-  const addIndicators = useStore(
-    state => state.addIndicators,
-  )
+  // const addIndicators = useStore(
+  //   state => state.addIndicators,
+  // )
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
   // Counter for loaded files.
@@ -299,8 +319,26 @@ const DataLoader = ({ ...props }) => {
                   // Save indicators to indicator list.
                   console.log('indicators, ', indicators)
                   addIndicators(indicators)
+                  const indicatorKeys = indicators.map(
+                    el => {
+                      return el.id
+                    },
+                  )
+                  const routeSet = ROUTE_SET
+                  console.log('routeSet, ', routeSet)
+                  const metricIndex = routeSet
+                    .map(el => {
+                      return el.id
+                    })
+                    .indexOf('metric')
+                  console.log('metricIndex, ', metricIndex)
+                  routeSet[
+                    metricIndex
+                  ].options = indicatorKeys
+                  console.log('routeSet, ', routeSet)
                   // Save point types to point type list
                   setStoreValues({
+                    routeSet: routeSet,
                     pointTypes: pointTypes,
                     activePointTypes: activePointTypes,
                     activePointTypesKey: activePointTypesKey,
