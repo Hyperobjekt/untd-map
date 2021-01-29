@@ -174,6 +174,14 @@ const DataLoader = ({ ...props }) => {
                 type: `geojson`,
                 data: JSON.parse(xhr.responseText),
               }
+              if (el.type === 'point') {
+                obj[el.id].cluster = true
+                obj[el.id].clusterRadius = 50
+                obj[el.id].clusterMaxZoom = 13
+                obj[el.id].clusterProperties = {
+                  sum: ['+', ['get', 'scalerank']],
+                }
+              }
               setRemoteJson(obj)
             } else {
               // Parse the file and merge with lang file.

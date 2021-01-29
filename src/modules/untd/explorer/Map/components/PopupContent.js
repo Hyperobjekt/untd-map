@@ -20,10 +20,10 @@ import useStore from './../../store'
  * Returns popup contents for map feature mouseover
  */
 const PopupContent = ({ ...props }) => {
-  if (props.feature) {
-    console.log('props.feature exists')
-    console.log('props.feature, ', props.feature)
-  }
+  // if (props.feature) {
+  //   console.log('props.feature exists')
+  //   console.log('props.feature, ', props.feature)
+  // }
   // Generic state updates for store.
   // Accepts an object of values to update.
   const setStoreValues = useStore(
@@ -44,16 +44,16 @@ const PopupContent = ({ ...props }) => {
   })
 
   const setActiveQuintile = quintile => {
-    console.log('setActiveQuintile, ', quintile)
+    // console.log('setActiveQuintile, ', quintile)
     const arr = [0, 0, 0, 0, 0]
     arr[quintile] = 1
-    console.log(arr)
+    // console.log(arr)
     return arr
   }
 
   if (!!props.feature) {
     if (props.feature.layer.source === 'points') {
-      console.log(`it's a points feature`)
+      // console.log(`it's a points feature`)
       return (
         <div className="popup-content">
           <div className="popup-school-name">

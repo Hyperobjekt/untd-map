@@ -51,7 +51,8 @@ const MapView = props => {
 
   // Data sources constructed as files load.
   const sources = useStore(state => state.remoteJson)
-  // console.log(sources)
+  console.log('MapView, sources,', sources)
+
   // Tracks when all data sources are loaded.
   const allDataLoaded = useStore(
     state => state.allDataLoaded,

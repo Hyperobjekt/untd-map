@@ -79,6 +79,18 @@ export const ROUTE_SET = [
   'zoom', // Zoom level
 ]
 
+export const DEFAULT_ACTIVE_LAYERS = [
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+]
+
 export const BOUNDS = {
   lat: {
     max: 33.75, // 33.26625,

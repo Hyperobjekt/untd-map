@@ -4,6 +4,7 @@ import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { MdCallSplit } from 'react-icons/md'
+import { FormGroup, Label, Input } from 'reactstrap'
 
 import useStore from './../store'
 import {
@@ -23,6 +24,8 @@ const PanelLayersView = ({ ...props }) => {
   const activePointTypes = useStore(
     state => state.activePointTypes,
   )
+
+  // console.log('pointTypes, ', pointTypes)
 
   const getItems = el => {
     switch (el.list) {
@@ -91,6 +94,7 @@ const PanelLayersView = ({ ...props }) => {
   }
 
   const updateLayers = e => {
+    console.log('updateLayers, ', e)
     // If item is checked, if it's not in array, push it into array
     // If item is not checked, if it's in array, remove
     // If the element is an only-one element, reset other only-ones of same name.
@@ -108,25 +112,29 @@ const PanelLayersView = ({ ...props }) => {
     // Overall index.
     const allIndex = allInputs.indexOf(el)
     // Dataset of selected item.
-    const dataset = el.dataset
-    // New activeLayers array to manipulate without
-    // messing up the app state.
+    // const dataset = el.dataset
+    // // New activeLayers array to manipulate without
+    // // messing up the app state.
     let newLayers = activeLayers.slice()
-    if (dataset.onlyOne === 'true') {
-      // console.log('it is an only-one')
-      const name = dataset.onlyOneName
-      // Remove all the matching only-ones from the activeLayers array.
-      UNTD_LAYERS.forEach((el, i) => {
-        if (
-          el.only_one === true &&
-          el.only_one_name === name &&
-          i !== allIndex
-        ) {
-          newLayers[Number(el.index)] = 0
-        }
-      })
-    }
-    newLayers[allIndex] = newLayers[allIndex] === 1 ? 0 : 1
+    allInputs.forEach((el, i) => {
+      newLayers[i] = 0
+    })
+    newLayers[allIndex] = 1
+    // if (dataset.onlyOne === 'true') {
+    //   // console.log('it is an only-one')
+    //   const name = dataset.onlyOneName
+    // Remove all the matching only-ones from the activeLayers array.
+    // UNTD_LAYERS.forEach((el, i) => {
+    //   if (
+    //     // el.only_one === true &&
+    //     // el.only_one_name === name &&
+    //     i !== allIndex
+    //   ) {
+    //     newLayers[Number(el.index)] = 0
+    //   }
+    // })
+    // }
+    // newLayers[allIndex] = newLayers[allIndex] === 1 ? 0 : 1
     setStoreValues({
       activeLayers: newLayers,
     })
@@ -138,6 +146,35 @@ const PanelLayersView = ({ ...props }) => {
     setLayersKey(layersKey + 1)
   }, [activeLayers])
 
+  // <div
+  //   className={clsx(
+  //     'layer-group',
+  //     'layer-group-layers-geo',
+  //   )}
+  //   key={'layer-group-layers-geo'}
+  // >
+  //   {UNTD_LAYERS.map((layer, ind) => {
+  //     const isChecked = !!activeLayers[
+  //       ind // Number(layer.index)
+  //     ]
+  //     return (
+  //       <LayersInput
+  //         key={`layer-input-${layer.id}`}
+  //         id={`input_${layer.id}_${ind}`}
+  //         layer={layer}
+  //         ind={ind}
+  //         isChecked={isChecked}
+  //         label={getLayerLabel(
+  //           layer.id,
+  //           UNTD_LAYERS,
+  //         )}
+  //         tooltip={layer.tooltip}
+  //         update={updateLayers}
+  //       />
+  //     )
+  //   })}
+  // </div>
+
   return (
     <div
       className="map-panel-slideout-layers"
@@ -148,44 +185,54 @@ const PanelLayersView = ({ ...props }) => {
           className={clsx('layer-group', 'layer-group-geo')}
           key={'layer-group-geo-' + layersKey}
         >
-          <h5 key={'layer-group-header-geo'}>
-            {i18n.translate(`UI_MAP_LAYER_0_TITLE`)}
-          </h5>
-          <div
-            key={'layer-group-desc-geo'}
-            className="layer-group-desc"
-            dangerouslySetInnerHTML={{
-              __html: i18n.translate(`UI_MAP_LAYER_0_DESC`),
-            }}
-          ></div>
-          <div
+          <FormGroup
+            tag="fieldset"
             className={clsx(
               'layer-group',
               'layer-group-layers-geo',
             )}
             key={'layer-group-layers-geo'}
           >
+            <h5 key={'layer-group-header-geo'}>
+              {i18n.translate(`UI_MAP_LAYER_0_TITLE`)}
+            </h5>
+            <div
+              key={'layer-group-desc-geo'}
+              className="layer-group-desc"
+              dangerouslySetInnerHTML={{
+                __html: i18n.translate(
+                  `UI_MAP_LAYER_0_DESC`,
+                ),
+              }}
+            ></div>
             {UNTD_LAYERS.map((layer, ind) => {
               const isChecked = !!activeLayers[
                 ind // Number(layer.index)
               ]
               return (
-                <LayersInput
-                  key={`layer-input-${layer.id}`}
-                  id={`input_${layer.id}_${ind}`}
-                  layer={layer}
-                  ind={ind}
-                  isChecked={isChecked}
-                  label={getLayerLabel(
-                    layer.id,
-                    UNTD_LAYERS,
-                  )}
-                  tooltip={layer.tooltip}
-                  update={updateLayers}
-                />
+                <FormGroup check>
+                  <Label check>
+                    <Input
+                      type="radio"
+                      name={layer}
+                      value={layer}
+                      checked={isChecked}
+                      id={`input_${layer.id}_${ind}`}
+                      onChange={updateLayers}
+                    />
+                    {toSentenceCase(
+                      i18n.translate(
+                        getLayerLabel(
+                          layer.id,
+                          UNTD_LAYERS,
+                        ),
+                      ),
+                    )}
+                  </Label>
+                </FormGroup>
               )
             })}
-          </div>
+          </FormGroup>
         </div>
         <div className={clsx(`map-layer-toggle-pane`)}>
           <div
@@ -220,7 +267,7 @@ const PanelLayersView = ({ ...props }) => {
                 ]
                 return (
                   <LayersInput
-                    key={`layer-input-${layer.id}`}
+                    key={`layer-input-group-${layer.id}`}
                     layer={layer}
                     id={`input_${layer.id}_${ind}`}
                     ind={ind}

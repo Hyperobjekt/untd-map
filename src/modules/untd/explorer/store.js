@@ -9,6 +9,7 @@ import en_US from './../../../constants/en_US'
 import {
   DEFAULT_VIEWPORT,
   DEFAULT_ROUTE,
+  DEFAULT_ACTIVE_LAYERS,
 } from './../../../constants/map'
 
 const [useStore] = create((set, get) => ({
@@ -109,7 +110,7 @@ const [useStore] = create((set, get) => ({
     }))
   },
   schoolZonesAffix: `200`,
-  activeLayers: [1, 0, 0, 0, 0, 0, 0, 0, 0],
+  activeLayers: DEFAULT_ACTIVE_LAYERS,
   pointTypes: [],
   activePointTypesKey: [],
   activePointTypes: [],
@@ -155,12 +156,13 @@ const [useStore] = create((set, get) => ({
     feature,
     options = { showTooltip: true, showMarkers: true },
   ) => {
-    console.log(
-      'setHovered',
-      hoveredId,
-      hoveredType,
-      coords,
-    )
+    // Uncomment to watch what's hovered.
+    // console.log(
+    //   'setHovered',
+    //   hoveredId,
+    //   hoveredType,
+    //   coords,
+    // )
     set(state => ({
       hovered: hoveredId,
       type: hoveredType,
