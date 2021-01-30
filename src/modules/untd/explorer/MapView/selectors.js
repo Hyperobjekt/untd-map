@@ -22,6 +22,13 @@ import {
 
 const noDataFill = '#ccc'
 
+export const getPointClusters = (type, context) => {
+  return fromJS({
+    id: `${type}Clusters`,
+    source: type,
+  })
+}
+
 export const getPointIcons = (type, context) => {
   console.log('getPointIcons, ', type, context)
   const activePointTypesKey = context.pointTypes.map(el => {
@@ -79,31 +86,6 @@ export const getPointIcons = (type, context) => {
         1,
       ],
     ],
-    // 'icon-color': 'red',
-    // [
-    //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-    //   ['get', 'STORE_TYPE'], // Use the result 'STORE_TYPE' property
-    //   'Convenience Store',
-    //   '#FF8C00',
-    //   'Convenience Store With Gas',
-    //   '#FF8C00',
-    //   'Pharmacy',
-    //   '#FF8C00',
-    //   'Specialty Food Store',
-    //   '#9ACD32',
-    //   'Small Grocery Store',
-    //   '#008000',
-    //   'Supercenter',
-    //   '#008000',
-    //   'Superette',
-    //   '#008000',
-    //   'Supermarket',
-    //   '#008000',
-    //   'Warehouse Club Store',
-    //   '#008000',
-    //   '#FF0000', // any other store type
-    // ],
-    // },
   })
 }
 
