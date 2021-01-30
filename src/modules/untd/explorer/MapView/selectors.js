@@ -23,17 +23,11 @@ import {
 const noDataFill = '#ccc'
 
 export const getPointIcons = (type, context) => {
-  console.log('getPointIcons, ', type)
-  // const isVisible =
-  //   activeLayers[
-  //     UNTD_LAYERS.findIndex(el => el.id === type)
-  //   ] === 1
-  // console.log('isVisible, ', isVisible)
-  const activePointTypesKey = context.activePointTypes.map(
-    el => {
-      return el.id
-    },
-  )
+  console.log('getPointIcons, ', type, context)
+  const activePointTypesKey = context.pointTypes.map(el => {
+    return el.id
+  })
+  console.log('activePointTypesKey,', activePointTypesKey)
   return fromJS({
     id: `${type}Points`,
     source: type,
@@ -49,7 +43,18 @@ export const getPointIcons = (type, context) => {
     },
     interactive: true,
     paint: {
-      'icon-color': 'orange',
+      'icon-color': [
+        'to-color',
+        [
+          'at',
+          [
+            'index-of',
+            ['get', 'variable'],
+            ['literal', activePointTypesKey],
+          ],
+          ['literal', POINT_TYPES_COLORS],
+        ],
+      ],
       // 'icon-halo-color': 'red',
       'icon-halo-width': 3,
 
@@ -57,23 +62,23 @@ export const getPointIcons = (type, context) => {
       //   'circle-opacity': 1,
       //   'circle-radius': 5,
     },
-    // filter: [
-    // 'all',
-    // ['!', ['has', 'point_count']],
-    // [
-    //   '==',
-    //   [
-    //     'at',
-    //     [
-    //       'index-of',
-    //       ['get', 'variable'],
-    //       ['literal', activePointTypesKey],
-    //     ],
-    //     ['literal', context.activePointTypes],
-    //   ],
-    //   1,
-    // ],
-    // ],
+    filter: [
+      'all',
+      ['!', ['has', 'point_count']],
+      [
+        '==',
+        [
+          'at',
+          [
+            'index-of',
+            ['get', 'variable'],
+            ['literal', activePointTypesKey],
+          ],
+          ['literal', context.activePointTypes],
+        ],
+        1,
+      ],
+    ],
     // 'icon-color': 'red',
     // [
     //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
@@ -222,15 +227,15 @@ export const getPolygonLines = (type, context) => {
     paint: {
       'line-color': [
         'case',
-        ['==', ['get', context.metric], 0],
+        ['==', ['get', context.activeMetric], 0],
         CRI_COLORS[0],
-        ['==', ['get', context.metric], 1],
+        ['==', ['get', context.activeMetric], 1],
         CRI_COLORS[1],
-        ['==', ['get', context.metric], 2],
+        ['==', ['get', context.activeMetric], 2],
         CRI_COLORS[2],
-        ['==', ['get', context.metric], 3],
+        ['==', ['get', context.activeMetric], 3],
         CRI_COLORS[3],
-        ['==', ['get', context.metric], 4],
+        ['==', ['get', context.activeMetric], 4],
         CRI_COLORS[4],
         CRI_COLORS[2],
       ],
@@ -241,7 +246,7 @@ export const getPolygonLines = (type, context) => {
     },
     filter: getFilter(
       type,
-      context.metric,
+      context.activeMetric,
       context.activeQuintiles,
     ),
   })
@@ -266,15 +271,15 @@ export const getPolygonShapes = (type, context) => {
     paint: {
       'fill-color': [
         'case',
-        ['==', ['get', context.metric], 0],
+        ['==', ['get', context.activeMetric], 0],
         CRI_COLORS[0],
-        ['==', ['get', context.metric], 1],
+        ['==', ['get', context.activeMetric], 1],
         CRI_COLORS[1],
-        ['==', ['get', context.metric], 2],
+        ['==', ['get', context.activeMetric], 2],
         CRI_COLORS[2],
-        ['==', ['get', context.metric], 3],
+        ['==', ['get', context.activeMetric], 3],
         CRI_COLORS[3],
-        ['==', ['get', context.metric], 4],
+        ['==', ['get', context.activeMetric], 4],
         CRI_COLORS[4],
         CRI_COLORS[2],
       ],
@@ -287,7 +292,7 @@ export const getPolygonShapes = (type, context) => {
     },
     filter: getFilter(
       type,
-      context.metric,
+      context.activeMetric,
       context.activeQuintiles,
     ),
   })

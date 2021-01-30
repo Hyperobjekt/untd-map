@@ -90,7 +90,12 @@ const MapView = props => {
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
     console.log('triggering layers fetch')
-    if (!isLoaded.current) {
+    if (
+      !activeMetric ||
+      !activeQuintiles ||
+      !activeLayers ||
+      !allDataLoaded
+    ) {
       console.log('returning')
       return []
     }
@@ -179,9 +184,9 @@ const MapView = props => {
   }
 
   /** handler for map click */
-  const eventSchoolPage = useStore(
-    state => state.eventSchoolPage,
-  )
+  // const eventSchoolPage = useStore(
+  //   state => state.eventSchoolPage,
+  // )
   const handleClick = (feature, coords, geoCoords) => {
     // console.log('handle click, ', feature)
     // If the item is hovered, navigate to the school.
