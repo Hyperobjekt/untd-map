@@ -77,7 +77,7 @@ const isZoomValid = zoom => {
  * @return {Boolean}        [description]
  */
 const isRouteValid = params => {
-  console.log('isRouteValid(), ', params, ROUTE_SET)
+  // console.log('isRouteValid(), ', params, ROUTE_SET)
   let isValid = true
   if (
     !validateRouteOption(ROUTE_SET[0], params.view) ||

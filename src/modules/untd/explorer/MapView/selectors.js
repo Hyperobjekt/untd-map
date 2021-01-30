@@ -1,9 +1,5 @@
 import { fromJS } from 'immutable'
-// import { getDistrictColor } from './../selectors'
-// import {
-//   getSchoolZones,
-//   getSchoolGeojson,
-// } from './../utils'
+
 import {
   DISTRICT_COLORS,
   SCHOOL_ZONE_COLORS,
@@ -26,18 +22,18 @@ import {
 
 const noDataFill = '#ccc'
 
-export const getPointIcons = (
-  type,
-  context,
-  activePointTypes,
-  activePointTypesKey,
-) => {
+export const getPointIcons = (type, context) => {
   console.log('getPointIcons, ', type)
   // const isVisible =
   //   activeLayers[
   //     UNTD_LAYERS.findIndex(el => el.id === type)
   //   ] === 1
   // console.log('isVisible, ', isVisible)
+  const activePointTypesKey = context.activePointTypes.map(
+    el => {
+      return el.id
+    },
+  )
   return fromJS({
     id: `${type}Points`,
     source: type,
@@ -61,23 +57,23 @@ export const getPointIcons = (
       //   'circle-opacity': 1,
       //   'circle-radius': 5,
     },
-    filter: [
-      'all',
-      ['!', ['has', 'point_count']],
-      [
-        '==',
-        [
-          'at',
-          [
-            'index-of',
-            ['get', 'variable'],
-            ['literal', activePointTypesKey],
-          ],
-          ['literal', activePointTypes],
-        ],
-        1,
-      ],
-    ],
+    // filter: [
+    // 'all',
+    // ['!', ['has', 'point_count']],
+    // [
+    //   '==',
+    //   [
+    //     'at',
+    //     [
+    //       'index-of',
+    //       ['get', 'variable'],
+    //       ['literal', activePointTypesKey],
+    //     ],
+    //     ['literal', context.activePointTypes],
+    //   ],
+    //   1,
+    // ],
+    // ],
     // 'icon-color': 'red',
     // [
     //   'match', // Use the 'match' expression: https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
@@ -209,14 +205,10 @@ const getFilter = (type, metric, activeQuintiles) => {
   }
 }
 
-export const getPolygonLines = (
-  type,
-  context,
-  activeLayers,
-) => {
-  console.log('getPolygonLines(), ', context)
+export const getPolygonLines = (type, context) => {
+  // console.log('getPolygonLines(), ', context)
   const isVisible =
-    activeLayers[
+    context.activeLayers[
       UNTD_LAYERS.findIndex(el => el.id === type)
     ] === 1
   return fromJS({
@@ -255,20 +247,11 @@ export const getPolygonLines = (
   })
 }
 
-export const getPolygonShapes = (
-  type,
-  context,
-  activeLayers,
-) => {
-  console.log(
-    'getPolygonShapes(), ',
-    type,
-    context,
-    activeLayers,
-  )
-  console.log('CRI_COLORS', CRI_COLORS)
+export const getPolygonShapes = (type, context) => {
+  // console.log('getPolygonShapes(), ', type, context)
+  // console.log('CRI_COLORS', CRI_COLORS)
   const isVisible =
-    activeLayers[
+    context.activeLayers[
       UNTD_LAYERS.findIndex(el => el.id === type)
     ] === 1
   // console.log('isVisible, ', isVisible)
@@ -368,36 +351,15 @@ export const getPointLayers = (
   ]
 }
 
-export const getLayers = (
-  sources,
-  context,
-  activeLayers,
-  activePointTypes,
-  activePointTypesKey,
-) => {
-  console.log('getLayers', sources, context, activeLayers)
+export const getLayers = (sources, context) => {
+  console.log('getLayers', sources, context)
   const layers = []
-  layers.push(
-    ...getPolygonLayers('counties', context, activeLayers),
-  )
-  layers.push(
-    ...getPolygonLayers('zips', context, activeLayers),
-  )
-  layers.push(
-    ...getPolygonLayers('tracts', context, activeLayers),
-  )
-  layers.push(
-    ...getPolygonLayers('places', context, activeLayers),
-  )
+  layers.push(...getPolygonLayers('counties', context))
+  layers.push(...getPolygonLayers('zips', context))
+  layers.push(...getPolygonLayers('tracts', context))
+  layers.push(...getPolygonLayers('places', context))
   // Add a layer for each point type,
   // and a cluster layer for each point type.
-  layers.push(
-    ...getPointLayers(
-      'points',
-      context,
-      activePointTypes,
-      activePointTypesKey,
-    ),
-  )
+  layers.push(...getPointLayers('points', context))
   return layers
 }

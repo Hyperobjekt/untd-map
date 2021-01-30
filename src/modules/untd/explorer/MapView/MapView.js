@@ -11,8 +11,8 @@ import {
   getMetric,
   getQuintilesPhrase,
   getFeatureProperty,
-  getSchoolZones,
-  getSchoolGeojson,
+  // getSchoolZones,
+  // getSchoolGeojson,
   getFeatureId,
   getFeatureTypeObj,
   getFeatureSource,
@@ -23,48 +23,55 @@ import useStore from './../store'
 const MapView = props => {
   // Generic state updates for store.
   // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    pointTypes,
+    activeMetric,
+    // activeQuintiles,
+    breakpoint,
+    showMapModal,
+    interactionsMobile,
+    hoveredId,
+    hoveredType,
+    feature,
+    coords,
+    setHovered,
+    remoteJson,
+    allDataLoaded,
+    viewport,
+    // activeLayers,
+    // activePointTypes,
+    activeView,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      pointTypes: state.pointTypes,
+      activeMetric: state.activeMetric,
+      // activeQuintiles: state.activeQuintiles,
+      breakpoint: state.breakpoint,
+      showMapModal: state.showMapModal,
+      interactionsMobile: state.interactionsMobile,
+      hoveredId: state.hoveredId,
+      hoveredType: state.hoveredType,
+      feature: state.feature,
+      coords: state.coords,
+      setHovered: state.setHovered,
+      remoteJson: state.remoteJson,
+      allDataLoaded: state.allDataLoaded,
+      viewport: state.viewport,
+      // activeLayers: [...state.activeLayers],
+      // activePointTypes: [...state.activePointTypes],
+      activeView: state.activeView,
+    }),
+    shallow,
   )
   // Currently active metric
-  const metric = useStore(state => state.activeMetric)
+  // const metric = useStore(state => state.activeMetric)
   // Active quintiles
   const activeQuintiles = useStore(
     state => [...state.activeQuintiles],
     shallow,
   )
-  // Explorer breakpoint stored in state
-  const breakpoint = useStore(state => state.breakpoint)
-  // Manage display of map modal
-  const showMapModal = useStore(state => state.showMapModal)
-  // Tracks whether to handle interactions as mobile
-  const interactionsMobile = useStore(
-    state => state.interactionsMobile,
-  )
-
-  // All items to be passed into map from state.
-  const hoveredId = useStore(state => state.hovered)
-  const hoveredType = useStore(state => state.type)
-  const feature = useStore(state => state.feature)
-  const coords = useStore(state => state.coords)
-  const setHovered = useStore(state => state.setHovered)
-
-  // Data sources constructed as files load.
-  const sources = useStore(state => state.remoteJson)
-  // console.log('MapView, sources,', sources)
-
-  // Tracks when all data sources are loaded.
-  const allDataLoaded = useStore(
-    state => state.allDataLoaded,
-  )
-
-  // Default affix for features in school zones layer
-  const schoolZonesAffix = useStore(
-    state => state.schoolZonesAffix,
-  )
-  // Default viewport
-  const viewport = useStore(state => state.viewport)
-  // Active layers
   const activeLayers = useStore(
     state => [...state.activeLayers],
     shallow,
@@ -74,44 +81,40 @@ const MapView = props => {
     state => [...state.activePointTypes],
     shallow,
   )
-  const activePointTypesKey = useStore(
-    state => state.activePointTypesKey,
-  )
-  // Active view
-  const activeView = useStore(state => state.activeView)
+
+  console.log('mapview, sources: ', remoteJson)
 
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)
 
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
-    if (
-      !metric ||
-      !activeQuintiles ||
-      !activeLayers ||
-      !allDataLoaded
-    ) {
+    console.log('triggering layers fetch')
+    if (!isLoaded.current) {
+      console.log('returning')
       return []
     }
-    const context = { metric, activeQuintiles }
-    return getLayers(
-      sources,
-      context,
+    const context = {
+      activeMetric,
+      activeQuintiles,
       activeLayers,
       activePointTypes,
-      activePointTypesKey,
-    )
+      pointTypes,
+    }
+    return getLayers(remoteJson, context)
   }, [
+    isLoaded.current,
     allDataLoaded,
-    metric,
+    activeMetric,
     activeQuintiles,
     activeLayers,
     activePointTypes,
+    remoteJson,
   ])
 
   /** aria label for screen readers */
   const ariaLabel = i18n.translate('UI_MAP_SR', {
-    metric: i18n.translate(metric),
+    metric: i18n.translate(activeMetric),
     quintiles: getQuintilesPhrase(activeQuintiles),
   })
 
@@ -221,13 +224,14 @@ const MapView = props => {
   /** handler for map load */
   const handleLoad = () => {
     // inform global listener that map has loaded
+    console.log('map loaded')
     // window.CPAL.trigger('map')
     isLoaded.current = true
   }
 
   return (
     <MapBase
-      sources={!!allDataLoaded ? sources : null}
+      sources={!!allDataLoaded ? remoteJson : null}
       layers={layers}
       idMap={idMap}
       hoveredId={hoveredId ? hoveredId : undefined}
@@ -240,7 +244,6 @@ const MapView = props => {
       onClick={handleClick}
       onTouch={handleTouch}
       defaultViewport={viewport}
-      schoolZonesAffix={schoolZonesAffix}
     ></MapBase>
   )
 }

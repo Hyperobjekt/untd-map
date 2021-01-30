@@ -143,24 +143,7 @@ const DataLoader = ({ ...props }) => {
     }),
     shallow,
   )
-  // Generic store value setter.
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
-  // Special setter to merge loaded json into existing obj.
-  // const setRemoteJson = useStore(
-  //   state => state.setRemoteJson,
-  // )
-  // Set one lang locale object
-  // const setLang = useStore(state => state.setLang)
-  // Counter for language pack updates.
-  // const incrementLangUpdates = useStore(
-  //   state => state.incrementLangUpdates,
-  // )
-  // Push an array of indicators to indicators array in store.
-  // const addIndicators = useStore(
-  //   state => state.addIndicators,
-  // )
+
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
   // Counter for loaded files.
@@ -182,11 +165,11 @@ const DataLoader = ({ ...props }) => {
           if (xhr.status === 200) {
             // Increment counter for loaded files.
             loadedCount++
-            // console.log(
-            //   'file loaded ',
-            //   i,
-            //   (loadedCount / files.length) * 100,
-            // )
+            console.log(
+              'file loaded ',
+              i,
+              (loadedCount / files.length) * 100,
+            )
             // obj[el.id] = JSON.parse(xhr.responseText)
             if (el.type !== 'dict') {
               let obj = {}
@@ -196,7 +179,7 @@ const DataLoader = ({ ...props }) => {
               }
               if (el.type === 'point') {
                 obj[el.id].cluster = true
-                obj[el.id].clusterRadius = 50
+                obj[el.id].clusterRadius = 20
                 obj[el.id].clusterMaxZoom = 13
                 obj[el.id].clusterProperties = {
                   sum: ['+', ['get', 'scalerank']],
@@ -251,7 +234,7 @@ const DataLoader = ({ ...props }) => {
                         icon: `${r.variable}-icon`,
                       })
                       activePointTypes.push(1)
-                      activePointTypesKey.push(r.variable)
+                      // activePointTypesKey.push(r.variable)
                     }
                     // Build indicator list, array of objects.
                     const exists =
@@ -317,7 +300,7 @@ const DataLoader = ({ ...props }) => {
                   setLang('en_US', strings)
                   incrementLangUpdates()
                   // Save indicators to indicator list.
-                  console.log('indicators, ', indicators)
+                  // console.log('indicators, ', indicators)
                   addIndicators(indicators)
                   const indicatorKeys = indicators.map(
                     el => {
@@ -325,17 +308,17 @@ const DataLoader = ({ ...props }) => {
                     },
                   )
                   const routeSet = ROUTE_SET
-                  console.log('routeSet, ', routeSet)
+                  // console.log('routeSet, ', routeSet)
                   const metricIndex = routeSet
                     .map(el => {
                       return el.id
                     })
                     .indexOf('metric')
-                  console.log('metricIndex, ', metricIndex)
+                  // console.log('metricIndex, ', metricIndex)
                   routeSet[
                     metricIndex
                   ].options = indicatorKeys
-                  console.log('routeSet, ', routeSet)
+                  // console.log('routeSet, ', routeSet)
                   // Save point types to point type list
                   setStoreValues({
                     routeSet: routeSet,

@@ -6,7 +6,7 @@
  * @return {Boolean}             Is the route item valid?
  */
 export const validateRouteOption = (optionsItem, value) => {
-  console.log('validateRouteOption, ', optionsItem, value)
+  // console.log('validateRouteOption, ', optionsItem, value)
   // Case to validate via different methods.
   switch (true) {
     case optionsItem.validate === 'regex':

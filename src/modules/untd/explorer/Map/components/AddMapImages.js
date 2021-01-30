@@ -33,7 +33,7 @@ const AddMapImages = ({ map, ...props }) => {
   map.on('load', function () {
     if (!!mapImagesAdded) return null
     pointTypes.forEach(el => {
-      console.log(`adding icon for ${el.id}-icon`)
+      // console.log(`adding icon for ${el.id}-icon`)
       // if (isAPointLayer(el) && !!el.icon) {
       // let img = new Image(20, 20)
       // img.onload = () => map.addImage(`${el}-icon`, img)
