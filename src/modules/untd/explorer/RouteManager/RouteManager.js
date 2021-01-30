@@ -21,22 +21,23 @@ export const getParamsFromPathname = path => {
   // console.log('getParamsFromPathname()')
   // strip starting "#" and "/" chars
   const route = path.replace(/^#\/+/g, '')
-  const routeArr = path.split('/')
-  // routeArr.map((el, i) => {
-  //   return DEFAULT_ROUTE[i].id
-  // })
-  // Construct object from hash
-  return route.split('/').reduce(
-    (acc, curr, i) => ({
-      ...acc,
-      [DEFAULT_ROUTE[i]]:
-        ['zoom', 'lat', 'lon'].indexOf(DEFAULT_ROUTE[i]) >
-        -1
-          ? parseFloat(curr)
-          : curr,
-    }),
-    {},
-  )
+  // Construct an object from the route, using
+  // the route set ids as keys.
+  const params = route
+    .split('/')
+    .slice(0, ROUTE_SET.length - 1)
+    .reduce(
+      (acc, curr, i) => ({
+        ...acc,
+        [ROUTE_SET[i].id]:
+          ['zoom', 'lat', 'lon'].indexOf(ROUTE_SET[i]) > -1
+            ? parseFloat(curr)
+            : curr,
+      }),
+      {},
+    )
+  // console.log('params,', params)
+  return params
 }
 
 export const getStrippedRoute = route =>
@@ -44,97 +45,6 @@ export const getStrippedRoute = route =>
 
 export const isEmptyRoute = route =>
   getStrippedRoute(route).length === 0
-
-// const isParamValid = ()
-
-/**
- * Verify that view contains one of the two views.
- * @param  String view View string
- * @return Boolean
- */
-// const isViewValid = view => {
-//   // console.log('isViewValid, ', view)
-//   return ['explorer', 'embed'].indexOf(view) > -1
-// }
-
-/**
- * Verifies that metric exists in metric collection.
- * @param  {String}  metric String that corresponds to metric ID in constants
- * @return {Boolean}
- */
-// const isMetricValid = (metric, indicators) => {
-//   // Check if it's in the metrics list
-//   // console.log('isMetricValid')
-//   // If it's empty, just return true. We'll use the default.
-//   if (metric.length === 0) {
-//     return true
-//   } else {
-//     // If not empty, verify that it's in the metrics collection.
-//     // const filter = CPAL_METRICS.find(el => {
-//     //   return el.id === metric
-//     // })
-//     // return !!filter ? true : false
-//   }
-// }
-
-/**
- * Verifies that quintiles string can be converted into array of quintiles.
- * @param  {String}  quintiles String of comma-separated numbers
- * @return {Boolean}
- */
-// const isQuintilesValid = quintiles => {
-//   // console.log('isQuintilesValid')
-//   if (!quintiles) return true
-//   if (quintiles.length < 5) return false
-//   const arr = quintiles.split(',')
-//   let t = true
-//   arr.forEach(el => {
-//     const n = Number(el)
-//     if (n !== 1 && n !== 0) {
-//       t = false
-//     }
-//   })
-//   return t
-// }
-
-// const isLayersValid = layers => {
-//   // console.log('isLayersValid()')
-//   if (!layers) return true
-//   const arr = layers.split(',')
-//   // console.log('arr, ', arr)
-//   if (arr.length < UNTD_LAYERS.length) return false
-//   let t = true
-//   arr.forEach((el, i) => {
-//     const n = Number(el)
-//     if (n !== 1 && n !== 0) {
-//       t = false
-//     }
-//     if (
-//       UNTD_LAYERS[i].only_one === true &&
-//       Number(arr[i]) === 1
-//     ) {
-//       // Get the name
-//       const name = UNTD_LAYERS[i].only_one_name
-//       // If others with same name are true in layers, return false.
-//       // console.log('only one loop, others = ', others)
-//       UNTD_LAYERS.forEach((item, index) => {
-//         if (
-//           i !== index &&
-//           item.only_one === true &&
-//           item.only_one_name === name
-//         ) {
-//           // console.log('matching up the other only-ones')
-//           if (Number(arr[index]) === 1) {
-//             // console.log("there's another true")
-//             t = false
-//           }
-//         }
-//       })
-//     }
-//   })
-//   // console.log('isLayersValid(), ', t)
-//   return t
-// }
 
 const isLatLngValid = (lat, lng) => {
   // console.log('isLatLngValid()')
@@ -166,15 +76,20 @@ const isZoomValid = zoom => {
  * @param  {Object}  params [description]
  * @return {Boolean}        [description]
  */
-const isRouteValid = (params, routeSet, indicators) => {
-  // console.log('isRouteValid(), ', params)
+const isRouteValid = params => {
+  console.log('isRouteValid(), ', params, ROUTE_SET)
   let isValid = true
   if (
-    !isViewValid(params.view) ||
-    !isMetricValid(params.metric, indicators) ||
-    !isQuintilesValid(params.quintiles) ||
-    !isLayersValid(params.layers) ||
-    !isPointsValid(params.points) ||
+    !validateRouteOption(ROUTE_SET[0], params.view) ||
+    // !isViewValid(params.view) ||
+    !validateRouteOption(ROUTE_SET[1], params.metric) ||
+    // !isMetricValid(params.metric) ||
+    !validateRouteOption(ROUTE_SET[2], params.quintiles) ||
+    // !isQuintilesValid(params.quintiles) ||
+    !validateRouteOption(ROUTE_SET[3], params.layers) ||
+    // !isLayersValid(params.layers) ||
+    !validateRouteOption(ROUTE_SET[4], params.points) ||
+    // !isPointsValid(params.points) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
@@ -211,6 +126,8 @@ const RouteManager = props => {
     shareHash,
     indicators,
     activePointTypes,
+    routeSet,
+    allDataLoaded,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -228,34 +145,18 @@ const RouteManager = props => {
       shareHash: state.shareHash,
       indicators: state.indicators,
       activePointTypes: state.activePointTypes,
+      routeSet: state.routeSet,
+      allDataLoaded: state.allDataLoaded,
     }),
     shallow,
   )
-
-  // Active layers.
-  // const activeLayers = useStore(
-  //   state => [...state.activeLayers],
-  //   shallow,
-  // )
-  // Viewport.
-  // const viewport = useStore(state => state.viewport)
-  // const setViewport = useStore(state => state.setViewport)
-  // Feeder is locked.
-  // const feederLocked = useStore(state => state.feederLocked)
-  // Track share hash and update when it changes
-  // const shareHash = useStore(state => state.shareHash)
-  // List of indicators
-  // const indicators = useStore(state => state.indicators)
-
-  // const activePointTypes = useStore(
-  //   state => state.activePointTypes,
-  // )
 
   /**
    * Returns a hash based on state
    * @return {String} [description]
    */
   const getHashFromState = () => {
+    // console.log('getHashFromState')
     const hash =
       activeView +
       '/' +
@@ -289,33 +190,16 @@ const RouteManager = props => {
    */
   const setStateFromHash = params => {
     // console.log('setStateFromHash(), ', params)
-
     if (!!params.view) {
-      // setActiveView(params.view)
-      // const newViewSelect = viewSelect.map(el => {
-      //   if (String(el.id).indexOf(params.view) >= 0) {
-      //     el.active = true
-      //   } else {
-      //     el.active = false
-      //   }
-      //   return el
-      // })
       setStoreValues({
         activeView: params.view,
-        // viewSelect: newViewSelect,
       })
     }
+
     if (!!params.metric) {
       setStoreValues({ activeMetric: params.metric })
-      // TODO: Update this for new indicators list.
-      // const tab = CPAL_METRICS.filter(
-      //   el => el.id === params.metric,
-      // )[0].tab
-      // if (!!tab) {
-      //   setStoreValues({ activeFilterTab: tab })
-      // }
-      // console.log('setting metric, ', params.metric, tab)
     }
+
     if (params.quintiles && params.quintiles.length > 0) {
       const quintiles = params.quintiles.split(',')
       setStoreValues({
@@ -349,46 +233,20 @@ const RouteManager = props => {
       viewport.longitude = Number(params.lng)
       resetViewport = true
     }
+
     if (!!params.zoom) {
       viewport.zoom = Number(params.zoom)
       resetViewport = true
     }
+
     if (!!resetViewport) {
       setViewport(viewport)
     }
   }
 
-  useEffect(() => {
-    if (isLoaded.current) {
-      // When hash changes, if route is valid, update route for sharing.
-      window.addEventListener('hashchange', () => {
-        // console.log('hashchange')
-        const path = window.location.hash
-        // Construct params object from hash.
-        const params = getParamsFromPathname(
-          path,
-          props.routeSet,
-        )
-        if (
-          !isEmptyRoute(path) &&
-          isRouteValid(
-            params,
-            props.routeSet,
-            indicators,
-          ) &&
-          path !== shareHash
-        ) {
-          // console.log('updating hash')
-          setStoreValues({
-            shareHash: window.location.hash,
-          })
-        }
-      })
-    }
-  }, [isLoaded.current])
-
   // update the hash when debounced route changes
   useEffect(() => {
+    // console.log('debounced route changed')
     // only change the hash if the initial route has loaded
     if (isLoaded.current) {
       // window.location.hash = '#/' + debouncedRoute
@@ -404,28 +262,30 @@ const RouteManager = props => {
         'cpal_hash',
         '#/' + debouncedRoute,
       )
-      setStoreValues({ shareHash: '#/' + debouncedRoute })
+      setStoreValues({
+        shareHash:
+          window.location.origin +
+          window.location.pathname +
+          '#/' +
+          debouncedRoute,
+      })
     }
   }, [debouncedRoute])
 
-  // load the route when the application mounts
   useEffect(() => {
     async function loadRoute() {
-      // console.log('loadRoute')
+      // console.log('loadRoute()')
       isLoaded.current = true
       // Get path.
       const path = window.location.hash
       // Construct params object from hash.
-      const params = getParamsFromPathname(
-        path,
-        props.routeSet,
-      )
+      const params = getParamsFromPathname(path)
       const localStorageHash = localStorage.getItem(
         'cpal_hash',
       )
       if (
         !isEmptyRoute(path) &&
-        isRouteValid(params, props.routeSet, indicators)
+        isRouteValid(params, indicators)
       ) {
         // Update state based on params
         setStateFromHash(params)
@@ -433,15 +293,8 @@ const RouteManager = props => {
         if (localStorageHash.length > 0) {
           const lsparams = getParamsFromPathname(
             localStorageHash,
-            props.routeSet,
           )
-          if (
-            isRouteValid(
-              lsparams,
-              props.routeSet,
-              indicators,
-            )
-          ) {
+          if (isRouteValid(lsparams, indicators)) {
             setStateFromHash(lsparams)
           }
         }
@@ -452,15 +305,10 @@ const RouteManager = props => {
       }
     }
     loadRoute()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [allDataLoaded])
 
   // this component doesn't render anything
   return null
-}
-
-RouteManager.propTypes = {
-  routeSet: PropTypes.array, // Constants listing params and allowable options.
 }
 
 export default RouteManager

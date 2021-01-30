@@ -124,20 +124,20 @@ export const ROUTE_SET = [
   },
   {
     id: 'quintiles',
-    options: [1, 0],
+    options: ['1', '0'], // Strings because that's what we get from the hash.
     validate: 'contains_only',
     length: 5,
     defaultValue: [1, 1, 1, 1, 1],
   },
   {
     id: 'layers',
-    options: [1, 0],
+    options: ['1', '0'],
     validate: 'contains_only',
     defaultValue: [0, 0, 1, 0],
   },
   {
     id: 'points',
-    options: [1, 0],
+    options: ['1', '0'],
     validate: 'contains_only',
     defaultValue: [],
   },
