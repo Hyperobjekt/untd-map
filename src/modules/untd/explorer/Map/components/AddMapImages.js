@@ -32,19 +32,18 @@ const AddMapImages = ({ map, ...props }) => {
 
   map.on('load', function () {
     if (!!mapImagesAdded) return null
-    pointTypes.forEach(el => {
-      // console.log(`adding icon for ${el.id}-icon`)
-      // if (isAPointLayer(el) && !!el.icon) {
-      // let img = new Image(20, 20)
-      // img.onload = () => map.addImage(`${el}-icon`, img)
-      // img.src = HomeIcon // window[el.icon] // Pipe in matching svgs later.
-      // console.log('img, ', img)
-      // }
-      map.loadImage(HomeIcon, function (error, image) {
-        if (error) throw error
-        // add image to the active style and make it SDF-enabled
-        map.addImage(`${el.id}-icon`, image, { sdf: true })
-      })
+    // pointTypes.forEach(el => {
+    //   // console.log(`adding icon for ${el.id}-icon`)
+    //   map.loadImage(HomeIcon, function (error, image) {
+    //     if (error) throw error
+    //     // add image to the active style and make it SDF-enabled
+    //     map.addImage(`${el.id}-icon`, image, { sdf: true })
+    //   })
+    // })
+    map.loadImage(HomeIcon, function (error, image) {
+      if (error) throw error
+      // add image to the active style and make it SDF-enabled
+      map.addImage(`home-icon`, image, { sdf: true })
     })
     setStoreValues({
       mapImagesAdded: 1,

@@ -118,6 +118,8 @@ const [useStore] = create((set, get) => ({
   }).defaultValue,
   // Stores types of points.
   pointTypes: [],
+  // Stores the point types available from the geo source.
+  pointTypeLayers: [],
   // Stores active point types.
   activePointTypes: [],
   defaultMetric: ROUTE_SET.find(el => {

@@ -39,6 +39,7 @@ const MapView = props => {
     remoteJson,
     allDataLoaded,
     viewport,
+    pointTypeLayers,
     // activeLayers,
     // activePointTypes,
     activeView,
@@ -59,6 +60,7 @@ const MapView = props => {
       remoteJson: state.remoteJson,
       allDataLoaded: state.allDataLoaded,
       viewport: state.viewport,
+      pointTypeLayers: state.pointTypeLayers,
       // activeLayers: [...state.activeLayers],
       // activePointTypes: [...state.activePointTypes],
       activeView: state.activeView,
@@ -82,21 +84,20 @@ const MapView = props => {
     shallow,
   )
 
-  console.log('mapview, sources: ', remoteJson)
-
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)
+  // console.log('mapview, sources: ', remoteJson)
 
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
-    console.log('triggering layers fetch')
+    // console.log('triggering layers fetch')
     if (
       !activeMetric ||
       !activeQuintiles ||
       !activeLayers ||
       !allDataLoaded
     ) {
-      console.log('returning')
+      // console.log('returning')
       return []
     }
     const context = {
@@ -105,6 +106,7 @@ const MapView = props => {
       activeLayers,
       activePointTypes,
       pointTypes,
+      pointTypeLayers,
     }
     return getLayers(remoteJson, context)
   }, [

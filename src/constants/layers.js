@@ -78,29 +78,6 @@ export const UNTD_LAYERS = [
   },
 ]
 
-export const POINT_TYPES_COLORS = [
-  '#51410a',
-  '#af8b15',
-  '#42f43f',
-  '#19a817',
-  '#2e5b2d',
-  '#13adef',
-  '#2a6e8c',
-  '#0d32e8',
-  '#505faa',
-  '#3f3289',
-  '#623289',
-  '#ed31c4',
-  '#752263',
-  '#f43a29',
-  '#8e2f26',
-  '#3f3838',
-  '#aaa6a5',
-  '#efe51a',
-  '#7c7711',
-  '#577c11',
-]
-
 export const BREAKPOINTS = [
   {
     id: 'xs',

@@ -157,35 +157,68 @@ const DataLoader = ({ ...props }) => {
     files.forEach((el, i) => {
       const xhr = new XMLHttpRequest()
       const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
-      console.log('path, ', path)
+      // console.log('path, ', path)
       xhr.open('GET', path, true)
       xhr.onload = function (e) {
-        console.log('loaded, ', xhr)
+        // console.log('loaded, ', xhr)
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             // Increment counter for loaded files.
             loadedCount++
-            console.log(
-              'file loaded ',
-              i,
-              (loadedCount / files.length) * 100,
-            )
-            // obj[el.id] = JSON.parse(xhr.responseText)
+            // console.log(
+            //   'file loaded ',
+            //   i,
+            //   (loadedCount / files.length) * 100,
+            // )
             if (el.type !== 'dict') {
-              let obj = {}
-              obj[el.id] = {
-                type: `geojson`,
-                data: JSON.parse(xhr.responseText),
+              const _data = JSON.parse(xhr.responseText)
+              if (el.type !== 'point') {
+                let obj = {}
+                obj[el.id] = {
+                  type: `geojson`,
+                  data: _data,
+                }
+                setRemoteJson(obj)
               }
               if (el.type === 'point') {
-                obj[el.id].cluster = true
-                obj[el.id].clusterRadius = 50
-                obj[el.id].clusterMaxZoom = 13
-                obj[el.id].clusterProperties = {
-                  sum: ['+', ['get', 'scalerank']],
-                }
+                // Make a list of point types.
+                const point_types = []
+                _data.features.forEach(el => {
+                  if (
+                    point_types.indexOf(
+                      el.properties.variable,
+                    ) <= -1
+                  ) {
+                    point_types.push(el.properties.variable)
+                  }
+                })
+                // Add a geo layer for each point type,
+                // so that they cluster independently.
+                point_types.forEach(type => {
+                  const obj = {}
+                  const pointData = {
+                    features: _data.features.filter(
+                      feature =>
+                        feature.properties.variable ===
+                        type,
+                    ),
+                    type: 'FeatureCollection',
+                  }
+                  obj[`points_${type}`] = {
+                    type: `geojson`,
+                    data: pointData,
+                    cluster: true,
+                    // clusterRadius: 50,
+                    clusterProperties: {
+                      sum: ['+', ['get', 'scalerank']],
+                    },
+                  }
+                  setRemoteJson(obj)
+                })
+                setStoreValues({
+                  pointTypeLayers: point_types,
+                })
               }
-              setRemoteJson(obj)
             } else {
               // Parse the file and merge with lang file.
               const lang = Papa.parse(xhr.responseText, {
@@ -199,7 +232,7 @@ const DataLoader = ({ ...props }) => {
                   const indicators = []
                   const pointTypes = []
                   const activePointTypes = []
-                  const activePointTypesKey = []
+                  // const activePointTypesKey = []
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
@@ -222,7 +255,10 @@ const DataLoader = ({ ...props }) => {
                     }
 
                     // Build point types list
-                    if (r.type === 'point') {
+                    if (
+                      r.type === 'point' &&
+                      !!r.variable
+                    ) {
                       pointTypes.push({
                         id: r.variable,
                         label: r.variable,
@@ -324,7 +360,7 @@ const DataLoader = ({ ...props }) => {
                     routeSet: routeSet,
                     pointTypes: pointTypes,
                     activePointTypes: activePointTypes,
-                    activePointTypesKey: activePointTypesKey,
+                    // activePointTypesKey: activePointTypesKey,
                   })
                 },
               })
