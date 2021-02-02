@@ -179,7 +179,7 @@ const DataLoader = ({ ...props }) => {
               }
               if (el.type === 'point') {
                 obj[el.id].cluster = true
-                obj[el.id].clusterRadius = 20
+                obj[el.id].clusterRadius = 50
                 obj[el.id].clusterMaxZoom = 13
                 obj[el.id].clusterProperties = {
                   sum: ['+', ['get', 'scalerank']],

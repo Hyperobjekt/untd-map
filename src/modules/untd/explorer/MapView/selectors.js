@@ -22,23 +22,143 @@ import {
 
 const noDataFill = '#ccc'
 
-export const getPointClusters = (type, context) => {
+const getKeyArray = types => {
+  return types.map(el => {
+    return el.id
+  })
+}
+
+export const getClusterCountBg = (type, context) => {
+  const activePointTypesKey = getKeyArray(
+    context.pointTypes,
+  )
+  // context.pointTypes.map(el => {
+  //   return el.id
+  // })
   return fromJS({
-    id: `${type}Clusters`,
+    id: `${type}ClusterCountBg`,
     source: type,
+    type: 'circle',
+    paint: {
+      'circle-color': [
+        'to-color',
+        [
+          'at',
+          [
+            'index-of',
+            ['get', 'variable'],
+            ['literal', activePointTypesKey],
+          ],
+          ['literal', POINT_TYPES_COLORS],
+        ],
+      ],
+      'circle-radius': 8,
+      'circle-translate': [-15, -15],
+    },
+    // filter: ['==', ['has', 'point_count']],
+    // [
+    //   'all',
+    // ['==', ['has', 'point_count']],
+    // [
+    //   '==',
+    //   [
+    //     'at',
+    //     [
+    //       'index-of',
+    //       ['get', 'variable'],
+    //       ['literal', activePointTypesKey],
+    //     ],
+    //     ['literal', context.activePointTypes],
+    //   ],
+    //   1,
+    // ],
+    // ],
+  })
+}
+
+export const getClusterCount = (type, context) => {
+  return fromJS({
+    id: `${type}ClusterCount`,
+    source: type,
+    type: 'symbol',
+    filter: ['has', 'point_count'],
+    paint: {
+      'text-translate': [-15, -15],
+    },
+    layout: {
+      'text-field': '{point_count_abbreviated}',
+      'text-font': [
+        'DIN Offc Pro Medium',
+        'Arial Unicode MS Bold',
+      ],
+      'text-size': 12,
+      'text-allow-overlap': true,
+    },
+  })
+}
+
+export const getClusterIcon = (type, context) => {
+  const activePointTypesKey = getKeyArray(
+    context.pointTypes,
+  )
+  return fromJS({
+    id: `${type}ClusterIcon`,
+    source: type,
+    type: 'symbol',
+    layout: {
+      visibility: 'visible', // isVisible ? 'visible' : 'none',
+      'icon-image': [
+        'concat',
+        ['get', 'variable'],
+        '-icon',
+      ],
+      'icon-size': 1,
+    },
+    interactive: false,
+    paint: {
+      'icon-color': [
+        'to-color',
+        [
+          'at',
+          [
+            'index-of',
+            ['get', 'variable'],
+            ['literal', activePointTypesKey],
+          ],
+          ['literal', POINT_TYPES_COLORS],
+        ],
+      ],
+      'icon-halo-width': 3,
+    },
+    filter: [
+      'all',
+      ['==', ['has', 'point_count']],
+      [
+        '==',
+        [
+          'at',
+          [
+            'index-of',
+            ['get', 'variable'],
+            ['literal', activePointTypesKey],
+          ],
+          ['literal', context.activePointTypes],
+        ],
+        1,
+      ],
+    ],
   })
 }
 
 export const getPointIcons = (type, context) => {
   console.log('getPointIcons, ', type, context)
-  const activePointTypesKey = context.pointTypes.map(el => {
-    return el.id
-  })
-  console.log('activePointTypesKey,', activePointTypesKey)
+  const activePointTypesKey = getKeyArray(
+    context.pointTypes,
+  )
   return fromJS({
     id: `${type}Points`,
     source: type,
-    type: 'symbol', //
+    type: 'symbol',
     layout: {
       visibility: 'visible', // isVisible ? 'visible' : 'none',
       'icon-image': [
@@ -62,12 +182,7 @@ export const getPointIcons = (type, context) => {
           ['literal', POINT_TYPES_COLORS],
         ],
       ],
-      // 'icon-halo-color': 'red',
       'icon-halo-width': 3,
-
-      //   'circle-color': 'blue',
-      //   'circle-opacity': 1,
-      //   'circle-radius': 5,
     },
     filter: [
       'all',
@@ -292,14 +407,14 @@ export const getPolygonLayers = (
   return [
     {
       z: z,
-      style: getPolygonShapes(type, context, activeLayers),
+      style: getPolygonShapes(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
       z: z + 1,
-      style: getPolygonLines(type, context, activeLayers),
+      style: getPolygonLines(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Lines`,
@@ -316,24 +431,37 @@ export const getPointLayers = (
   // console.log('getRedlineLayers', context)
   z = z + 3
   return [
+    // Individual point icons.
     {
       z: z,
-      style: getPointIcons(
-        type,
-        context,
-        activePointTypes,
-        activePointTypesKey,
-      ),
+      style: getPointIcons(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
-      type: `${type}Points`,
+      type: `${type}Icons`,
     },
+    // Cluster count background circles.
+    {
+      z: z + 1,
+      style: getClusterCountBg(type, context),
+      idMap: true,
+      hasFeatureId: true, // isCircleId,
+      type: `${type}ClusterCountBg`,
+    },
+    // Cluster count.
+    {
+      z: z + 2,
+      style: getClusterCount(type, context),
+      idMap: true,
+      hasFeatureId: true, // isCircleId,
+      type: `${type}ClusterCount`,
+    },
+    // Cluster icons.
     // {
-    //   z: z + 1,
-    //   style: getPointLines(type, context, activeLayers),
+    //   z: z + 2,
+    //   style: getClusterIcon(type, context),
     //   idMap: true,
     //   hasFeatureId: true, // isCircleId,
-    //   type: `${type}Lines`,
+    //   type: `${type}ClusterIcons`,
     // },
   ]
 }
