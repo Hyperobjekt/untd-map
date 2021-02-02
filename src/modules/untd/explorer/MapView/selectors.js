@@ -429,7 +429,7 @@ export const getLayers = (sources, context) => {
   // Add a layer for each point type,
   // and a cluster layer for each point type.
   context.activePointTypes.forEach((el, i) => {
-    // console.log('looping through activePointTypes, ', el, i)
+    console.log('looping through activePointTypes, ', el, i)
     // If layer is enabled, then build data and request point layers for id.
     if (el === 1) {
       const color = POINT_TYPES_COLORS[i]

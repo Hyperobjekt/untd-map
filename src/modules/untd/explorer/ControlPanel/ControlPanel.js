@@ -204,12 +204,12 @@ const ControlPanel = ({ children }) => {
         >
           <AiOutlineControl />
           <span className="sr-only">
-            {i18n.translate(`BUTTON_TOGGLE_FILTERS`)}
+            {i18n.translate(`CONTROL_PANEL_FEATURES`)}
           </span>
         </CoreButton>
         <Divider />
         <div className="control-label">
-          {i18n.translate('CONTROL_PANEL_LAYERS')}
+          {i18n.translate('CONTROL_PANEL_FEATURES')}
         </div>
         <CoreButton
           id="button_toggle_panel_layers"

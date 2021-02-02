@@ -231,8 +231,6 @@ const DataLoader = ({ ...props }) => {
                   const strings = {}
                   const indicators = []
                   const pointTypes = []
-                  const activePointTypes = []
-                  // const activePointTypesKey = []
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
@@ -269,8 +267,6 @@ const DataLoader = ({ ...props }) => {
                         index: pointTypes.length,
                         icon: `${r.variable}-icon`,
                       })
-                      activePointTypes.push(1)
-                      // activePointTypesKey.push(r.variable)
                     }
                     // Build indicator list, array of objects.
                     const exists =
@@ -359,8 +355,6 @@ const DataLoader = ({ ...props }) => {
                   setStoreValues({
                     routeSet: routeSet,
                     pointTypes: pointTypes,
-                    activePointTypes: activePointTypes,
-                    // activePointTypesKey: activePointTypesKey,
                   })
                 },
               })

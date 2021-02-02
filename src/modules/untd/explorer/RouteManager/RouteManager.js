@@ -77,19 +77,19 @@ const isZoomValid = zoom => {
  * @return {Boolean}        [description]
  */
 const isRouteValid = params => {
-  // console.log('isRouteValid(), ', params, ROUTE_SET)
+  console.log('isRouteValid(), ', params, ROUTE_SET)
   let isValid = true
   if (
+    // View
     !validateRouteOption(ROUTE_SET[0], params.view) ||
-    // !isViewValid(params.view) ||
+    // Metric
     !validateRouteOption(ROUTE_SET[1], params.metric) ||
-    // !isMetricValid(params.metric) ||
+    // Quintiles
     !validateRouteOption(ROUTE_SET[2], params.quintiles) ||
-    // !isQuintilesValid(params.quintiles) ||
+    // Layers
     !validateRouteOption(ROUTE_SET[3], params.layers) ||
-    // !isLayersValid(params.layers) ||
+    // Points
     !validateRouteOption(ROUTE_SET[4], params.points) ||
-    // !isPointsValid(params.points) ||
     !isLatLngValid(params.lat, params.lng) ||
     !isZoomValid(params.zoom)
   ) {
@@ -275,6 +275,9 @@ const RouteManager = props => {
   useEffect(() => {
     async function loadRoute() {
       // console.log('loadRoute()')
+      if (!allDataLoaded === true) {
+        return
+      }
       isLoaded.current = true
       // Get path.
       const path = window.location.hash
