@@ -1,5 +1,5 @@
 const en_US = {
-  SITE_TITLE: `UNTD Map`,
+  SITE_TITLE: `NTX Social Mobility Hub`,
   LOADING_DATA: `Loading map data`,
   TEA_ID: `TEA identification number`,
   TERM_SCHOOL: `school`,

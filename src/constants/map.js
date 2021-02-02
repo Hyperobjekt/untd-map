@@ -66,22 +66,6 @@ export const DATA_FILES = [
   },
 ]
 
-// export const DEFAULT_ROUTE =
-//   '/explorer/tot_popE_18_sd/1,1,1,1,1/0,0,1,0//32.912/-96.866/8/'
-
-// export const ROUTE_SET = [
-//   'view', // View type, 'explorer' or 'embed'
-//   'metric', // Metric ID to set for active metric.
-//   'quintiles', // quintiles that are active and inactive. Always length of 5.
-//   'layers', // To determine active layers, 'district_boundaries' and/or 'redlining'
-//   'points', // Point types that are active
-//   'lat', // Latitude
-//   'lng', // Longitude
-//   'zoom', // Zoom level
-// ]
-
-// export const DEFAULT_ACTIVE_LAYERS = [0, 0, 1, 0]
-
 export const BOUNDS = {
   lat: {
     min: 31.5, // 32.486597,

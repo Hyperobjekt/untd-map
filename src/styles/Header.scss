@@ -1,3 +1,15 @@
+// .header {
+//   position: relative;
+//   width: 100%;
+//   height: $sticky-header-height;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 16px;
+//   box-sizing: border-box;
+//   border-bottom: 1px solid #ccc;
+//   transition: height 0.4s ease-in-out;
+// }
 .header {
   position: relative;
   width: 100%;
@@ -9,6 +21,71 @@
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
   transition: height 0.4s ease-in-out;
+  h1 {
+    margin-left: 16px;
+    width: 0;
+    @include media-breakpoint-up(md) {
+      width: auto;
+    }
+    a {
+      display: none;
+      @include media-breakpoint-up(md) {
+        display: flex;
+      }
+      text-decoration: none !important;
+      .logo {
+        width: 85px;
+        height: 21px;
+        background-image: url('./images/menu-logo.svg');
+        background-repeat: no-repeat;
+        background-size: 85px 21px;
+        margin-right: 4px;
+      }
+      .logo-sitename {
+        letter-spacing: -1px;
+        color: $logo-text-color;
+        align-self: center;
+        margin-left: 6px;
+        width: 70px;
+        font-family: halyard-text;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 11px;
+        @include media-breakpoint-up(md) {
+          width: auto;
+          font-style: normal;
+          font-size: 15px;
+          font-weight: 300;
+          line-height: 15px;
+          color: #292d33;
+          mix-blend-mode: normal;
+          color: #484e56;
+          font-weight: 400;
+          letter-spacing: 0.01rem;
+        }
+        // text-decoration: none !important;
+        // &:hover,
+        // &:active {
+        //   text-decoration: none !important;
+        // }
+      }
+    }
+  }
+  .menu-icon-group {
+    svg {
+      margin-right: 3.5px;
+      margin-top: -3px;
+    }
+    cursor: pointer;
+    display: inline; // so below padding doesn't shift element
+    padding-top: $spacer; // extends clickable area
+    padding-bottom: $spacer;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 21px;
+    color: #08131f;
+  }
 }
 
 .header--sticky {

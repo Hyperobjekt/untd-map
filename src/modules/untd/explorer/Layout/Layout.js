@@ -116,7 +116,6 @@ const Layout = ({ children, ...props }) => {
       {activeView === 'explorer' && (
         <Header>
           <Logo {...logoProps} />
-          <SchoolSearch />
           <CoreButton
             id="button_toggle_menu"
             aria-label={i18n.translate(`BUTTON_MENU`)}
