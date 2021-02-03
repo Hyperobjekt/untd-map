@@ -8,6 +8,10 @@ import { BOUNDS } from './../../../constants/map'
 import { UNTD_LAYERS } from './../../../constants/layers'
 import { DATA_FILES } from './../../../constants/map'
 
+export const getActiveLayerIndex = layers => {
+  return layers.indexOf(1)
+}
+
 /**
  * Builds a sentence case string from lowercase string.
  * @param  {[type]} str [description]

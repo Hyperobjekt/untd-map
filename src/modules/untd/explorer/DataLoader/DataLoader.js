@@ -309,10 +309,9 @@ const DataLoader = ({ ...props }) => {
                         mean: r['mean'] ? r['mean'] : null,
                         high_is_good:
                           r['highisgood'] === 'Yes' ? 1 : 0,
-                        is_currency: 0, // TODO: Pipe in from data dict?
-                        is_percent: 0, // TODO: Pipe in from data dict?
-                        decimals: 0, // TODO: Pipe in from data dict?
-                        cat: 'cri', // TODO: Pipe in from data dict? (category)
+                        is_currency: r['currency'],
+                        is_percent: r['percent'],
+                        decimals: r['decimals'],
                         years: r['years']
                           .toLowerCase()
                           .replace(/ /g, '')

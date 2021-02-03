@@ -9,6 +9,8 @@ import {
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 
+import { toSentenceCase } from './../../untd/explorer/utils'
+
 /**
  * Select element.
  *
@@ -49,7 +51,7 @@ const Select = ({ ...props }) => {
               onClick={props.handleSelect}
               className={clsx(!!el.active ? 'active' : '')}
             >
-              {i18n.translate(el.label)}
+              {toSentenceCase(i18n.translate(el.label))}
             </DropdownItem>
           )
         })}

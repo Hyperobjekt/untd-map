@@ -6,34 +6,22 @@ import { css, cx } from 'emotion'
 
 import useStore from './../store.js'
 import InteractiveScale from './InteractiveScale'
+import { UNTD_LAYERS } from './../../../../constants/layers'
+import { getActiveLayerIndex } from './../utils'
 
 const FilterSeries = ({ ...props }) => {
   // console.log('FilterSeries, tab = ', props)
-  // Active filter tab
-  const activeFilterTab = useStore(
-    state => state.activeFilterTab,
-  )
-  const activeMetric = useStore(state => state.activeMetric)
-  // Generic state setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Get all of the items in the metrics array with matching tab node.
-  const filters = props.metrics.filter(m => {
-    return m.cat === props.tab && m.display === 1
-  })
-  // Alphabetize them by title
-  filters.sort((a, b) => {
-    return a.order - b.order
-  })
-  // If this tab is active then set the active metric as the first in the list.
-  // if (filters.length > 0 && props.tab === activeFilterTab) {
-  //   setStoreValues({
-  //     activeMetric: filters[0].id,
-  //   })
-  // }
-  //
-  //
+  const {
+    activeMetric,
+    setStoreValues,
+    activeLayers,
+    indicators,
+  } = useStore(state => ({
+    activeMetric: state.activeMetric,
+    setStoreValues: state.setStoreValues,
+    activeLayers: state.activeLayers,
+    indicators: state.indicators,
+  }))
 
   const filterHeadingStyles = css`
     font-family: halyard-text;
@@ -51,34 +39,35 @@ const FilterSeries = ({ ...props }) => {
     }
   `
 
-  if (filters && filters.length > 0) {
-    // If the activeMetric is not in the list of indicators here,
-    // then set activeMetric to the first item.
-    if (props.tab === activeFilterTab) {
-      const isInFilters = filters.find(el => {
-        return el.id === activeMetric
-      })
-      if (!isInFilters) {
-        setStoreValues({
-          activeMetric: filters[0].id,
-        })
-      }
-    }
+  const layerObj =
+    UNTD_LAYERS[getActiveLayerIndex(activeLayers)]
+
+  const layerIndicators = indicators.filter((el, i) => {
+    return el.placeTypes.indexOf(layerObj.id) > -1
+  })
+
+  if (layerIndicators && layerIndicators.length > 0) {
     return (
       <>
-        <div className="filter-panel-filter-series">
-          {filters.map(f => {
+        <div className="filter-panel-filter-series filter-panel-indicator-series">
+          <div className="info">
+            <p>
+              {i18n.translate(`MAP_FILTERS_SELECT_INFO`)}
+            </p>
+          </div>
+          {layerIndicators.map(indicator => {
+            // console.log('indicator, ', indicator)
             return (
               <div
                 className={clsx('filter', cx(filterStyles))}
-                key={f.id}
+                key={indicator.id}
               >
                 <h6
                   className={clsx(cx(filterHeadingStyles))}
                 >
-                  {i18n.translate(f.id)}
+                  {i18n.translate(indicator.id)}
                 </h6>
-                <InteractiveScale metric={f} />
+                <InteractiveScale metric={indicator} />
               </div>
             )
           })}
@@ -86,7 +75,13 @@ const FilterSeries = ({ ...props }) => {
       </>
     )
   } else {
-    return ''
+    return (
+      <div className="filter-panel-filter-series filter-panel-indicator-series">
+        <div className="info">
+          <p>{i18n.translate(`MAP_FILTERS_SELECT_NONE`)}</p>
+        </div>
+      </div>
+    )
   }
 }
 

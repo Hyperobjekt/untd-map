@@ -35,10 +35,15 @@ const en_US = {
   MODAL_SHARE_LINK_INSTR: `Copy the link below to share the current view of the Explorer.`,
   MODAL_SHARE_LINK_INPUT: `Current View URL`,
   BTN_CLOSE: `Close`,
+  MAP_FILTERS_SELECT_LAYER: `Select a layer`,
+  MAP_FILTERS_SELECT_INFO: `Scroll and select among the indicators listed
+  below to apply them to the shapes in the map.`,
+  MAP_FILTERS_SELECT_NONE: `No indicators are available for this georaphical
+  layer.`,
   UI_MAP_FILTERS_INDICATORS: `Indicators`,
   UI_MAP_BUTTON_RESET_FILTER: `Reset active filter`,
   UI_MAP_FILTER_INSTRUCTIONS: `<p>Click the scale(s) below to activate metrics on the map. The brackets within each scale can be clicked on and off to filter the schools on the map. Clear filters by pressing the "reset" {icon} button above.</p>`,
-  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `<p>Click the scale(s) below to activate metrics on the map. The brackets within each scale can be clicked on and off to filter the {shapeType} on the map.`,
+  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `<p>Different metrics are available for different geographic entities. Use the control below to select a different geographic entity.`,
   SELECT_VIEW: `Select a view`,
   SELECT_ITEM_MAP: `Map view`,
   SELECT_ITEM_FEEDER: `Feeder view`,

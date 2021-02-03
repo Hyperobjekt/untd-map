@@ -43,6 +43,7 @@ export const UNTD_LAYERS = [
     only_one_name: `basic_geo`,
     group: 0,
     index: 0,
+    place_type: `County`,
   },
   {
     id: `zips`,
@@ -53,6 +54,7 @@ export const UNTD_LAYERS = [
     only_one_name: `basic_geo`,
     group: 0,
     index: 1,
+    place_type: `Zip`,
   },
   {
     id: `tracts`,
@@ -61,9 +63,9 @@ export const UNTD_LAYERS = [
     tooltip: null,
     only_one: true,
     only_one_name: `basic_geo`,
-    // metric: `dem_perpoc`,
     group: 0,
     index: 2,
+    place_type: `Tract`,
   },
   {
     id: `places`,
@@ -72,9 +74,9 @@ export const UNTD_LAYERS = [
     tooltip: null,
     only_one: true,
     only_one_name: `basic_geo`,
-    // metric: `dem_perbl`,
     group: 0,
     index: 3,
+    place_type: `Place`,
   },
 ]
 
