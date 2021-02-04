@@ -12,7 +12,7 @@ import {
   getMetric,
   getHashLeft,
   getQuintile,
-  generateFeatureId,
+  getFeatureId,
 } from './../../utils'
 import useStore from './../../store'
 
@@ -20,22 +20,19 @@ import useStore from './../../store'
  * Returns popup contents for map feature mouseover
  */
 const PopupContent = ({ ...props }) => {
-  // if (props.feature) {
-  //   console.log('props.feature exists')
-  //   console.log('props.feature, ', props.feature)
-  // }
-  // Generic state updates for store.
-  // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  const interactionsMobile = useStore(
-    state => state.interactionsMobile,
-  )
-  const indicators = useStore(state => state.indicators)
-  const breakpoint = useStore(state => state.breakpoint)
-  const activeMetric = useStore(state => state.activeMetric)
-
+  const {
+    setStoreValues,
+    interactionsMobile,
+    indicators,
+    breakpoint,
+    activeMetric,
+  } = useStore(state => ({
+    setStoreValues: state.setStoreValues,
+    interactionsMobile: state.interactionsMobile,
+    indicators: state.indicators,
+    breakpoint: state.breakpoint,
+    activeMetric: state.activeMetric,
+  }))
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
   })
@@ -51,7 +48,9 @@ const PopupContent = ({ ...props }) => {
     return arr
   }
 
-  if (!!props.feature) {
+  console.log('PopupContent, ', props)
+
+  if (!!props.feature && props.feature !== undefined) {
     if (props.feature.layer.source === 'points') {
       // console.log(`it's a points feature`)
       return (
@@ -61,7 +60,7 @@ const PopupContent = ({ ...props }) => {
           </div>
           <div
             className="popup-metric"
-            key={`popup-point-${generateFeatureId(
+            key={`popup-point-${getFeatureId(
               props.feature,
             )}`}
           >
@@ -74,6 +73,7 @@ const PopupContent = ({ ...props }) => {
         </div>
       )
     } else {
+      console.log('not a points feature')
       const featureLabel = props.feature.properties[
         source.label_key
       ]
@@ -91,10 +91,10 @@ const PopupContent = ({ ...props }) => {
       const min = metric.min
       const max = metric.max
       const high_is_good = metric.high_is_good
-      // console.log(
-      //   'sd is , ',
-      //   props.feature.properties[activeMetric],
-      // )
+      console.log(
+        'sd is , ',
+        props.feature.properties[activeMetric],
+      )
       return (
         <div className="popup-content">
           {!!featureLabel && (

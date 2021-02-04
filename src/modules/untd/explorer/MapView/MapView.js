@@ -11,8 +11,6 @@ import {
   getMetric,
   getQuintilesPhrase,
   getFeatureProperty,
-  // getSchoolZones,
-  // getSchoolGeojson,
   getFeatureId,
   getFeatureTypeObj,
   getFeatureSource,
@@ -31,9 +29,9 @@ const MapView = props => {
     breakpoint,
     showMapModal,
     interactionsMobile,
-    hoveredId,
+    hoveredID,
     hoveredType,
-    feature,
+    hoveredFeature,
     coords,
     setHovered,
     remoteJson,
@@ -52,9 +50,9 @@ const MapView = props => {
       breakpoint: state.breakpoint,
       showMapModal: state.showMapModal,
       interactionsMobile: state.interactionsMobile,
-      hoveredId: state.hoveredId,
+      hoveredID: state.hoveredID,
       hoveredType: state.hoveredType,
-      feature: state.feature,
+      hoveredFeature: state.hoveredFeature,
       coords: state.coords,
       setHovered: state.setHovered,
       remoteJson: state.remoteJson,
@@ -67,6 +65,13 @@ const MapView = props => {
     }),
     shallow,
   )
+
+  useEffect(() => {
+    console.log('hovered feature object changed')
+  }, [hoveredFeature])
+  useEffect(() => {
+    console.log('hovered ID changed')
+  }, [hoveredID])
   // Currently active metric
   // const metric = useStore(state => state.activeMetric)
   // Active quintiles
@@ -127,12 +132,12 @@ const MapView = props => {
 
   /** handler for map hover */
   const handleHover = (feature, coords, geoCoords) => {
-    // console.log(
-    //   'handleHover in mapview, ',
-    //   feature,
-    //   coords,
-    //   geoCoords,
-    // )
+    console.log(
+      'handleHover in mapview, ',
+      feature,
+      coords,
+      geoCoords,
+    )
     if (!!interactionsMobile) return
     // let type =
     //   feature && feature.source ? feature.source : null
@@ -150,17 +155,20 @@ const MapView = props => {
     const source_data = getFeatureTypeObj(feature)
     // console.log('source_data, ', source_data)
     if (source_data && !!source_data.popup) {
+      console.log('has source data, has popup')
       // const id = getFeatureProperty(
       //   feature,
       //   getFeatureId(feature),
       // )
       // Verify that this is a hoverable feature.
-      if (HOVER_LAYERS.indexOf(source) > -1) {
-        const id = getFeatureId(feature)
-        const type = getFeatureType(feature)
-        // console.log('setting hovered, ', feature, id)
-        setHovered(id, type, geoCoords, feature)
-      }
+      // if (HOVER_LAYERS.indexOf(source) > -1) {
+      const id = getFeatureId(feature)
+      const type = getFeatureType(feature)
+      console.log('setting hovered, ', feature, id)
+      setHovered(id, type, geoCoords, feature)
+      // }
+    } else {
+      setHovered(false, false, geoCoords, false)
     }
     // if (
     //   feature &&
@@ -241,10 +249,12 @@ const MapView = props => {
       sources={!!allDataLoaded ? remoteJson : null}
       layers={layers}
       idMap={idMap}
-      hoveredId={hoveredId ? hoveredId : undefined}
+      hoveredId={hoveredID ? hoveredID : undefined}
       hoveredType={hoveredType ? hoveredType : undefined}
       hoveredCoords={coords ? coords : undefined}
-      hoveredFeature={feature ? feature : undefined}
+      hoveredFeature={
+        hoveredFeature ? hoveredFeature : undefined
+      }
       ariaLabel={ariaLabel}
       onHover={handleHover}
       onLoad={handleLoad}

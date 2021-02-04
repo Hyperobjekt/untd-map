@@ -93,7 +93,6 @@ const MapBase = ({
   onClick,
   onTouch,
   onLoad,
-  schoolZonesAffix,
   ...rest
 }) => {
   // Mapbox API token from .env to pass into map.
@@ -162,11 +161,6 @@ const MapBase = ({
     selectedIds,
   })
 
-  // const justLoaded = useStore(state => state.justLoaded)
-  // const setJustLoaded = useStore(
-  //   state => state.setJustLoaded,
-  // )
-
   const setFeatureState = useCallback(
     (featureId, type, state) => {
       if (
@@ -193,40 +187,6 @@ const MapBase = ({
     },
     [layers, idMap, currentMap, loaded],
   )
-
-  /**
-   * Sets the feature state for rendering styles
-   * @param {string} featureId
-   * @param {object} state
-   */
-  // const setFeatureState = useCallback(
-  //   (featureId, type, state) => {
-  //     if (
-  //       !loaded ||
-  //       !featureId ||
-  //       !currentMap ||
-  //       !currentMap.setFeatureState
-  //     )
-  //       return
-  //     console.log('setFeatureState', featureId, type, state)
-  //     const layer = layers.find(
-  //       l => l.hasFeatureId && l.hasFeatureId(featureId),
-  //     )
-  //     console.log('layer = ', layer)
-  //     const id = idMap[featureId]
-  //       ? idMap[featureId]
-  //       : featureId
-  //     if (layer) {
-  //       const source = {
-  //         source: layer.style.get('source'),
-  //         // sourceLayer: layer.style.get('source-layer'),
-  //         id,
-  //       }
-  //       currentMap.setFeatureState(source, state)
-  //     }
-  //   },
-  //   [layers, idMap, currentMap, loaded],
-  // )
 
   // update map style layers when layers change
   const mapStyle = useMemo(
@@ -425,28 +385,12 @@ const MapBase = ({
       setFeatureState(prev.hoveredId, prev.hoveredType, {
         hover: false,
       })
-      // Set state for unhovered school zone.
-      // setFeatureState(
-      //   schoolZonesAffix + prev.hoveredId,
-      //   'schoolzones',
-      //   {
-      //     hover: false,
-      //   },
-      // )
     }
     if (hoveredId) {
       // Set state for hovered school.
       setFeatureState(hoveredId, hoveredType, {
         hover: true,
       })
-      // Set state for hovered school zone.
-      // setFeatureState(
-      //   schoolZonesAffix + hoveredId,
-      //   'schoolzones',
-      //   {
-      //     hover: true,
-      //   },
-      // )
     }
     // eslint-disable-next-line
   }, [hoveredId, loaded]) // update only when hovered id changes

@@ -322,10 +322,10 @@ const DataLoader = ({ ...props }) => {
                           ? r['range']
                           : null,
                         mean: r['mean'] ? r['mean'] : null,
-                        high_is_good:
+                        highisgood:
                           r['highisgood'] === 'Yes' ? 1 : 0,
-                        is_currency: r['currency'],
-                        is_percent: r['percent'],
+                        iscurrency: r['currency'],
+                        ispercent: r['percent'],
                         decimals: r['decimals'],
                         years: r['years']
                           .toLowerCase()

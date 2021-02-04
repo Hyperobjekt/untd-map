@@ -7,13 +7,6 @@ export const DEMO_MAX_PERCENTS = {
   dem_perpoc: 1,
 }
 
-export const HOVER_LAYERS = [
-  'points',
-  'tracts',
-  'zips',
-  'places',
-]
-
 // Array of layers groups.
 export const UNTD_LAYER_GROUPS = [
   {

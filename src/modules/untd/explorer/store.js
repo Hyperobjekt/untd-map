@@ -151,11 +151,11 @@ const [useStore] = create((set, get) => ({
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
-  hovered: null,
+  hoveredID: null,
   // Hovered feature type.
   type: null,
   // Hovered feature object.
-  feature: null,
+  hoveredFeature: null,
   // x, y coords of hovered object.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
@@ -175,10 +175,10 @@ const [useStore] = create((set, get) => ({
     //   coords,
     // )
     set(state => ({
-      hovered: hoveredId,
+      hoveredID: hoveredId,
       type: hoveredType,
       coords: coords ? coords : state.coords,
-      feature: feature,
+      hoveredFeature: feature,
     }))
   },
   // Position of tooltips in control panel, changes with breakpoint

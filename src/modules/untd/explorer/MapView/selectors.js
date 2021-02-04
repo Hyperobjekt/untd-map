@@ -27,6 +27,7 @@ export const getClusterCountBg = (
     id: `${id}ClusterCountBg`,
     source: source,
     type: 'circle',
+    interactive: false,
     layout: {
       // 'icon-allow-overlap': true,
     },
@@ -56,6 +57,7 @@ export const getClusterCount = (
     id: `${id}ClusterCount`,
     source: source,
     type: 'symbol',
+    interactive: false,
     layout: {
       'icon-allow-overlap': true,
       'text-field': '{point_count_abbreviated}',
