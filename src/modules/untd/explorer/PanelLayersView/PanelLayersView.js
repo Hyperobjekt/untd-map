@@ -80,12 +80,11 @@ const PanelLayersView = ({ ...props }) => {
   }
 
   const updatePoints = e => {
-    console.log('updatePoints, ', e, e.currentTarget.id)
+    // console.log('updatePoints, ', e, e.currentTarget.id)
     // If item is checked, if it's not in array, push it into array
     // If item is not checked, if it's in array, remove
     // If the element is an only-one element, reset other only-ones of same name.
     const id = e.currentTarget.id.replace(/input_/g, '')
-    console.log('id, ', id)
     // Get index in indicator set.
     const index = pointTypes
       .map(type => {
@@ -100,13 +99,7 @@ const PanelLayersView = ({ ...props }) => {
     })
   }
 
-  // const [layersKey, setLayersKey] = useState(0)
-  // useEffect(() => {
-  //   // console.log('activeLayers changed')
-  //   setLayersKey(layersKey + 1)
-  // }, [activeLayers])
-
-  console.log('pointTypes, ', pointTypes)
+  // console.log('pointTypes, ', pointTypes)
 
   return (
     <div
@@ -164,7 +157,7 @@ const PanelLayersView = ({ ...props }) => {
                 }
 
                 return (
-                  <div>
+                  <div key={`point-cat-${cat.id}`}>
                     <Button
                       id={`show-${cat.id}`}
                       color="link"

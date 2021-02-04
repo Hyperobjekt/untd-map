@@ -13,8 +13,15 @@ const NonInteractiveScale = ({
   hashLeft,
   showMinMax,
 }) => {
-  const indicators = useStore(state => state.indicators)
-  const metricData = getMetric(metric, indicators)
+  const { indicators, allData } = useStore(state => ({
+    indicators: state.indicators,
+    allData: state.allData,
+  }))
+  console.log('allData, ', allData)
+  const metricData = allData.find(raw => {
+    return raw.variable === metric.replace(/_sd/g, '')
+  })
+  // const metricData = getMetric(metric, indicators)
   const styles = [
     {
       backgroundColor: !!quintiles[0]
@@ -49,6 +56,7 @@ const NonInteractiveScale = ({
   if (!metricData) {
     return null
   } else {
+    console.log('NonInteractiveScale, ', metric, metricData)
     return (
       <div className="n-i-scale" key={metric}>
         <div className="n-i-scale-parent">
@@ -93,24 +101,24 @@ const NonInteractiveScale = ({
           >
             <div className="n-i-scale-min">
               {getRoundedValue(
-                !!metricData.high_is_good
+                !!metricData.highisgood
                   ? metricData.min
                   : metricData.max,
-                metricData.decimals,
+                Number(metricData.decimals),
                 false,
-                !!metricData.is_currency,
-                !!metricData.as_percent,
+                !!Number(metricData.currency),
+                !!Number(metricData.percent),
               )}
             </div>
             <div className="n-i-scale-max">
               {getRoundedValue(
-                !!metricData.high_is_good
-                  ? metricData.min
-                  : metricData.max,
-                metricData.decimals,
+                !!metricData.highisgood
+                  ? metricData.max
+                  : metricData.min,
+                Number(metricData.decimals),
                 false,
-                !!metricData.is_currency,
-                !!metricData.as_percent,
+                !!Number(metricData.currency),
+                !!Number(metricData.percent),
               )}
             </div>
           </div>

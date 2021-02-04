@@ -116,6 +116,8 @@ const [useStore] = create((set, get) => ({
   activeLayers: ROUTE_SET.find(el => {
     return el.id === 'layers'
   }).defaultValue,
+  // All data from data dict.
+  allData: [],
   // Stores types of points.
   pointTypes: [],
   // Stores the point types available from the geo source.

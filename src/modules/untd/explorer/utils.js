@@ -124,9 +124,9 @@ export const getRoundedValue = (
         .toFixed(decimals)
         .toLocaleString()
     } else {
-      fixed = +parseFloat(value)
-        .toFixed(decimals)
-        .toLocaleString()
+      fixed = Number(
+        +parseFloat(value).toFixed(decimals),
+      ).toLocaleString()
     }
   } else {
     if (padZeroes) {
@@ -135,7 +135,7 @@ export const getRoundedValue = (
       ).toLocaleString()
     } else {
       fixed = Number(
-        +value.toFixed(decimals),
+        value.toFixed(decimals),
       ).toLocaleString()
     }
   }

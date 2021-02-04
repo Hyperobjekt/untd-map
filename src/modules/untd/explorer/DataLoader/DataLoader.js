@@ -369,6 +369,7 @@ const DataLoader = ({ ...props }) => {
                   setStoreValues({
                     routeSet: routeSet,
                     pointTypes: pointTypes,
+                    allData: result.data,
                   })
                 },
               })

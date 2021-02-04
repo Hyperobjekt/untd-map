@@ -25,25 +25,24 @@ import {
  * Legend for map
  */
 const MapLegend = ({ ...props }) => {
-  // Generic state updates for store.
-  // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Default affix for features in school zones layer
-  const activeMetric = useStore(state => state.activeMetric)
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
-  )
-  // Current breakpoint.
-  const breakpoint = useStore(state => state.breakpoint)
-  // Track and update legend display.
-  const showMobileLegend = useStore(
-    state => state.showMobileLegend,
-  )
-  // const setShowMobileLegend = useStore(
-  //   state => state.setShowMobileLegend,
-  // )
+  const {
+    setStoreValues,
+    activeMetric,
+    activeQuintiles,
+    breakpoint,
+    showMobileLegend,
+    indicators,
+    allData,
+  } = useStore(state => ({
+    setStoreValues: state.setStoreValues,
+    activeMetric: state.activeMetric,
+    activeQuintiles: state.activeQuintiles,
+    breakpoint: state.breakpoint,
+    showMobileLegend: state.showMobileLegend,
+    indicators: state.indicators,
+    allData: state.allData,
+  }))
+
   const handleClose = () => {
     // console.log('handle close')
     setStoreValues({ showMobileLegend: false })
@@ -78,7 +77,6 @@ const MapLegend = ({ ...props }) => {
     }
   }
 
-  const indicators = useStore(state => state.indicators)
   const metric = getMetric(activeMetric, indicators)
   const metricLabel = metric => {
     if (!metric) return ''
@@ -172,7 +170,7 @@ const MapLegend = ({ ...props }) => {
 }
 
 MapLegend.defaultProps = {
-  activeMetric: 'cri',
+  activeMetric: '',
   activeQuintiles: [1, 1, 1, 1, 1],
 }
 
