@@ -8,7 +8,7 @@
     //   display: none;
     // }
     p {
-      font-family: halyard-text;
+      @include font-gotham-book;
       font-weight: 200;
       font-size: 15px;
       line-height: 22px;
@@ -94,7 +94,7 @@
             color: #2c390b;
           }
           h6 {
-            font-family: halyard-text;
+            @include font-gotham-book;
             font-weight: 300;
             font-size: 16px;
             line-height: 20px;

@@ -122,6 +122,8 @@ const [useStore] = create((set, get) => ({
   pointTypeLayers: [],
   // Stores active point types.
   activePointTypes: [],
+  // Point categories.
+  pointCategories: [],
   defaultMetric: ROUTE_SET.find(el => {
     return el.id === 'metric'
   }).defaultValue, // Default metric.

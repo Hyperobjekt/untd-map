@@ -33,7 +33,7 @@
     }
   }
   .map-legend-label {
-    font-family: halyard-text;
+    @include font-gotham-book;
     font-weight: 300;
     font-size: 1.4rem;
     line-height: 1.4rem;
@@ -69,7 +69,7 @@
     }
   }
   .map-legend-metric-title {
-    font-family: halyard-text;
+    @include font-gotham-book;
     color: $turtle-green;
     font-size: 1.4rem;
     line-height: 2rem;
@@ -152,7 +152,7 @@
   }
   .census-scale {
     margin-top: 1.6rem;
-    font-family: halyard-text;
+    @include font-gotham-book;
     font-weight: 300;
     h5 {
       font-size: 1.4rem;
@@ -175,7 +175,7 @@
     .scale-range {
       display: flex;
       width: 100%;
-      font-family: halyard-text;
+      @include font-gotham-book;
       .scale-range-minmax {
         flex: 0 0 50%;
         &.max {

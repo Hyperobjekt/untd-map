@@ -80,6 +80,32 @@ export const UNTD_LAYERS = [
   },
 ]
 
+export const POINT_CATEGORIES = [
+  {
+    id: `social_infrastructure`,
+    subcategories: [],
+  },
+  {
+    id: `commerce`,
+    subcategories: [],
+  },
+  {
+    id: `school`,
+    subcategories: [
+      'charter_elementary_school',
+      'charter_high_school',
+      'charter_middle_school',
+      'public_high_school',
+      'public_elementary_school',
+      'public_middle_school',
+    ],
+  },
+  {
+    id: `public_health`,
+    subcategories: [],
+  },
+]
+
 export const BREAKPOINTS = [
   {
     id: 'xs',

@@ -231,6 +231,7 @@ const DataLoader = ({ ...props }) => {
                   const strings = {}
                   const indicators = []
                   const pointTypes = []
+                  const pointCategories = []
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
@@ -266,7 +267,21 @@ const DataLoader = ({ ...props }) => {
                         group: 1,
                         index: pointTypes.length,
                         icon: `${r.variable}-icon`,
+                        category: r['category']
+                          ? r['category']
+                          : false,
+                        subcategory: r['subcategory']
+                          ? r['subcategory']
+                          : false,
                       })
+                      if (
+                        r['category'] &&
+                        pointCategories.indexOf(
+                          r['category'],
+                        ) <= -1
+                      ) {
+                        pointCategories.push(r['category'])
+                      }
                     }
                     // Build indicator list, array of objects.
                     const exists =

@@ -9,6 +9,7 @@ import {
   FiInfo,
   FiLayers,
 } from 'react-icons/fi'
+import { RiMapPinLine } from 'react-icons/ri'
 import { AiOutlineControl } from 'react-icons/ai'
 import { css, cx } from 'emotion'
 
@@ -227,7 +228,7 @@ const ControlPanel = ({ children }) => {
               : '',
           )}
         >
-          <FiLayers />
+          <RiMapPinLine />
           <span className="sr-only">
             {i18n.translate(`BUTTON_TOGGLE_PANEL_LAYERS`)}
           </span>

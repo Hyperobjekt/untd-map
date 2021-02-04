@@ -1,8 +1,65 @@
-// Imports angie-sans and halyard-text-text.
-@import url('https://use.typekit.net/alo0hmm.css');
+// All fonts come from typography.com
+@import url('https://cloud.typography.com/6135894/7078832/css/fonts.css');
+
+@mixin font-knockout-jr-lightweight {
+  font-family: 'Knockout 29 A', 'Knockout 29 B';
+  font-style: normal;
+  font-weight: 400;
+}
+
+@mixin font-knockout-lightweight {
+  font-family: 'Knockout 49 A', 'Knockout 49 B';
+  font-style: normal;
+  font-weight: 400;
+}
+
+@mixin font-gotham-book {
+  font-family: 'Gotham A', 'Gotham B';
+  font-style: normal;
+  font-weight: 400;
+}
+
+@import url('https://cloud.typography.com/6135894/7078832/css/fonts.css');
+
+// Adobe Caslon Pro Regular
+@mixin adobe-caslon-regular {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 400;
+  font-style: normal;
+}
+// Adobe Caslon Pro Italic
+@mixin adobe-caslon-italic {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 400;
+  font-style: italic;
+}
+// Adobe Caslon Pro Bold
+@mixin adobe-caslon-bold {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 700;
+  font-style: normal;
+}
+// Adobe Caslon Pro Bold Italic
+@mixin adobe-caslon-italic {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 700;
+  font-style: italic;
+}
+// Adobe Caslon Pro Semibold
+@mixin adobe-caslon-semibold {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 600;
+  font-style: normal;
+}
+// Adobe Caslon Pro Semibold Italic
+@mixin adobe-caslon-semibold-italic {
+  font-family: adobe-caslon-pro, serif;
+  font-weight: 600;
+  font-style: italic;
+}
 
 * {
-  font-family: halyard-text;
+  @include font-gotham-book;
 }
 
 html {

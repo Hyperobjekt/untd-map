@@ -24,7 +24,7 @@ const FilterSeries = ({ ...props }) => {
   }))
 
   const filterHeadingStyles = css`
-    font-family: halyard-text;
+    font-family: 'Gotham A', 'Gotham B';
     font-weight: 300;
     font-size: 16px;
     line-height: 20px;

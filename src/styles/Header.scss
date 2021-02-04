@@ -22,16 +22,16 @@
   border-bottom: 1px solid #ccc;
   transition: height 0.4s ease-in-out;
   h1 {
-    margin-left: 16px;
-    width: 0;
-    @include media-breakpoint-up(md) {
-      width: auto;
-    }
+    // margin-left: 16px;
+    // width: 0;
+    // @include media-breakpoint-up(md) {
+    width: auto;
+    // }
     a {
-      display: none;
-      @include media-breakpoint-up(md) {
-        display: flex;
-      }
+      // display: none;
+      // @include media-breakpoint-up(md) {
+      display: flex;
+      // }
       text-decoration: none !important;
       .logo {
         width: 85px;
@@ -42,20 +42,19 @@
         margin-right: 4px;
       }
       .logo-sitename {
+        @include font-knockout-jr-lightweight;
+        text-transform: uppercase;
         letter-spacing: -1px;
         color: $logo-text-color;
         align-self: center;
         margin-left: 6px;
         width: 70px;
-        font-family: halyard-text;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 12px;
-        line-height: 11px;
+        font-size: 1.4rem;
+        line-height: 1.6rem;
         @include media-breakpoint-up(md) {
           width: auto;
           font-style: normal;
-          font-size: 15px;
+          font-size: 1.6rem;
           font-weight: 300;
           line-height: 15px;
           color: #292d33;
@@ -75,7 +74,7 @@
   .menu-icon-group {
     svg {
       margin-right: 3.5px;
-      margin-top: -3px;
+      margin-top: -1px;
     }
     cursor: pointer;
     display: inline; // so below padding doesn't shift element
