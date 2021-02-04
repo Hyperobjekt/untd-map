@@ -51,8 +51,8 @@ const PopupContent = ({ ...props }) => {
   console.log('PopupContent, ', props)
 
   if (!!props.feature && props.feature !== undefined) {
-    if (props.feature.layer.source === 'points') {
-      // console.log(`it's a points feature`)
+    if (props.feature.layer.source.indexOf('points') > -1) {
+      console.log(`it's a points feature, `, props.feature)
       return (
         <div className="popup-content">
           <div className="popup-school-name">
