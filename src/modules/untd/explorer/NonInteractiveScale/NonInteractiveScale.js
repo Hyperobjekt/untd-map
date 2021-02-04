@@ -17,11 +17,9 @@ const NonInteractiveScale = ({
     indicators: state.indicators,
     allData: state.allData,
   }))
-  console.log('allData, ', allData)
   const metricData = allData.find(raw => {
     return raw.variable === metric.replace(/_sd/g, '')
   })
-  // const metricData = getMetric(metric, indicators)
   const styles = [
     {
       backgroundColor: !!quintiles[0]
@@ -56,7 +54,6 @@ const NonInteractiveScale = ({
   if (!metricData) {
     return null
   } else {
-    console.log('NonInteractiveScale, ', metric, metricData)
     return (
       <div className="n-i-scale" key={metric}>
         <div className="n-i-scale-parent">
