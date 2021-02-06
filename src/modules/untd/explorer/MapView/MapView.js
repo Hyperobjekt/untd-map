@@ -59,29 +59,12 @@ const MapView = props => {
       allDataLoaded: state.allDataLoaded,
       viewport: state.viewport,
       pointTypeLayers: state.pointTypeLayers,
-      activeLayers: [...state.activeLayers],
-      activePointTypes: [...state.activePointTypes],
+      activeLayers: state.activeLayers,
+      activePointTypes: state.activePointTypes,
       activeView: state.activeView,
     }),
     shallow,
   )
-
-  // Currently active metric
-  // const metric = useStore(state => state.activeMetric)
-  // Active quintiles
-  // const activeQuintiles = useStore(
-  //   state => [...state.activeQuintiles],
-  //   shallow,
-  // )
-  // const activeLayers = useStore(
-  //   state => [...state.activeLayers],
-  //   shallow,
-  // )
-  // // Active point types
-  // const activePointTypes = useStore(
-  //   state => [...state.activePointTypes],
-  //   shallow,
-  // )
 
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)

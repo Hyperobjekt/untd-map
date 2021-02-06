@@ -263,23 +263,23 @@ const MapBase = ({
       if (vp.zoom && vp.zoom >= BOUNDS.zoom.max) {
         vp.zoom = BOUNDS.zoom.max
       }
-
-      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-      //   // console.log('panned beyond lng.min')
-      //   vp.longitude = BOUNDS.lng.min
-      // }
-      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-      //   // console.log('panned beyond lng.max')
-      //   vp.longitude = BOUNDS.lng.max
-      // }
-      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-      //   // console.log('panned beyond lat.min')
-      //   vp.latitude = BOUNDS.lat.min
-      // }
-      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-      //   // console.log('panned beyond lat.max')
-      //   vp.latitude = BOUNDS.lat.max
-      // }
+      // Enforce bounds for panning.
+      if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
+        // console.log('panned beyond lng.min')
+        vp.longitude = BOUNDS.lng.min
+      }
+      if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
+        // console.log('panned beyond lng.max')
+        vp.longitude = BOUNDS.lng.max
+      }
+      if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
+        // console.log('panned beyond lat.min')
+        vp.latitude = BOUNDS.lat.min
+      }
+      if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
+        // console.log('panned beyond lat.max')
+        vp.latitude = BOUNDS.lat.max
+      }
       setViewport(vp)
     },
     [setViewport, loaded],
@@ -438,118 +438,6 @@ const MapBase = ({
     return !!hoveredId ? 'pointer' : 'grab'
   }
 
-  const getTooltipOffset = hoveredFeature => {
-    // console.log(
-    //   'getTooltipOffset(), hoveredFeature = ',
-    //   hoveredFeature,
-    // )
-    // Get current zoom.
-    // const zoom = currentMap.getZoom()
-    // console.log('zoom = ', zoom)
-    // Distance = 2 miles.
-    let distance = 2
-    // if (zoom >= 12) {
-    //   distance = 0.4
-    // }
-    // Set point for hovered feature.
-    // let point = null
-    // const isPoint = isFeaturePoint(hoveredFeature)
-    // if (isPoint) {
-    //   point = hoveredFeature.geometry.coordinates
-    // } else {
-    //   // console.log('mouseCoords, ', mouseCoords)
-    //   point = mouseLngLat
-    //   // centerOfMass(hoveredFeature).geometry.coordinates
-    // }
-    // if (!point) return false
-    //
-    const point = mouseLngLat
-
-    var options = { units: 'miles' }
-    // Get coords for edge of zone at cardinal directions for hovered feature latlng
-    const offsets = {
-      north: destination(point, distance, 0, options),
-      northeast: destination(point, distance, 45, options),
-      east: destination(point, distance, 90, options),
-      southeast: destination(point, distance, 135, options),
-      south: destination(point, distance, 180, options),
-      southwest: destination(
-        point,
-        distance,
-        -135,
-        options,
-      ),
-      west: destination(point, distance, -90, options),
-      northwest: destination(point, distance, -45, options),
-    }
-    // Defaults to positioning it 2 miles east, at the edge of the zone.
-    let tooltip = {
-      coords: offsets.east.geometry.coordinates,
-      anchor: 'left',
-    }
-    const mapSize = document
-      .getElementById('map')
-      .getBoundingClientRect()
-    // Check for overlap issues
-    // If x is close to right edge, change x to west side.
-    if (mouseCoords[0] > mapSize.width - 350) {
-      // console.log('too close to right edge')
-      tooltip.coords[0] =
-        offsets.west.geometry.coordinates[0]
-      tooltip.anchor = 'right'
-    }
-    // If y is close to top, switch.
-    if (mouseCoords[1] < 250) {
-      // console.log('too close to top edge')
-      tooltip.coords = offsets.south.geometry.coordinates
-      tooltip.anchor = 'top'
-    }
-    // If y is close to bottom, set y to a max.
-    if (mouseCoords[1] > mapSize.height - 250) {
-      // console.log('too close to top edge')
-      tooltip.coords = offsets.north.geometry.coordinates
-      tooltip.anchor = 'bottom'
-    }
-    // If it's in the top right corner
-    if (
-      mouseCoords[0] > mapSize.width - 350 &&
-      mouseCoords[1] < 250
-    ) {
-      // console.log('too close to top right corner')
-      tooltip.coords =
-        offsets.southwest.geometry.coordinates
-      tooltip.anchor = 'top-right'
-    }
-    // If it's in the bottom right corner
-    if (
-      mouseCoords[0] > mapSize.width - 350 &&
-      mouseCoords[1] > mapSize.height - 250
-    ) {
-      // console.log('too close to top right corner')
-      tooltip.coords =
-        offsets.northwest.geometry.coordinates
-      tooltip.anchor = 'bottom-right'
-    }
-    // If it's in the bottom left corner
-    if (
-      mouseCoords[0] < 350 &&
-      mouseCoords[1] > mapSize.height - 250
-    ) {
-      // console.log('too close to bottom left corner')
-      tooltip.coords =
-        offsets.northeast.geometry.coordinates
-      tooltip.anchor = 'bottom-left'
-    }
-    // If it's in the top left corner
-    if (mouseCoords[0] < 350 && mouseCoords[1] < 250) {
-      // console.log('too close to bottom left corner')
-      tooltip.coords =
-        offsets.southeast.geometry.coordinates
-      tooltip.anchor = 'top-left'
-    }
-    return tooltip
-  }
-
   const handleTouch = () => {
     // console.log('touch is happening')
     onTouch()
@@ -602,10 +490,10 @@ const MapBase = ({
         onClick={handleClick}
         onLoad={handleLoad}
         mapboxApiAccessToken={TOKEN}
-        maxBounds={DEFAULT_VIEWPORT.maxBounds}
         {...viewport}
         {...rest}
       >
+        <AddMapImages map={currentMap} />
         {!!hoveredId &&
           !!mouseLngLat &&
           !(
@@ -616,15 +504,10 @@ const MapBase = ({
           ) && (
             <Popup
               className={clsx('school-details-tip')}
-              latitude={
-                getTooltipOffset(hoveredFeature).coords[1]
-              }
-              longitude={
-                getTooltipOffset(hoveredFeature).coords[0]
-              }
-              anchor={
-                getTooltipOffset(hoveredFeature).anchor
-              }
+              latitude={mouseLngLat[1]}
+              longitude={mouseLngLat[0]}
+              anchor={`top`}
+              offsetTop={20}
               onClick={handlePopupClick}
               closeButton={false}
               closeOnClick={false}
@@ -632,7 +515,7 @@ const MapBase = ({
                 this.setState({ showPopup: false })
               }
               tipSize={0}
-              dynamicPosition={false}
+              dynamicPosition={true}
               captureClick={true}
               captureDrag={true}
               captureDoubleClick={true}

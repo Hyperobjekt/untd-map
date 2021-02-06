@@ -366,9 +366,15 @@ const DataLoader = ({ ...props }) => {
                   ].options = indicatorKeys
                   // console.log('routeSet, ', routeSet)
                   // Save point types to point type list
+                  const activePointTypes = pointTypes.map(
+                    el => {
+                      return 0
+                    },
+                  )
                   setStoreValues({
                     routeSet: routeSet,
                     pointTypes: pointTypes,
+                    activePointTypes: activePointTypes,
                     allData: result.data,
                   })
                 },
