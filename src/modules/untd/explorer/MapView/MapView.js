@@ -25,7 +25,7 @@ const MapView = props => {
     setStoreValues,
     pointTypes,
     activeMetric,
-    // activeQuintiles,
+    activeQuintiles,
     breakpoint,
     showMapModal,
     interactionsMobile,
@@ -38,15 +38,15 @@ const MapView = props => {
     allDataLoaded,
     viewport,
     pointTypeLayers,
-    // activeLayers,
-    // activePointTypes,
+    activeLayers,
+    activePointTypes,
     activeView,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
       pointTypes: state.pointTypes,
       activeMetric: state.activeMetric,
-      // activeQuintiles: state.activeQuintiles,
+      activeQuintiles: state.activeQuintiles,
       breakpoint: state.breakpoint,
       showMapModal: state.showMapModal,
       interactionsMobile: state.interactionsMobile,
@@ -59,35 +59,29 @@ const MapView = props => {
       allDataLoaded: state.allDataLoaded,
       viewport: state.viewport,
       pointTypeLayers: state.pointTypeLayers,
-      // activeLayers: [...state.activeLayers],
-      // activePointTypes: [...state.activePointTypes],
+      activeLayers: [...state.activeLayers],
+      activePointTypes: [...state.activePointTypes],
       activeView: state.activeView,
     }),
     shallow,
   )
 
-  useEffect(() => {
-    console.log('hovered feature object changed')
-  }, [hoveredFeature])
-  useEffect(() => {
-    console.log('hovered ID changed')
-  }, [hoveredID])
   // Currently active metric
   // const metric = useStore(state => state.activeMetric)
   // Active quintiles
-  const activeQuintiles = useStore(
-    state => [...state.activeQuintiles],
-    shallow,
-  )
-  const activeLayers = useStore(
-    state => [...state.activeLayers],
-    shallow,
-  )
-  // Active point types
-  const activePointTypes = useStore(
-    state => [...state.activePointTypes],
-    shallow,
-  )
+  // const activeQuintiles = useStore(
+  //   state => [...state.activeQuintiles],
+  //   shallow,
+  // )
+  // const activeLayers = useStore(
+  //   state => [...state.activeLayers],
+  //   shallow,
+  // )
+  // // Active point types
+  // const activePointTypes = useStore(
+  //   state => [...state.activePointTypes],
+  //   shallow,
+  // )
 
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)
@@ -132,65 +126,26 @@ const MapView = props => {
 
   /** handler for map hover */
   const handleHover = (feature, coords, geoCoords) => {
-    console.log(
-      'handleHover in mapview, ',
-      feature,
-      coords,
-      geoCoords,
-    )
+    // console.log(
+    //   'handleHover in mapview, ',
+    //   feature,
+    //   coords,
+    //   geoCoords,
+    // )
     if (!!interactionsMobile) return
-    // let type =
-    //   feature && feature.source ? feature.source : null
-    // const source =
-    //   feature && feature.source ? feature.source : null
-    // let id =
-    //   feature && feature.layer && feature.layer.id
-    //     ? feature.layer.id
-    //     : null
-    // const source_data = DATA_FILES.find(el => {
-    //   return el.id === source
-    // })
-
     const source = getFeatureSource(feature)
     const source_data = getFeatureTypeObj(feature)
     // console.log('source_data, ', source_data)
     if (source_data && !!source_data.popup) {
-      console.log('has source data, has popup')
-      // const id = getFeatureProperty(
-      //   feature,
-      //   getFeatureId(feature),
-      // )
-      // Verify that this is a hoverable feature.
-      // if (HOVER_LAYERS.indexOf(source) > -1) {
+      // console.log('has source data, has popup')
       const id = getFeatureId(feature)
       const type = getFeatureType(feature)
-      console.log('setting hovered, ', feature, id)
+      // console.log('setting hovered, ', feature, id)
       setHovered(id, type, geoCoords, feature)
       // }
     } else {
       setHovered(false, false, geoCoords, false)
     }
-    // if (
-    //   feature &&
-    //   feature.layer &&
-    //   feature.layer.id === 'tractsShapes'
-    // ) {
-    //   console.log('Tract shape hovered.')
-    //   // type = `district`
-    // }
-    // if (
-    //   feature &&
-    //   feature.layer &&
-    //   feature.layer.id === 'schools-circle'
-    // ) {
-    //   // console.log('School circle hovered.', feature)
-    //   type = `schools`
-    //   // console.log('handleHover, ', feature, coords)
-    //   id = getFeatureProperty(feature, 'TEA')
-    //   // setHovered(id, type, geoCoords, feature)
-    // }
-    // console.log('handleHover, ', id)
-    // setHovered(id, type, geoCoords, feature)
   }
 
   /** handler for map click */
@@ -239,7 +194,7 @@ const MapView = props => {
   /** handler for map load */
   const handleLoad = () => {
     // inform global listener that map has loaded
-    console.log('map loaded')
+    // console.log('map loaded')
     // window.CPAL.trigger('map')
     isLoaded.current = true
   }

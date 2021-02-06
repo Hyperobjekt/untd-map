@@ -19,19 +19,19 @@ const AddMapImages = ({ map, ...props }) => {
   // console.log('AddMapImages, ', map, props)
   const {
     mapImagesAdded,
-    pointTypes,
+    // pointTypes,
     setStoreValues,
   } = useStore(
     state => ({
       mapImagesAdded: state.mapImagesAdded,
-      pointTypes: state.pointTypes,
+      // pointTypes: state.pointTypes,
       setStoreValues: state.setStoreValues,
     }),
     shallow,
   )
 
   map.on('load', function () {
-    if (!!mapImagesAdded) return null
+    // if (!!mapImagesAdded) return
     // pointTypes.forEach(el => {
     //   // console.log(`adding icon for ${el.id}-icon`)
     //   map.loadImage(HomeIcon, function (error, image) {
@@ -40,14 +40,16 @@ const AddMapImages = ({ map, ...props }) => {
     //     map.addImage(`${el.id}-icon`, image, { sdf: true })
     //   })
     // })
-    map.loadImage(HomeIcon, function (error, image) {
-      if (error) throw error
-      // add image to the active style and make it SDF-enabled
-      map.addImage(`home-icon`, image, { sdf: true })
-    })
-    setStoreValues({
-      mapImagesAdded: 1,
-    })
+    if (!mapImagesAdded) {
+      map.loadImage(HomeIcon, function (error, image) {
+        if (error) throw error
+        // add image to the active style and make it SDF-enabled
+        map.addImage(`home-icon`, image, { sdf: true })
+      })
+      setStoreValues({
+        mapImagesAdded: 1,
+      })
+    }
   })
 
   // map.loadImage(HomeIcon, function (error, image) {

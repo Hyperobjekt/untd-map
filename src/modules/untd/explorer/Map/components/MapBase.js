@@ -32,7 +32,10 @@ import MapLegend from './MapLegend'
 import LegendToggleBtn from './LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
 import AddMapImages from './AddMapImages'
-import { BOUNDS } from './../../../../../constants/map'
+import {
+  BOUNDS,
+  DEFAULT_VIEWPORT,
+} from './../../../../../constants/map'
 import useStore from './../../store'
 import { variables } from './../../theme'
 import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
@@ -102,39 +105,33 @@ const MapBase = ({
 
   const [resizeListener, sizes] = useResizeAware()
 
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-
-  // const [viewport, setViewport] = useMapViewport()
-  const viewport = useStore(state => state.viewport)
-  const setViewport = useStore(state => state.setViewport)
-  const flyToReset = useStore(state => state.flyToReset)
-
-  // Active metric
-  const activeMetric = useStore(state => state.activeMetric)
-  // Active quintiles
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
-  )
-  // Active layers in the map
-  const activeLayers = useStore(state => state.activeLayers)
-  // Active view
-  const activeView = useStore(state => state.activeView)
-  // Breakpoint of the explorer
-  const breakpoint = useStore(state => state.breakpoint)
-
-  const setResetViewport = useMapStore(
-    state => state.setResetViewport,
-  )
-
-  const flyToSchoolSLN = useStore(
-    state => state.flyToSchoolSLN,
-  )
-  const interactionsMobile = useStore(
-    state => state.interactionsMobile,
-  )
+  const {
+    setStoreValues,
+    viewport,
+    setViewport,
+    flyToReset,
+    activeMetric,
+    activeQuintiles,
+    activeLayers,
+    activeView,
+    breakpoint,
+    setResetViewport,
+    flyToSchoolSLN,
+    interactionsMobile,
+  } = useStore(state => ({
+    setStoreValues: state.setStoreValues,
+    viewport: state.viewport,
+    setViewport: state.setViewport,
+    flyToReset: state.flyToReset,
+    activeMetric: state.activeMetric,
+    activeQuintiles: state.activeQuintiles,
+    activeLayers: state.activeLayers,
+    activeView: state.activeView,
+    breakpoint: state.breakpoint,
+    setResetViewport: state.setResetViewport,
+    flyToSchoolSLN: state.flyToSchoolSLN,
+    interactionsMobile: state.interactionsMobile,
+  }))
 
   // reference to map container DOM element
   const mapEl = useRef(null)
@@ -267,22 +264,22 @@ const MapBase = ({
         vp.zoom = BOUNDS.zoom.max
       }
 
-      if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
-        // console.log('panned beyond lng.min')
-        vp.longitude = BOUNDS.lng.min
-      }
-      if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
-        // console.log('panned beyond lng.max')
-        vp.longitude = BOUNDS.lng.max
-      }
-      if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
-        // console.log('panned beyond lat.min')
-        vp.latitude = BOUNDS.lat.min
-      }
-      if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
-        // console.log('panned beyond lat.max')
-        vp.latitude = BOUNDS.lat.max
-      }
+      // if (vp.longitude && vp.longitude < BOUNDS.lng.min) {
+      //   // console.log('panned beyond lng.min')
+      //   vp.longitude = BOUNDS.lng.min
+      // }
+      // if (vp.longitude && vp.longitude > BOUNDS.lng.max) {
+      //   // console.log('panned beyond lng.max')
+      //   vp.longitude = BOUNDS.lng.max
+      // }
+      // if (vp.latitude && vp.latitude < BOUNDS.lat.min) {
+      //   // console.log('panned beyond lat.min')
+      //   vp.latitude = BOUNDS.lat.min
+      // }
+      // if (vp.latitude && vp.latitude > BOUNDS.lat.max) {
+      //   // console.log('panned beyond lat.max')
+      //   vp.latitude = BOUNDS.lat.max
+      // }
       setViewport(vp)
     },
     [setViewport, loaded],
@@ -379,7 +376,7 @@ const MapBase = ({
 
   // set hovered feature state when hoveredId changes
   useEffect(() => {
-    console.log('hoveredId changed, hoveredId', hoveredId)
+    // console.log('hoveredId changed, hoveredId', hoveredId)
     if (prev && prev.hoveredId && prev.hoveredType) {
       // Set state for unhovered school.
       setFeatureState(prev.hoveredId, prev.hoveredType, {
@@ -447,7 +444,7 @@ const MapBase = ({
     //   hoveredFeature,
     // )
     // Get current zoom.
-    const zoom = currentMap.getZoom()
+    // const zoom = currentMap.getZoom()
     // console.log('zoom = ', zoom)
     // Distance = 2 miles.
     let distance = 2
@@ -455,16 +452,18 @@ const MapBase = ({
     //   distance = 0.4
     // }
     // Set point for hovered feature.
-    let point = null
-    const isPoint = isFeaturePoint(hoveredFeature)
-    if (isPoint) {
-      point = hoveredFeature.geometry.coordinates
-    } else {
-      // console.log('mouseCoords, ', mouseCoords)
-      point = mouseLngLat
-      // centerOfMass(hoveredFeature).geometry.coordinates
-    }
-    if (!point) return false
+    // let point = null
+    // const isPoint = isFeaturePoint(hoveredFeature)
+    // if (isPoint) {
+    //   point = hoveredFeature.geometry.coordinates
+    // } else {
+    //   // console.log('mouseCoords, ', mouseCoords)
+    //   point = mouseLngLat
+    //   // centerOfMass(hoveredFeature).geometry.coordinates
+    // }
+    // if (!point) return false
+    //
+    const point = mouseLngLat
 
     var options = { units: 'miles' }
     // Get coords for edge of zone at cardinal directions for hovered feature latlng
@@ -603,10 +602,10 @@ const MapBase = ({
         onClick={handleClick}
         onLoad={handleLoad}
         mapboxApiAccessToken={TOKEN}
+        maxBounds={DEFAULT_VIEWPORT.maxBounds}
         {...viewport}
         {...rest}
       >
-        <AddMapImages map={currentMap} />
         {!!hoveredId &&
           !!mouseLngLat &&
           !(

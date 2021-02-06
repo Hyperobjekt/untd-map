@@ -42,7 +42,7 @@ export const DATA_FILES = [
     type: 'polygon',
     popup: 1,
     id_key: 'GEOID',
-    label_key: 'NAME.y',
+    label_key: 'NAME',
     type_label_key: `UI_MAP_FEATURE_TRACT`,
   },
   {
@@ -91,6 +91,12 @@ export const DEFAULT_VIEWPORT = {
   touchZoom: true,
   touchRotate: true,
   preserveDrawingBuffer: true,
+  maxBounds: [
+    // [-107.6, 33.8], // southwest.
+    [-98, 31.5], // southwest.
+    // [-65, 49.9], // northeast.
+    [-95.5, 33.75], // northeast.
+  ],
 }
 
 export const ROUTE_SET = [
@@ -104,7 +110,7 @@ export const ROUTE_SET = [
     id: 'metric',
     options: [],
     validate: 'contains_only',
-    defaultValue: 'tot_popE_18_sd',
+    defaultValue: 'giniE_18_sd',
   },
   {
     id: 'quintiles',

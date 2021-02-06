@@ -48,11 +48,11 @@ const PopupContent = ({ ...props }) => {
     return arr
   }
 
-  console.log('PopupContent, ', props)
+  // console.log('PopupContent, ', props)
 
   if (!!props.feature && props.feature !== undefined) {
     if (props.feature.layer.source.indexOf('points') > -1) {
-      console.log(`it's a points feature, `, props.feature)
+      // console.log(`it's a points feature, `, props.feature)
       return (
         <div className="popup-content">
           <div className="popup-school-name">
@@ -73,7 +73,7 @@ const PopupContent = ({ ...props }) => {
         </div>
       )
     } else {
-      console.log('not a points feature')
+      // console.log('not a points feature')
       const featureLabel = props.feature.properties[
         source.label_key
       ]
@@ -86,15 +86,15 @@ const PopupContent = ({ ...props }) => {
       const value = props.feature.properties[rawValueHandle]
         ? String(props.feature.properties[rawValueHandle])
         : `Raw value not available.`
-      console.log('value = ', value)
+      // console.log('value = ', value)
       const valueLabel = i18n.translate(rawValueHandle)
       const min = metric.min
       const max = metric.max
       const high_is_good = metric.high_is_good
-      console.log(
-        'sd is , ',
-        props.feature.properties[activeMetric],
-      )
+      // console.log(
+      //   'sd is , ',
+      //   props.feature.properties[activeMetric],
+      // )
       return (
         <div className="popup-content">
           {!!featureLabel && (
