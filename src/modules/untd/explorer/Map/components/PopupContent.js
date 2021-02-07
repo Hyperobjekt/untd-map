@@ -26,12 +26,14 @@ const PopupContent = ({ ...props }) => {
     indicators,
     breakpoint,
     activeMetric,
+    allData,
   } = useStore(state => ({
     setStoreValues: state.setStoreValues,
     interactionsMobile: state.interactionsMobile,
     indicators: state.indicators,
     breakpoint: state.breakpoint,
     activeMetric: state.activeMetric,
+    allData: state.allData,
   }))
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
@@ -39,6 +41,10 @@ const PopupContent = ({ ...props }) => {
   const metric = indicators.find(item => {
     return item.id === activeMetric
   })
+  const rawMetric = allData.find(d => {
+    return d.variable === activeMetric.replace('_sd', '')
+  })
+  // console.log('rawMetric,', rawMetric)
 
   const setActiveQuintile = quintile => {
     // console.log('setActiveQuintile, ', quintile)
@@ -46,6 +52,25 @@ const PopupContent = ({ ...props }) => {
     arr[quintile] = 1
     // console.log(arr)
     return arr
+  }
+
+  const getFeatureLabel = feature => {
+    const layerID = feature.layer.source
+    const label = feature.properties[source.label_key]
+      ? feature.properties[source.label_key]
+      : false
+
+    switch (true) {
+      case layerID === 'zips':
+        return `Zip code ${label}`
+        break
+      case layerID === 'places':
+        return `${label}`
+        break
+      case layerID === 'tracts':
+        return `Census tract ${label}`
+        break
+    }
   }
 
   // console.log('PopupContent, ', props)
@@ -74,23 +99,28 @@ const PopupContent = ({ ...props }) => {
       )
     } else {
       // console.log('not a points feature')
-      const featureLabel = props.feature.properties[
-        source.label_key
+      const featureLabel = getFeatureLabel(props.feature)
+      // props.feature.properties[
+      //   source.label_key
+      // ]
+      //   ? props.feature.properties[source.label_key]
+      //   : false
+      // const rawValueHandle = String(activeMetric).replace(
+      //   '_sd',
+      //   '',
+      // )
+      const value = props.feature.properties[
+        rawMetric.variable
       ]
-        ? props.feature.properties[source.label_key]
-        : false
-      const rawValueHandle = String(activeMetric).replace(
-        '_sd',
-        '',
-      )
-      const value = props.feature.properties[rawValueHandle]
-        ? String(props.feature.properties[rawValueHandle])
+        ? String(
+            props.feature.properties[rawMetric.variable],
+          )
         : `Raw value not available.`
       // console.log('value = ', value)
-      const valueLabel = i18n.translate(rawValueHandle)
-      const min = metric.min
-      const max = metric.max
-      const high_is_good = metric.high_is_good
+      const valueLabel = i18n.translate(rawMetric.variable)
+      const min = rawMetric.min
+      const max = rawMetric.max
+      const high_is_good = rawMetric.highisgood
       // console.log(
       //   'sd is , ',
       //   props.feature.properties[activeMetric],
@@ -99,23 +129,25 @@ const PopupContent = ({ ...props }) => {
         <div className="popup-content">
           {!!featureLabel && (
             <div className="popup-school-name">
-              <h4>
-                {props.feature.properties[source.label_key]}
-              </h4>
+              <h4>{featureLabel}</h4>
             </div>
           )}
-          {value.length > 0 && (
+          {String(value.length) > 0 && (
             <div
               className="popup-metric"
               key={`popup-metric-${metric.id}`}
             >
               <div className="popup-metric-label">
-                {featureLabel}
-                <br />
                 <span className="metric-value">
                   {`${valueLabel}: ${
                     !!value
-                      ? getRoundedValue(value, 0, false)
+                      ? getRoundedValue(
+                          value,
+                          Number(rawMetric.decimals),
+                          false,
+                          Number(rawMetric.currency),
+                          Number(rawMetric.percent),
+                        )
                       : 'Not available'
                   }`}
                 </span>

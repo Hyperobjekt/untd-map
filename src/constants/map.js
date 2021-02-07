@@ -32,7 +32,7 @@ export const DATA_FILES = [
     type: 'polygon',
     popup: 1,
     id_key: 'GEOID',
-    label_key: 'NAME.y',
+    label_key: 'NAME',
     type_label_key: `UI_MAP_FEATURE_PLACE`,
   },
   {
@@ -52,7 +52,7 @@ export const DATA_FILES = [
     type: 'polygon',
     popup: 1,
     id_key: 'GEOID',
-    label_key: 'ZIP',
+    label_key: 'GEOID',
     type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
   {
