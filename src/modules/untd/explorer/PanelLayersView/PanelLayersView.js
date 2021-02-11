@@ -13,6 +13,7 @@ import {
 } from 'reactstrap'
 import { css, cx } from 'emotion'
 import { FiChevronRight } from 'react-icons/fi'
+import { GrPowerReset } from 'react-icons/gr'
 
 import useStore from './../store'
 import {
@@ -23,6 +24,7 @@ import {
 import { TURTLE_GREEN } from './../../../../constants/colors'
 import { toSentenceCase } from './../utils'
 import LayersInput from './LayersInput'
+import CoreButton from './../../../core/CoreButton'
 
 const filterParentStyles = css`
   height: 100%;
@@ -38,7 +40,7 @@ const layerGroupStyles = css`
 `
 
 const scrollPaneStyles = css`
-  margin-bottom: 12rem;
+  margin-bottom: 16rem;
 `
 
 const toggleButtonStyles = css`
@@ -59,6 +61,43 @@ const toggleButtonStyles = css`
     margin-right: 0.6rem;
   }
 `
+
+const toggleButtonSubcatStyles = css`
+  margin-left: 10px;
+`
+
+const subcatParentStyles = css`
+  margin-left: 1rem;
+`
+
+const inputStyles = css`
+  margin-left: 0.5rem;
+`
+
+const resetButtonLabel = css`
+  font-size: 15px !important;
+  color: ${TURTLE_GREEN};
+`
+
+const resetButton = css`
+  color: ${TURTLE_GREEN} !important;
+  font-family: 'Gotham A', 'Gotham B' !important;
+  font-style: normal !important;
+  font-weight: 200 !important;
+  font-size: 15px !important;
+`
+
+const ResetButton = props => {
+  return (
+    <Button
+      className={clsx('button-reset', cx(resetButton))}
+      color="link"
+      {...props}
+    >
+      <GrPowerReset />
+    </Button>
+  )
+}
 
 const PanelLayersView = ({ ...props }) => {
   // Generic store value setter.
@@ -99,6 +138,17 @@ const PanelLayersView = ({ ...props }) => {
     })
   }
 
+  const toggleAll = () => {
+    setStoreValues({
+      activePointTypes: activePointTypes
+        .slice()
+        .map(val => {
+          return 0
+        }),
+    })
+  }
+
+  const toggleCat = () => {}
   // console.log('pointTypes, ', pointTypes)
 
   return (
@@ -121,7 +171,18 @@ const PanelLayersView = ({ ...props }) => {
             cx(layerGroupStyles),
           )}
         >
-          <h5>{i18n.translate(`UI_MAP_LAYER_1_TITLE`)}</h5>
+          <h5>
+            {i18n.translate(`UI_MAP_LAYER_1_TITLE`)}
+            <CoreButton
+              onClick={toggleAll}
+              label={i18n.translate('BUTTON_RESET_POINTS')}
+              color="link"
+              id="button_toggle_all_points"
+              tooltip={`right`}
+            >
+              <GrPowerReset />
+            </CoreButton>
+          </h5>
           <div
             key={'layer-group-desc-points'}
             className="layer-group-desc"
@@ -180,116 +241,135 @@ const PanelLayersView = ({ ...props }) => {
                       {i18n.translate(cat.id)}
                     </Button>
                     <Collapse isOpen={isOpen}>
-                      {pointTypes.map((point, ind) => {
-                        // console.log('point, ', point, cat)
-                        if (
-                          point.category === cat.id
-                          // &&
-                          // cat.subcategories.length <= 0
-                        ) {
-                          // console.log(
-                          //   'category match: ',
-                          //   point.category,
-                          // )
-                          const isChecked = !!activePointTypes[
-                            ind // Number(layer.index)
-                          ]
-                          return (
-                            <LayersInput
-                              key={`layer-input-group-${point.id}`}
-                              layer={point}
-                              id={`input_${point.id}`}
-                              ind={ind}
-                              isChecked={isChecked}
-                              label={getLayerLabel(
-                                point.id,
-                                pointTypes,
-                              )}
-                              tooltip={point.tooltip}
-                              update={updatePoints}
-                            />
-                          )
-                        }
-                      })}
-                      {
+                      {!!(cat.subcategories.length <= 0) &&
+                        pointTypes.map((point, ind) => {
+                          // console.log('point, ', point, cat)
+                          if (
+                            point.category === cat.id
+                            // &&
+                            // cat.subcategories.length <= 0
+                          ) {
+                            const isChecked = !!activePointTypes[
+                              ind // Number(layer.index)
+                            ]
+                            return (
+                              <LayersInput
+                                key={`layer-input-group-${point.id}`}
+                                layer={point}
+                                id={`input_${point.id}`}
+                                ind={ind}
+                                isChecked={isChecked}
+                                label={getLayerLabel(
+                                  point.id,
+                                  pointTypes,
+                                )}
+                                tooltip={point.tooltip}
+                                update={updatePoints}
+                                className={clsx(
+                                  cx(inputStyles),
+                                )}
+                              />
+                            )
+                          }
+                        })}
+
+                      {!!(cat.subcategories.length > 0) &&
                         // Uncomment this to restore subcategory processing.
-                        //   cat.subcategories.map(sub => {
-                        //   console.log(
-                        //     'processing subcat, ',
-                        //     sub,
-                        //   )
-                        //   const [
-                        //     isOpen,
-                        //     setIsOpen,
-                        //   ] = useState(false)
-                        //   const toggle = () =>
-                        //     setIsOpen(!isOpen)
-                        //
-                        //   return (
-                        //     <div>
-                        //       <Button
-                        //         color="primary"
-                        //         onClick={toggle}
-                        //         className={clsx(
-                        //   'points-cat-toggle',
-                        //   'subcategory',
-                        //   cx(toggleButtonStyles),
-                        // )}
-                        //       >
-                        //         {i18n.translate(sub)}
-                        //       </Button>
-                        //       <Collapse isOpen={isOpen}>
-                        //         {pointTypes.map(
-                        //           (point, ind) => {
-                        //             // console.log(
-                        //             //   'point, ',
-                        //             //   point,
-                        //             //   cat.id,
-                        //             //   sub,
-                        //             // )
-                        //             if (
-                        //               point.category ===
-                        //                 cat.id &&
-                        //               !!point.subcategory &&
-                        //               point.subcategory ===
-                        //                 sub
-                        //             ) {
-                        //               // console.log(
-                        //               //   'subcategory match: ',
-                        //               //   point,
-                        //               // )
-                        //               const isChecked = !!activePointTypes[
-                        //                 ind // Number(layer.index)
-                        //               ]
-                        //               return (
-                        //                 <LayersInput
-                        //                   key={`layer-input-group-${point.id}`}
-                        //                   layer={point}
-                        //                   id={`input_${point.id}_${ind}`}
-                        //                   ind={ind}
-                        //                   isChecked={
-                        //                     isChecked
-                        //                   }
-                        //                   label={getLayerLabel(
-                        //                     point.id,
-                        //                     pointTypes,
-                        //                   )}
-                        //                   tooltip={
-                        //                     point.tooltip
-                        //                   }
-                        //                   update={
-                        //                     updatePoints
-                        //                   }
-                        //                 />
-                        //               )
-                        //             }
-                        //           },
-                        //         )}
-                        //       </Collapse>
-                        //     </div>
-                        //   )
-                        // })
-                      }
+                        cat.subcategories.map((sub, i) => {
+                          // console.log(
+                          //   'processing subcat, ',
+                          //   sub,
+                          // )
+                          const [
+                            isOpen,
+                            setIsOpen,
+                          ] = useState(i === 0)
+                          const toggle = () =>
+                            setIsOpen(!isOpen)
+
+                          return (
+                            <div
+                              className={clsx(
+                                'subcat-parent',
+                                cx(subcatParentStyles),
+                              )}
+                            >
+                              <Button
+                                id={`show-${sub}`}
+                                color="link"
+                                onClick={toggle}
+                                className={clsx(
+                                  'points-cat-toggle',
+                                  'subcategory',
+                                  isOpen ? 'open' : '',
+                                  cx(toggleButtonStyles),
+                                )}
+                              >
+                                <FiChevronRight
+                                  style={{
+                                    transform: isOpen
+                                      ? 'rotate(90deg)'
+                                      : 'rotate(0deg)',
+                                    transition:
+                                      'transform 200ms linear',
+                                  }}
+                                />
+                                {i18n.translate(sub)}
+                              </Button>
+                              <Collapse isOpen={isOpen}>
+                                {pointTypes.map(
+                                  (point, ind) => {
+                                    // console.log(
+                                    //   'point, ',
+                                    //   point,
+                                    //   cat.id,
+                                    //   sub,
+                                    // )
+                                    if (
+                                      point.category ===
+                                        cat.id &&
+                                      !!point.subcategory &&
+                                      point.subcategory ===
+                                        sub
+                                    ) {
+                                      // console.log(
+                                      //   'subcategory match: ',
+                                      //   point,
+                                      // )
+                                      const isChecked = !!activePointTypes[
+                                        ind // Number(layer.index)
+                                      ]
+                                      return (
+                                        <LayersInput
+                                          key={`layer-input-group-${point.id}-${ind}`}
+                                          layer={point}
+                                          id={`input_${point.id}`}
+                                          ind={ind}
+                                          isChecked={
+                                            isChecked
+                                          }
+                                          label={getLayerLabel(
+                                            point.id,
+                                            pointTypes,
+                                          )}
+                                          tooltip={
+                                            point.tooltip
+                                          }
+                                          update={
+                                            updatePoints
+                                          }
+                                          className={clsx(
+                                            cx(inputStyles),
+                                          )}
+                                        />
+                                      )
+                                    }
+                                  },
+                                )}
+                              </Collapse>
+                            </div>
+                          )
+                        })}
                     </Collapse>
                   </div>
                 )

@@ -269,6 +269,7 @@ const en_US = {
   TOUR_DESK_STEP_16: `The distribution chart also highlights all of a feeder's schools when a feeder is selected.`,
   TOUR_DESK_STEP_17: `Search for a school community here and it will be highlighted in the charts.`,
   TOUR_DESK_STEP_18: `The info panel contains insights about each view and how to use the Explorer. If you’d like to take this tour again, you can start here.`,
+  BUTTON_RESET_POINTS: `Reset all point features`,
 }
 
 export default en_US

@@ -85,12 +85,9 @@ export const POINT_CATEGORIES = [
   {
     id: `school`,
     subcategories: [
-      'charter_elementary_school',
-      'charter_high_school',
-      'charter_middle_school',
-      'public_high_school',
-      'public_elementary_school',
-      'public_middle_school',
+      'public_school',
+      'private_school',
+      'charter_school',
     ],
   },
   {
