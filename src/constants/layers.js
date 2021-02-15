@@ -7,24 +7,6 @@ export const DEMO_MAX_PERCENTS = {
   dem_perpoc: 1,
 }
 
-// Array of layers groups.
-export const UNTD_LAYER_GROUPS = [
-  {
-    id: 0,
-    title: `UI_MAP_LAYER_0_TITLE`,
-    desc: `UI_MAP_LAYER_0_DESC`,
-    census_legend: 0,
-    list: `UNTD_LAYERS`,
-  },
-  {
-    id: 1,
-    title: `UI_MAP_LAYER_1_TITLE`,
-    desc: `UI_MAP_LAYER_1_DESC`,
-    census_legend: 0,
-    list: `pointTypes`,
-  },
-]
-
 // Array of layers.
 export const UNTD_LAYERS = [
   {

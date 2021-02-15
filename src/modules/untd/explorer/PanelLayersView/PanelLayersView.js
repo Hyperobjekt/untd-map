@@ -18,7 +18,6 @@ import { GrPowerReset } from 'react-icons/gr'
 import useStore from './../store'
 import {
   UNTD_LAYERS,
-  UNTD_LAYER_GROUPS,
   POINT_CATEGORIES,
 } from './../../../../constants/layers'
 import { TURTLE_GREEN } from './../../../../constants/colors'
