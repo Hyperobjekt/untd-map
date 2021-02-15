@@ -6,11 +6,16 @@ import { FiInfo } from 'react-icons/fi'
 import { Label, Input, Tooltip } from 'reactstrap'
 
 import { toSentenceCase } from './../utils'
+import useStore from './../store'
 
 const LayersInput = ({ ...props }) => {
   // to manage tooltip state
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
+
+  const interactionsMobile = useStore(
+    state => state.interactionsMobile,
+  )
 
   return (
     <div
@@ -37,23 +42,27 @@ const LayersInput = ({ ...props }) => {
         />
         <div className="checkmark"></div>
         {toSentenceCase(i18n.translate(props.label))}
-        {!!props.tooltip && props.tooltip.length > 0 && (
-          <FiInfo id={'tip_prompt_' + props.layer.id} />
-        )}
+        {!!props.tooltip &&
+          props.tooltip.length > 0 &&
+          !interactionsMobile && (
+            <FiInfo id={'tip_prompt_' + props.layer.id} />
+          )}
       </label>
-      {!!props.tooltip && props.tooltip.length > 0 && (
-        <Tooltip
-          placement="top"
-          isOpen={tooltipOpen}
-          target={'tip_prompt_' + props.layer.id}
-          toggle={toggle}
-          autohide={false}
-          className={'tip-prompt-layer'}
-          dangerouslySetInnerHTML={{
-            __html: i18n.translate(props.tooltip),
-          }}
-        ></Tooltip>
-      )}
+      {!!props.tooltip &&
+        props.tooltip.length > 0 &&
+        !interactionsMobile && (
+          <Tooltip
+            placement="top"
+            isOpen={tooltipOpen}
+            target={'tip_prompt_' + props.layer.id}
+            toggle={toggle}
+            autohide={false}
+            className={'tip-prompt-layer'}
+            dangerouslySetInnerHTML={{
+              __html: i18n.translate(props.tooltip),
+            }}
+          ></Tooltip>
+        )}
     </div>
   )
 }
