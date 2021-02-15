@@ -78,6 +78,61 @@ export const POINT_CATEGORIES = [
   },
 ]
 
+export const POINT_ICON_MAP = [
+  {
+    id: `carrot`,
+    types: ['snap'],
+  },
+  {
+    id: `book`,
+    types: ['lib'],
+  },
+  {
+    id: `rec`,
+    types: ['recctr'],
+  },
+  {
+    id: `bank`,
+    types: ['bank', 'crunion'],
+  },
+  {
+    id: `cart`,
+    types: ['market'],
+  },
+  {
+    id: `childcare`,
+    types: ['aftersch', 'scc', 'uscc'],
+  },
+  {
+    id: `community`,
+    types: ['comcen'],
+  },
+  {
+    id: `health`,
+    types: ['pharm', 'comhel'],
+  },
+  {
+    id: `home`,
+    types: ['generic'],
+  },
+  {
+    id: `wic`,
+    types: ['wic'],
+  },
+  {
+    id: `public`,
+    types: ['ies', 'ims', 'his'],
+  },
+  {
+    id: `private`,
+    types: ['prs'],
+  },
+  {
+    id: `charter`,
+    types: ['ces', 'cms', 'chs'],
+  },
+]
+
 export const BREAKPOINTS = [
   {
     id: 'xs',

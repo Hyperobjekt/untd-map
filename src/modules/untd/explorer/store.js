@@ -213,6 +213,13 @@ const [useStore] = create((set, get) => ({
   },
   // Have images been added for map symbol layers?
   mapImagesAdded: 0,
+  // Array of map images (because hasImage isn't working)
+  mapImages: [],
+  // updateMapImages: image =>
+  //   set({
+  //     mapImages: state.mapImages.push(image),
+  //   }),
+  // setCoords: coords => set({ coords }),
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,

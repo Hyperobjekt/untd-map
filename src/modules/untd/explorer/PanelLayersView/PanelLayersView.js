@@ -16,10 +16,7 @@ import { FiChevronRight } from 'react-icons/fi'
 import { GrPowerReset } from 'react-icons/gr'
 
 import useStore from './../store'
-import {
-  UNTD_LAYERS,
-  POINT_CATEGORIES,
-} from './../../../../constants/layers'
+import { POINT_CATEGORIES } from './../../../../constants/layers'
 import { TURTLE_GREEN } from './../../../../constants/colors'
 import { toSentenceCase } from './../utils'
 import LayersInput from './LayersInput'
@@ -288,6 +285,7 @@ const PanelLayersView = ({ ...props }) => {
 
                           return (
                             <div
+                              key={`subcat-parent-${sub}`}
                               className={clsx(
                                 'subcat-parent',
                                 cx(subcatParentStyles),

@@ -493,7 +493,7 @@ const MapBase = ({
         {...viewport}
         {...rest}
       >
-        <AddMapImages map={currentMap} />
+        <AddMapImages loaded={loaded} map={currentMap} />
         {!!hoveredId &&
           !!mouseLngLat &&
           !(

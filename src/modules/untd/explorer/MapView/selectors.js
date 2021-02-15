@@ -7,14 +7,31 @@ import {
   TURTLE_GREEN,
 } from './../../../../constants/colors'
 import {
-  DEMO_MAX_PERCENTS,
+  POINT_ICON_MAP,
   UNTD_LAYERS,
 } from './../../../../constants/layers'
-import {
-  getMetric,
-  getQuintile,
-  isInActiveQuintile,
-} from './../utils'
+
+// import {
+//   getMetric,
+//   getQuintile,
+//   isInActiveQuintile,
+// } from './../utils'
+
+const getIcon = id => {
+  return `${
+    POINT_ICON_MAP.find(el => {
+      return el.types.indexOf(id) > -1
+    }).id
+  }-icon`
+}
+
+const getGenericIcon = () => {
+  return `${
+    POINT_ICON_MAP.find(el => {
+      return el.types.indexOf('generic') > -1
+    }).id
+  }-icon`
+}
 
 export const getClusterCountBg = (
   source,
@@ -83,6 +100,14 @@ export const getClusterIcon = (
   color,
   ind,
 ) => {
+  // console.log(
+  //   'getClusterIcon, ',
+  //   source,
+  //   id,
+  //   context,
+  //   color,
+  //   ind,
+  // )
   return fromJS({
     id: `${id}ClusterIcon`,
     source: source,
@@ -90,8 +115,11 @@ export const getClusterIcon = (
     layout: {
       'icon-allow-overlap': true,
       visibility: 'visible', // isVisible ? 'visible' : 'none',
-      'icon-image': 'home-icon',
-      'icon-size': 0.75,
+      'icon-image':
+        getIcon(id).length > 0
+          ? getIcon(id)
+          : getGenericIcon(), // 'home-icon',
+      'icon-size': 0.25,
       // [
       //   'concat',
       //   ['get', 'variable'],
@@ -121,14 +149,17 @@ export const getPointIcons = (
     type: 'symbol',
     layout: {
       visibility: 'visible', // isVisible ? 'visible' : 'none',
-      'icon-image': 'home-icon',
+      'icon-image':
+        getIcon(id).length > 0
+          ? getIcon(id)
+          : getGenericIcon(), // 'home-icon',
       'icon-allow-overlap': true,
       // [
       //   'concat',
       //   ['get', 'variable'],
       //   '-icon',
       // ],
-      'icon-size': 1.5,
+      'icon-size': 0.45,
     },
     interactive: true,
     paint: {
