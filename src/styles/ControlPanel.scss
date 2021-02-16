@@ -4,6 +4,7 @@
 
 /* Extra small devices (phones, 767px and down) */
 .layout-control-panel {
+  @include font-knockout-jr-lightweight;
   &.display-map {
     justify-content: space-around;
   }
@@ -198,7 +199,8 @@
     .control-label {
       text-align: center;
       display: block;
-      color: $cp-label-color; // #606b44;
+      @include font-knockout-jr-lightweight;
+      color: $untd-font-gray;
       font-weight: 300;
       font-size: 1.3rem;
       margin-bottom: 16px;

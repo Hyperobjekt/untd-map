@@ -84,7 +84,7 @@ export const POINT_ICON_MAP = [
   },
   {
     id: `bank`,
-    types: ['bank', 'crunion'],
+    types: ['bank'],
   },
   {
     id: `cru`,
@@ -103,8 +103,12 @@ export const POINT_ICON_MAP = [
     types: ['comcen'],
   },
   {
+    id: `pharmacy`,
+    types: ['pharm'],
+  },
+  {
     id: `health`,
-    types: ['pharm', 'comhel'],
+    types: ['comhel'],
   },
   {
     id: `home`,

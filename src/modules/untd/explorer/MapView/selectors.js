@@ -316,7 +316,7 @@ export const getPolygonLines = (type, context) => {
 }
 
 export const getPolygonShapes = (type, context) => {
-  console.log('getPolygonShapes(), ', type, context)
+  // console.log('getPolygonShapes(), ', type, context)
   // console.log('CRI_COLORS', CRI_COLORS)
   const isVisible =
     context.activeLayers[

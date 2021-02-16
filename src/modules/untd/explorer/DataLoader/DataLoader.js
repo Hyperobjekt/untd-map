@@ -325,6 +325,14 @@ const DataLoader = ({ ...props }) => {
                         subcategory: r['subcategory']
                           ? r['subcategory']
                           : false,
+                        category_order: r['category_order']
+                          ? r['category_order']
+                          : 0,
+                        subcategory_order: r[
+                          'subcategory_order'
+                        ]
+                          ? r['subcategory_order']
+                          : 0,
                       })
                       if (
                         r['category'] &&

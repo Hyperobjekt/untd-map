@@ -51,6 +51,7 @@
         width: 70px;
         font-size: 1.4rem;
         line-height: 1.6rem;
+        padding-top: 3px;
         @include media-breakpoint-up(md) {
           width: auto;
           font-style: normal;
@@ -68,9 +69,10 @@
   }
   .menu-icon-group {
     svg {
-      margin-right: 3.5px;
-      margin-top: -1px;
+      margin-right: 4px;
+      margin-top: -2px;
     }
+    @include font-knockout-jr-lightweight;
     cursor: pointer;
     display: inline; // so below padding doesn't shift element
     padding-top: $spacer; // extends clickable area
@@ -78,6 +80,7 @@
     font-weight: 300;
     font-size: 14px;
     line-height: 21px;
+    text-transform: uppercase;
     color: #08131f;
   }
 }
