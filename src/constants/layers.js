@@ -1,12 +1,3 @@
-// Maximum percents for all demographics
-export const DEMO_MAX_PERCENTS = {
-  dem_perwh: 1,
-  dem_perbl: 0.902,
-  dem_peras: 0.709,
-  dem_perhi: 1,
-  dem_perpoc: 1,
-}
-
 // Array of layers.
 export const UNTD_LAYERS = [
   {
@@ -96,6 +87,10 @@ export const POINT_ICON_MAP = [
     types: ['bank', 'crunion'],
   },
   {
+    id: `cru`,
+    types: ['crunion'],
+  },
+  {
     id: `cart`,
     types: ['market'],
   },
@@ -120,15 +115,23 @@ export const POINT_ICON_MAP = [
     types: ['wic'],
   },
   {
-    id: `public`,
-    types: ['ies', 'ims', 'his'],
+    id: `spube`,
+    types: ['ies'],
   },
   {
-    id: `private`,
+    id: `spubm`,
+    types: ['ims'],
+  },
+  {
+    id: `spubh`,
+    types: ['his'],
+  },
+  {
+    id: `sprivate`,
     types: ['prs'],
   },
   {
-    id: `charter`,
+    id: `scharter`,
     types: ['ces', 'cms', 'chs'],
   },
 ]
