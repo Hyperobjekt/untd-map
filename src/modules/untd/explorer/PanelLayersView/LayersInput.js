@@ -6,6 +6,7 @@ import { FiInfo } from 'react-icons/fi'
 import { Label, Input, Tooltip } from 'reactstrap'
 
 import { toSentenceCase } from './../utils'
+import { POINT_ICON_MAP } from './../../../../constants/layers'
 import useStore from './../store'
 
 const LayersInput = ({ ...props }) => {
@@ -16,6 +17,14 @@ const LayersInput = ({ ...props }) => {
   const interactionsMobile = useStore(
     state => state.interactionsMobile,
   )
+
+  const icon = POINT_ICON_MAP.find(point => {
+    return point.types.indexOf(props.layer.id) > -1
+  }).id
+
+  const colorIndex = POINT_ICON_MAP.find(point => {
+    return point.types.indexOf(props.layer.id) > -1
+  }).types.indexOf(props.layer.id)
 
   return (
     <div
@@ -41,6 +50,13 @@ const LayersInput = ({ ...props }) => {
           }}
         />
         <div className="checkmark"></div>
+        <div
+          className={clsx(
+            'icon',
+            `icon-${icon}`,
+            `color-index-${colorIndex}`,
+          )}
+        ></div>
         {toSentenceCase(i18n.translate(props.label))}
         {!!props.tooltip &&
           props.tooltip.length > 0 &&

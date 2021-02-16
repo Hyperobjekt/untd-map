@@ -28,7 +28,7 @@ const AddMapImages = ({ map, loaded, ...props }) => {
         // If it's not been loaded yet, load it.
         if (mapImages.indexOf(`${el.id}-icon`) < 0) {
           // Load the icon from path.
-          const src = require(`./../icons/${el.id}.png`)
+          const src = require(`./../../point-icons/png/${el.id}.png`)
             .default
           // Load the image into the map. Listen for errors.
           map.loadImage(src, function (error, image) {

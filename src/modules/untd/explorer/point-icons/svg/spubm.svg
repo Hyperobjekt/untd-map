@@ -1,0 +1,17 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 28H13V1H27V22" stroke="black" stroke-width="2"/>
+<rect x="1" y="4.99999" width="12" height="23" stroke="black" stroke-width="2"/>
+<path d="M27 25.5V5.00001H39V28H35.5" stroke="black" stroke-width="2"/>
+<rect x="18.0001" y="18" width="4" height="10" stroke="black" stroke-width="2"/>
+<line x1="30.0001" y1="8.99998" x2="36.0001" y2="8.99998" stroke="black" stroke-width="2"/>
+<line x1="30.0001" y1="13" x2="36.0001" y2="13" stroke="black" stroke-width="2"/>
+<line x1="30.0001" y1="17" x2="36.0001" y2="17" stroke="black" stroke-width="2"/>
+<line x1="30.0001" y1="21" x2="36.0001" y2="21" stroke="black" stroke-width="2"/>
+<line x1="4.00008" y1="21" x2="10.0001" y2="21" stroke="black" stroke-width="2"/>
+<line x1="4.00008" y1="17" x2="10.0001" y2="17" stroke="black" stroke-width="2"/>
+<line x1="4.00008" y1="13" x2="10.0001" y2="13" stroke="black" stroke-width="2"/>
+<line x1="4.00008" y1="8.99998" x2="10.0001" y2="8.99998" stroke="black" stroke-width="2"/>
+<circle cx="20.0001" cy="6.99999" r="2" stroke="black" stroke-width="2"/>
+<circle cx="29.9999" cy="32" r="7" stroke="black" stroke-width="2"/>
+<path d="M33.4985 35.3344V28.6744H31.3685L30.2985 32.1144L30.0485 32.9844L29.7985 32.1144L28.7085 28.6744H26.5385V35.3344H27.9885V30.8344L28.3185 32.0044L29.3985 35.3344H30.5185L31.6185 32.0044L31.9685 30.8244V35.3344H33.4985Z" fill="black"/>
+</svg>
