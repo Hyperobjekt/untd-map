@@ -3,14 +3,7 @@ import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import {
-  FormGroup,
-  Label,
-  Input,
-  Collapse,
-  Button,
-  CustomInput,
-} from 'reactstrap'
+import { Collapse, Button } from 'reactstrap'
 import { FiChevronRight } from 'react-icons/fi'
 import { GrPowerReset } from 'react-icons/gr'
 
@@ -45,23 +38,18 @@ const PanelLayersView = ({ ...props }) => {
   }
 
   const updatePoints = e => {
-    console.log(
-      'updatePoints, ',
-      e,
-      e.currentTarget.id,
-      pointTypes,
-      activePointTypes,
-    )
+    // console.log(
+    //   'updatePoints, ',
+    //   e,
+    //   e.currentTarget.id,
+    //   pointTypes,
+    //   activePointTypes,
+    // )
     // If item is checked, if it's not in array, push it into array
     // If item is not checked, if it's in array, remove
     // If the element is an only-one element, reset other only-ones of same name.
     const id = e.currentTarget.id.replace(/input_/g, '')
     // Get index in indicator set.
-    // const index = pointTypes
-    //   .map(type => {
-    //     return type.id
-    //   })
-    //   .indexOf(id)
     const index = getPointIndex(pointTypes, id)
     let newPointTypes = activePointTypes.slice()
     newPointTypes[index] =
@@ -169,18 +157,12 @@ const PanelLayersView = ({ ...props }) => {
                             )
                           })
                           .map(point => {
-                            // console.log('point, ', point, cat)
-                            // if (
-                            //   point.category === cat.id
-                            //   // &&
-                            //   // cat.subcategories.length <= 0
-                            // ) {
                             const pointIndex = getPointIndex(
                               pointTypes,
                               point.id,
                             )
                             const isChecked = !!activePointTypes[
-                              pointIndex // Number(layer.index)
+                              pointIndex
                             ]
                             return (
                               <LayersInput
@@ -266,17 +248,6 @@ const PanelLayersView = ({ ...props }) => {
                                     //   cat.id,
                                     //   sub,
                                     // )
-                                    // if (
-                                    //   point.category ===
-                                    //     cat.id &&
-                                    //   !!point.subcategory &&
-                                    //   point.subcategory ===
-                                    //     sub
-                                    // ) {
-                                    // console.log(
-                                    //   'subcategory match: ',
-                                    //   point,
-                                    // )
                                     const pointIndex = getPointIndex(
                                       pointTypes,
                                       point.id,
@@ -306,7 +277,6 @@ const PanelLayersView = ({ ...props }) => {
                                         className={clsx()}
                                       />
                                     )
-                                    // }
                                   })}
                               </Collapse>
                             </div>
