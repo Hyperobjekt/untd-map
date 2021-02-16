@@ -17,7 +17,7 @@ export const DATA_FILES = [
     ind_flag: 'sd', // Column value that indicates that a value is an indicator.
   },
   {
-    id: 'counties',
+    id: 'county',
     filename: 'Data/geojson/sm_counties',
     ext: 'geojson',
     type: 'polygon',
@@ -26,7 +26,7 @@ export const DATA_FILES = [
     label_key: 'NAMELSAD', // What feature property to use for label?
   },
   {
-    id: 'places',
+    id: 'place',
     filename: 'Data/geojson/sm_places',
     ext: 'geojson',
     type: 'polygon',
@@ -36,7 +36,7 @@ export const DATA_FILES = [
     type_label_key: `UI_MAP_FEATURE_PLACE`,
   },
   {
-    id: 'tracts',
+    id: 'tract',
     filename: 'Data/geojson/sm_tracts',
     ext: 'geojson',
     type: 'polygon',
@@ -46,7 +46,7 @@ export const DATA_FILES = [
     type_label_key: `UI_MAP_FEATURE_TRACT`,
   },
   {
-    id: 'zips',
+    id: 'zip',
     filename: 'Data/geojson/sm_zcta',
     ext: 'geojson',
     type: 'polygon',

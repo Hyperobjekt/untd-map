@@ -172,7 +172,7 @@ export const getPointIcons = (
 
 const getFilter = (type, metric, activeQuintiles) => {
   switch (true) {
-    case type === 'tracts':
+    case type === 'tract':
       return [
         'let',
         'quintile',
@@ -201,7 +201,7 @@ const getFilter = (type, metric, activeQuintiles) => {
         ],
       ]
       break
-    case type === 'zips':
+    case type === 'zip':
       return [
         'let',
         'quintile',
@@ -230,7 +230,7 @@ const getFilter = (type, metric, activeQuintiles) => {
         ],
       ]
       break
-    case type === 'counties':
+    case type === 'county':
       return [
         'all',
         ['!=', ['number', ['get', 'fid']], ['number', 568]],
@@ -238,7 +238,7 @@ const getFilter = (type, metric, activeQuintiles) => {
       ]
       // code block
       break
-    case type === 'places':
+    case type === 'place':
       return [
         'let',
         'quintile',
@@ -316,7 +316,7 @@ export const getPolygonLines = (type, context) => {
 }
 
 export const getPolygonShapes = (type, context) => {
-  // console.log('getPolygonShapes(), ', type, context)
+  console.log('getPolygonShapes(), ', type, context)
   // console.log('CRI_COLORS', CRI_COLORS)
   const isVisible =
     context.activeLayers[
@@ -455,10 +455,10 @@ export const getPointLayers = (
 export const getLayers = (sources, context) => {
   // console.log('getLayers', sources, context)
   const layers = []
-  layers.push(...getPolygonLayers('counties', context))
-  layers.push(...getPolygonLayers('zips', context))
-  layers.push(...getPolygonLayers('tracts', context))
-  layers.push(...getPolygonLayers('places', context))
+  layers.push(...getPolygonLayers('county', context))
+  layers.push(...getPolygonLayers('zip', context))
+  layers.push(...getPolygonLayers('tract', context))
+  layers.push(...getPolygonLayers('place', context))
   // Add a layer for each point type,
   // and a cluster layer for each point type.
   context.activePointTypes.forEach((el, i) => {

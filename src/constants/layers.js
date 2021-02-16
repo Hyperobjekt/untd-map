@@ -10,7 +10,7 @@ export const DEMO_MAX_PERCENTS = {
 // Array of layers.
 export const UNTD_LAYERS = [
   {
-    id: `counties`,
+    id: `county`,
     label: `UI_MAP_LAYERS_COUNTIES`,
     types: [`polygons`],
     tooltip: null,
@@ -21,7 +21,7 @@ export const UNTD_LAYERS = [
     place_type: `County`,
   },
   {
-    id: `zips`,
+    id: `zip`,
     label: `UI_MAP_LAYERS_ZIPS`,
     types: [`polygons`],
     tooltip: null,
@@ -32,7 +32,7 @@ export const UNTD_LAYERS = [
     place_type: `Zip`,
   },
   {
-    id: `tracts`,
+    id: `tract`,
     label: `UI_MAP_LAYERS_TRACTS`,
     types: [`polygons`],
     tooltip: null,
@@ -43,7 +43,7 @@ export const UNTD_LAYERS = [
     place_type: `Tract`,
   },
   {
-    id: `places`,
+    id: `place`,
     label: `UI_MAP_LAYERS_PLACES`,
     types: [`polygons`],
     tooltip: null,

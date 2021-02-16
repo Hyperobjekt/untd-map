@@ -301,10 +301,7 @@ const DataLoader = ({ ...props }) => {
                         placeTypes: r['place']
                           .toLowerCase()
                           .replace(/ /g, '')
-                          .split(',')
-                          .map(type => {
-                            return `${type}s`
-                          }),
+                          .split(','),
                       })
                     }
 
@@ -394,10 +391,7 @@ const DataLoader = ({ ...props }) => {
                         placeTypes: r['place']
                           .toLowerCase()
                           .replace(/ /g, '')
-                          .split(',')
-                          .map(type => {
-                            return `${type}s`
-                          }),
+                          .split(','),
                       })
                     }
                   })
@@ -405,10 +399,10 @@ const DataLoader = ({ ...props }) => {
                   // console.log('strings, ', strings)
                   setLang('en_US', strings)
                   incrementLangUpdates()
-                  console.log(
-                    'tooltipItems, ',
-                    tooltipItems,
-                  )
+                  // console.log(
+                  //   'tooltipItems, ',
+                  //   tooltipItems,
+                  // )
                   addTooltipItems(tooltipItems)
                   // Save indicators to indicator list.
                   // console.log('indicators, ', indicators)
