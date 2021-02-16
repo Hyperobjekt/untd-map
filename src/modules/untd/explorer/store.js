@@ -50,6 +50,14 @@ const [useStore] = create((set, get) => ({
       indicators: [...state.indicators, ...inds],
     }))
   },
+  // List of items to show in tooltip/popup.
+  tooltipItems: [],
+  // Push items to indicator list.
+  addTooltipItems: items => {
+    set(state => ({
+      tooltipItems: [...state.tooltipItems, ...items],
+    }))
+  },
   // Track loading of remote data files.
   allDataLoaded: false,
   // Percent loaded for remote data files.
@@ -215,11 +223,6 @@ const [useStore] = create((set, get) => ({
   mapImagesAdded: 0,
   // Array of map images (because hasImage isn't working)
   mapImages: [],
-  // updateMapImages: image =>
-  //   set({
-  //     mapImages: state.mapImages.push(image),
-  //   }),
-  // setCoords: coords => set({ coords }),
   // Do not track events before map is loaded, as these
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,

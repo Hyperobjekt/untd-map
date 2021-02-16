@@ -133,6 +133,7 @@ const DataLoader = ({ ...props }) => {
     setLang,
     incrementLangUpdates,
     addIndicators,
+    addTooltipItems,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -140,6 +141,7 @@ const DataLoader = ({ ...props }) => {
       setLang: state.setLang,
       incrementLangUpdates: state.incrementLangUpdates,
       addIndicators: state.addIndicators,
+      addTooltipItems: state.addTooltipItems,
     }),
     shallow,
   )
@@ -232,6 +234,7 @@ const DataLoader = ({ ...props }) => {
                   const indicators = []
                   const pointTypes = []
                   const pointCategories = []
+                  const tooltipItems = []
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
@@ -251,6 +254,58 @@ const DataLoader = ({ ...props }) => {
                           : `${
                               r[el.lang_key]
                             } description not provided`
+                    }
+
+                    // Build list of tooltip items
+                    if (
+                      !!r.variable &&
+                      String(
+                        r.display_variable,
+                      ).toLowerCase() === 'yes' &&
+                      String(r.tooltip).toLowerCase() ===
+                        'yes'
+                    ) {
+                      tooltipItems.push({
+                        id: r[el.lang_key]
+                          ? r[el.lang_key]
+                          : r.variable,
+                        display:
+                          // String(r.variable).indexOf('18') >
+                          // 0
+                          //   ? 1
+                          //   : 0,
+                          String(
+                            r['display_variable'],
+                          ).toLowerCase() === 'yes'
+                            ? 1
+                            : 0,
+                        min: r['min'] ? r['min'] : 0,
+                        max: r['max'] ? r['max'] : 100,
+                        range: r['range']
+                          ? r['range']
+                          : null,
+                        mean: r['mean'] ? r['mean'] : null,
+                        highisgood:
+                          String(
+                            r['highisgood'],
+                          ).toLowerCase() === 'yes'
+                            ? 1
+                            : 0,
+                        iscurrency: r['currency'],
+                        ispercent: r['percent'],
+                        decimals: r['decimals'],
+                        years: r['years']
+                          .toLowerCase()
+                          .replace(/ /g, '')
+                          .split(','),
+                        placeTypes: r['place']
+                          .toLowerCase()
+                          .replace(/ /g, '')
+                          .split(',')
+                          .map(type => {
+                            return `${type}s`
+                          }),
+                      })
                     }
 
                     // Build point types list
@@ -307,15 +362,16 @@ const DataLoader = ({ ...props }) => {
                         id: r[el.lang_key]
                           ? r[el.lang_key]
                           : r.variable,
-                        // TODO: REDO THIS LATER.
                         display:
-                          String(r.variable).indexOf('18') >
-                          0
+                          // String(r.variable).indexOf('18') >
+                          // 0
+                          //   ? 1
+                          //   : 0,
+                          String(
+                            r['display_variable'],
+                          ).toLowerCase() === 'yes'
                             ? 1
                             : 0,
-                        // r['display_variable'] === 'Yes'
-                        //   ? 1
-                        //   : 0,
                         min: r['min'] ? r['min'] : 0,
                         max: r['max'] ? r['max'] : 100,
                         range: r['range']
@@ -323,7 +379,11 @@ const DataLoader = ({ ...props }) => {
                           : null,
                         mean: r['mean'] ? r['mean'] : null,
                         highisgood:
-                          r['highisgood'] === 'Yes' ? 1 : 0,
+                          String(
+                            r['highisgood'],
+                          ).toLowerCase() === 'yes'
+                            ? 1
+                            : 0,
                         iscurrency: r['currency'],
                         ispercent: r['percent'],
                         decimals: r['decimals'],
@@ -345,6 +405,11 @@ const DataLoader = ({ ...props }) => {
                   // console.log('strings, ', strings)
                   setLang('en_US', strings)
                   incrementLangUpdates()
+                  console.log(
+                    'tooltipItems, ',
+                    tooltipItems,
+                  )
+                  addTooltipItems(tooltipItems)
                   // Save indicators to indicator list.
                   // console.log('indicators, ', indicators)
                   addIndicators(indicators)
