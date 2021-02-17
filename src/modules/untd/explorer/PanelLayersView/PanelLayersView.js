@@ -114,7 +114,7 @@ const PanelLayersView = ({ ...props }) => {
                   return i === 0
                 })
                 const toggle = e => {
-                  console.log(e.currentTarget)
+                  // console.log(e.currentTarget)
                   const button = document.getElementById(
                     e.currentTarget.id,
                   )

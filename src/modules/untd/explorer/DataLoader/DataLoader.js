@@ -14,10 +14,9 @@ import {
 } from './../../../../constants/map'
 import { variables } from './../theme'
 
-// TODO:
-// - Error notification
-// - Hide animation
-// - Why is the percent thing running twice?
+const isTruthy = val => {
+  return String(val).toLowerCase() === 'yes' || val === 1
+}
 
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
@@ -259,11 +258,8 @@ const DataLoader = ({ ...props }) => {
                     // Build list of tooltip items
                     if (
                       !!r.variable &&
-                      String(
-                        r.display_variable,
-                      ).toLowerCase() === 'yes' &&
-                      String(r.tooltip).toLowerCase() ===
-                        'yes'
+                      isTruthy(r.display_variable) &&
+                      isTruthy(r.tooltip)
                     ) {
                       tooltipItems.push({
                         id: r[el.lang_key]
@@ -274,9 +270,10 @@ const DataLoader = ({ ...props }) => {
                           // 0
                           //   ? 1
                           //   : 0,
-                          String(
-                            r['display_variable'],
-                          ).toLowerCase() === 'yes'
+                          // String(
+                          //   r['display_variable'],
+                          // ).toLowerCase() === 'yes'
+                          isTruthy(r['display_variable'])
                             ? 1
                             : 0,
                         min: r['min'] ? r['min'] : 0,
@@ -285,12 +282,11 @@ const DataLoader = ({ ...props }) => {
                           ? r['range']
                           : null,
                         mean: r['mean'] ? r['mean'] : null,
-                        highisgood:
-                          String(
-                            r['highisgood'],
-                          ).toLowerCase() === 'yes'
-                            ? 1
-                            : 0,
+                        highisgood: isTruthy(
+                          r['highisgood'],
+                        )
+                          ? 1
+                          : 0,
                         iscurrency: r['currency'],
                         ispercent: r['percent'],
                         decimals: r['decimals'],
@@ -372,9 +368,7 @@ const DataLoader = ({ ...props }) => {
                           // 0
                           //   ? 1
                           //   : 0,
-                          String(
-                            r['display_variable'],
-                          ).toLowerCase() === 'yes'
+                          isTruthy(r['display_variable'])
                             ? 1
                             : 0,
                         min: r['min'] ? r['min'] : 0,
@@ -384,11 +378,10 @@ const DataLoader = ({ ...props }) => {
                           : null,
                         mean: r['mean'] ? r['mean'] : null,
                         highisgood:
-                          String(
-                            r['highisgood'],
-                          ).toLowerCase() === 'yes'
-                            ? 1
-                            : 0,
+                          // String(
+                          //   r['highisgood'],
+                          // ).toLowerCase() === 'yes'
+                          isTruthy(r['highisgood']) ? 1 : 0,
                         iscurrency: r['currency'],
                         ispercent: r['percent'],
                         decimals: r['decimals'],
@@ -400,6 +393,7 @@ const DataLoader = ({ ...props }) => {
                           .toLowerCase()
                           .replace(/ /g, '')
                           .split(','),
+                        order: r['indicator_order'],
                       })
                     }
                   })
