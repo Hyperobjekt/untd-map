@@ -21,9 +21,9 @@ export const DATA_FILES = [
     filename: 'Data/geojson/sm_counties',
     ext: 'geojson',
     type: 'polygon',
-    popup: 0, // Does this geo feature get a popup?
+    popup: 1, // Does this geo feature get a popup?
     id_key: 'GEOID', // What feature property to use for hovered ID?
-    label_key: 'NAMELSAD', // What feature property to use for label?
+    label_key: 'NAME', // What feature property to use for label?
   },
   {
     id: 'place',

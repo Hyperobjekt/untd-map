@@ -15,7 +15,9 @@ import {
 import { variables } from './../theme'
 
 const isTruthy = val => {
-  return String(val).toLowerCase() === 'yes' || val === 1
+  return (
+    String(val).toLowerCase() === 'yes' || Number(val) === 1
+  )
 }
 
 const DataLoaderContent = ({ ...props }) => {
@@ -258,24 +260,16 @@ const DataLoader = ({ ...props }) => {
                     // Build list of tooltip items
                     if (
                       !!r.variable &&
-                      isTruthy(r.display_variable) &&
                       isTruthy(r.tooltip)
                     ) {
+                      // console.log('tooltip item, ', r)
                       tooltipItems.push({
                         id: r[el.lang_key]
                           ? r[el.lang_key]
                           : r.variable,
-                        display:
-                          // String(r.variable).indexOf('18') >
-                          // 0
-                          //   ? 1
-                          //   : 0,
-                          // String(
-                          //   r['display_variable'],
-                          // ).toLowerCase() === 'yes'
-                          isTruthy(r['display_variable'])
-                            ? 1
-                            : 0,
+                        display: isTruthy(
+                          r['display_variable'],
+                        ),
                         min: r['min'] ? r['min'] : 0,
                         max: r['max'] ? r['max'] : 100,
                         range: r['range']
@@ -284,12 +278,10 @@ const DataLoader = ({ ...props }) => {
                         mean: r['mean'] ? r['mean'] : null,
                         highisgood: isTruthy(
                           r['highisgood'],
-                        )
-                          ? 1
-                          : 0,
-                        iscurrency: r['currency'],
-                        ispercent: r['percent'],
-                        decimals: r['decimals'],
+                        ),
+                        currency: isTruthy(r['currency']),
+                        percent: isTruthy(r['percent']),
+                        decimals: Number(r['decimals']),
                         years: r['years']
                           .toLowerCase()
                           .replace(/ /g, '')

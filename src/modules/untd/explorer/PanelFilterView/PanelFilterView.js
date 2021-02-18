@@ -79,20 +79,6 @@ const PanelFilterView = ({ ...props }) => {
     )
   }
 
-  const filterListHeadingStyles = css`
-    margin-bottom: 1.6rem;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 28px;
-    color: #2c390b;
-  `
-
-  const filtersPanelParentStyles = css`
-    overflow-y: scroll;
-  `
-  // activeFilterTab
-  //   ? 'active-tab-' + activeFilterTab
-  //   : 'active-tab-default',
   return (
     <div className={clsx('map-panel-slideout-filters')}>
       <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
@@ -119,12 +105,7 @@ const PanelFilterView = ({ ...props }) => {
         }
         handleSelect={handleSelect}
       />
-      <div
-        className={clsx(
-          'filters-panel-parent',
-          cx(filtersPanelParentStyles),
-        )}
-      >
+      <div className={clsx('filters-panel-parent')}>
         <FilterSeries />
       </div>
     </div>

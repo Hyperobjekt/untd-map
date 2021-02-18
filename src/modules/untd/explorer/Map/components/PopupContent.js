@@ -9,12 +9,10 @@ import { CRI_COLORS } from './../../../../../constants/colors'
 import { DATA_FILES } from './../../../../../constants/map'
 import {
   getRoundedValue,
-  getMetric,
-  getHashLeft,
-  getQuintile,
   getFeatureId,
 } from './../../utils'
 import useStore from './../../store'
+import clsx from 'clsx'
 
 /**
  * Returns popup contents for map feature mouseover
@@ -27,6 +25,7 @@ const PopupContent = ({ ...props }) => {
     breakpoint,
     activeMetric,
     allData,
+    tooltipItems,
   } = useStore(state => ({
     setStoreValues: state.setStoreValues,
     interactionsMobile: state.interactionsMobile,
@@ -34,6 +33,7 @@ const PopupContent = ({ ...props }) => {
     breakpoint: state.breakpoint,
     activeMetric: state.activeMetric,
     allData: state.allData,
+    tooltipItems: state.tooltipItems,
   }))
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
@@ -61,26 +61,36 @@ const PopupContent = ({ ...props }) => {
       : false
 
     switch (true) {
-      case layerID === 'zips':
-        return `Zip code ${label}`
+      case layerID === 'zip':
+        return i18n.translate(`TOOLTIP_PLACE_ZIP`, {
+          label: label,
+        })
         break
-      case layerID === 'places':
+      case layerID === 'place':
         return `${label}`
         break
-      case layerID === 'tracts':
-        return `Census tract ${label}`
+      case layerID === 'tract':
+        return i18n.translate(`TOOLTIP_PLACE_TRACT`, {
+          label: label,
+        })
+        break
+      case layerID === 'county':
+        return i18n.translate(`TOOLTIP_PLACE_COUNTY`, {
+          label: label,
+        })
         break
     }
   }
 
-  // console.log('PopupContent, ', props)
+  console.log('PopupContent, ', props)
+  console.log('tooltipItems, ', tooltipItems)
 
   if (!!props.feature && props.feature !== undefined) {
     if (props.feature.layer.source.indexOf('points') > -1) {
       // console.log(`it's a points feature, `, props.feature)
       return (
         <div className="popup-content">
-          <div className="popup-school-name">
+          <div className="popup-place-name">
             <h4>{props.feature.properties.Name}</h4>
           </div>
           <div
@@ -97,8 +107,22 @@ const PopupContent = ({ ...props }) => {
           </div>
         </div>
       )
+    } else if (
+      props.feature.layer.source.indexOf('county') > -1
+    ) {
+      console.log('it is a county feature')
+      const featureLabel = getFeatureLabel(props.feature)
+      return (
+        <div className="popup-content">
+          {!!featureLabel && (
+            <div className="popup-place-name">
+              <h4>{featureLabel}</h4>
+            </div>
+          )}
+        </div>
+      )
     } else {
-      // console.log('not a points feature')
+      console.log('not a points or county feature')
       const featureLabel = getFeatureLabel(props.feature)
       // props.feature.properties[
       //   source.label_key
@@ -128,7 +152,7 @@ const PopupContent = ({ ...props }) => {
       return (
         <div className="popup-content">
           {!!featureLabel && (
-            <div className="popup-school-name">
+            <div className="popup-place-name">
               <h4>{featureLabel}</h4>
             </div>
           )}
@@ -168,6 +192,38 @@ const PopupContent = ({ ...props }) => {
                   min={min}
                   max={max}
                 />
+              </div>
+              <div className={clsx('popup-indicator-list')}>
+                {tooltipItems.map(el => {
+                  if (!!props.feature.properties[el.id]) {
+                    return (
+                      <div className="indicator-item">
+                        <span
+                          className={clsx(
+                            'indicator-title',
+                          )}
+                        >
+                          {i18n.translate(el.id)}:
+                        </span>{' '}
+                        <span
+                          className={clsx(
+                            'indicator-value',
+                          )}
+                        >
+                          {getRoundedValue(
+                            props.feature.properties[el.id],
+                            el.decimals,
+                            true,
+                            el.currency,
+                            el.percent,
+                          )}
+                        </span>
+                      </div>
+                    )
+                  } else {
+                    return ''
+                  }
+                })}
               </div>
             </div>
           )}

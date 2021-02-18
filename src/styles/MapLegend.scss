@@ -34,6 +34,7 @@
   }
   .map-legend-label {
     @include font-gotham-book;
+    // @include font-knockout-jr-lightweight;
     font-weight: 300;
     font-size: 1.4rem;
     line-height: 1.4rem;

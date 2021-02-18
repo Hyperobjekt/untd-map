@@ -1,21 +1,23 @@
 .popup-content {
+  @include font-knockout-jr-lightweight;
   padding: 24px;
   margin: 0 !important;
   width: 252px;
   border-radius: 0;
-  h4 {
-    @include font-gotham-book;
-    font-size: 1.6rem;
-    line-height: 2.3rem;
-    color: $turtle-green;
-  }
-  h5 {
-    font-style: normal;
-    font-weight: 300;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
-    margin-bottom: 14px;
-  }
+  // h4 {
+  //   @include font-gotham-book;
+  //   font-size: 1.6rem;
+  //   line-height: 2.3rem;
+  //   color: $turtle-green;
+  // }
+  // h5 {
+  //   font-style: normal;
+  //   font-weight: 300;
+  //   font-size: 1.4rem;
+  //   line-height: 1.4rem;
+  //   margin-bottom: 14px;
+  // }
+
   .n-i-scale {
     margin-top: 6px;
     margin-bottom: 8px;
@@ -30,7 +32,7 @@
       top: -5px !important;
       // The line through the quintiles.
       border: 1px solid #ccc;
-      height: 10px;
+      height: 9px;
       box-sizing: content-box;
       margin-top: 0.6rem;
       &:after,
@@ -38,7 +40,7 @@
         display: none !important;
       }
       .n-i-scale-quintile {
-        height: 12px;
+        height: 13px;
         border-right: 1px solid #ccc;
         top: -1px;
         width: 16.665%;
@@ -52,13 +54,24 @@
       }
     }
   }
-  .popup-metric-label {
+  .popup-place-name {
+    @include font-knockout-jr-lightweight;
+    font-family: Arial;
     color: $turtle-green;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+  }
+  .popup-metric-label {
+    @include font-knockout-jr-lightweight;
+    color: $turtle-green;
+    font-style: normal;
+    font-weight: 600;
     font-size: 1.4rem;
     line-height: 1.4rem;
     .metric-value {
+      @include font-knockout-jr-lightweight;
       color: $turtle-green;
       font-style: normal;
       font-weight: normal;

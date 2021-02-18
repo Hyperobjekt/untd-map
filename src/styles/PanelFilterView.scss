@@ -77,76 +77,30 @@
     // }
     // }
     .filters-panel-parent {
+      overflow-y: scroll;
       height: 100%;
       padding: 1rem 0.4rem;
-      .filter-panel-tabs {
-        height: 100%;
-        .filter-tab-category {
-          display: none;
-          height: 100%;
-          overflow-y: scroll;
-          padding-bottom: 14rem;
-          h5 {
-            margin-bottom: 1.6rem;
-            font-weight: 400;
-            font-size: 18px;
-            line-height: 28px;
-            color: #2c390b;
-          }
+      .filter-panel-filter-series {
+        margin-bottom: 20rem;
+        .filter {
           h6 {
-            @include font-gotham-book;
+            @include font-knockout-jr-lightweight;
             font-weight: 300;
             font-size: 16px;
             line-height: 20px;
+            // letter-spacing: 0.8px;
             display: flex;
             align-items: center;
             color: #2c390b;
-          }
-          .tab-desc {
-            p {
-              margin-bottom: 2.4rem;
-              span {
-                font-weight: 400;
-              }
+            .indicator-tip {
+              display: inline-block;
+              margin-left: 6px;
+              font-size: 10px;
             }
           }
-          .filter-panel-filter-series {
-            .filter:last-child {
-              padding-bottom: 8rem;
-            }
-          }
-        }
-        &.active-tab-cri {
-          .tab-category-cri {
-            display: block;
-          }
-        }
-        &.active-tab-econ {
-          .tab-category-econ {
-            display: block;
-          }
-        }
-        &.active-tab-edu {
-          .tab-category-edu {
-            display: block;
-          }
-        }
-        &.active-tab-fam {
-          .tab-category-fam {
-            display: block;
-          }
-        }
-        &.active-tab-heal,
-        &.active-tab-hel {
-          .tab-category-heal,
-          .tab-category-hel {
-            display: block;
-          }
-        }
-        &.active-tab-comm {
-          .tab-category-comm {
-            display: block;
-          }
+          // &:last-child {
+          //   padding-bottom: 15rem;
+          // }
         }
       }
     }
