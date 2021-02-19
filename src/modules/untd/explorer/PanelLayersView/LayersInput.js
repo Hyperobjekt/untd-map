@@ -20,8 +20,8 @@ const LayersInput = ({ ...props }) => {
     mapImagesAdded: state.mapImagesAdded,
   }))
 
-  console.log('mapImagesAdded, ', mapImagesAdded)
-  console.log('pointTypes, ', pointTypes)
+  // console.log('mapImagesAdded, ', mapImagesAdded)
+  // console.log('pointTypes, ', pointTypes)
 
   // to manage tooltip state
   const [tooltipOpen, setTooltipOpen] = useState(false)
@@ -31,21 +31,11 @@ const LayersInput = ({ ...props }) => {
     return point.id.indexOf(props.layer.id) > -1
   })
 
-  // const getIcon = () => {
-  //   return pointTypes.find(point => {
-  //     return point.id.indexOf(props.layer.id) > -1
-  //   })
-  // }
-
-  // const src = require(`./../point-icons/svg/${
-  //   getIcon().id
-  // }.svg`).default
-
   const svg = POINT_ICON_SVGS.find(el => {
     return el.id === props.layer.id
   }).svg
 
-  console.log('icon is, ', icon)
+  // console.log('icon is, ', icon)
 
   if (!mapImagesAdded) {
     return ''

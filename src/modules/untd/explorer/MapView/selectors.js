@@ -2,13 +2,14 @@ import { fromJS } from 'immutable'
 
 import {
   CRI_COLORS,
-  POINT_TYPES_COLORS,
+  // POINT_TYPES_COLORS,
   NO_DATA_COLOR,
   TURTLE_GREEN,
 } from './../../../../constants/colors'
 import {
   POINT_ICON_MAP,
   UNTD_LAYERS,
+  POINT_CATEGORIES,
 } from './../../../../constants/layers'
 
 // import {
@@ -49,7 +50,7 @@ export const getClusterCountBg = (
       // 'icon-allow-overlap': true,
     },
     paint: {
-      'circle-color': '#fff',
+      'circle-color': 'rgba(255,255,255,0.8)', // '#fff',
       'circle-radius': 16,
       'circle-stroke-color': color,
       'circle-stroke-width': 2,
@@ -80,13 +81,15 @@ export const getClusterCount = (
       'text-field': '{point_count_abbreviated}',
       'text-font': [
         'DIN Offc Pro Medium',
+        // 'Knockout 49 A',
+        // 'Knockout 49 B',
         'Arial Unicode MS Bold',
       ],
       'text-size': 12,
       'text-allow-overlap': true,
     },
     paint: {
-      'text-color': TURTLE_GREEN,
+      'text-color': `#303030`,
       'text-translate': [-6, -6],
     },
     filter: ['has', 'point_count'],
@@ -115,11 +118,11 @@ export const getClusterIcon = (
     layout: {
       'icon-allow-overlap': true,
       visibility: 'visible', // isVisible ? 'visible' : 'none',
-      'icon-image':
-        getIcon(id).length > 0
-          ? getIcon(id)
-          : getGenericIcon(), // 'home-icon',
-      'icon-size': 0.25,
+      'icon-image': `${id}-icon`,
+      // getIcon(id).length > 0
+      //   ? getIcon(id)
+      //   : getGenericIcon(), // 'home-icon',
+      'icon-size': 0.2,
       // [
       //   'concat',
       //   ['get', 'variable'],
@@ -130,7 +133,7 @@ export const getClusterIcon = (
     paint: {
       'icon-color': color,
       'icon-halo-width': 3,
-      'icon-translate': [4, 4],
+      'icon-translate': [3, 3],
     },
     filter: ['has', 'point_count'],
   })
@@ -149,17 +152,17 @@ export const getPointIcons = (
     type: 'symbol',
     layout: {
       visibility: 'visible', // isVisible ? 'visible' : 'none',
-      'icon-image':
-        getIcon(id).length > 0
-          ? getIcon(id)
-          : getGenericIcon(), // 'home-icon',
+      'icon-image': `${id}-icon`,
+      // getIcon(id).length > 0
+      //   ? getIcon(id)
+      //   : getGenericIcon(), // 'home-icon',
       'icon-allow-overlap': true,
       // [
       //   'concat',
       //   ['get', 'variable'],
       //   '-icon',
       // ],
-      'icon-size': 0.45,
+      'icon-size': 0.35,
     },
     interactive: true,
     paint: {
@@ -465,13 +468,11 @@ export const getLayers = (sources, context) => {
     // console.log('looping through activePointTypes, ', el, i)
     // If layer is enabled, then build data and request point layers for id.
     if (el === 1) {
-      const color = POINT_TYPES_COLORS[i]
+      // const color = POINT_TYPES_COLORS[i]
       const id = context.pointTypes[i].id
-      // Dont do snap for now (comment out when done testing)
-      // if (id === 'snap') {
-      //   // console.log('id is snap, returning')
-      //   return
-      // }
+      const color = POINT_CATEGORIES.find(el => {
+        return el.id === context.pointTypes[i].category
+      }).color
       // Check to see that a source layer is available.
       if (!!sources[`points_${id}`]) {
         layers.push(
