@@ -81,19 +81,7 @@ const PanelLayersView = ({ ...props }) => {
             'layer-group-points',
           )}
         >
-          <h5>
-            {i18n.translate(`UI_MAP_LAYER_1_TITLE`)}
-            <CoreButton
-              onClick={toggleAll}
-              label={i18n.translate('BUTTON_RESET_POINTS')}
-              color="link"
-              id="button_toggle_all_points"
-              tooltip={`right`}
-              className={clsx(`button-all-toggle`)}
-            >
-              <GrPowerReset />
-            </CoreButton>
-          </h5>
+          <h5>{i18n.translate(`UI_MAP_LAYER_1_TITLE`)}</h5>
           <div
             key={'layer-group-desc-points'}
             className="layer-group-desc"
@@ -101,6 +89,19 @@ const PanelLayersView = ({ ...props }) => {
               __html: i18n.translate(`UI_MAP_LAYER_1_DESC`),
             }}
           ></div>
+          <CoreButton
+            onClick={toggleAll}
+            label={i18n.translate('BUTTON_RESET_POINTS')}
+            color="primary"
+            id="button_toggle_all_points"
+            tooltip={`right`}
+            className={clsx(`button-all-toggle`)}
+          >
+            <GrPowerReset />
+            <span>
+              {i18n.translate('BUTTON_RESET_POINTS')}
+            </span>
+          </CoreButton>
           <div className={clsx('points-group-parent')}>
             <div
               className={clsx(
@@ -142,6 +143,21 @@ const PanelLayersView = ({ ...props }) => {
                             'transform 200ms linear',
                         }}
                       />
+                      <div
+                        className={clsx(
+                          'cat-color-indicator',
+                          `color-${cat.id}`,
+                        )}
+                        style={{
+                          width: '16px',
+                          height: '16px',
+                          borderRadius: '8px',
+                          marginBottom: '-2px',
+                          marginRight: '4px',
+                          display: 'inline-block',
+                          backgroundColor: cat.color,
+                        }}
+                      ></div>
                       {i18n.translate(cat.id)}
                     </Button>
                     <Collapse isOpen={isOpen}>

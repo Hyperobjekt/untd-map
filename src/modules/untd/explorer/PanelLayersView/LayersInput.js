@@ -27,80 +27,97 @@ const LayersInput = ({ ...props }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
 
+  // Fetch the icon object from point types.
   const icon = pointTypes.find(point => {
     return point.id.indexOf(props.layer.id) > -1
   })
-
-  const svg = POINT_ICON_SVGS.find(el => {
-    return el.id === props.layer.id
-  }).svg
-
   // console.log('icon is, ', icon)
 
-  if (!mapImagesAdded) {
-    return ''
-  } else {
-    return (
-      <div
-        className="layer"
-        key={`layer-wrapper-${props.layer.id}`}
-        id={`layer-${props.layer.id}`}
+  const getSVG = id => {
+    console.log('getSVG()')
+    let svg = null
+    try {
+      svg = POINT_ICON_SVGS.find(el => {
+        return el.id === props.layer.id
+      }).svg
+    } catch (err) {
+      console.log(
+        `Unable to fetch svg icon for ${props.layer.id}.`,
+      )
+    }
+    // console.log('svg is ', svg)
+    return svg
+  }
+
+  // console.log('svg is ', svg)
+
+  // if (!mapImagesAdded) {
+  //   return ''
+  // } else {
+  return (
+    <div
+      className="layer"
+      key={`layer-wrapper-${props.layer.id}`}
+      id={`layer-${props.layer.id}`}
+    >
+      <label
+        key={`label-${props.layer.id}`}
+        id={`label-${props.layer.id}`}
       >
-        <label
-          key={`label-${props.layer.id}`}
-          id={`label-${props.layer.id}`}
-        >
-          <input
-            type="checkbox"
-            id={props.id}
-            name="scales"
-            key={'layer-input-' + props.layer.id}
-            data-only-one={props.layer.only_one}
-            data-only-one-name={props.layer.only_one_name}
-            checked={props.isChecked}
-            readOnly={true}
-            onClick={e => {
-              props.update(e)
-            }}
-          />
-          <div className="checkmark"></div>
-          {!!mapImagesAdded && !!svg && (
-            <div
-              className={clsx(
-                'icon',
-                `icon-${icon.id}`,
-                `color-${icon.category}`,
-              )}
-              dangerouslySetInnerHTML={{
-                __html: svg ? svg : null,
-              }}
-            ></div>
-          )}
-          {toSentenceCase(i18n.translate(props.label))}
-          {!!props.tooltip &&
-            props.tooltip.length > 0 &&
-            !interactionsMobile && (
-              <FiInfo id={'tip_prompt_' + props.layer.id} />
+        <input
+          type="checkbox"
+          id={props.id}
+          name="scales"
+          key={'layer-input-' + props.layer.id}
+          data-only-one={props.layer.only_one}
+          data-only-one-name={props.layer.only_one_name}
+          checked={props.isChecked}
+          readOnly={true}
+          onClick={e => {
+            props.update(e)
+          }}
+        />
+        <div className="checkmark"></div>
+        {!!getSVG(props.layer.id) && (
+          <div
+            className={clsx(
+              'icon',
+              `icon-${icon.id}`,
+              `color-${icon.category}`,
             )}
-        </label>
+            dangerouslySetInnerHTML={{
+              __html: getSVG(props.layer.id),
+            }}
+          ></div>
+        )}
+        {toSentenceCase(i18n.translate(props.label))}
         {!!props.tooltip &&
           props.tooltip.length > 0 &&
           !interactionsMobile && (
-            <Tooltip
-              placement="top"
-              isOpen={tooltipOpen}
-              target={'tip_prompt_' + props.layer.id}
-              toggle={toggle}
-              autohide={false}
-              className={'tip-prompt-layer'}
-              dangerouslySetInnerHTML={{
-                __html: i18n.translate(props.tooltip),
-              }}
-            ></Tooltip>
+            <FiInfo
+              className="icon-info"
+              id={'tip_prompt_' + props.layer.id}
+            />
           )}
-      </div>
-    )
-  }
+      </label>
+      {!!props.tooltip &&
+        props.tooltip.length > 0 &&
+        !interactionsMobile && (
+          <Tooltip
+            placement="top"
+            isOpen={tooltipOpen}
+            target={'tip_prompt_' + props.layer.id}
+            toggle={toggle}
+            autohide={false}
+            className={'tip-prompt-layer'}
+            dangerouslySetInnerHTML={{
+              __html: i18n.translate(props.tooltip),
+            }}
+          ></Tooltip>
+        )}
+    </div>
+  )
+  // }
 }
 
 LayersInput.propTypes = {

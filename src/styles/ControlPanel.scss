@@ -92,12 +92,12 @@
     flex: 0 0 40px;
     align-self: center;
     &:hover {
-      background-color: #f6f6eb;
+      background-color: $color-untd-lemon; // #f6f6eb;
     }
     &.active,
     &:focus {
-      background-color: #ffeee5;
-      color: #e55934;
+      background-color: $color-untd-lemon; // #ffeee5;
+      color: $color-untd-darklemon; // #e55934;
     }
     &.button-launch-tour {
       svg {

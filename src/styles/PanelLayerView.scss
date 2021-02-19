@@ -42,10 +42,42 @@
       height: 100%;
 
       h5 {
+        @include font-gotham-book;
+        color: $color-untd-darkgray;
+        font-weight: 600;
+        font-size: 1.8rem;
+        line-height: 1.8rem;
+        letter-spacing: 1%;
+      }
+
+      .layer-group-desc,
+      .layer-group-desc p {
+        color: $color-untd-gray;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        letter-spacing: 1%;
+        margin-top: 1.3rem;
+      }
+
+      .button-all-toggle {
+        height: 36px;
+        font-size: 12px;
+        font-weight: 200;
+        margin: 16px auto 20px auto;
+        color: $color-untd-gray;
+        background-color: #fff;
+        border: 1px solid #cfd3c2;
+        padding: 0 14px;
         svg {
-          margin-top: -6px;
-          margin-left: 4px;
-          font-size: 1.8rem;
+          width: 16px;
+          height: 16px;
+          margin-top: -3px;
+          margin-right: 6px;
+          path,
+          line,
+          rect {
+            stroke: $color-untd-gray;
+          }
         }
       }
 
@@ -57,6 +89,8 @@
           margin-bottom: 16rem;
 
           .points-cat-toggle {
+            @include font-gotham-book;
+            color: $color-untd-gray;
             border: 0;
             box-shadow: 0;
             text-decoration: none !important;
@@ -98,14 +132,15 @@
             margin: 1rem 1.2rem 0 1rem;
 
             label {
+              font-size: 1.3rem;
               cursor: pointer;
               .icon {
                 display: inline-block;
-                width: 20px;
-                height: 20px;
+                max-width: 20px;
+                max-height: 20px;
                 svg {
-                  width: 22px;
-                  height: 22px;
+                  width: 20px;
+                  height: 20px;
                 }
                 // background-size: 18px 18px;
                 background-repeat: no-repeat;
@@ -142,6 +177,11 @@
                     fill: $color-point-public_health;
                   }
                 }
+              }
+              .icon-info {
+                width: 14px;
+                height: 14px;
+                color: $color-untd-gray;
               }
             }
             input {
