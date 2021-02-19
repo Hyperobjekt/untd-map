@@ -39,9 +39,13 @@ $feeder-panes-border: #e8eae4;
 $cp-label-color: #606b44;
 $cpal-orange: #e55934;
 $cpal-orange-light: #ffeee5;
-// $cpal-gray:
-// $orange-bg:
 $navbar-height: 64px;
+
+// Colors for point layer categories
+$color-point-social_infrastructure: rgba(154, 85, 142, 1);
+$color-point-commerce: rgba(73, 81, 94, 1);
+$color-point-school: rgba(145, 75, 13, 1);
+$color-point-public_health: rgba(219, 134, 48, 1);
 
 // _______________ SPACING _______________ //
 // space elements in increments of .8rem (8px)

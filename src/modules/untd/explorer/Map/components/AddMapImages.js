@@ -2,29 +2,30 @@ import { useEffect } from 'react'
 import shallow from 'zustand/shallow'
 
 import useStore from './../../store'
-import { POINT_ICON_MAP } from './../../../../../constants/layers'
 
 /**
  * Component adds images to map for use by
  * symbol layers. Returns null.
- *
- * To update what icons are loaded, edit the
- * POINT_ICON_MAP array in ./src/constants/layers.js
  */
 const AddMapImages = ({ map, loaded, ...props }) => {
   // console.log('AddMapImages, ', map, props)
 
-  const { mapImages, setStoreValues } = useStore(
+  const {
+    mapImages,
+    setStoreValues,
+    pointTypes,
+  } = useStore(
     state => ({
       mapImages: state.mapImages,
       setStoreValues: state.setStoreValues,
+      pointTypes: state.pointTypes,
     }),
     shallow,
   )
 
   useEffect(() => {
     if (!!loaded) {
-      POINT_ICON_MAP.forEach(el => {
+      pointTypes.forEach(el => {
         // If it's not been loaded yet, load it.
         if (mapImages.indexOf(`${el.id}-icon`) < 0) {
           // Load the icon from path.
@@ -39,6 +40,8 @@ const AddMapImages = ({ map, loaded, ...props }) => {
             })
             setStoreValues({
               mapImages: mapImages.push(`${el.id}-icon`),
+              mapImagesAdded:
+                mapImages.length === pointTypes.length,
             })
           })
         }

@@ -106,54 +106,37 @@
                 background-size: 16px 16px;
                 background-repeat: no-repeat;
                 background-position: center;
-                margin-right: 4px;
-                &.icon-book {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/book.svg');
+                margin-right: 9px;
+                &.color-social_infrastructure svg path,
+                &.color-social_infrastructure svg line,
+                &.color-social_infrastructure svg rect {
+                  stroke: $color-point-social_infrastructure;
                 }
-                &.icon-carrot {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/carrot.svg');
+                &.color-social_infrastructure {
+                  &.icon-uscc path {
+                    fill: $color-point-social_infrastructure;
+                  }
                 }
-                &.icon-rec {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/rec.svg');
+                &.color-commerce svg path,
+                &.color-commerce svg line,
+                &.color-commerce svg rect {
+                  stroke: $color-point-commerce;
                 }
-                &.icon-bank {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/bank.svg');
+                &.color-school svg path,
+                &.color-school svg line,
+                &.color-school svg rect {
+                  stroke: $color-point-school;
                 }
-                &.icon-cru {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/cru.svg');
+                &.color-public_health svg path,
+                &.color-public_health svg line,
+                &.color-public_health svg rect {
+                  stroke: $color-point-public_health;
+                  color: $color-point-public_health;
                 }
-                &.icon-cart {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/cart.svg');
-                }
-                &.icon-childcare {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/childcare.svg');
-                }
-                &.icon-community {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/community.svg');
-                }
-                &.icon-pharmacy {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/pharmacy.svg');
-                }
-                &.icon-health {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/health.svg');
-                }
-                &.icon-wic {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/wic.svg');
-                }
-                &.icon-spube {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/spube.svg');
-                }
-                &.icon-spubm {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/spubm.svg');
-                }
-                &.icon-spubh {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/spubh.svg');
-                }
-                &.icon-sprivate {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/sprivate.svg');
-                }
-                &.icon-scharter {
-                  background-image: url('./../modules/untd/explorer/point-icons/svg/scharter.svg');
+                &.color-public_health {
+                  &.icon-comhel rect {
+                    fill: $color-point-public_health;
+                  }
                 }
               }
             }
@@ -171,9 +154,9 @@
             }
 
             svg {
-              width: 12px;
-              height: 12px;
-              margin-left: 0.35rem;
+              width: 16px;
+              height: 16px;
+              margin-left: 0.25rem;
               color: $turtle-green;
               margin-top: -2px;
             }

@@ -82,8 +82,8 @@ const PopupContent = ({ ...props }) => {
     }
   }
 
-  console.log('PopupContent, ', props)
-  console.log('tooltipItems, ', tooltipItems)
+  // console.log('PopupContent, ', props)
+  // console.log('tooltipItems, ', tooltipItems)
 
   if (!!props.feature && props.feature !== undefined) {
     if (props.feature.layer.source.indexOf('points') > -1) {
@@ -110,7 +110,7 @@ const PopupContent = ({ ...props }) => {
     } else if (
       props.feature.layer.source.indexOf('county') > -1
     ) {
-      console.log('it is a county feature')
+      // console.log('it is a county feature')
       const featureLabel = getFeatureLabel(props.feature)
       return (
         <div className="popup-content">
@@ -122,17 +122,8 @@ const PopupContent = ({ ...props }) => {
         </div>
       )
     } else {
-      console.log('not a points or county feature')
+      // console.log('not a points or county feature')
       const featureLabel = getFeatureLabel(props.feature)
-      // props.feature.properties[
-      //   source.label_key
-      // ]
-      //   ? props.feature.properties[source.label_key]
-      //   : false
-      // const rawValueHandle = String(activeMetric).replace(
-      //   '_sd',
-      //   '',
-      // )
       const value = props.feature.properties[
         rawMetric.variable
       ]
