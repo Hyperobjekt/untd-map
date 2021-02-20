@@ -1,22 +1,10 @@
 .popup-content {
-  @include font-knockout-jr-lightweight;
+  // @include font-knockout-jr-lightweight;
+  @include font-gotham-book;
   padding: 24px;
   margin: 0 !important;
   width: 252px;
   border-radius: 0;
-  // h4 {
-  //   @include font-gotham-book;
-  //   font-size: 1.6rem;
-  //   line-height: 2.3rem;
-  //   color: $turtle-green;
-  // }
-  // h5 {
-  //   font-style: normal;
-  //   font-weight: 300;
-  //   font-size: 1.4rem;
-  //   line-height: 1.4rem;
-  //   margin-bottom: 14px;
-  // }
 
   .n-i-scale {
     margin-top: 6px;
@@ -54,29 +42,30 @@
       }
     }
   }
-  .popup-place-name {
-    @include font-knockout-jr-lightweight;
-    font-family: Arial;
-    color: $turtle-green;
+  .popup-place-name,
+  .popup-place-name h4 {
+    @include font-gotham-book;
+    color: $color-untd-darkgray;
     font-style: normal;
     font-weight: 600;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    letter-spacing: 1%;
   }
   .popup-metric-label {
-    @include font-knockout-jr-lightweight;
-    color: $turtle-green;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 1.4rem;
-    line-height: 1.4rem;
+    line-height: 1.8rem;
+    margin: 12px auto 19px;
+    color: $color-untd-gray;
     .metric-value {
-      @include font-knockout-jr-lightweight;
-      color: $turtle-green;
+      color: $color-untd-darkgray;
       font-style: normal;
-      font-weight: normal;
-      font-size: 1.5rem;
-      line-height: 1.6rem;
+      font-weight: 600;
+    }
+    &.address {
+      margin-bottom: 0;
     }
   }
   .click-school-prompt {

@@ -189,6 +189,7 @@
               cursor: pointer;
               // margin-top: 10px;
             }
+
             &:first-of-type {
               margin-top: 2rem;
             }
@@ -231,7 +232,8 @@
             // }
 
             /* When the checkbox is checked, add a blue background */
-            input:checked ~ .checkmark {
+            // input:checked ~ .checkmark,
+            input.checked ~ .checkmark {
               background-color: #2c390b;
             }
 
@@ -243,7 +245,8 @@
             }
 
             /* Show the checkmark when checked */
-            input:checked ~ .checkmark:after {
+            // input:checked ~ .checkmark:after,
+            input.checked ~ .checkmark:after {
               display: block;
             }
 

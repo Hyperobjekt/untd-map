@@ -99,10 +99,12 @@ const PopupContent = ({ ...props }) => {
               props.feature,
             )}`}
           >
-            <div className="popup-metric-label">
+            <div className="popup-metric-label address">
               {props.feature.properties.Display}
               <br />
-              {`${props.feature.properties.Address}, ${props.feature.properties.City}`}
+              {`${props.feature.properties.Address}`}
+              <br />
+              {`${props.feature.properties.City}`}
             </div>
           </div>
         </div>
@@ -153,8 +155,9 @@ const PopupContent = ({ ...props }) => {
               key={`popup-metric-${metric.id}`}
             >
               <div className="popup-metric-label">
+                {`${valueLabel}: `}
                 <span className="metric-value">
-                  {`${valueLabel}: ${
+                  {`${
                     !!value
                       ? getRoundedValue(
                           value,

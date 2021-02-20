@@ -52,7 +52,7 @@ const en_US = {
   UI_MAP_RESET: `Reset map`,
   UI_MAP_CAPTURE: `Screenshot map`,
   UI_MAP_CITY: `Dallas`,
-  UI_MAP_LEGEND_TITLE: `Selected index:`,
+  UI_MAP_LEGEND_TITLE: `Selected metric:`,
   UI_MAP_TOGGLE_LAYERS: `TOGGLE LAYERS`,
   UI_MAP_LEGEND_SCHOOL_DOT: `School`,
   UI_MAP_LEGEND_SCHOOL_ZONE: `School zone (2 mile radius)`,
@@ -216,7 +216,7 @@ const en_US = {
   <p>You can also grab a snapshot of your screen using the camera button, and share a custom link to your current Explorer view via the SHARE buttons.</p>
 
   <p>Questions? Visit our <a href="/faq" target="_blank">FAQ</a>.</p>`,
-  UI_PANEL_INFO_FEEDER: `<h5>Exploring in the Feeder Pattern View</h5><p>A feeder pattern is the sequence of schools a student attends as they advance from grade to grade, based on where they live.</p><p>The first chart shows each feeder pattern’s average Community Resource Index on a scale from 0-100.</p><p>The second chart shows the distribution of campuses across the range of the Community Resource Index.</p> <p>Hover and click within the charts to see more data about each feeder pattern and its schools. You can also use the search bar to find a school and highlight its feeder pattern and campus.</p>`,
+  // UI_PANEL_INFO_FEEDER: `<h5>Exploring in the Feeder Pattern View</h5><p>A feeder pattern is the sequence of schools a student attends as they advance from grade to grade, based on where they live.</p><p>The first chart shows each feeder pattern’s average Community Resource Index on a scale from 0-100.</p><p>The second chart shows the distribution of campuses across the range of the Community Resource Index.</p> <p>Hover and click within the charts to see more data about each feeder pattern and its schools. You can also use the search bar to find a school and highlight its feeder pattern and campus.</p>`,
   UI_MAP_CLICK_SCHOOL_PROMPT: `Click on school to view full report.`,
   UI_MAP_SCHOOL_ACCESS_LINK: `Access full report.`,
   UI_MAP_FLY_TO_PROMPT: `Hover school for more information, or click

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import { FiInfo } from 'react-icons/fi'
 import { Label, Input, Tooltip } from 'reactstrap'
@@ -14,11 +15,14 @@ const LayersInput = ({ ...props }) => {
     pointTypes,
     interactionsMobile,
     mapImagesAdded,
-  } = useStore(state => ({
-    pointTypes: state.pointTypes,
-    interactionsMobile: state.interactionsMobile,
-    mapImagesAdded: state.mapImagesAdded,
-  }))
+  } = useStore(
+    state => ({
+      pointTypes: state.pointTypes,
+      interactionsMobile: state.interactionsMobile,
+      mapImagesAdded: state.mapImagesAdded,
+    }),
+    shallow,
+  )
 
   // console.log('mapImagesAdded, ', mapImagesAdded)
   // console.log('pointTypes, ', pointTypes)
@@ -31,10 +35,11 @@ const LayersInput = ({ ...props }) => {
   const icon = pointTypes.find(point => {
     return point.id.indexOf(props.layer.id) > -1
   })
-  // console.log('icon is, ', icon)
+  // console.log('icon is, ', icon, props)
+  console.log('repaint, ', icon)
 
   const getSVG = id => {
-    console.log('getSVG()')
+    // console.log('getSVG()')
     let svg = null
     try {
       svg = POINT_ICON_SVGS.find(el => {
@@ -54,6 +59,35 @@ const LayersInput = ({ ...props }) => {
   // if (!mapImagesAdded) {
   //   return ''
   // } else {
+
+  // const [isChecked, setIsChecked] = useState(
+  //   props.isChecked,
+  // )
+
+  const toggleChecked = e => {
+    console.log('toggleChecked()')
+    // setIsChecked(!isChecked)
+    // props.update(e)
+    // Toggle a checked class on the item to spoof checked
+    // state before app state is processed.
+    const el = e.currentTarget
+    // const checkmark = document.getElementById
+    // // console.log(el, el.checked)
+    if (
+      el.classList.contains('checked')
+      // ||
+      // el.checked == true
+    ) {
+      // Remove class
+      el.classList.remove('checked')
+      // el.checked = false
+    } else {
+      // Add class
+      el.classList.add('checked')
+      // el.checked = true
+    }
+  }
+
   return (
     <div
       className="layer"
@@ -71,13 +105,20 @@ const LayersInput = ({ ...props }) => {
           key={'layer-input-' + props.layer.id}
           data-only-one={props.layer.only_one}
           data-only-one-name={props.layer.only_one_name}
+          className={props.isChecked ? 'checked' : ''}
           checked={props.isChecked}
           readOnly={true}
           onClick={e => {
+            toggleChecked(e)
             props.update(e)
           }}
         />
-        <div className="checkmark"></div>
+        <div
+          className="checkmark"
+          // style={{
+          //   backgroundColor: isChecked ? 'black' : '#eee',
+          // }}
+        ></div>
         {!!getSVG(props.layer.id) && (
           <div
             className={clsx(
