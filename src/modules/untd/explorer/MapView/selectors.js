@@ -7,28 +7,6 @@ import {
   POINT_CATEGORIES,
 } from './../../../../constants/layers'
 
-// import {
-//   getMetric,
-//   getQuintile,
-//   isInActiveQuintile,
-// } from './../utils'
-
-const getIcon = id => {
-  return `${
-    POINT_ICON_MAP.find(el => {
-      return el.types.indexOf(id) > -1
-    }).id
-  }-icon`
-}
-
-const getGenericIcon = () => {
-  return `${
-    POINT_ICON_MAP.find(el => {
-      return el.types.indexOf('generic') > -1
-    }).id
-  }-icon`
-}
-
 export const getClusterCountBg = (
   source,
   id,
@@ -56,6 +34,7 @@ export const getClusterCountBg = (
     filter: [
       'all',
       ['has', 'point_count'],
+      ['==', ['number', context.activePointTypes[ind]], 1],
       // ['==', ['get', 'variable'], id],
     ],
   })
@@ -86,7 +65,11 @@ export const getClusterCount = (
       'text-color': `#303030`,
       'text-translate': [-6, -6],
     },
-    filter: ['has', 'point_count'],
+    filter: [
+      'all',
+      ['has', 'point_count'],
+      ['==', ['number', context.activePointTypes[ind]], 1],
+    ],
   })
 }
 
@@ -131,7 +114,11 @@ export const getClusterIcon = (
       'icon-halo-width': 3,
       'icon-translate': [3, 3],
     },
-    filter: ['has', 'point_count'],
+    filter: [
+      'all',
+      ['has', 'point_count'],
+      ['==', ['number', context.activePointTypes[ind]], 1],
+    ],
   })
 }
 
@@ -163,7 +150,11 @@ export const getPointIcons = (source, id, context, ind) => {
       'icon-color': color,
       'icon-halo-width': 3,
     },
-    filter: ['!', ['has', 'point_count']],
+    filter: [
+      'all',
+      ['!', ['has', 'point_count']],
+      ['==', ['number', context.activePointTypes[ind]], 1],
+    ],
   })
 }
 
@@ -440,50 +431,22 @@ export const getLayers = (sources, context) => {
   layers.push(...getPolygonLayers('place', context))
   // Add a layer for each point type,
   // and a cluster layer for each point type.
-  // context.activePointTypes.forEach((el, i) => {
-  //   //   // console.log('looping through activePointTypes, ', el, i)
-  //   //   // If layer is enabled, then build data and request point layers for id.
-  //   if (el === 1) {
-  //     //     // const color = POINT_TYPES_COLORS[i]
-  //     const id = context.pointTypes[i].id
-  //     const color = POINT_CATEGORIES.find(el => {
-  //       return el.id === context.pointTypes[i].category
-  //     }).color
-  //     // Check to see that a source layer is available.
-  //     if (!!sources[`points_${id}`]) {
-  //       layers.push(
-  //         ...getPointLayers(
-  //           `points_${id}`,
-  //           id,
-  //           context,
-  //           color,
-  //           i,
-  //         ),
-  //       )
-  //     }
-  //   }
-  // })
   for (
     var i = 0;
     i < context.activePointTypes.length;
     i++
   ) {
-    if (context.activePointTypes[i] === 1) {
-      const id = context.pointTypes[i].id
-      // const color = POINT_CATEGORIES.find(el => {
-      //   return el.id === context.pointTypes[i].category
-      // }).color
-      if (!!sources[`points_${id}`]) {
-        layers.push(
-          ...getPointLayers(
-            `points_${id}`,
-            id,
-            context,
-            // color,
-            i,
-          ),
-        )
-      }
+    const id = context.pointTypes[i].id
+    if (!!sources[`points_${id}`]) {
+      layers.push(
+        ...getPointLayers(
+          `points_${id}`,
+          id,
+          context,
+          // color,
+          i,
+        ),
+      )
     }
   }
   return layers

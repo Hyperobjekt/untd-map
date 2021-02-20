@@ -60,34 +60,6 @@ const LayersInput = ({ ...props }) => {
   //   return ''
   // } else {
 
-  // const [isChecked, setIsChecked] = useState(
-  //   props.isChecked,
-  // )
-
-  const toggleChecked = e => {
-    console.log('toggleChecked()')
-    // setIsChecked(!isChecked)
-    // props.update(e)
-    // Toggle a checked class on the item to spoof checked
-    // state before app state is processed.
-    const el = e.currentTarget
-    // const checkmark = document.getElementById
-    // // console.log(el, el.checked)
-    if (
-      el.classList.contains('checked')
-      // ||
-      // el.checked == true
-    ) {
-      // Remove class
-      el.classList.remove('checked')
-      // el.checked = false
-    } else {
-      // Add class
-      el.classList.add('checked')
-      // el.checked = true
-    }
-  }
-
   return (
     <div
       className="layer"
@@ -108,17 +80,9 @@ const LayersInput = ({ ...props }) => {
           className={props.isChecked ? 'checked' : ''}
           checked={props.isChecked}
           readOnly={true}
-          onClick={e => {
-            toggleChecked(e)
-            props.update(e)
-          }}
+          onClick={props.update}
         />
-        <div
-          className="checkmark"
-          // style={{
-          //   backgroundColor: isChecked ? 'black' : '#eee',
-          // }}
-        ></div>
+        <div className={clsx('checkmark')}></div>
         {!!getSVG(props.layer.id) && (
           <div
             className={clsx(

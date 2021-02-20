@@ -15,6 +15,7 @@ import {
   getFeatureTypeObj,
   getFeatureSource,
   getFeatureType,
+  useDebounce,
 } from './../utils'
 import useStore from './../store'
 
@@ -70,6 +71,24 @@ const MapView = props => {
   const isLoaded = useRef(false)
   // console.log('mapview, sources: ', remoteJson)
 
+  // Improves slow performance
+  // when selecting point types.
+  // Allows activePointTypes to update and
+  // point features pane to re-render
+  // before map layers are reprocessed.
+  const debouncedActivePointTypes = useDebounce(
+    activePointTypes,
+    50,
+  )
+  const debouncedActiveMetric = useDebounce(
+    activeMetric,
+    50,
+  )
+  // const debouncedActiveLayers = useDebounce(
+  //   activeLayers,
+  //   50,
+  // )
+
   /** memoized array of shape and point layers */
   const layers = useMemo(() => {
     // console.log('triggering layers fetch')
@@ -94,10 +113,10 @@ const MapView = props => {
   }, [
     isLoaded.current,
     allDataLoaded,
-    activeMetric,
+    debouncedActiveMetric,
     activeQuintiles,
     activeLayers,
-    activePointTypes,
+    debouncedActivePointTypes,
     remoteJson,
   ])
 
