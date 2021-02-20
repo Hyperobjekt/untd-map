@@ -75,6 +75,7 @@ const en_US = {
   UI_MAP_LAYERS_CREDITUS: `Credit Unions`,
   UI_MAP_LAYERS_PLAYGRS: `Playgrounds`,
   UI_MAP_LAYERS_SMARKETS: `Supermarkets`,
+  POPUP_CLICK_TO_FEEDBACK: `Click to add feedback about this feature.`,
 
   // UI_MAP_METRIC_ABBREV_CRI: `CRI`,
   // UI_MAP_METRIC_TITLE_CRI: `Community Resource Index`,

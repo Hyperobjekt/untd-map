@@ -57,7 +57,7 @@
     font-weight: 400;
     font-size: 1.4rem;
     line-height: 1.8rem;
-    margin: 12px auto 19px;
+    margin: 12px auto;
     color: $color-untd-gray;
     .metric-value {
       color: $color-untd-darkgray;
@@ -75,6 +75,13 @@
     font-size: 1.4rem;
     line-height: 1.4;
     margin-bottom: 1.6rem;
+  }
+  .click-to-add {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+    letter-spacing: 1%;
+    margin: 14px 0 0 0;
+    color: $color-untd-gray;
   }
 }
 .mapboxgl-popup {

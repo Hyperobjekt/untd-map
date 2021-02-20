@@ -1,9 +1,7 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import { Button } from 'reactstrap'
-import { FaExternalLinkSquareAlt } from 'react-icons/fa'
+import clsx from 'clsx'
 
-import { CoreButton } from './../../../../core'
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
 import { CRI_COLORS } from './../../../../../constants/colors'
 import { DATA_FILES } from './../../../../../constants/map'
@@ -12,7 +10,14 @@ import {
   getFeatureId,
 } from './../../utils'
 import useStore from './../../store'
-import clsx from 'clsx'
+
+const ClickToAdd = feature => {
+  return (
+    <p className={clsx('click-to-add')}>
+      {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
+    </p>
+  )
+}
 
 /**
  * Returns popup contents for map feature mouseover
@@ -107,6 +112,7 @@ const PopupContent = ({ ...props }) => {
               {`${props.feature.properties.City}`}
             </div>
           </div>
+          <ClickToAdd />
         </div>
       )
     } else if (
@@ -121,6 +127,7 @@ const PopupContent = ({ ...props }) => {
               <h4>{featureLabel}</h4>
             </div>
           )}
+          <ClickToAdd />
         </div>
       )
     } else {
@@ -221,6 +228,7 @@ const PopupContent = ({ ...props }) => {
               </div>
             </div>
           )}
+          <ClickToAdd />
         </div>
       )
     }
