@@ -30,15 +30,13 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
     >
       {i18n.translate('CONTROL_PANEL_SHARE_TC')}
       <Tooltip
-        placement="right"
+        placement="right-start"
         isOpen={tooltipOpen}
         target="button_d_u_share_link"
         toggle={toggle}
         autohide={false}
         trigger="hover"
-        className={clsx(
-          cx(theme.elements.tooltipCustomShare),
-        )}
+        className="tooltip-share"
       >
         <div className="tooltip-custom-content">
           <div className="item">

@@ -2,24 +2,14 @@ import React, { useState, useEffect } from 'react'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
-import { Card, Button } from 'reactstrap'
 import clsx from 'clsx'
-import { AiOutlineControl } from 'react-icons/ai'
 import { MdClose } from 'react-icons/md'
 
 import useStore from './../../store'
 import { CoreButton } from './../../../../core/'
-import {
-  SCHOOL_ZONE_COLORS,
-  CRI_COLORS,
-} from './../../../../../constants/colors'
+import { CRI_COLORS } from './../../../../../constants/colors'
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import {
-  getRoundedValue,
-  getMetric,
-  getHashLeft,
-  getQuintile,
-} from './../../utils'
+import { getMetric } from './../../utils'
 
 /**
  * Legend for map
@@ -32,7 +22,6 @@ const MapLegend = ({ ...props }) => {
     breakpoint,
     showMobileLegend,
     indicators,
-    allData,
   } = useStore(state => ({
     setStoreValues: state.setStoreValues,
     activeMetric: state.activeMetric,
@@ -40,7 +29,6 @@ const MapLegend = ({ ...props }) => {
     breakpoint: state.breakpoint,
     showMobileLegend: state.showMobileLegend,
     indicators: state.indicators,
-    allData: state.allData,
   }))
 
   const handleClose = () => {

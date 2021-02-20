@@ -36,7 +36,6 @@ const LayersInput = ({ ...props }) => {
     return point.id.indexOf(props.layer.id) > -1
   })
   // console.log('icon is, ', icon, props)
-  console.log('repaint, ', icon)
 
   const getSVG = id => {
     // console.log('getSVG()')

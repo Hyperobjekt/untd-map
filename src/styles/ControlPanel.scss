@@ -176,15 +176,16 @@
         font-size: 14px;
       }
       &.button-d-u-share-link {
+        @include font-gotham-book;
         width: 52px;
         height: 31px;
         min-height: 31px;
         max-height: 31px;
-        font-size: 1.3rem;
-        line-height: 1.5rem;
-        border: 1px solid #cfd3c2;
+        font-size: 1.2rem;
+        line-height: 1.33rem;
+        border: 1px solid #e0e2e5;
         border-radius: 4px;
-        color: $cp-label-color;
+        color: $color-untd-gray;
       }
     }
 
@@ -244,3 +245,52 @@
     }
   }
 }
+// .tooltip-share {
+//   opacity: 1;
+//   background-color: #fff;
+//   .tooltip-custom-content {
+//     @include font-gotham-book;
+//     border-radius: 4px;
+//     opacity: 1;
+//     background-color: #fff;
+//     color: red;
+//     .item {
+//       @include font-gotham-book;
+//       .button-share {
+//         .btn-label,
+//         span {
+//           @include font-gotham-book;
+//         }
+//       }
+//     }
+//   }
+// }
+// opacity: 1;
+//       .tooltip {
+//         opacity: 1;
+//         .tooltip-inner {
+//           border-radius: 2px;
+//           background-color: ${variables.colors.white};
+//           box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
+//           text-align: left;
+//           opacity: 1;
+//           padding: 1rem;
+//           .item {
+//             margin-bottom: 0.4rem;
+//             &:last-of-type {
+//               margin-bottom: 0;
+//             }
+//             span {
+//               font-family: ${variables.fonts.primary};
+//               font-weight: 300;
+//               font-size: 1.3rem;
+//               line-height: 1.5rem;
+//             }
+//             svg {
+//               width: 14px;
+//               height: 14px;
+//               margin-right: 1rem;
+//             }
+//           }
+//         }
+//       }

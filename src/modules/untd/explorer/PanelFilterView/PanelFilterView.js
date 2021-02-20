@@ -2,16 +2,8 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { css, cx } from 'emotion'
-import {
-  FiFilter,
-  FiMap,
-  FiList,
-  FiMenu,
-} from 'react-icons/fi'
-import { MdRefresh } from 'react-icons/md'
 
-import { CoreButton, Select } from './../../../core'
+import { Select } from './../../../core'
 import useStore from './../store.js'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import FilterSeries from './FilterSeries'
@@ -57,16 +49,6 @@ const PanelFilterView = ({ ...props }) => {
     // console.log('layersCopy, ', layersCopy)
     setStoreValues({
       activeLayers: layersCopy,
-      // activeMetric: default_metric, // TODO: Set metric using first indicator in tab list.
-      activeQuintiles: [1, 1, 1, 1, 1],
-    })
-  }
-
-  const handleResetClick = () => {
-    // console.log('handleResetClick()')
-    setStoreValues({
-      // activeFilterTab: defaultFilterTab,
-      activeMetric: defaultMetric,
       activeQuintiles: [1, 1, 1, 1, 1],
     })
   }

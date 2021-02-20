@@ -34,18 +34,18 @@
   }
   .map-legend-label {
     @include font-gotham-book;
-    // @include font-knockout-jr-lightweight;
     font-weight: 300;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
-    color: $turtle-green;
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+    letter-spacing: 1%;
+    color: $color-untd-gray;
   }
   .map-legend-zone-labels {
     display: flex;
     width: 100%;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 300;
-    line-height: 1.4rem;
+    line-height: 1.2rem;
     margin-bottom: 0.7rem;
     justify-content: space-between;
     .fewer,
@@ -71,13 +71,14 @@
   }
   .map-legend-metric-title {
     @include font-gotham-book;
-    color: $turtle-green;
+    color: $color-untd-darkgray;
     font-size: 1.4rem;
     line-height: 2rem;
     margin: 0.5rem 0;
+    font-weight: 600;
     @include media-breakpoint-up(md) {
-      font-size: 1.8rem;
-      line-height: 2rem;
+      font-size: 1.6rem;
+      line-height: 1.8rem;
       margin: 1rem 0;
     }
   }
@@ -86,71 +87,13 @@
       .n-i-scale-min,
       .n-i-scale-max {
         font-weight: 300;
-        font-size: 1rem;
-        line-height: 1rem;
-        color: $turtle-green;
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        color: $color-untd-gray;
       }
     }
   }
-  .map-legend-school-dot {
-    // margin-top: 1rem;
-    padding-left: 5px;
-  }
-  .map-legend-school-zone {
-    // margin-top: 1rem;
-  }
-  .map-legend-school-dot,
-  .map-legend-school-zone {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-weight: 300;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
-    color: $turtle-green;
-    margin-top: 0.25rem;
-    @include media-breakpoint-up(md) {
-      margin-top: 1rem;
-    }
-    .map-legend-school-dot-icon {
-      width: 6px;
-      height: 6px;
-      border-radius: 3px;
-      vertical-align: bottom;
-      margin-right: 10px; // 0.35rem;
-      box-shadow: 1px 1px 2px #ccc;
-    }
-    .map-legend-school-zone-icon {
-      width: 16px;
-      height: 16px;
-      position: relative;
-      margin-right: 6px;
-      .map-legend-school-zone-icon-knockout {
-        position: absolute;
-        left: 5px;
-        top: 5px;
-        width: 6px;
-        height: 6px;
-        border-radius: 3px;
-        vertical-align: middle;
-      }
-      .map-legend-school-zone-icon-background {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 16px;
-        height: 16px;
-        border-radius: 8px;
-        vertical-align: bottom;
-        // margin-right: 0.35rem;
-        box-shadow: 1px 1px 2px #ccc;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-  }
+
   .census-scale {
     margin-top: 1.6rem;
     @include font-gotham-book;

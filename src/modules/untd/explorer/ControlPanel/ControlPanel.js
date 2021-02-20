@@ -261,6 +261,7 @@ const ControlPanel = ({ children }) => {
       <TourButton
         className="d-none d-lg-block"
         tooltip={true}
+        disabled="disabled"
       />
       <Divider />
       <UnifiedShareBtn className="d-block d-lg-none" />

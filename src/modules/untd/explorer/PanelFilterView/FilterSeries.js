@@ -38,14 +38,10 @@ const IndicatorTooltip = ({ indicator, ...rest }) => {
 const FilterSeries = ({ ...props }) => {
   // console.log('FilterSeries, tab = ', props)
   const {
-    activeMetric,
-    setStoreValues,
     activeLayers,
     indicators,
     interactionsMobile,
   } = useStore(state => ({
-    activeMetric: state.activeMetric,
-    setStoreValues: state.setStoreValues,
     activeLayers: state.activeLayers,
     indicators: state.indicators,
     interactionsMobile: state.interactionsMobile,
