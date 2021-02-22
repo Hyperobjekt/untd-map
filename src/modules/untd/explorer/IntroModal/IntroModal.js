@@ -100,6 +100,7 @@ const IntroModal = ({ children, ...props }) => {
           <SchoolSearch />
         </div>
         */}
+        {/*
         <div className="intro-modal-option">
           <p className="cta">
             {i18n.translate('UI_MAP_INTRO_MODAL_FAQ')}
@@ -113,6 +114,7 @@ const IntroModal = ({ children, ...props }) => {
             {i18n.translate('UI_MAP_INTRO_MODAL_FAQ_BTN')}
           </CoreButton>
         </div>
+        */}
         <div className="intro-modal-option">
           <p className="cta">
             {i18n.translate('UI_MAP_INTRO_MODAL_MAP')}
