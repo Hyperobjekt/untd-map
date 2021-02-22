@@ -7,18 +7,15 @@ import useStore from './../store'
 import { CoreButton, TourIcon } from './../../../core'
 
 const TourButton = ({ children, ...props }) => {
-  // Generic store value setter.
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
-  const shareHash = useStore(state => state.shareHash)
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
-  const setUpTour = useStore(state => state.setUpTour)
-  const incrementLaunchTour = useStore(
-    state => state.incrementLaunchTour,
-  )
+  const {
+    buttonTooltipPosition,
+    setUpTour,
+    incrementLaunchTour,
+  } = useStore(state => ({
+    buttonTooltipPosition: state.buttonTooltipPosition,
+    setUpTour: state.setUpTour,
+    incrementLaunchTour: state.incrementLaunchTour,
+  }))
 
   const handleClick = () => {
     incrementLaunchTour()

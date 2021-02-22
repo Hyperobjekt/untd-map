@@ -14,6 +14,7 @@ import {
 } from './../../../../constants/tour'
 
 const Tour = ({ ...props }) => {
+  // console.log('Tour, ')
   const desktopSteps = DESKTOP_STEPS.map(el => {
     // console.log('el,', el.content)
     el.content = i18n.translate(el.text)

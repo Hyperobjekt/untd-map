@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import {
-  FiMap,
-  FiList,
-  FiInfo,
-  FiLayers,
-} from 'react-icons/fi'
+import { FiInfo } from 'react-icons/fi'
 import { RiMapPinLine } from 'react-icons/ri'
 import { AiOutlineControl } from 'react-icons/ai'
 import { css, cx } from 'emotion'
 
 import { theme } from './../theme'
 import useStore from './../store'
-import {
-  Divider,
-  CoreButton,
-  Select,
-} from './../../../core'
+import { Divider, CoreButton } from './../../../core'
 import {
   UnifiedShareBtn,
   DesktopUnifiedShareBtn,
