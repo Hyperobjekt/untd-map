@@ -22,6 +22,7 @@ import SchoolSearch from './../SchoolSearch/SchoolSearch'
  * @param Object props    Props passed from parent
  */
 const IntroModal = ({ children, ...props }) => {
+  // console.log('introModal')
   // Generic state updates for store.
   // Accepts an object of values to update.
   const setStoreValues = useStore(
@@ -35,6 +36,7 @@ const IntroModal = ({ children, ...props }) => {
     setStoreValues({ showIntroModal: !showIntroModal })
   // Whether or not the tour is enabled.
   const enableTour = useStore(state => state.enableTour)
+  // console.log('enableTour = ', enableTour)
   /**
    * Close the intro panel and start the tour
    */
@@ -68,7 +70,7 @@ const IntroModal = ({ children, ...props }) => {
       <ModalBody>
         <h2>
           <div className="logo"></div>
-          {i18n.translate('UI_MAP_INTRO_MODAL_HEADER')}
+          {i18n.translate('SITE_TITLE')}
         </h2>
         <p>{i18n.translate('UI_MAP_INTRO_MODAL_INTRO')}</p>
         {!!enableTour && (
@@ -90,12 +92,14 @@ const IntroModal = ({ children, ...props }) => {
             </CoreButton>
           </div>
         )}
+        {/*
         <div className="intro-modal-option">
           <p className="cta">
             {i18n.translate('UI_MAP_INTRO_MODAL_SEARCH')}
           </p>
           <SchoolSearch />
         </div>
+        */}
         <div className="intro-modal-option">
           <p className="cta">
             {i18n.translate('UI_MAP_INTRO_MODAL_FAQ')}

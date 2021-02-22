@@ -259,7 +259,7 @@ const RouteManager = props => {
           debouncedRoute,
       )
       localStorage.setItem(
-        'cpal_hash',
+        'untd_hash',
         '#/' + debouncedRoute,
       )
       setStoreValues({
@@ -284,7 +284,7 @@ const RouteManager = props => {
       // Construct params object from hash.
       const params = getParamsFromPathname(path)
       const localStorageHash = localStorage.getItem(
-        'cpal_hash',
+        'untd_hash',
       )
       if (
         !isEmptyRoute(path) &&

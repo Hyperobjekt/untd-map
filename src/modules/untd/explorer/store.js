@@ -156,7 +156,7 @@ const [useStore] = create((set, get) => ({
   schoolHint: null,
   showIntroModal: false,
   showPanelModal: false,
-  enableTour: true, // Set this true to show the launch tour button in intro modal.
+  enableTour: false, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
   hoveredID: null,

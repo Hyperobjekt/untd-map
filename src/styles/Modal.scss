@@ -8,18 +8,21 @@
     .modal-body {
       padding: 0 24px 24px 24px;
       h2 {
-        font-weight: 400;
+        @include font-knockout-jr-lightweight;
+        font-weight: 500;
         font-size: 1.8rem;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        margin-bottom: 26px;
         .logo {
           display: inline-block;
-          padding-right: 2.4rem;
-          margin-bottom: -10px;
-          width: 19.43px; // 17px;
-          height: 32px; // 28px;
+          width: 80px; // 57px;
+          height: 27px; // 19px;
           background-image: url('./images/menu-logo.svg');
           background-repeat: no-repeat;
-          background-size: 19.43px 32px; // 17px 28px;
-          margin-right: 4px;
+          background-size: contain;
+          margin-right: 20px;
         }
       }
       padding: 0 24px 24px 24px;
