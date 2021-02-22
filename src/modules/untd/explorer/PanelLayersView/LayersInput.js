@@ -7,7 +7,7 @@ import { FiInfo } from 'react-icons/fi'
 import { Label, Input, Tooltip } from 'reactstrap'
 
 import { toSentenceCase } from './../utils'
-import { POINT_ICON_SVGS } from './../../../../constants/layers'
+import * as Icons from './../../../core/Icons'
 import useStore from './../store'
 
 const LayersInput = ({ ...props }) => {
@@ -24,6 +24,7 @@ const LayersInput = ({ ...props }) => {
     shallow,
   )
 
+  // console.log('Icons, ', Icons['FeaturesIcon'])
   // console.log('mapImagesAdded, ', mapImagesAdded)
   // console.log('pointTypes, ', pointTypes)
 
@@ -37,21 +38,26 @@ const LayersInput = ({ ...props }) => {
   })
   // console.log('icon is, ', icon, props)
 
-  const getSVG = id => {
-    // console.log('getSVG()')
-    let svg = null
-    try {
-      svg = POINT_ICON_SVGS.find(el => {
-        return el.id === props.layer.id
-      }).svg
-    } catch (err) {
-      console.log(
-        `Unable to fetch svg icon for ${props.layer.id}.`,
-      )
-    }
-    // console.log('svg is ', svg)
-    return svg
-  }
+  // const getSVG = id => {
+  //   // console.log('getSVG()')
+  //   let svg = null
+  //   try {
+  //     svg = POINT_ICON_SVGS.find(el => {
+  //       return el.id === props.layer.id
+  //     }).svg
+  //   } catch (err) {
+  //     console.log(
+  //       `Unable to fetch svg icon for ${props.layer.id}.`,
+  //     )
+  //   }
+  //   // console.log('svg is ', svg)
+  //   // return svg
+  //   return Icons['FeaturesIcon']
+  // }
+
+  const ThisIcon = Icons[props.layer.id]
+    ? Icons[props.layer.id]
+    : Icons['FeaturesIcon']
 
   // console.log('svg is ', svg)
 
@@ -82,7 +88,7 @@ const LayersInput = ({ ...props }) => {
           onClick={props.update}
         />
         <div className={clsx('checkmark')}></div>
-        {!!getSVG(props.layer.id) && (
+        {/*!!getSVG(props.layer.id) && (
           <div
             className={clsx(
               'icon',
@@ -93,7 +99,16 @@ const LayersInput = ({ ...props }) => {
               __html: getSVG(props.layer.id),
             }}
           ></div>
-        )}
+          )*/}
+        <div
+          className={clsx(
+            'icon',
+            `icon-${icon.id}`,
+            `color-${icon.category}`,
+          )}
+        >
+          <ThisIcon />
+        </div>
         {toSentenceCase(i18n.translate(props.label))}
         {!!props.tooltip &&
           props.tooltip.length > 0 &&

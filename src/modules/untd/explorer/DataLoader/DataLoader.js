@@ -290,6 +290,7 @@ const DataLoader = ({ ...props }) => {
                           .toLowerCase()
                           .replace(/ /g, '')
                           .split(','),
+                        order: Number(r['tooltip_order']),
                       })
                     }
 

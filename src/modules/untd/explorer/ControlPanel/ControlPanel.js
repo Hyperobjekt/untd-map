@@ -4,12 +4,17 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { FiInfo } from 'react-icons/fi'
 import { RiMapPinLine } from 'react-icons/ri'
-import { AiOutlineControl } from 'react-icons/ai'
+// import { AiOutlineControl } from 'react-icons/ai'
 import { css, cx } from 'emotion'
 
 import { theme } from './../theme'
 import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'
+import {
+  MetricsIcon,
+  FeaturesIcon,
+  InfoIcon,
+} from './../../../core/Icons'
 import {
   UnifiedShareBtn,
   DesktopUnifiedShareBtn,
@@ -193,9 +198,9 @@ const ControlPanel = ({ children }) => {
               ? 'active'
               : '',
           )}
-          tooltipCss={cx(theme.elements.tooltip)}
         >
-          <AiOutlineControl />
+          {/*<AiOutlineControl />*/}
+          <MetricsIcon />
           <span className="sr-only">
             {i18n.translate(`CONTROL_PANEL_FEATURES`)}
           </span>
@@ -220,7 +225,9 @@ const ControlPanel = ({ children }) => {
               : '',
           )}
         >
-          <RiMapPinLine />
+          {/*
+          <RiMapPinLine /> */}
+          <FeaturesIcon />
           <span className="sr-only">
             {i18n.translate(`BUTTON_TOGGLE_PANEL_LAYERS`)}
           </span>
@@ -245,7 +252,7 @@ const ControlPanel = ({ children }) => {
             : '',
         )}
       >
-        <FiInfo />
+        <InfoIcon />
         <span className="sr-only">
           {i18n.translate(`BUTTON_TOGGLE_INFO`)}
         </span>

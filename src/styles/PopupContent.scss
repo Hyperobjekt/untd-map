@@ -4,7 +4,6 @@
   padding: 24px;
   margin: 0 !important;
   width: 252px;
-  border-radius: 0;
 
   .n-i-scale {
     margin-top: 6px;
@@ -68,6 +67,14 @@
       margin-bottom: 0;
     }
   }
+  .indicator-item {
+    font-size: 1.2rem;
+    .indicator-title {
+    }
+    .indicator-value {
+      font-weight: 600;
+    }
+  }
   .click-school-prompt {
     color: $turtle-green;
     font-style: italic;
@@ -87,7 +94,7 @@
 .mapboxgl-popup {
   // Set z-index to make tooltip overlay any other controls.
   z-index: 5000 !important;
-  border-radius: 0;
+  border-radius: 4px;
   box-shadow: 3px 3px 5px #ccc;
   // Reset padding and margins.
   padding: 0 !important;
@@ -96,7 +103,7 @@
     // Reset padding and margins.
     padding: 0 !important;
     margin: 0 !important;
-    border-radius: 0;
+    border-radius: 4px;
   }
 }
 

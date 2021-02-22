@@ -21,7 +21,7 @@
     background-color: #fff;
     .tooltip-inner {
       background-color: #fff;
-      padding: 12px;
+      padding: 12px 8px;
       .tooltip-custom-content {
         @include font-gotham-book;
         text-align: left;

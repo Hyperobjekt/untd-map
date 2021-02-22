@@ -195,36 +195,45 @@ const PopupContent = ({ ...props }) => {
                 />
               </div>
               <div className={clsx('popup-indicator-list')}>
-                {tooltipItems.map(el => {
-                  if (!!props.feature.properties[el.id]) {
-                    return (
-                      <div className="indicator-item">
-                        <span
-                          className={clsx(
-                            'indicator-title',
-                          )}
+                {tooltipItems
+                  .sort((a, b) => {
+                    return a.order - b.order
+                  })
+                  .map(el => {
+                    if (!!props.feature.properties[el.id]) {
+                      return (
+                        <div
+                          className="indicator-item"
+                          key={`indicator-item-${el.id}`}
                         >
-                          {i18n.translate(el.id)}:
-                        </span>{' '}
-                        <span
-                          className={clsx(
-                            'indicator-value',
-                          )}
-                        >
-                          {getRoundedValue(
-                            props.feature.properties[el.id],
-                            el.decimals,
-                            true,
-                            el.currency,
-                            el.percent,
-                          )}
-                        </span>
-                      </div>
-                    )
-                  } else {
-                    return ''
-                  }
-                })}
+                          <span
+                            className={clsx(
+                              'indicator-title',
+                            )}
+                          >
+                            {i18n.translate(el.id)}:
+                          </span>{' '}
+                          <span
+                            className={clsx(
+                              'indicator-value',
+                            )}
+                          >
+                            {getRoundedValue(
+                              props.feature.properties[
+                                el.id
+                              ],
+                              el.decimals,
+                              true,
+                              el.currency,
+                              el.percent,
+                            )}
+                          </span>
+                        </div>
+                      )
+                    } else {
+                      return ''
+                    }
+                  })}
               </div>
             </div>
           )}

@@ -1,15 +1,9 @@
-$spacer: 0.8rem;
+// $spacer: 0.8rem;
 
 .layout {
   height: 100%; // 100vh;
-  // max-height: 100vh;
   .button-view-weights {
     display: none;
-  }
-  .button-panel-filters {
-    svg {
-      transform: rotate(90deg);
-    }
   }
 }
 html,
