@@ -37,14 +37,16 @@ const ControlPanel = ({ children }) => {
   const showIntroModal = useStore(
     state => state.showIntroModal,
   )
-  const toggleIntroModal = () =>
-    setStoreValues({
-      showIntroModal: !showIntroModal,
-    })
   // Modal for small devices
   const showPanelModal = useStore(
     state => state.showPanelModal,
   )
+  const enableTour = useStore(state => state.enableTour)
+
+  const toggleIntroModal = () =>
+    setStoreValues({
+      showIntroModal: !showIntroModal,
+    })
 
   // Handle clicks to any control panel button.
   const handleClick = e => {
@@ -248,11 +250,13 @@ const ControlPanel = ({ children }) => {
           {i18n.translate(`BUTTON_TOGGLE_INFO`)}
         </span>
       </CoreButton>
-      <TourButton
-        className="d-none d-lg-block"
-        tooltip={true}
-        disabled="disabled"
-      />
+      {!!enableTour && (
+        <TourButton
+          className="d-none d-lg-block"
+          tooltip={true}
+          disabled="disabled"
+        />
+      )}
       <Divider />
       <UnifiedShareBtn className="d-block d-lg-none" />
       <DesktopUnifiedShareBtn className="d-none d-lg-block" />
