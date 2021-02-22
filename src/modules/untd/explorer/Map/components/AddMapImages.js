@@ -43,7 +43,7 @@ const AddMapImages = ({ map, loaded, ...props }) => {
           }
           // Load the image into the map. Listen for errors.
           if (src) {
-            console.log(`Loading image for ${el.id}.`)
+            // console.log(`Loading image for ${el.id}.`)
             map.loadImage(src, function (error, image) {
               if (error) throw error
               // add image to the active style and make it SDF-enabled
