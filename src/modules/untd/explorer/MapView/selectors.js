@@ -2,7 +2,6 @@ import { fromJS } from 'immutable'
 
 import { CRI_COLORS } from './../../../../constants/colors'
 import {
-  POINT_ICON_MAP,
   UNTD_LAYERS,
   POINT_CATEGORIES,
 } from './../../../../constants/layers'
