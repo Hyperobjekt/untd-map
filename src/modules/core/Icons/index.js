@@ -1,2 +1,5 @@
 export { default as TourIcon } from './TourIcon'
 export { default as MenuIcon } from './MenuIcon'
+export { default as FeaturesIcon } from './FeaturesIcon'
+export { default as InfoIcon } from './InfoIcon'
+export { default as MetricsIcon } from './MetricsIcon'

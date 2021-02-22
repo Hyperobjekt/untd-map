@@ -58,21 +58,21 @@ export const theme = {
       height: 29px;
       width: 29px;
     `),
-    tooltip: css(`
-      z-index: 5000;
-      border-radius: 0;
-      margin-left: 16px;
-      .arrow {
-        display: none;
-      }
-      .tooltip-inner {
-        background-color: #2c390b;
-        border-radius: 0;
-        font-size: 1.4rem;
-        font-family: halyard-text;
-        padding: 0.8rem;
-      }
-    `),
+    // tooltip: css(`
+    //   z-index: 5000;
+    //   border-radius: 0;
+    //   margin-left: 16px;
+    //   .arrow {
+    //     display: none;
+    //   }
+    //   .tooltip-inner {
+    //     background-color: #2c390b;
+    //     border-radius: 0;
+    //     font-size: 1.4rem;
+    //     font-family: halyard-text;
+    //     padding: 0.8rem;
+    //   }
+    // `),
     // Tooltip triggered by desktop universal share.
     tooltipCustomShare: css`
       opacity: 1;

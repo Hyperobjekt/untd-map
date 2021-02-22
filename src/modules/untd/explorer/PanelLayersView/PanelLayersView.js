@@ -41,13 +41,13 @@ const PanelLayersView = ({ ...props }) => {
   }
 
   const updatePoints = e => {
-    console.log(
-      'updatePoints, ',
-      e,
-      e.currentTarget.id,
-      // pointTypes,
-      // activePointTypes,
-    )
+    // console.log(
+    //   'updatePoints, ',
+    //   e,
+    //   e.currentTarget.id,
+    //   // pointTypes,
+    //   // activePointTypes,
+    // )
     // If item is checked, if it's not in array, push it into array
     // If item is not checked, if it's in array, remove
     // If the element is an only-one element, reset other only-ones of same name.
