@@ -67,6 +67,14 @@
       margin-bottom: 0;
     }
   }
+  .indicator-item {
+    font-size: 1.2rem;
+    .indicator-title {
+    }
+    .indicator-value {
+      font-weight: 600;
+    }
+  }
   .click-school-prompt {
     color: $turtle-green;
     font-style: italic;
