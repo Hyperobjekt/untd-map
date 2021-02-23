@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { css, cx } from 'emotion'
@@ -27,6 +26,7 @@ import {
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
 import { variables } from './../theme'
+import { CpalLogo } from './../../../core/Icons'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -116,6 +116,11 @@ const Layout = ({ children, ...props }) => {
       {activeView === 'explorer' && (
         <Header>
           <Logo {...logoProps} />
+          <div
+            className={clsx('cpal-logo')}
+            role="image"
+            aria-label="CPAL logo"
+          ></div>
           <GeocodeSearch />
           <CoreButton
             id="button_toggle_menu"
