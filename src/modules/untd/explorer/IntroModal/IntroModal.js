@@ -82,6 +82,11 @@ const IntroModal = ({ children, ...props }) => {
         <h2>
           <div className="logo"></div>
           {i18n.translate('SITE_TITLE')}
+          <div
+            className={clsx('cpal-logo')}
+            role="image"
+            aria-label="CPAL logo"
+          ></div>
         </h2>
         <p>{i18n.translate('UI_MAP_INTRO_MODAL_INTRO')}</p>
         {!!enableTour && (

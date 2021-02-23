@@ -92,6 +92,17 @@
           }
         }
       }
+      h2 {
+        .cpal-logo {
+          height: 50px;
+          width: 80px;
+          display: block;
+          margin-left: 1.8rem;
+          background-image: url('./images/cpal.png');
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
     }
   }
   &.map-modal {
