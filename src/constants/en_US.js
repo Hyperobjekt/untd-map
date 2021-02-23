@@ -8,7 +8,7 @@ const en_US = {
   BUTTON_CLOSE_PANEL: `Close slideout panel`,
   BUTTON_MENU: `Menu`,
   BUTTON_SEARCH: `Select to search`,
-  INPUT_SEARCH: `Search for a Dallas ISD school`,
+  INPUT_SEARCH: `Search for an address or location...`,
   INPUT_PLACEHOLDER_SEARCH: `Search... `,
   LINK_OPEN_FILTER_PANEL: `(change)`,
   BUTTON_TOGGLE_PANEL_FILTERS: `Toggle metrics/filters panel`,

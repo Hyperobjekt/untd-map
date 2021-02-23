@@ -14,7 +14,7 @@ import { FaQuestion } from 'react-icons/fa'
 
 import useStore from './../store'
 import { CoreButton, TourIcon } from './../../../core'
-import SchoolSearch from './../SchoolSearch/SchoolSearch'
+import { GeocodeSearch } from './../GeocodeSearch'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -25,18 +25,29 @@ const IntroModal = ({ children, ...props }) => {
   // console.log('introModal')
   // Generic state updates for store.
   // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
+  // const setStoreValues = useStore(
+  //   state => state.setStoreValues,
+  // )
   // Track and update intro modal display
-  const showIntroModal = useStore(
-    state => state.showIntroModal,
-  )
+  // const showIntroModal = useStore(
+  //   state => state.showIntroModal,
+  // )
+  // Whether or not the tour is enabled.
+  // const enableTour = useStore(state => state.enableTour)
+
+  const {
+    setStoreValues,
+    showIntroModal,
+    enableTour,
+  } = useStore(state => ({
+    setStoreValues: state.setStoreValues,
+    showIntroModal: state.showIntroModal,
+    enableTour: state.enableTour,
+  }))
+
   const toggleIntroModal = () =>
     setStoreValues({ showIntroModal: !showIntroModal })
-  // Whether or not the tour is enabled.
-  const enableTour = useStore(state => state.enableTour)
-  // console.log('enableTour = ', enableTour)
+
   /**
    * Close the intro panel and start the tour
    */
@@ -92,14 +103,12 @@ const IntroModal = ({ children, ...props }) => {
             </CoreButton>
           </div>
         )}
-        {/*
         <div className="intro-modal-option">
           <p className="cta">
             {i18n.translate('UI_MAP_INTRO_MODAL_SEARCH')}
           </p>
-          <SchoolSearch />
+          <GeocodeSearch />
         </div>
-        */}
         {/*
         <div className="intro-modal-option">
           <p className="cta">
