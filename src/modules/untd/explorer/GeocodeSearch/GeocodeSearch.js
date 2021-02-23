@@ -7,103 +7,103 @@ import { FiSearch } from 'react-icons/fi'
 import { MdClose } from 'react-icons/md'
 
 import { CoreButton } from './../../../core'
-import useStore from './../store'
-// import { schools } from './../../../../data/schools'
+import useStore from '../store'
+import { DEFAULT_VIEWPORT } from './../../../../constants/map'
 
 /**
  * MenuSearch: Autosuggest search input for header.
  */
-const SchoolSearch = ({ ...props }) => {
+const GeocodeSearch = ({ ...props }) => {
   const isLoaded = useRef(false)
-  // Generic store value setter.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
-  )
-  // Active view, different actions depending on this
-  const activeView = useStore(state => state.activeView)
-  // Use active metric to find the SD value for a school.
-  const activeMetric = useStore(state => state.activeMetric)
-  // Track and update active quintiles (if selected school is filtered out)
-  const activeQuintiles = useStore(
-    state => state.activeQuintiles,
-  )
-  // Reset viewport to zoom in to school
-  const flyToSchool = useStore(state => state.flyToSchool)
-  // Track intro modal display and update.
-  const showIntroModal = useStore(
-    state => state.showIntroModal,
-  )
-  const schools = useStore(
-    state => state.remoteJson.schools,
-  )
+
+  const {
+    setStoreValues,
+    showIntroModal,
+    eventGeocodeSearch,
+    flyToLatLng,
+    flyToBounds,
+  } = useStore(state => ({
+    setStoreValues: state.setStoreValues,
+    showIntroModal: state.showIntroModal,
+    eventGeocodeSearch: state.eventGeocodeSearch,
+    flyToLatLng: state.flyToLatLng,
+    flyToBounds: state.flyToBounds,
+  }))
+
   // Tracking autosuggest suggestions
   const [suggestions, setSuggestions] = useState([])
   const [value, setValue] = useState('')
-  // Tracks school search events.
-  const eventSchoolSearch = useStore(
-    state => state.eventSchoolSearch,
-  )
+
   // Update the UI according to the context.
   const updateUIWithResult = suggestion => {
     // console.log('updateUIWithResult, ', suggestion)
-    if (activeView === 'map') {
-      // console.log('in map view, ', suggestion.suggestion)
-      const metric = activeMetric
-      const schoolSD = suggestion.suggestion[metric + '_sd']
-      if (!activeQuintiles[schoolSD]) {
-        // School's quintile is disabled, re-enable that quintile.
-        const quintiles = activeQuintiles.slice()
-        quintiles[schoolSD] = 1
-        setStoreValues({ activeQuintiles: quintiles })
-      }
-      // Run fly-to animation.
-      flyToSchool(
-        suggestion.suggestion.POINT_Y,
-        suggestion.suggestion.POINT_X,
+    // If feature has a bounding box, use the
+    // bounding box to fly, otherwise treat it
+    // like a point.
+    if (!!suggestion.suggestion.bbox) {
+      flyToBounds([
+        [
+          suggestion.suggestion.bbox[0],
+          suggestion.suggestion.bbox[1],
+        ],
+        [
+          suggestion.suggestion.bbox[2],
+          suggestion.suggestion.bbox[3],
+        ],
+      ])
+    } else {
+      // flyToFeature(suggestion.suggestion)
+      flyToLatLng(
+        suggestion.suggestion.center[1],
+        suggestion.suggestion.center[0],
       )
-      setStoreValues({
-        flyToSchoolSLN: suggestion.suggestion.SLN,
-      })
-      // If intro panel is idsplayed, hide it.
-      if (!!showIntroModal) {
-        setStoreValues({ showIntroModal: false })
-      }
-      handleClear()
     }
-    if (activeView === 'feeder') {
-      // console.log('in feeder view, ', suggestion)
-      setStoreValues({
-        activeFeeder: suggestion.suggestion.HIGH_SLN,
-        feederLocked: true,
-        highlightedSchool: suggestion.suggestion.TEA,
-      })
-      handleClear()
+    // If intro panel is dsplayed, hide it.
+    if (!!showIntroModal) {
+      setStoreValues({ showIntroModal: false })
     }
+    handleClear()
     setStoreValues({
-      eventSchoolSearch: eventSchoolSearch + 1,
+      eventGeocodeSearch: eventGeocodeSearch + 1,
     })
   }
 
   const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase()
-    const inputLength = inputValue.length
-
-    return inputLength === 0
-      ? []
-      : schools.filter(
-          el =>
-            el.SCHOOLNAME.toLowerCase().slice(
-              0,
-              inputLength,
-            ) === inputValue,
-        )
+    // console.log('getSuggestions, ', value)
+    const inputValue = encodeURIComponent(value)
+    // console.log('inputValue, ', inputValue)
+    // If not a very long string, just return empty array.
+    if (inputValue.length < 3) {
+      return setSuggestions([])
+    } else {
+      // console.log('making query')
+      // Construct query path.
+      const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?access_token=${
+        process.env.GATSBY_MAPBOX_API_TOKEN
+      }&cachebuster=${Math.floor(
+        Date.now(),
+      )}&autocomplete=true&bbox=${
+        DEFAULT_VIEWPORT.maxBounds[0][0]
+      },${DEFAULT_VIEWPORT.maxBounds[0][1]},${
+        DEFAULT_VIEWPORT.maxBounds[1][0]
+      },${DEFAULT_VIEWPORT.maxBounds[1][1]}
+      }`
+      // Get request for autosuggest results.
+      fetch(path)
+        .then(r => r.json())
+        .then(json => {
+          setSuggestions(json.features)
+        })
+    }
   }
+
   /**
    * Clear the suggestions list.
    */
   const handleClearRequested = () => {
     setSuggestions([])
   }
+
   /**
    * When item is selected, do something.
    * @param  Object e          Event
@@ -113,6 +113,7 @@ const SchoolSearch = ({ ...props }) => {
     // console.log('handleSelection, ', e, suggestion)
     updateUIWithResult(suggestion)
   }
+
   /**
    * When input value changes, reset value
    * @param  Object e        Event
@@ -122,17 +123,19 @@ const SchoolSearch = ({ ...props }) => {
     // console.log('handleChange, ', e, newValue)
     setValue(newValue)
   }
+
   const handleBlur = e => {
     // console.log('handleBlur, ', e)
   }
 
   const handleFetchRequested = ({ value }) => {
     // console.log('handleFetchRequested()')
-    setSuggestions(getSuggestions(value))
+    getSuggestions(value)
   }
 
   const getSuggestionValue = suggestion => {
-    return suggestion.SCHOOLNAME
+    // console.log('getSuggestionValue(), ', suggestion)
+    return suggestion.place_name
   }
 
   const handleClear = () => {
@@ -145,11 +148,8 @@ const SchoolSearch = ({ ...props }) => {
   const renderSuggestion = suggestion => {
     // console.log('renderSuggestion, ', suggestion)
     return (
-      <div
-        id={suggestion.TEA}
-        data-feeder={suggestion.HIGH_SLN}
-      >
-        {suggestion.SCHOOLNAME}
+      <div id={suggestion.id} key={suggestion.id}>
+        {suggestion.place_name}
       </div>
     )
   }
@@ -196,6 +196,6 @@ const SchoolSearch = ({ ...props }) => {
   )
 }
 
-SchoolSearch.propTypes = {}
+GeocodeSearch.propTypes = {}
 
-export default SchoolSearch
+export default GeocodeSearch

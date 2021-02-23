@@ -13,6 +13,58 @@ import {
   ROUTE_SET,
 } from './../../../constants/map'
 
+const getFeatureGeometryType = feature => {
+  if (!feature.geometry || !feature.geometry.type)
+    return null
+  return feature.geometry.type
+}
+
+const getViewportForFeature = (
+  feature,
+  initialViewport,
+) => {
+  const type = getFeatureGeometryType(feature)
+  if (!type) return {}
+  if (type === 'Point') {
+    console.log('type is point')
+    const [
+      longitude,
+      latitude,
+    ] = feature.geometry.coordinates
+    return {
+      latitude,
+      longitude,
+      zoom: 14,
+    }
+  }
+  const featureBbox = bbox(feature)
+  const bounds = [
+    [featureBbox[0], featureBbox[1]],
+    [featureBbox[2], featureBbox[3]],
+  ]
+  return getViewportForBounds(bounds, initialViewport)
+}
+
+const getViewportForBounds = (
+  bounds,
+  baseViewport,
+  options = {},
+) => {
+  const width = baseViewport.width
+  const height = baseViewport.height
+  const padding = options.padding || 20
+  const vp = new WebMercatorViewport({
+    width,
+    height,
+  }).fitBounds(bounds, { padding })
+  return {
+    ...baseViewport,
+    latitude: vp.latitude,
+    longitude: vp.longitude,
+    zoom: vp.zoom,
+  }
+}
+
 const [useStore] = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
   setStoreValues: obj => set({ ...obj }),
@@ -103,7 +155,26 @@ const [useStore] = create((set, get) => ({
       },
     }))
   },
-  flyToSchool: (lat, lng) => {
+  flyToFeature: feature => {
+    const viewport = {
+      ...getViewportForFeature(feature, get().viewport),
+      transitionDuration: 3000,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionEasing: ease.easeCubic,
+    }
+    set(state => ({ viewport }))
+  },
+  flyToBounds: bounds => {
+    set(state => ({
+      viewport: {
+        ...getViewportForBounds(bounds, state.viewport),
+        transitionDuration: 3000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: ease.easeCubic,
+      },
+    }))
+  },
+  flyToLatLng: (lat, lng) => {
     // console.log('fly to school, ', lat)
     const newViewport = {
       latitude: lat,
@@ -120,7 +191,6 @@ const [useStore] = create((set, get) => ({
       },
     }))
   },
-  schoolZonesAffix: `200`,
   activeLayers: ROUTE_SET.find(el => {
     return el.id === 'layers'
   }).defaultValue,
@@ -227,6 +297,7 @@ const [useStore] = create((set, get) => ({
   // are state settings based on hash and not user interactions.
   doTrackEvents: false,
   // Counters for events that don't have clear state indicators.
+  eventGeocodeSearch: 0,
   eventShareTwitter: 0,
   eventShareFacebook: 0,
   eventShareEmail: 0,

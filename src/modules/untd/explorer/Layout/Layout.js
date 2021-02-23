@@ -14,7 +14,7 @@ import {
   CoreButton,
   MenuIcon,
 } from './../../../core'
-import SchoolSearch from './../SchoolSearch/SchoolSearch'
+import { GeocodeSearch } from './../GeocodeSearch'
 import ControlPanel from './../ControlPanel/ControlPanel'
 import MapView from './../MapView/MapView'
 import SlideoutPanel from './../SlideoutPanel/SlideoutPanel'
@@ -116,6 +116,7 @@ const Layout = ({ children, ...props }) => {
       {activeView === 'explorer' && (
         <Header>
           <Logo {...logoProps} />
+          <GeocodeSearch />
           <CoreButton
             id="button_toggle_menu"
             aria-label={i18n.translate(`BUTTON_MENU`)}
