@@ -12,22 +12,22 @@ const prs = ({ ...props }) => {
       <path
         d="M18.4999 8.49999L18.4999 -1.1191e-05"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M23.9417 3.29578L24.6775 4.62028H18.5V1H24.6775L23.9417 2.3245L23.6719 2.81014L23.9417 3.29578Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M26 20H34V39H4V20H11H11.5662L11.8575 19.5145L18.5 8.44364L25.1425 19.5145L25.4338 20H26Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M16.0541 23L16.7906 20.7906L19 20.0541L21.2094 20.7906L21.9459 23L21.2094 25.2094L19 25.9459L16.7906 25.2094L16.0541 23Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="9"
@@ -35,7 +35,7 @@ const prs = ({ ...props }) => {
         width="3"
         height="3"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="26"
@@ -43,7 +43,7 @@ const prs = ({ ...props }) => {
         width="3"
         height="3"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="9"
@@ -51,7 +51,7 @@ const prs = ({ ...props }) => {
         width="3"
         height="3"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="26"
@@ -59,12 +59,12 @@ const prs = ({ ...props }) => {
         width="3"
         height="3"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M7.5 20H2L8.43545 10H17.5889M31.5 20H36L29.2269 10H19.8135"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="17"
@@ -72,7 +72,7 @@ const prs = ({ ...props }) => {
         width="4"
         height="8"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   )

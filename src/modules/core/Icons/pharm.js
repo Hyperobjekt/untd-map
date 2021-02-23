@@ -12,7 +12,7 @@ const pharm = ({ ...props }) => {
       <path
         d="M19 7H13V13H7V19H13V25H19V19H25V13H19V7Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="1"
@@ -20,7 +20,7 @@ const pharm = ({ ...props }) => {
         width="30"
         height="30"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   )

@@ -16,7 +16,7 @@ const vita = ({ ...props }) => {
       <path
         d="M1 39V10.4815L20 1.11491L39 10.4815V39H1Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   )

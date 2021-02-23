@@ -12,17 +12,17 @@ const lib = ({ ...props }) => {
       <path
         d="M35 4H39V28H1V4H5"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M4 1H16.25L20 3V27L16.25 25H12.5H4V1Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M20 3L23.75 1H27.5H36V25H27.5H23.75L20 27V3Z"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="32"
@@ -30,7 +30,7 @@ const lib = ({ ...props }) => {
         x2="24"
         y2="6"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="16"
@@ -38,7 +38,7 @@ const lib = ({ ...props }) => {
         x2="8"
         y2="6"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="32"
@@ -46,7 +46,7 @@ const lib = ({ ...props }) => {
         x2="24"
         y2="10"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="16"
@@ -54,7 +54,7 @@ const lib = ({ ...props }) => {
         x2="8"
         y2="10"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="32"
@@ -62,7 +62,7 @@ const lib = ({ ...props }) => {
         x2="24"
         y2="14"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="16"
@@ -70,7 +70,7 @@ const lib = ({ ...props }) => {
         x2="8"
         y2="14"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="16"
@@ -78,7 +78,7 @@ const lib = ({ ...props }) => {
         x2="8"
         y2="18"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <line
         x1="32"
@@ -86,7 +86,7 @@ const lib = ({ ...props }) => {
         x2="24"
         y2="18"
         stroke="black"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   )
