@@ -1,0 +1,52 @@
+.data-loader {
+  color: $color-untd-gray;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: top 1000ms ease-in-out 1500ms;
+  &.all-loaded {
+    top: -100vh;
+  }
+  .center {
+    width: 90%;
+    @include media-breakpoint-up(md) {
+      width: 60%;
+    }
+    h2 {
+      .loading-dot {
+        @keyframes opacity {
+          0% {
+            filter: opacity(0);
+            opacity: 0;
+          }
+          100% {
+            filter: opacity(100);
+            opacity: 1;
+          }
+        }
+        animation-name: opacity;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        &:nth-of-type(2) {
+          animation-delay: 200ms;
+        }
+        &:nth-of-type(3) {
+          animation-delay: 400ms;
+        }
+      }
+    }
+    .progress {
+      background-color: $color-untd-lemon;
+      .progress-bar {
+        background-color: $color-untd-darklemon;
+      }
+    }
+  }
+}

@@ -30,95 +30,19 @@ const DataLoaderContent = ({ ...props }) => {
     }),
   )
 
-  const allDataLoadedStyles = css`
-    top: -100vh;
-  `
-
-  const dataLoaderStyles = css`
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: ${variables.colors.white};
-    z-index: 5000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: top 1000ms ease-in-out 1500ms;
-  `
-  const dataLoaderContentStyles = css`
-    width: 90%;
-    @media (min-width: ${variables.breakpoints[2]}px) {
-      width: 60%;
-    }
-  `
-  const dataLoaderDotStyles = css`
-    @keyframes opacity {
-      0% {
-        filter: opacity(0);
-        opacity: 0;
-      }
-      100% {
-        filter: opacity(100);
-        opacity: 1;
-      }
-    }
-    animation-name: opacity;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-  `
-
   return (
     <div
       className={clsx(
         'data-loader',
-        cx(
-          dataLoaderStyles,
-          !!allDataLoaded ? allDataLoadedStyles : '',
-        ),
+        !!allDataLoaded ? 'all-loaded' : '',
       )}
     >
-      <div
-        className="center"
-        className={clsx(cx(dataLoaderContentStyles))}
-      >
+      <div className="center">
         <h2>
           {i18n.translate(`LOADING_DATA`)}
-          <span
-            className={clsx(
-              'loading-dot',
-              cx(dataLoaderDotStyles),
-            )}
-          >
-            .
-          </span>
-          <span
-            className={clsx(
-              'loading-dot',
-              cx(
-                dataLoaderDotStyles,
-                css`
-                  animation-delay: 200ms;
-                `,
-              ),
-            )}
-          >
-            .
-          </span>
-          <span
-            className={clsx(
-              'loading-dot',
-              cx(
-                dataLoaderDotStyles,
-                css`
-                  animation-delay: 400ms;
-                `,
-              ),
-            )}
-          >
-            .
-          </span>
+          <span className={clsx('loading-dot')}>.</span>
+          <span className={clsx('loading-dot')}>.</span>
+          <span className={clsx('loading-dot')}>.</span>
         </h2>
         <Progress value={dataLoadedPercent} />
       </div>
@@ -127,7 +51,6 @@ const DataLoaderContent = ({ ...props }) => {
 }
 
 const DataLoader = ({ ...props }) => {
-  // console.log("Hey, it's the DataLoader!!!!!!")
   const {
     setStoreValues,
     setRemoteJson,
