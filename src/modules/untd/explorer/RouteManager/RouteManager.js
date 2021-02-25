@@ -263,11 +263,7 @@ const RouteManager = props => {
         '#/' + debouncedRoute,
       )
       setStoreValues({
-        shareHash:
-          window.location.origin +
-          window.location.pathname +
-          '#/' +
-          debouncedRoute,
+        shareHash: '#/' + debouncedRoute,
       })
     }
   }, [debouncedRoute])
@@ -275,7 +271,8 @@ const RouteManager = props => {
   useEffect(() => {
     async function loadRoute() {
       // console.log('loadRoute()')
-      if (!allDataLoaded === true) {
+      if (allDataLoaded !== true) {
+        // console.log('Data not yet loaded.')
         return
       }
       isLoaded.current = true
@@ -291,6 +288,7 @@ const RouteManager = props => {
         isRouteValid(params, indicators)
       ) {
         // Update state based on params
+        // console.log('setting state from hash params')
         setStateFromHash(params)
       } else if (!!localStorageHash) {
         if (localStorageHash.length > 0) {
@@ -298,6 +296,7 @@ const RouteManager = props => {
             localStorageHash,
           )
           if (isRouteValid(lsparams, indicators)) {
+            // console.log('setting state from local storage')
             setStateFromHash(lsparams)
           }
         }
