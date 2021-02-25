@@ -110,7 +110,7 @@ export const ROUTE_SET = [
     id: 'metric',
     options: [],
     validate: 'contains_only',
-    defaultValue: 'giniE_18_sd',
+    defaultValue: 'giniE_19_sd', // 'giniE_18_sd',
   },
   {
     id: 'quintiles',
@@ -152,4 +152,4 @@ export const ROUTE_SET = [
 ]
 
 // '/explorer/tot_popE_18_sd/1,1,1,1,1/0,0,1,0//32.912/-96.866/8/'
-export const DEFAULT_ROUTE = `/${ROUTE_SET[0].defaultValue}/${ROUTE_SET[1].defaultValue}/${ROUTE_SET[2].defaultValue}/${ROUTE_SET[3].defaultValue}/${ROUTE_SET[4].defaultValue}/${ROUTE_SET[5].defaultValue}/${ROUTE_SET[6].defaultValue}/${ROUTE_SET[7].defaultValue}/`
+export const DEFAULT_ROUTE = `#/${ROUTE_SET[0].defaultValue}/${ROUTE_SET[1].defaultValue}/${ROUTE_SET[2].defaultValue}/${ROUTE_SET[3].defaultValue}/${ROUTE_SET[4].defaultValue}/${ROUTE_SET[5].defaultValue}/${ROUTE_SET[6].defaultValue}/${ROUTE_SET[7].defaultValue}/`
