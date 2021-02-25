@@ -34,7 +34,6 @@ const ShareLinkModal = props => {
   const eventShareLink = useStore(
     state => state.eventShareLink,
   )
-  console.log('ShareLinkModal(), ', shareHash)
 
   const onCopy = () => {
     // console.log('oncopy')

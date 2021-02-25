@@ -41,7 +41,7 @@ export const POINT_TYPES_COLORS = [
 export const CRI_COLORS = [
   '#465EB3',
   '#80A2D3',
-  '#9CDCE6', // '#C1EFF6',
+  '#BEE8EF', // '#9CDCE6', // '#C1EFF6',
   '#85D4B6',
   '#51BC7E',
 ]
