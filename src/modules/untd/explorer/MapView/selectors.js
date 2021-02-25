@@ -292,7 +292,7 @@ export const getPolygonLines = (type, context) => {
       // 'line-color': polygonColors.find(
       //   el => el.type === type,
       // ).color,
-      'line-width': 2,
+      'line-width': 0.5,
     },
     filter: getFilter(
       type,
@@ -336,8 +336,8 @@ export const getPolygonShapes = (type, context) => {
       'fill-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
+        0.2,
         0.4,
-        0.6,
       ],
     },
     filter: getFilter(
