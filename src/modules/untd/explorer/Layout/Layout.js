@@ -40,19 +40,21 @@ const Layout = ({ children, ...props }) => {
     activeView,
     handleToggleMenu,
     breakpoint,
+    logoSrc,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
       activeView: state.activeView,
       handleToggleMenu: state.handleToggleMenu,
       breakpoint: state.breakpoint,
+      logoSrc: state.logoSrc,
     }),
     shallow,
   )
   // Basic props for logo component.
   const logoProps = {
+    siteName: i18n.translate(`SITE_TITLE`),
     siteHref: useStore(state => state.siteHref),
-    logoSrc: useStore(state => state.logoSrc),
   }
 
   // Handle clicks to any control panel button.
@@ -101,15 +103,22 @@ const Layout = ({ children, ...props }) => {
       <Tracking />
       {activeView === 'explorer' && (
         <Header>
-          <Logo {...logoProps} />
-          <div
-            className={clsx('cpal-logo')}
-            role="image"
-            aria-label="CPAL logo"
-          ></div>
-          <span className="logo-sitename">
-            {i18n.translate(`SITE_TITLE`)}
-          </span>
+          <Logo {...logoProps}>
+            <div
+              className={clsx('cpal-logo')}
+              role="image"
+            ></div>
+            <div
+              className="logo"
+              dangerouslySetInnerHTML={{
+                __html: logoSrc,
+              }}
+              role="img"
+              aria-label={`${i18n.translate(
+                `SITE_TITLE`,
+              )} logo`}
+            ></div>
+          </Logo>
           <GeocodeSearch />
           <CoreButton
             id="button_toggle_menu"

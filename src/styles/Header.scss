@@ -22,60 +22,55 @@
   border-bottom: 1px solid #ccc;
   transition: height 0.4s ease-in-out;
   h1 {
-    // margin-left: 16px;
-    // width: 0;
-    // @include media-breakpoint-up(md) {
     width: auto;
-    // }
+    display: flex;
+    align-items: center;
     a {
-      // display: none;
-      // @include media-breakpoint-up(md) {
-      display: flex;
-      // }
+      // display: flex;
       text-decoration: none !important;
-      .logo {
-        width: 85px;
-        height: 21px;
-        background-image: url('./images/menu-logo.svg');
-        background-repeat: no-repeat;
-        background-size: 85px 21px;
-        margin-right: 4px;
+      .logo-sitename {
+        @include font-knockout-jr-lightweight;
+        width: 80px;
+        display: flex;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        color: $color-untd-gray;
+        align-self: center;
+        font-size: 1.4rem;
+        line-height: 1.6rem;
+        padding-top: 3px;
+        @include media-breakpoint-up(md) {
+          font-style: normal;
+          font-size: 1.6rem;
+          font-weight: 300;
+          line-height: 15px;
+          color: #292d33;
+          mix-blend-mode: normal;
+          color: #484e56;
+          font-weight: 400;
+          letter-spacing: 0.01rem;
+        }
       }
     }
-  }
-  .cpal-logo {
-    height: 100%;
-    width: auto;
-    display: block;
-    margin-left: 0.5rem;
-    margin-right: 1.1rem;
-    width: 50px;
-    background-image: url('./images/cpal.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-  .logo-sitename {
-    @include font-knockout-jr-lightweight;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    color: $logo-text-color;
-    align-self: center;
-    // margin-left: 6px;
-    width: 70px;
-    font-size: 1.4rem;
-    line-height: 1.6rem;
-    padding-top: 3px;
-    @include media-breakpoint-up(md) {
-      width: auto;
-      font-style: normal;
-      font-size: 1.6rem;
-      font-weight: 300;
-      line-height: 15px;
-      color: #292d33;
-      mix-blend-mode: normal;
-      color: #484e56;
-      font-weight: 400;
-      letter-spacing: 0.01rem;
+    .cpal-logo {
+      height: 32px;
+      width: 40px;
+      display: block;
+      margin-left: 1rem;
+      margin-right: 0.5rem;
+      background-image: url('./images/cpal-logo-light.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      color: $color-untd-gray;
+    }
+    .logo {
+      width: 85px;
+      height: 21px;
+      background-image: url('./images/untd-logo-light.svg');
+      background-repeat: no-repeat;
+      background-size: 85px 21px;
+      margin-right: 4px;
+      color: $color-untd-gray;
     }
   }
   .menu-icon-group {
