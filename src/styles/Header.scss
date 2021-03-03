@@ -26,22 +26,22 @@
     display: flex;
     align-items: center;
     a {
-      // display: flex;
       text-decoration: none !important;
       .logo-sitename {
         @include font-knockout-jr-lightweight;
         width: 80px;
-        display: flex;
+        display: none;
         text-transform: uppercase;
         letter-spacing: -1px;
         color: $color-untd-gray;
         align-self: center;
         font-size: 1.4rem;
         line-height: 1.6rem;
-        padding-top: 3px;
         @include media-breakpoint-up(md) {
+          display: flex;
           font-style: normal;
-          font-size: 1.6rem;
+          font-size: 1.8rem;
+          width: 90px;
           font-weight: 300;
           line-height: 15px;
           color: #292d33;
@@ -53,9 +53,13 @@
       }
     }
     .cpal-logo {
+      display: none;
+      @include media-breakpoint-up(md) {
+        display: block;
+      }
       height: 32px;
       width: 40px;
-      display: block;
+
       margin-left: 1rem;
       margin-right: 0.5rem;
       background-image: url('./images/cpal-logo-light.svg');
@@ -64,6 +68,10 @@
       color: $color-untd-gray;
     }
     .logo {
+      display: none;
+      @include media-breakpoint-up(md) {
+        display: block;
+      }
       width: 85px;
       height: 21px;
       background-image: url('./images/untd-logo-light.svg');
