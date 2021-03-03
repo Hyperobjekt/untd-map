@@ -1,27 +1,23 @@
 .overlays {
   .map__zoom {
-    // .mapboxgl-ctrl-group {
-    //   box-shadow: 1px 1px 3px #ccc;
-    // }
-    // .btn {
-    //   background-color: #fff;
-    //   box-shadow: 1px 1px 3px #ccc;
-    //   border-radius: 0;
-    //   height: 30px;
-    //   width: 30px;
-    //   .icon {
-    //   }
-    // margin-bottom: 0.5rem;
-    // }
-    .map-reset-btn {
-      svg {
-        margin-left: -2px;
+    .map-btn-group {
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      width: 29px;
+      .map-reset-btn {
+        svg {
+          margin-left: -2px;
+        }
+      }
+      .map-capture-btn {
+        svg {
+          margin-left: -2px;
+        }
       }
     }
-    .map-capture-btn {
-      svg {
-        margin-left: -2px;
-      }
+    .mapboxgl-ctrl.mapboxgl-ctrl-group {
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
     }
     // Explorer mapbox css overrides
     // .mapboxgl-ctrl

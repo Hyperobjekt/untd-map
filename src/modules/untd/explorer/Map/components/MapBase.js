@@ -571,10 +571,12 @@ const MapBase = ({
                 onViewportChange={setViewport}
                 captureClick={true}
               ></NavigationControl>
-              <MapResetButton
-                resetViewport={handleResetViewport}
-              />
-              <MapCaptureButton currentMap={currentMap} />
+              <div className="map-btn-group">
+                <MapResetButton
+                  resetViewport={handleResetViewport}
+                />
+                <MapCaptureButton currentMap={currentMap} />
+              </div>
             </>
           )}
         </div>

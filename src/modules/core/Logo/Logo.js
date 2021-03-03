@@ -18,14 +18,17 @@ const Logo = ({ ...props }) => {
             dangerouslySetInnerHTML={{
               __html: props.logoSrc,
             }}
+            role="img"
+            aria-label={props.ariaLabel}
           ></div>
         ) : (
           <div className="logo"></div>
         )}
-
-        <span className="logo-sitename">
-          {props.siteName}
-        </span>
+        {!!props.siteName && (
+          <span className="logo-sitename">
+            {props.siteName}
+          </span>
+        )}
       </a>
     </h1>
   )
@@ -41,7 +44,7 @@ Logo.propTypes = {
 }
 
 Logo.defaultProps = {
-  siteName: `Site Name`,
+  // siteName: `Site Name`,
   homeHref: `/`,
   logoSrc: `<svg width="150" height="50">
             <rect width="150" height="50" style="fill:#545b62;stroke-width:3;stroke:#545b62" />

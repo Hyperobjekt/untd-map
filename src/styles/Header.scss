@@ -41,41 +41,42 @@
         background-size: 85px 21px;
         margin-right: 4px;
       }
-      .logo-sitename {
-        @include font-knockout-jr-lightweight;
-        text-transform: uppercase;
-        letter-spacing: -1px;
-        color: $logo-text-color;
-        align-self: center;
-        margin-left: 6px;
-        width: 70px;
-        font-size: 1.4rem;
-        line-height: 1.6rem;
-        padding-top: 3px;
-        @include media-breakpoint-up(md) {
-          width: auto;
-          font-style: normal;
-          font-size: 1.6rem;
-          font-weight: 300;
-          line-height: 15px;
-          color: #292d33;
-          mix-blend-mode: normal;
-          color: #484e56;
-          font-weight: 400;
-          letter-spacing: 0.01rem;
-        }
-      }
     }
   }
   .cpal-logo {
     height: 100%;
     width: auto;
     display: block;
-    margin-left: 1.8rem;
-    width: 100px;
+    margin-left: 0.5rem;
+    margin-right: 1.1rem;
+    width: 50px;
     background-image: url('./images/cpal.png');
     background-size: contain;
     background-repeat: no-repeat;
+  }
+  .logo-sitename {
+    @include font-knockout-jr-lightweight;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: $logo-text-color;
+    align-self: center;
+    // margin-left: 6px;
+    width: 70px;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    padding-top: 3px;
+    @include media-breakpoint-up(md) {
+      width: auto;
+      font-style: normal;
+      font-size: 1.6rem;
+      font-weight: 300;
+      line-height: 15px;
+      color: #292d33;
+      mix-blend-mode: normal;
+      color: #484e56;
+      font-weight: 400;
+      letter-spacing: 0.01rem;
+    }
   }
   .menu-icon-group {
     svg {
