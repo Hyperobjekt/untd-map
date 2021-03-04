@@ -228,7 +228,7 @@ const [useStore] = create((set, get) => ({
   schoolHint: null,
   showIntroModal: false,
   showPanelModal: false,
-  enableTour: false, // Set this true to show the launch tour button in intro modal.
+  enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
   hoveredID: null,
@@ -277,6 +277,7 @@ const [useStore] = create((set, get) => ({
   tourStepIndex: 0,
   // Set up for tour to run.
   setUpTour: () => {
+    // console.log('setUpTour()')
     set(state => ({
       // Return view to map.
       activeView: 'explorer',

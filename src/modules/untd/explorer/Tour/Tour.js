@@ -96,7 +96,7 @@ const Tour = ({ ...props }) => {
   }
 
   const handleTourUpdate = data => {
-    // console.log('handleTourUpdate, ', data)
+    console.log('handleTourUpdate, ', data)
     const steps = getSteps()
     // console.log('steps = ', steps)
     const { action, index, status, type } = data

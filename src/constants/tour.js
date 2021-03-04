@@ -1,17 +1,5 @@
 export const DESKTOP_STEPS = [
   {
-    target: '.button-view-map',
-    text: 'TOUR_DESK_STEP_0',
-    placement: 'right',
-    disableBeacon: true,
-  },
-  {
-    target: '.button-view-feeder',
-    text: 'TOUR_DESK_STEP_1',
-    placement: 'right',
-    disableBeacon: true,
-  },
-  {
     target: '.mapboxgl-map',
     text: 'TOUR_DESK_STEP_2',
     placement: 'auto',
