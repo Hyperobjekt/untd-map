@@ -161,3 +161,12 @@ export const DEFAULT_POPUP = {
   height: 480,
   padding: 70,
 }
+
+// Add items that should block click or tooltip on hover here.
+export const MAP_CONTROLS_CLASSES = [
+  'mapboxgl-ctrl-group',
+  'map-legend',
+  'map-btn-group',
+  '.mapboxgl-popup',
+  '.mapboxgl-popup-content',
+]

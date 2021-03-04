@@ -267,6 +267,8 @@ const [useStore] = create((set, get) => ({
   mouseLatLng: [],
   // Keep track of map size [width, height]
   mapSize: [0, 0],
+  // Is a map control currently hovered? boolean.
+  isControlHovered: false,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   showMobileLegend: false,

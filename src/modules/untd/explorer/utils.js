@@ -4,8 +4,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
 import useStore from './store.js'
-import { BOUNDS } from './../../../constants/map'
-import { UNTD_LAYERS } from './../../../constants/layers'
+import { MAP_CONTROLS_CLASSES } from './../../../constants/map'
 import { DATA_FILES } from './../../../constants/map'
 
 export const getActiveLayerIndex = layers => {
@@ -623,4 +622,89 @@ export const useDebounce = (value, delay) => {
   )
 
   return debouncedValue
+}
+
+// https://gomakethings.com/how-to-get-the-closest-parent-element-with-a-matching-selector-using-vanilla-javascript/
+export const getClosest = (elem, selector) => {
+  // Element.matches() polyfill
+  if (!Element.prototype.matches) {
+    Element.prototype.matches =
+      Element.prototype.matchesSelector ||
+      Element.prototype.mozMatchesSelector ||
+      Element.prototype.msMatchesSelector ||
+      Element.prototype.oMatchesSelector ||
+      Element.prototype.webkitMatchesSelector ||
+      function (s) {
+        var matches = (
+            this.document || this.ownerDocument
+          ).querySelectorAll(s),
+          i = matches.length
+        while (--i >= 0 && matches.item(i) !== this) {}
+        return i > -1
+      }
+  }
+
+  // Get the closest matching element
+  for (
+    ;
+    elem && elem !== document;
+    elem = elem.parentNode
+  ) {
+    if (elem.matches(selector)) return elem
+  }
+  return null
+}
+
+// Get all parents of an element.
+// https://gomakethings.com/how-to-get-all-parent-elements-with-vanilla-javascript/
+export const getParents = function (elem) {
+  // Set up a parent array
+  var parents = []
+
+  // Push each parent element to the array
+  for (
+    ;
+    elem && elem !== document;
+    elem = elem.parentNode
+  ) {
+    parents.push(elem)
+  }
+
+  // Return our parent array
+  return parents
+}
+
+/**
+ * Check whether or not a control is hovered,
+ * based on an array of class selectors.
+ */
+export const checkControlHovered = () => {
+  // console.log('checkControlHovered()')
+  const hoveredElements = document.querySelectorAll(
+    ':hover',
+  )
+  const parents = []
+  hoveredElements.forEach(el => {
+    parents.push(getParents(el))
+  })
+  const parentsList = Object.values(parents)
+  const nodeList = Object.values(hoveredElements)
+  const isControl =
+    nodeList.some(node => {
+      // console.log('node, ', node, node.classList)
+      return MAP_CONTROLS_CLASSES.some(item =>
+        node.classList.contains(item),
+      )
+    }) ||
+    parentsList.some(node => {
+      // console.log('node, ', node, node.classList)
+      return MAP_CONTROLS_CLASSES.some(
+        item =>
+          node &&
+          node.classlist &&
+          node.classList.contains(item),
+      )
+    })
+  // console.log('isControl, ', isControl)
+  return isControl
 }

@@ -1,9 +1,6 @@
 // Gets closest parent of element with selector
 import WebMercatorViewport from 'viewport-mercator-project'
 
-// import { STATES } from '../../shared/constants/states'
-// import { getStateFipsFromAbbr } from '../../shared/utils/states'
-
 // https://gomakethings.com/how-to-get-the-closest-parent-element-with-a-matching-selector-using-vanilla-javascript/
 export const getClosest = (elem, selector) => {
   // Element.matches() polyfill

@@ -16,7 +16,10 @@ import shallow from 'zustand/shallow'
 
 import { defaultMapStyle } from '../selectors'
 import { getClosest } from '../utils'
-import { usePrevious } from './../../utils'
+import {
+  usePrevious,
+  checkControlHovered,
+} from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
 import MapLegend from './MapLegend'
@@ -396,6 +399,7 @@ const MapBase = ({
     setStoreValues({
       mouseXY: e.point,
       mouseLatLng: e.lngLat,
+      isControlHovered: checkControlHovered(),
     })
   }
 
@@ -405,9 +409,6 @@ const MapBase = ({
       mapSize: size,
     })
   }
-
-  // TODO: Add images for icons for layer.
-  // https://github.com/visgl/react-map-gl/issues/1118#issuecomment-667809962
 
   return (
     <div

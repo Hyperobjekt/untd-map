@@ -60,6 +60,7 @@ function usePopupState() {
     hoveredID,
     mouseLatLng,
     hoveredFeature,
+    isControlHovered,
   } = useStore(
     state => ({
       breakpoint: state.breakpoint,
@@ -69,6 +70,7 @@ function usePopupState() {
       hoveredID: state.hoveredID,
       mouseLatLng: state.mouseLatLng,
       hoveredFeature: state.hoveredFeature,
+      isControlHovered: state.isControlHovered,
     }),
     shallow,
   )
@@ -82,6 +84,8 @@ function usePopupState() {
     // We have mouseXY for the mouse
     !!mouseXY[0] &&
     !!mouseXY[1] &&
+    // Control is not hovered
+    !isControlHovered &&
     // We are not in mobile view or interactions mode
     !(
       breakpoint === 'xs' ||
