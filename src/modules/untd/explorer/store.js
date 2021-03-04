@@ -228,7 +228,7 @@ const [useStore] = create((set, get) => ({
   schoolHint: null,
   showIntroModal: false,
   showPanelModal: false,
-  enableTour: false, // Set this true to show the launch tour button in intro modal.
+  enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
   hoveredID: null,
@@ -236,7 +236,7 @@ const [useStore] = create((set, get) => ({
   type: null,
   // Hovered feature object.
   hoveredFeature: null,
-  // x, y coords of hovered object.
+  // geo coords of hovered object.
   coords: [0, 0],
   setCoords: coords => set({ coords }),
   // Sets the various state items related to school hover.
@@ -261,6 +261,14 @@ const [useStore] = create((set, get) => ({
       hoveredFeature: feature,
     }))
   },
+  // Mouse position as an array [x,y]
+  mouseXY: [0, 0],
+  // Mouse position as latlng
+  mouseLatLng: [],
+  // Keep track of map size [width, height]
+  mapSize: [0, 0],
+  // Is a map control currently hovered? boolean.
+  isControlHovered: false,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   showMobileLegend: false,
@@ -269,6 +277,7 @@ const [useStore] = create((set, get) => ({
   tourStepIndex: 0,
   // Set up for tour to run.
   setUpTour: () => {
+    // console.log('setUpTour()')
     set(state => ({
       // Return view to map.
       activeView: 'explorer',

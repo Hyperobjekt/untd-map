@@ -3,7 +3,7 @@
   @include font-gotham-book;
   padding: 24px;
   margin: 0 !important;
-  width: 252px;
+  width: 282px;
 
   .n-i-scale {
     margin-top: 6px;
@@ -95,7 +95,7 @@
   // Set z-index to make tooltip overlay any other controls.
   z-index: 5000 !important;
   border-radius: 4px;
-  box-shadow: 3px 3px 5px #ccc;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   // Reset padding and margins.
   padding: 0 !important;
   margin: 0 !important;

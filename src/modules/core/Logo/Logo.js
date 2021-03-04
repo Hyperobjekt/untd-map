@@ -7,26 +7,28 @@ import PropTypes from 'prop-types'
  * @param String homeHref Site root href, defaults to '/'
  * @param String logoSrc  SVG string for logo
  */
-const Logo = ({ ...props }) => {
+const Logo = ({ children, ...props }) => {
   // console.log('Logo')
   return (
     <h1>
       <a href={props.siteHref}>
-        {!!props.logoSrc ? (
+        {!!props.siteName && (
+          <span className="logo-sitename">
+            {props.siteName}
+          </span>
+        )}
+        {!!props.logoSrc && (
           <div
             className="logo"
             dangerouslySetInnerHTML={{
               __html: props.logoSrc,
             }}
+            role="img"
+            aria-label={props.ariaLabel}
           ></div>
-        ) : (
-          <div className="logo"></div>
         )}
-
-        <span className="logo-sitename">
-          {props.siteName}
-        </span>
       </a>
+      {children}
     </h1>
   )
 }
@@ -41,11 +43,7 @@ Logo.propTypes = {
 }
 
 Logo.defaultProps = {
-  siteName: `Site Name`,
-  homeHref: `/`,
-  logoSrc: `<svg width="150" height="50">
-            <rect width="150" height="50" style="fill:#545b62;stroke-width:3;stroke:#545b62" />
-          </svg>`,
+  siteHref: `/`,
 }
 
 export default Logo

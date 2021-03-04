@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { FiInfo } from 'react-icons/fi'
-import { RiMapPinLine } from 'react-icons/ri'
-// import { AiOutlineControl } from 'react-icons/ai'
-import { css, cx } from 'emotion'
+import shallow from 'zustand/shallow'
 
 import { theme } from './../theme'
 import useStore from './../store'
@@ -28,25 +25,49 @@ import { TourButton } from './../Tour'
 const ControlPanel = ({ children }) => {
   // Generic state updates for store.
   // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    activeView,
+    slideoutPanel,
+    breakpoint,
+    browserWidth,
+    showIntroModal,
+    enableTour,
+    incrementLaunchTour,
+    setUpTour,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      activeView: state.activeView,
+      slideoutPanel: state.slideoutPanel,
+      breakpoint: state.breakpoint,
+      browserWidth: state.browserWidth,
+      showIntroModal: state.showIntroModal,
+      enableTour: state.enableTour,
+      incrementLaunchTour: state.incrementLaunchTour,
+      setUpTour: state.setUpTour,
+    }),
+    shallow,
   )
+  // const setStoreValues = useStore(
+  //   state => state.setStoreValues,
+  // )
   // Active view, explorer or embed
-  const activeView = useStore(state => state.activeView)
+  // const activeView = useStore(state => state.activeView)
   // Slideout panel
-  const slideoutPanel = useStore(
-    state => state.slideoutPanel,
-  )
-  const breakpoint = useStore(state => state.breakpoint)
-  const browserWidth = useStore(state => state.browserWidth)
-  const showIntroModal = useStore(
-    state => state.showIntroModal,
-  )
+  // const slideoutPanel = useStore(
+  //   state => state.slideoutPanel,
+  // )
+  // const breakpoint = useStore(state => state.breakpoint)
+  // // const browserWidth = useStore(state => state.browserWidth)
+  // const showIntroModal = useStore(
+  //   state => state.showIntroModal,
+  // )
   // Modal for small devices
-  const showPanelModal = useStore(
-    state => state.showPanelModal,
-  )
-  const enableTour = useStore(state => state.enableTour)
+  // const showPanelModal = useStore(
+  //   state => state.showPanelModal,
+  // )
+  // const enableTour = useStore(state => state.enableTour)
 
   const toggleIntroModal = () =>
     setStoreValues({
@@ -57,6 +78,15 @@ const ControlPanel = ({ children }) => {
   const handleClick = e => {
     e.preventDefault()
     // console.log('Button clicked, ', e.currentTarget.id)
+  }
+
+  /**
+   * Close the intro panel and start the tour
+   */
+  const handleStartTour = () => {
+    // console.log('handleStartTour()')
+    incrementLaunchTour()
+    setUpTour()
   }
 
   /**
@@ -261,7 +291,7 @@ const ControlPanel = ({ children }) => {
         <TourButton
           className="d-none d-lg-block"
           tooltip={true}
-          disabled="disabled"
+          onClick={handleStartTour}
         />
       )}
       <Divider />

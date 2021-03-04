@@ -6,36 +6,28 @@ import React, {
   useCallback,
 } from 'react'
 import useResizeAware from 'react-resize-aware'
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-import ReactMapGL, {
-  NavigationControl,
-  Popup,
-} from 'react-map-gl'
-import destination from '@turf/destination'
-import centerOfMass from '@turf/center-of-mass'
+import ReactMapGL, { NavigationControl } from 'react-map-gl'
 import { fromJS } from 'immutable'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import { css, cx } from 'emotion'
+import shallow from 'zustand/shallow'
 
 import { defaultMapStyle } from '../selectors'
 import { getClosest } from '../utils'
-import { usePrevious, isFeaturePoint } from './../../utils'
-import { useMapViewport, useFlyToReset } from '../store'
-import useMapStore from '../store'
-import PopupContent from './PopupContent'
-// import MapLayerToggle from './MapLayerToggle'
+import {
+  usePrevious,
+  checkControlHovered,
+} from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
 import MapLegend from './MapLegend'
+import MapPopup from './MapPopup'
 import LegendToggleBtn from './LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
 import AddMapImages from './AddMapImages'
-import {
-  BOUNDS,
-  DEFAULT_VIEWPORT,
-} from './../../../../../constants/map'
+import { BOUNDS } from './../../../../../constants/map'
 import useStore from './../../store'
 import { variables } from './../../theme'
 import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
@@ -110,28 +102,17 @@ const MapBase = ({
     viewport,
     setViewport,
     flyToReset,
-    activeMetric,
-    activeQuintiles,
-    activeLayers,
     activeView,
-    breakpoint,
-    setResetViewport,
-    flyToSchoolSLN,
-    interactionsMobile,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    viewport: state.viewport,
-    setViewport: state.setViewport,
-    flyToReset: state.flyToReset,
-    activeMetric: state.activeMetric,
-    activeQuintiles: state.activeQuintiles,
-    activeLayers: state.activeLayers,
-    activeView: state.activeView,
-    breakpoint: state.breakpoint,
-    setResetViewport: state.setResetViewport,
-    flyToSchoolSLN: state.flyToSchoolSLN,
-    interactionsMobile: state.interactionsMobile,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      viewport: state.viewport,
+      setViewport: state.setViewport,
+      flyToReset: state.flyToReset,
+      activeView: state.activeView,
+    }),
+    shallow,
+  )
 
   // reference to map container DOM element
   const mapEl = useRef(null)
@@ -285,15 +266,6 @@ const MapBase = ({
     [setViewport, loaded],
   )
 
-  const [mouseCoords, setMouseCoords] = useState([
-    null,
-    null,
-  ])
-  const [mouseLngLat, setMouseLngLat] = useState([
-    null,
-    null,
-  ])
-
   // handler for feature hover
   const handleHover = ({
     features,
@@ -308,22 +280,24 @@ const MapBase = ({
     //   lngLat,
     //   srcEvent,
     // )
-    setMouseCoords(point)
-    setMouseLngLat(lngLat)
+    // const type =
+    //   features && features.length > 0
+    //     ? features[0].layer.source
+    //     : null
     const newHoveredFeature =
       features && features.length > 0 ? features[0] : null
-    const coords =
-      srcEvent && srcEvent.pageX && srcEvent.pageY
-        ? [
-            Math.round(srcEvent.pageX),
-            Math.round(srcEvent.pageY),
-          ]
-        : null
-    const geoCoordinates =
-      newHoveredFeature && newHoveredFeature.geometry
-        ? newHoveredFeature.geometry.coordinates
-        : null
-    onHover(newHoveredFeature, coords, geoCoordinates)
+    // const coords = lngLat
+    // // srcEvent && srcEvent.pageX && srcEvent.pageY
+    // //   ? [
+    // //       Math.round(srcEvent.pageX),
+    // //       Math.round(srcEvent.pageY),
+    // //     ]
+    // //   : null
+    // const geoCoordinates =
+    //   newHoveredFeature && newHoveredFeature.geometry
+    //     ? newHoveredFeature.geometry.coordinates
+    //     : null
+    onHover(newHoveredFeature, point, lngLat)
   }
 
   // handler for feature click
@@ -392,38 +366,6 @@ const MapBase = ({
     // eslint-disable-next-line
   }, [hoveredId, loaded]) // update only when hovered id changes
 
-  const schoolHint = useStore(state => state.schoolHint)
-  const handleFlyToSchool = () => {
-    // console.log('handleFlyToSchool')
-    if (!!flyToSchoolSLN) {
-      const feature = currentMap.querySourceFeatures(
-        'schools',
-        {
-          filter: ['in', 'SLN', flyToSchoolSLN],
-        },
-      )[0]
-      // console.log(feature)
-
-      if (!!feature) {
-        const hint = {}
-        hint.coords = feature.geometry.coordinates
-        // console.log('hint = ', hint)
-        setTimeout(() => {
-          // console.log('calling onHover')
-          setStoreValues({ schoolHint: hint })
-          setTimeout(() => {
-            setStoreValues({ schoolHint: null })
-          }, 4000)
-        }, 2000)
-      }
-    }
-  }
-
-  useEffect(() => {
-    // console.log('fly to school changed')
-    handleFlyToSchool()
-  }, [flyToSchoolSLN])
-
   /** handler for resetting the viewport */
   const handleResetViewport = e => {
     e.preventDefault()
@@ -448,12 +390,25 @@ const MapBase = ({
   }
 
   const handlePopupClick = e => {
-    console.log('popup clicked, ', e.currentTarget)
+    // console.log('popup clicked, ', e.currentTarget)
     e.preventDefault()
   }
 
-  // TODO: Add images for icons for layer.
-  // https://github.com/visgl/react-map-gl/issues/1118#issuecomment-667809962
+  const handleMouseMove = e => {
+    // console.log('handleMouseMove(), ', e)
+    setStoreValues({
+      mouseXY: e.point,
+      mouseLatLng: e.lngLat,
+      isControlHovered: checkControlHovered(),
+    })
+  }
+
+  const handleResize = size => {
+    // console.log('handleResize(), ', size)
+    setStoreValues({
+      mapSize: size,
+    })
+  }
 
   return (
     <div
@@ -489,69 +444,14 @@ const MapBase = ({
         getCursor={getCursor}
         onClick={handleClick}
         onLoad={handleLoad}
+        onResize={handleResize}
+        onMouseMove={handleMouseMove}
         mapboxApiAccessToken={TOKEN}
         {...viewport}
         {...rest}
       >
         <AddMapImages loaded={loaded} map={currentMap} />
-        {!!hoveredId &&
-          !!mouseLngLat &&
-          !(
-            breakpoint === 'xs' ||
-            breakpoint === 'sm' ||
-            breakpoint === 'md' ||
-            interactionsMobile
-          ) && (
-            <Popup
-              className={clsx('school-details-tip')}
-              latitude={mouseLngLat[1]}
-              longitude={mouseLngLat[0]}
-              anchor={`top`}
-              offsetTop={20}
-              onClick={handlePopupClick}
-              closeButton={false}
-              closeOnClick={false}
-              onClose={() =>
-                this.setState({ showPopup: false })
-              }
-              tipSize={0}
-              dynamicPosition={true}
-              captureClick={true}
-              captureDrag={true}
-              captureDoubleClick={true}
-              captureScroll={true}
-            >
-              <PopupContent feature={hoveredFeature} />
-            </Popup>
-          )}
-        {!!schoolHint && (
-          <Popup
-            className={clsx('school-interact-hint')}
-            latitude={schoolHint.coords[1]}
-            longitude={schoolHint.coords[0]}
-            closeButton={false}
-            closeOnClick={true}
-            onClose={() =>
-              this.setState({ showPopup: false })
-            }
-            tipSize={0}
-            anchor="top"
-            offsetTop={-55}
-            dynamicPosition={true}
-            captureClick={false}
-            captureDrag={false}
-            captureDoubleClick={false}
-            captureScroll={false}
-          >
-            <div className="inner">
-              {!interactionsMobile
-                ? i18n.translate('UI_MAP_FLY_TO_PROMPT')
-                : i18n.translate(
-                    'UI_MAP_FLY_TO_PROMPT_MOBILE',
-                  )}
-            </div>
-          </Popup>
-        )}
+        <MapPopup />
         <MapLegend />
         <div className="custom-attribution">
           <span className="divider">|</span>
@@ -571,10 +471,12 @@ const MapBase = ({
                 onViewportChange={setViewport}
                 captureClick={true}
               ></NavigationControl>
-              <MapResetButton
-                resetViewport={handleResetViewport}
-              />
-              <MapCaptureButton currentMap={currentMap} />
+              <div className="map-btn-group">
+                <MapResetButton
+                  resetViewport={handleResetViewport}
+                />
+                <MapCaptureButton currentMap={currentMap} />
+              </div>
             </>
           )}
         </div>
@@ -650,13 +552,6 @@ const mapZoomStyles = css`
       box-shadow: 1px 1px 3px #ccc;
     }
   }
-  // > .btn {
-  //   background-color: ${variables.colors.white};
-  //   box-shadow: 1px 1px 3px #ccc;
-  //   border-radius: 0;
-  //   height: 29px;
-  //   width: 29px;
-  // }
   > .mapboxgl-ctrl-icon {
     background-size: 24px 24px;
     background-repeat: no-repeat;

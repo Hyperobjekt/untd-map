@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { css, cx } from 'emotion'
+import shallow from 'zustand/shallow'
 
 import useStore from './../store'
 import {
   Header,
   Logo,
   Canvas,
-  View,
   CoreButton,
   MenuIcon,
 } from './../../../core'
@@ -26,7 +26,6 @@ import {
 import Tour from './../Tour/Tour'
 import { Tracking } from './../Tracking'
 import { variables } from './../theme'
-import { CpalLogo } from './../../../core/Icons'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -36,31 +35,27 @@ import { CpalLogo } from './../../../core/Icons'
 const Layout = ({ children, ...props }) => {
   // Generic state updates for store.
   // Accepts an object of values to update.
-  const setStoreValues = useStore(
-    state => state.setStoreValues,
+  const {
+    setStoreValues,
+    activeView,
+    handleToggleMenu,
+    breakpoint,
+    logoSrc,
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      activeView: state.activeView,
+      handleToggleMenu: state.handleToggleMenu,
+      breakpoint: state.breakpoint,
+      logoSrc: state.logoSrc,
+    }),
+    shallow,
   )
   // Basic props for logo component.
   const logoProps = {
     siteName: i18n.translate(`SITE_TITLE`),
     siteHref: useStore(state => state.siteHref),
-    logoSrc: useStore(state => state.logoSrc),
   }
-  // Active view, map or feeder
-  const activeView = useStore(state => state.activeView)
-  const handleToggleMenu = useStore(
-    state => state.handleToggleMenu,
-  )
-  const breakpoint = useStore(state => state.breakpoint)
-  const browserWidth = useStore(state => state.browserWidth)
-
-  const remoteJson = useStore(state => state.remoteJson)
-  const dataLoadedPercent = useStore(
-    state => state.dataLoadedPercent,
-  )
-  useEffect(() => {
-    // console.log('remoteJson changed: ', remoteJson)
-    // console.log('loaded percent: ', dataLoadedPercent)
-  }, [remoteJson])
 
   // Handle clicks to any control panel button.
   const handleClick = e => {
@@ -96,13 +91,6 @@ const Layout = ({ children, ...props }) => {
       : 0};
   `
 
-  const menuButtonCss = css`
-    display: inline-block;
-    width: 20px;
-    height: 9px;
-    margin-right: 4px;
-  `
-
   return (
     <div
       className={clsx(
@@ -115,12 +103,22 @@ const Layout = ({ children, ...props }) => {
       <Tracking />
       {activeView === 'explorer' && (
         <Header>
-          <Logo {...logoProps} />
-          <div
-            className={clsx('cpal-logo')}
-            role="image"
-            aria-label="CPAL logo"
-          ></div>
+          <Logo {...logoProps}>
+            <div
+              className={clsx('cpal-logo')}
+              role="image"
+            ></div>
+            <div
+              className="logo"
+              dangerouslySetInnerHTML={{
+                __html: logoSrc,
+              }}
+              role="img"
+              aria-label={`${i18n.translate(
+                `SITE_TITLE`,
+              )} logo`}
+            ></div>
+          </Logo>
           <GeocodeSearch />
           <CoreButton
             id="button_toggle_menu"

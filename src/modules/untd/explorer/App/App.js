@@ -37,33 +37,6 @@ const App = props => {
     }),
     shallow,
   )
-  // // const langs = useStore(state => state.langs)
-  // // const en = useStore(state =>
-  // //   Object.keys(state.langs['en_US']),
-  // // )
-  // // Set initial en_US from constants file.
-  // // setLang('en_US', en_US)
-  // // Initialize translation utility.
-  // // i18n.init({
-  // //   locale: activeLang,
-  // //   languages: {
-  // //     en_us: getLang(activeLang),
-  // //   },
-  // // })
-  // //
-  // const initLang = () => {
-  //   i18n.init({
-  //     locale: activeLang,
-  //     languages: {
-  //       en_us: getLang(activeLang),
-  //     },
-  //   })
-  // }
-  // useEffect(() => {
-  //   console.log('langs changed, ')
-  //   initLang()
-  // }, [langUpdates])
-  // initLang()
 
   // Updates menu state and calls handler in parent component.
   if (!!props.toggleMenu) {
