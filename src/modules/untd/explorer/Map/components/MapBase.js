@@ -525,7 +525,7 @@ const mapZoomStyles = css`
   flex-direction: column;
 
   > div {
-    position: relative;
+    position: relative !important;
   }
 
   // Explorer mapbox css overrides
