@@ -82,7 +82,7 @@ const DataLoader = ({ ...props }) => {
   useEffect(() => {
     files.forEach((el, i) => {
       const xhr = new XMLHttpRequest()
-      const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}`
+      const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}.gz`
       // console.log('path, ', path)
       xhr.open('GET', path, true)
       xhr.onload = function (e) {
