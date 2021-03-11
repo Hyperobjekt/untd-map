@@ -3,14 +3,8 @@ import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-} from 'reactstrap'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { FiMap } from 'react-icons/fi'
-import { FaQuestion } from 'react-icons/fa'
 
 import useStore from './../store'
 import { CoreButton, TourIcon } from './../../../core'
@@ -23,27 +17,19 @@ import { GeocodeSearch } from './../GeocodeSearch'
  */
 const IntroModal = ({ children, ...props }) => {
   // console.log('introModal')
-  // Generic state updates for store.
-  // Accepts an object of values to update.
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
-  // Track and update intro modal display
-  // const showIntroModal = useStore(
-  //   state => state.showIntroModal,
-  // )
-  // Whether or not the tour is enabled.
-  // const enableTour = useStore(state => state.enableTour)
 
   const {
     setStoreValues,
     showIntroModal,
     enableTour,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    showIntroModal: state.showIntroModal,
-    enableTour: state.enableTour,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      showIntroModal: state.showIntroModal,
+      enableTour: state.enableTour,
+    }),
+    shallow,
+  )
 
   const toggleIntroModal = () =>
     setStoreValues({ showIntroModal: !showIntroModal })

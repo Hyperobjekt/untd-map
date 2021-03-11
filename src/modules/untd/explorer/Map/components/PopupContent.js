@@ -1,6 +1,7 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import shallow from 'zustand/shallow'
 
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
 import { CRI_COLORS } from './../../../../../constants/colors'
@@ -25,21 +26,20 @@ const ClickToAdd = feature => {
 const PopupContent = ({ ...props }) => {
   const {
     setStoreValues,
-    interactionsMobile,
     indicators,
-    breakpoint,
     activeMetric,
     allData,
     tooltipItems,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    interactionsMobile: state.interactionsMobile,
-    indicators: state.indicators,
-    breakpoint: state.breakpoint,
-    activeMetric: state.activeMetric,
-    allData: state.allData,
-    tooltipItems: state.tooltipItems,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      indicators: state.indicators,
+      activeMetric: state.activeMetric,
+      allData: state.allData,
+      tooltipItems: state.tooltipItems,
+    }),
+    shallow,
+  )
   const source = DATA_FILES.find(item => {
     return item.id === props.feature.source
   })

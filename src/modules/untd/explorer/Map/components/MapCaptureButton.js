@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import { css, cx } from 'emotion'
 import { MdPhotoCamera } from 'react-icons/md'
 import { CoreButton } from './../../../../core'
-import { Tooltip } from 'reactstrap'
 
 import useStore from './../../store'
 import { theme } from './../../theme'

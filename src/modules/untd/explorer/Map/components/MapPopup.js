@@ -135,20 +135,6 @@ const MapPopup = () => {
         anchor={anchor}
         offsetTop={offset[1]}
         offsetLeft={offset[0]}
-        // latitude={coords[1]}
-        // longitude={coords[0]}
-        // anchor={anchor}
-        // offsetTop={offset[1]}
-        // offsetLeft={offset[0]}
-        // closeButton={false}
-        // closeOnClick={false}
-        // onClose={() => this.setState({ showPopup: false })}
-        // tipSize={0}
-        // dynamicPosition={false}
-        // captureClick={true}
-        // captureDrag={true}
-        // captureDoubleClick={true}
-        // captureScroll={true}
       >
         <PopupContent feature={feature} />
       </Popup>

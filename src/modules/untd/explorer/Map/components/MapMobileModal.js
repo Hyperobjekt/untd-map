@@ -1,26 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
-import i18n from '@pureartisan/simple-i18n'
-import clsx from 'clsx'
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-} from 'reactstrap'
-import { FiMap } from 'react-icons/fi'
-import { FaQuestion } from 'react-icons/fa'
-import { GiJourney } from 'react-icons/gi'
+import React from 'react'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import {
-  getMetric,
-  getRoundedValue,
-  toTitleCase,
-  getFeederAverage,
-  getFeederLabel,
-  getSchoolSet,
-} from './../utils'
 import useStore from './../../store'
 import PopupContent from './PopupContent'
 

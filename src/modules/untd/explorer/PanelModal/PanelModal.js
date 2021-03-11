@@ -1,20 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
-import i18n from '@pureartisan/simple-i18n'
+import React from 'react'
 import clsx from 'clsx'
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-} from 'reactstrap'
-import { FiMap } from 'react-icons/fi'
-import { FaQuestion } from 'react-icons/fa'
-import { GiJourney } from 'react-icons/gi'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
 import PanelFilterView from './../PanelFilterView/PanelFilterView'
 import PanelLayersView from './../PanelLayersView/PanelLayersView'
 import PanelInfoView from './../PanelInfoView/PanelInfoView'

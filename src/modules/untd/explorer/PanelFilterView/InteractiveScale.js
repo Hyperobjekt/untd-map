@@ -6,34 +6,22 @@ import PropTypes from 'prop-types'
 import useStore from './../store.js'
 import {
   CRI_COLORS,
-  ECON_COLORS,
-  EDU_COLORS,
-  FAM_COLORS,
-  HEAL_COLORS,
-  COMM_COLORS,
   DISABLED_COLORS,
 } from './../../../../constants/colors'
 import { getQuintileDesc } from './../utils'
 
 const InteractiveScale = ({ ...props }) => {
   // console.log('InteractiveScale, ', props)
-  const isLoaded = useRef(false)
   // Generic state setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
   // Active metric
   const activeMetric = useStore(state => state.activeMetric)
-  // const setActiveMetric = useStore(
-  //   state => state.setActiveMetric,
-  // )
   // Active quintiles
   const activeQuintiles = useStore(
     state => state.activeQuintiles,
   )
-  // const setActiveQuintiles = useStore(
-  //   state => state.setActiveQuintiles,
-  // )
 
   const getBgColor = (metric, quintile) => {
     // console.log('getBgColor')

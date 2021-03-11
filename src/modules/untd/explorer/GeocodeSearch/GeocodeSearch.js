@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import Autosuggest from 'react-autosuggest'
 import { FiSearch } from 'react-icons/fi'
 import { MdClose } from 'react-icons/md'
+import shallow from 'zustand/shallow'
 
 import { CoreButton } from './../../../core'
 import useStore from '../store'
@@ -14,21 +15,22 @@ import { DEFAULT_VIEWPORT } from './../../../../constants/map'
  * MenuSearch: Autosuggest search input for header.
  */
 const GeocodeSearch = ({ ...props }) => {
-  const isLoaded = useRef(false)
-
   const {
     setStoreValues,
     showIntroModal,
     eventGeocodeSearch,
     flyToLatLng,
     flyToBounds,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    showIntroModal: state.showIntroModal,
-    eventGeocodeSearch: state.eventGeocodeSearch,
-    flyToLatLng: state.flyToLatLng,
-    flyToBounds: state.flyToBounds,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      showIntroModal: state.showIntroModal,
+      eventGeocodeSearch: state.eventGeocodeSearch,
+      flyToLatLng: state.flyToLatLng,
+      flyToBounds: state.flyToBounds,
+    }),
+    shallow,
+  )
 
   // Tracking autosuggest suggestions
   const [suggestions, setSuggestions] = useState([])

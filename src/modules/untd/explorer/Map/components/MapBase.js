@@ -22,9 +22,9 @@ import {
 } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
-import MapLegend from './MapLegend'
+import MapLegend, { LegendToggleBtn } from './../../Legend'
 import MapPopup from './MapPopup'
-import LegendToggleBtn from './LegendToggleBtn'
+// import LegendToggleBtn from './../Legend/LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
 import AddMapImages from './AddMapImages'
 import { BOUNDS } from './../../../../../constants/map'
@@ -524,6 +524,10 @@ const mapZoomStyles = css`
   justify-content: center;
   flex-direction: column;
 
+  > div {
+    position: relative !important;
+  }
+
   // Explorer mapbox css overrides
   .mapboxgl-ctrl
     button.mapboxgl-ctrl-zoom-out
@@ -535,7 +539,7 @@ const mapZoomStyles = css`
     .mapboxgl-ctrl-icon {
     background-image: url(${ZoomIn});
   }
-  > .mapboxgl-ctrl-group {
+  .mapboxgl-ctrl-group {
     box-shadow: 1px 1px 3px #ccc;
     border-radius: 0;
     background-color: ${variables.colors.white};

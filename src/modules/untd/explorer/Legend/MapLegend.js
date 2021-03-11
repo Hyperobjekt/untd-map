@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { MdClose } from 'react-icons/md'
 
-import useStore from './../../store'
-import { CoreButton } from './../../../../core/'
-import { CRI_COLORS } from './../../../../../constants/colors'
-import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { getMetric } from './../../utils'
+import useStore from '../store'
+import { CoreButton } from './../../../core'
+import { CRI_COLORS } from './../../../../constants/colors'
+import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
+import { getMetric } from '../utils'
 
 /**
  * Legend for map
@@ -22,14 +22,17 @@ const MapLegend = ({ ...props }) => {
     breakpoint,
     showMobileLegend,
     indicators,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    activeMetric: state.activeMetric,
-    activeQuintiles: state.activeQuintiles,
-    breakpoint: state.breakpoint,
-    showMobileLegend: state.showMobileLegend,
-    indicators: state.indicators,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      activeMetric: state.activeMetric,
+      activeQuintiles: state.activeQuintiles,
+      breakpoint: state.breakpoint,
+      showMobileLegend: state.showMobileLegend,
+      indicators: state.indicators,
+    }),
+    shallow,
+  )
 
   const handleClose = () => {
     // console.log('handle close')

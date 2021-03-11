@@ -1,12 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { MdRefresh } from 'react-icons/md'
 import { css, cx } from 'emotion'
 
-import { CoreButton } from './../../../../core'
-import useStore from './../../store'
-import { variables } from './../../theme'
+import { CoreButton } from './../../../core'
+import useStore from './../store'
+import { variables } from './../theme'
+
+const legendBtnStyles = css`
+  position: absolute;
+  top: calc(${variables.dimensions.navbarHeight} + 20px);
+  left: 50%;
+  width: 164px;
+  height: 44px;
+  border-radius: 22px !important;
+  margin-left: -82px;
+  background-color: ${variables.colors.white} !important;
+  font-size: 1.4rem !important;
+  font-weight: 400 !important;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
+`
 
 /**
  * Button to toggle map legend display if legend is hidden.
@@ -28,20 +41,6 @@ const LegendToggleBtn = ({ ...props }) => {
     // console.log('updateLegend()')
     setStoreValues({ showMobileLegend: true })
   }
-
-  const legendBtnStyles = css`
-    position: absolute;
-    top: calc(${variables.dimensions.navbarHeight} + 20px);
-    left: 50%;
-    width: 164px;
-    height: 44px;
-    border-radius: 22px !important;
-    margin-left: -82px;
-    background-color: ${variables.colors.white} !important;
-    font-size: 1.4rem !important;
-    font-weight: 400 !important;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-  `
 
   if (
     !showMobileLegend &&

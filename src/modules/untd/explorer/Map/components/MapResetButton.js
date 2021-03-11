@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { cx } from 'emotion'
