@@ -18,7 +18,7 @@ export const DATA_FILES = [
   },
   {
     id: 'county',
-    filename: 'Data/geojson/sm_counties',
+    filename: 'sm_counties',
     ext: 'geojson',
     type: 'polygon',
     popup: 1, // Does this geo feature get a popup?
@@ -27,7 +27,7 @@ export const DATA_FILES = [
   },
   {
     id: 'place',
-    filename: 'Data/geojson/sm_places',
+    filename: 'sm_places',
     ext: 'geojson',
     type: 'polygon',
     popup: 1,
@@ -37,7 +37,7 @@ export const DATA_FILES = [
   },
   {
     id: 'tract',
-    filename: 'Data/geojson/sm_tracts',
+    filename: 'sm_tracts',
     ext: 'geojson',
     type: 'polygon',
     popup: 1,
@@ -47,7 +47,7 @@ export const DATA_FILES = [
   },
   {
     id: 'zip',
-    filename: 'Data/geojson/sm_zcta',
+    filename: 'sm_zcta',
     ext: 'geojson',
     type: 'polygon',
     popup: 1,
@@ -57,7 +57,7 @@ export const DATA_FILES = [
   },
   {
     id: 'points',
-    filename: 'Data/geojson/sm_featureset',
+    filename: 'sm_featureset',
     ext: 'geojson',
     type: 'point',
     popup: 1,
@@ -169,4 +169,5 @@ export const MAP_CONTROLS_CLASSES = [
   'map-btn-group',
   '.mapboxgl-popup',
   '.mapboxgl-popup-content',
+  '.custom-attribution',
 ]
