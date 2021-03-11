@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
+import shallow from 'zustand/shallow'
 
 import { Select } from './../../../core'
 import useStore from './../store.js'
@@ -11,19 +12,13 @@ import { toSentenceCase } from './../utils'
 
 const PanelFilterView = ({ ...props }) => {
   // Generic state setter.
-  const {
-    setStoreValues,
-    defaultMetric,
-    activeMetric,
-    activeLayers,
-    indicators,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    defaultMetric: state.defaultMetric,
-    activeMetric: state.activeMetric,
-    activeLayers: state.activeLayers,
-    indicators: state.indicators,
-  }))
+  const { setStoreValues, activeLayers } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      activeLayers: state.activeLayers,
+    }),
+    shallow,
+  )
 
   const getLayerId = () => {
     let layer = ''

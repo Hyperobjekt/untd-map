@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import { FiInfo } from 'react-icons/fi'
-import { Label, Input, Tooltip } from 'reactstrap'
+import { Tooltip } from 'reactstrap'
 
 import { toSentenceCase } from './../utils'
 import * as Icons from './../../../core/Icons'
@@ -24,10 +24,6 @@ const LayersInput = ({ ...props }) => {
     shallow,
   )
 
-  // console.log('Icons, ', Icons['FeaturesIcon'])
-  // console.log('mapImagesAdded, ', mapImagesAdded)
-  // console.log('pointTypes, ', pointTypes)
-
   // to manage tooltip state
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
@@ -36,34 +32,10 @@ const LayersInput = ({ ...props }) => {
   const icon = pointTypes.find(point => {
     return point.id.indexOf(props.layer.id) > -1
   })
-  // console.log('icon is, ', icon, props)
-
-  // const getSVG = id => {
-  //   // console.log('getSVG()')
-  //   let svg = null
-  //   try {
-  //     svg = POINT_ICON_SVGS.find(el => {
-  //       return el.id === props.layer.id
-  //     }).svg
-  //   } catch (err) {
-  //     console.log(
-  //       `Unable to fetch svg icon for ${props.layer.id}.`,
-  //     )
-  //   }
-  //   // console.log('svg is ', svg)
-  //   // return svg
-  //   return Icons['FeaturesIcon']
-  // }
 
   const ThisIcon = Icons[props.layer.id]
     ? Icons[props.layer.id]
     : Icons['FeaturesIcon']
-
-  // console.log('svg is ', svg)
-
-  // if (!mapImagesAdded) {
-  //   return ''
-  // } else {
 
   return (
     <div
@@ -88,18 +60,6 @@ const LayersInput = ({ ...props }) => {
           onClick={props.update}
         />
         <div className={clsx('checkmark')}></div>
-        {/*!!getSVG(props.layer.id) && (
-          <div
-            className={clsx(
-              'icon',
-              `icon-${icon.id}`,
-              `color-${icon.category}`,
-            )}
-            dangerouslySetInnerHTML={{
-              __html: getSVG(props.layer.id),
-            }}
-          ></div>
-          )*/}
         <div
           className={clsx(
             'icon',
@@ -136,7 +96,6 @@ const LayersInput = ({ ...props }) => {
         )}
     </div>
   )
-  // }
 }
 
 LayersInput.propTypes = {

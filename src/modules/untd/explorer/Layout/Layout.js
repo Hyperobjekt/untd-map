@@ -36,14 +36,12 @@ const Layout = ({ children, ...props }) => {
   // Generic state updates for store.
   // Accepts an object of values to update.
   const {
-    setStoreValues,
     activeView,
     handleToggleMenu,
     breakpoint,
     logoSrc,
   } = useStore(
     state => ({
-      setStoreValues: state.setStoreValues,
       activeView: state.activeView,
       handleToggleMenu: state.handleToggleMenu,
       breakpoint: state.breakpoint,
@@ -51,6 +49,29 @@ const Layout = ({ children, ...props }) => {
     }),
     shallow,
   )
+
+  const mapViewStyles = css`
+    height: 100%;
+    padding-left: ${(breakpoint === 'lg' ||
+      breakpoint === 'xl') &&
+    activeView === 'explorer'
+      ? variables.dimensions.controlPanelWidth
+      : 0};
+  `
+
+  const canvasStyles = css`
+    position: relative;
+    height: 100%;
+  `
+
+  const mainStyles = css`
+    height: ${activeView === 'explorer'
+      ? `calc(100vh - ` +
+        variables.dimensions.navbarHeight +
+        `)`
+      : `100vh`};
+  `
+
   // Basic props for logo component.
   const logoProps = {
     siteName: i18n.translate(`SITE_TITLE`),
@@ -68,28 +89,6 @@ const Layout = ({ children, ...props }) => {
       }
     }
   }
-
-  const canvasStyles = css`
-    position: relative;
-    height: 100%;
-  `
-
-  const mainStyles = css`
-    height: ${activeView === 'explorer'
-      ? `calc(100vh - ` +
-        variables.dimensions.navbarHeight +
-        `)`
-      : `100vh`};
-  `
-
-  const mapViewStyles = css`
-    height: 100%;
-    padding-left: ${(breakpoint === 'lg' ||
-      breakpoint === 'xl') &&
-    activeView === 'explorer'
-      ? variables.dimensions.controlPanelWidth
-      : 0};
-  `
 
   return (
     <div

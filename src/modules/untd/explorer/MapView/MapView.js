@@ -1,12 +1,10 @@
-import React, { useMemo, useEffect, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { fromJS } from 'immutable'
 import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
 import { getLayers } from './selectors'
 import MapBase, { useIdMap } from './../Map'
 
-import { HOVER_LAYERS } from './../../../../constants/layers'
-import { DATA_FILES } from './../../../../constants/map'
 import {
   getMetric,
   getQuintilesPhrase,

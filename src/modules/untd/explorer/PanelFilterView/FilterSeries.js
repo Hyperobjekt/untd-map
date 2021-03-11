@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
-import { css, cx } from 'emotion'
 import { FiInfo } from 'react-icons/fi'
 import { Tooltip } from 'reactstrap'
 

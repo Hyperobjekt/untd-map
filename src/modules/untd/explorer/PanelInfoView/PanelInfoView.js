@@ -6,17 +6,8 @@ import i18n from '@pureartisan/simple-i18n'
 import { CoreButton, TourIcon } from './../../../core'
 
 const PanelInfoView = ({ ...props }) => {
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
   const activeView = useStore(state => state.activeView)
   const enableTour = useStore(state => state.enableTour)
-  const defaultMetric = useStore(
-    state => state.defaultMetric,
-  )
-  const defaultFilterTab = useStore(
-    state => state.defaultFilterTab,
-  )
   const setUpTour = useStore(state => state.setUpTour)
   const incrementLaunchTour = useStore(
     state => state.incrementLaunchTour,

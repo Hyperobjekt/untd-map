@@ -49,25 +49,6 @@ const ControlPanel = ({ children }) => {
     }),
     shallow,
   )
-  // const setStoreValues = useStore(
-  //   state => state.setStoreValues,
-  // )
-  // Active view, explorer or embed
-  // const activeView = useStore(state => state.activeView)
-  // Slideout panel
-  // const slideoutPanel = useStore(
-  //   state => state.slideoutPanel,
-  // )
-  // const breakpoint = useStore(state => state.breakpoint)
-  // // const browserWidth = useStore(state => state.browserWidth)
-  // const showIntroModal = useStore(
-  //   state => state.showIntroModal,
-  // )
-  // Modal for small devices
-  // const showPanelModal = useStore(
-  //   state => state.showPanelModal,
-  // )
-  // const enableTour = useStore(state => state.enableTour)
 
   const toggleIntroModal = () =>
     setStoreValues({

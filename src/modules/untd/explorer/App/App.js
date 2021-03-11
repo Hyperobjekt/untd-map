@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import i18n from '@pureartisan/simple-i18n'
 import { isMobile } from 'react-device-detect'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
-import { theme } from './../theme'
 import Layout from '../Layout/Layout'
-import en_US from './../../../../constants/en_US'
 import { BREAKPOINTS } from './../../../../constants/layers'
-import 'mapbox-gl/dist/mapbox-gl.css'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
-// import { ROUTE_SET } from './../../../../constants/map'
 import LangManager from './../LangManager/LangManager'
+
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 /**
  * App is the base component for the explorer.
