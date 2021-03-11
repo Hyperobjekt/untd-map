@@ -3,9 +3,9 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { css, cx } from 'emotion'
 
-import { CoreButton } from './../../../../core'
-import useStore from './../../store'
-import { variables } from './../../theme'
+import { CoreButton } from './../../../core'
+import useStore from './../store'
+import { variables } from './../theme'
 
 const legendBtnStyles = css`
   position: absolute;

@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { MdClose } from 'react-icons/md'
 
-import useStore from './../../store'
-import { CoreButton } from './../../../../core/'
-import { CRI_COLORS } from './../../../../../constants/colors'
-import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { getMetric } from './../../utils'
+import useStore from '../store'
+import { CoreButton } from './../../../core'
+import { CRI_COLORS } from './../../../../constants/colors'
+import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
+import { getMetric } from '../utils'
 
 /**
  * Legend for map
