@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
@@ -22,14 +22,17 @@ const MapLegend = ({ ...props }) => {
     breakpoint,
     showMobileLegend,
     indicators,
-  } = useStore(state => ({
-    setStoreValues: state.setStoreValues,
-    activeMetric: state.activeMetric,
-    activeQuintiles: state.activeQuintiles,
-    breakpoint: state.breakpoint,
-    showMobileLegend: state.showMobileLegend,
-    indicators: state.indicators,
-  }))
+  } = useStore(
+    state => ({
+      setStoreValues: state.setStoreValues,
+      activeMetric: state.activeMetric,
+      activeQuintiles: state.activeQuintiles,
+      breakpoint: state.breakpoint,
+      showMobileLegend: state.showMobileLegend,
+      indicators: state.indicators,
+    }),
+    shallow,
+  )
 
   const handleClose = () => {
     // console.log('handle close')

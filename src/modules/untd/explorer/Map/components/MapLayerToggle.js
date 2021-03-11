@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import { Button, Label, Input, Tooltip } from 'reactstrap'
+import { Button, Tooltip } from 'reactstrap'
 import { FiLayers } from 'react-icons/fi'
 import clsx from 'clsx'
 import { FiInfo } from 'react-icons/fi'
 
-import { CoreButton } from './../../../../core'
 import useStore from './../../store'
 import { UNTD_LAYERS } from './../../../../../constants/layers'
 
@@ -20,9 +19,6 @@ const MapLayerToggle = ({ ...props }) => {
   )
   const activeLayers = useStore(state => state.activeLayers)
   // console.log('activeLayers, ', activeLayers)
-  // const setActiveLayers = useStore(
-  //   state => state.setActiveLayers,
-  // )
 
   const getLayerLabel = id => {
     const layer = UNTD_LAYERS.find(gr => gr.id === id)

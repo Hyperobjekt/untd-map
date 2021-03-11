@@ -524,6 +524,10 @@ const mapZoomStyles = css`
   justify-content: center;
   flex-direction: column;
 
+  > div {
+    position: relative;
+  }
+
   // Explorer mapbox css overrides
   .mapboxgl-ctrl
     button.mapboxgl-ctrl-zoom-out
@@ -535,7 +539,7 @@ const mapZoomStyles = css`
     .mapboxgl-ctrl-icon {
     background-image: url(${ZoomIn});
   }
-  > .mapboxgl-ctrl-group {
+  .mapboxgl-ctrl-group {
     box-shadow: 1px 1px 3px #ccc;
     border-radius: 0;
     background-color: ${variables.colors.white};
