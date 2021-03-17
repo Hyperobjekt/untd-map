@@ -49,6 +49,7 @@ export const DESKTOP_STEPS = [
     text: 'TOUR_DESK_STEP_9', // Hover a school..., click a school...
     placement: 'auto',
     disableBeacon: true,
+    clickOn: ['#button_toggle_panel_layers']
   },
   {
     target: '#button_d_u_share_link',
@@ -68,6 +69,7 @@ export const DESKTOP_STEPS = [
     text: 'TOUR_DESK_STEP_12', // The feeder view displays all of the....
     placement: 'auto',
     disableBeacon: true,
+    clickOn: ['#button_toggle_panel_info'],
   }
 ]
 
