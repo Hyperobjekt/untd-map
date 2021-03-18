@@ -191,6 +191,12 @@ const en_US = {
   FEEDBACK_INSTR: `Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know! The "Use my current location" button will tie your feedback to your current location. You can also search for an addres or point of interest.`,
   FEEDBACK_USE_CURRENT_LOC: `Use my current location`,
   FEEDBACK_SUBMIT: `Submit`,
+  CONTACT_EMAIL: `analytics@childpovertyactionlab.org`,
+  CONTACT_MAILTO: `maito:{email}`,
+  FEEDBACK_SUBMIT_FAILURE: `Sorry, something went wrong with the form
+  submission. If you like you can still <a href="mailto:{email}>contact us by email</a>.`,
+  FEEDBACK_SUCCESS: `Messsage received! Thanks for contacting us.`,
+  FEEDBACK_SUBMITTING: `Submitting...`,
 }
 
 export default en_US
