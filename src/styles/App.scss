@@ -5,9 +5,9 @@
 //   height: 100vh;
 // }
 
-/* 
+/*
  * Utility class to hide content visually while keeping it screen reader-accessible.
- * Source: https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html 
+ * Source: https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html
  */
 
 .sr-only:not(:focus):not(:active) {
@@ -98,7 +98,7 @@
 .react-autosuggest__input {
   width: 100%;
   box-sizing: border-box;
-  padding: 8px 0 8px 36px;
+  padding: 8px 0 8px 8px;
   font-family: var(--font);
   font-weight: 300;
   font-size: var(--mini-font-size);

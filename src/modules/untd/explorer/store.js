@@ -274,7 +274,11 @@ const [useStore] = create((set, get) => ({
   // Display of modal for feedback entry and submission.
   showFeedbackModal: true,
   // The feature for populating the map.
-  feedbackFeature: null,
+  feedbackFeature: 0,
+  // Address for feedback
+  feedbackAddress: '',
+  // Feedback lat long array
+  feedbackLatLng: [],
   showMobileLegend: false,
   interactionsMobile: false,
   runTour: false,

@@ -16,17 +16,34 @@
   border: 0.5px solid #ccc;
   display: flex;
   flex-wrap: nowrap;
-  .icon-search {
+  // .icon-search {
+  //   position: absolute;
+  //   right: 10px;
+  //   top: 10px;
+  //   color: #bbb;
+  // }
+  // .button-search-clear {
+  //   position: absolute;
+  //   top: 2px;
+  //   right: 0;
+  //   background-color: #fff;
+  // }
+
+  .geocode-search-prompt {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     position: absolute;
-    right: 10px;
-    top: 10px;
-    color: #bbb;
-  }
-  .button-search-clear {
-    position: absolute;
-    top: 2px;
-    right: 0;
-    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    padding: 8px 8px 8px 12px;
+    color: $color-untd-gray;
+    svg {
+      margin-right: 8px;
+    }
+    span {
+      line-height: 12px;
+    }
   }
   .react-autosuggest__container {
     flex: 1 1 80%;

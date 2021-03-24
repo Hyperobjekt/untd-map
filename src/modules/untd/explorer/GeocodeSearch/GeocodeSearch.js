@@ -156,17 +156,31 @@ const GeocodeSearch = ({ ...props }) => {
     )
   }
 
+  const getPrompt = () => {
+    return props.prompt
+      ? props.prompt
+      : i18n.translate(`INPUT_SEARCH`)
+  }
+
   const inputProps = {
     value: value, // usually comes from the application state
     onChange: handleChange, // called every time the input value changes
     onBlur: handleBlur, // called when the input loses focus, e.g. when user presses Tab
     type: 'search',
-    placeholder: i18n.translate(`INPUT_SEARCH`),
+    // placeholder: i18n.translate(`INPUT_SEARCH`),
     'aria-label': i18n.translate(`INPUT_SEARCH`),
   }
 
   return (
     <div className="search-autosuggest input-group">
+      <div className={clsx('geocode-search-prompt')}>
+        <FiSearch
+          className="icon-search"
+          aria-hidden="true"
+          style={{ display: !!value ? 'none' : 'block' }}
+        />
+        <span>{getPrompt()}</span>
+      </div>
       <Autosuggest
         suggestions={suggestions}
         onSuggestionSelected={handleSelection}
@@ -176,11 +190,7 @@ const GeocodeSearch = ({ ...props }) => {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-      <FiSearch
-        className="icon-search"
-        aria-hidden="true"
-        style={{ display: !!value ? 'none' : 'block' }}
-      />
+
       <CoreButton
         id="button_search_clear"
         aria-label={i18n.translate(`BUTTON_SEARCH`)}

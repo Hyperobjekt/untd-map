@@ -187,8 +187,8 @@ const en_US = {
   TOOLTIP_PLACE_ZIP: `Zip code {label}`,
   TOOLTIP_PLACE_COUNTY: `{label} County`,
   FEEDBACK_HEADING: `We're happy to have your feedback!`,
-  FEEDBACK_INSTR_WITHFEATURE: `Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know! The location information in the form has been pre-populated with the feature you selected. The "Use my current location" button will replace this feature information with your current location. You can also use the search input to search for an address or point of interest.`,
-  FEEDBACK_INSTR: `Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know! The "Use my current location" button will tie your feedback to your current location. You can also search for an addres or point of interest.`,
+  FEEDBACK_INSTR_WITHFEATURE: `<p>Use the form below to submit feedback about your selected point or geographic feature. The address field has been pre-populated with the selected location.</p>`,
+  FEEDBACK_INSTR: `<p>Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know!</p><p>The "Use my current location" button will tie your feedback to your current location. You can also search for an addres or point of interest.</p>`,
   FEEDBACK_USE_CURRENT_LOC: `Use my current location`,
   FEEDBACK_SUBMIT: `Submit`,
   CONTACT_EMAIL: `analytics@childpovertyactionlab.org`,
@@ -197,6 +197,8 @@ const en_US = {
   submission. If you like you can still <a href="mailto:{email}>contact us by email</a>.`,
   FEEDBACK_SUCCESS: `Messsage received! Thanks for contacting us.`,
   FEEDBACK_SUBMITTING: `Submitting...`,
+  FEEDBACK_CANCEL: `Cancel`,
+  OR: `or`,
 }
 
 export default en_US
