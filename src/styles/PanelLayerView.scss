@@ -1,9 +1,10 @@
 .map-panel-slideout-layers {
   @include font-gotham-book;
-  padding: 2.8rem 2rem;
+  padding: 2.8rem 2rem 2.8rem;
   font-size: 1.4rem;
   font-weight: 300;
   height: 100%;
+  overflow-y: scroll;
 
   p {
     margin: 1rem 0;
@@ -30,346 +31,333 @@
     font-size: 15px;
   }
 
-  .map-layer-toggle-pane {
-    background-color: #fff;
-    overflow: hidden;
+  // .map-layer-toggle-pane {
+  // background-color: #fff;
+  // overflow: hidden;
+  // overflow-y: scroll;
+  // font-size: 1.4rem;
+  // line-height: 1.6rem;
+  // font-weight: 300;
+  // height: 100%;
+
+  // .layer-group-points {
+  // height: 100%;
+
+  .map-layer-panel-sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: $white;
+    padding: 2.8rem 0 2rem;
+    z-index: 1999;
+  }
+
+  h5 {
+    @include font-gotham-book;
+    color: $color-untd-darkgray;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    letter-spacing: 1%;
+  }
+
+  h6 {
+    @include font-gotham-book;
+    color: $color-untd-darkgray;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    letter-spacing: 1%;
+  }
+
+  .layer-group-desc,
+  .layer-group-desc p {
+    color: $color-untd-gray;
     font-size: 1.4rem;
-    line-height: 1.6rem;
-    font-weight: 300;
-    height: 100%;
+    line-height: 1.8rem;
+    letter-spacing: 1%;
+    margin-top: 1.3rem;
+  }
 
-    .layer-group-points {
-      height: 100%;
+  .button-all-toggle {
+    height: 36px;
+    font-size: 12px;
+    font-weight: 200;
+    margin: 16px auto 20px auto;
+    color: $color-untd-gray;
+    background-color: #fff;
+    border: 1px solid #cfd3c2;
+    padding: 0 14px;
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-top: -3px;
+      margin-right: 6px;
+      path,
+      line,
+      rect {
+        stroke: $color-untd-gray;
+      }
+    }
+  }
 
-      h5 {
+  .points-group-parent {
+    .layer-group {
+      // margin-bottom: 16rem;
+
+      .points-cat-toggle {
         @include font-gotham-book;
-        color: $color-untd-darkgray;
-        font-weight: 600;
-        font-size: 1.8rem;
-        line-height: 1.8rem;
-        letter-spacing: 1%;
+        color: $color-untd-gray;
+        border: 0;
+        box-shadow: 0;
+        text-decoration: none !important;
+        font-size: 1.6rem !important;
+        color: $turtle-green;
+        padding: 0.375rem 0 0 !important;
+        &:focus,
+        &:active {
+          outline: 0;
+          box-shadow: none !important;
+          text-decoration: none !important;
+        }
+        svg {
+          margin-top: -2px;
+          margin-right: 0.6rem;
+        }
       }
 
-      .layer-group-desc,
-      .layer-group-desc p {
-        color: $color-untd-gray;
-        font-size: 1.4rem;
-        line-height: 1.8rem;
-        letter-spacing: 1%;
-        margin-top: 1.3rem;
+      .subcat-parent {
+        margin-left: 1rem;
       }
 
-      .button-all-toggle {
-        height: 36px;
-        font-size: 12px;
-        font-weight: 200;
-        margin: 16px auto 20px auto;
-        color: $color-untd-gray;
-        background-color: #fff;
-        border: 1px solid #cfd3c2;
-        padding: 0 14px;
+      input {
+        margin-left: 0.5rem;
+      }
+
+      .layer {
+        display: block;
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        // font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        margin: 1rem 1.2rem 0 1rem;
+
+        label {
+          font-size: 1.3rem;
+          cursor: pointer;
+          .icon {
+            display: inline-block;
+            max-width: 20px;
+            max-height: 20px;
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+            // background-size: 18px 18px;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 9px;
+            &.color-social_infrastructure svg path,
+            &.color-social_infrastructure svg line,
+            &.color-social_infrastructure svg rect {
+              stroke: $color-point-social_infrastructure;
+            }
+            &.color-social_infrastructure {
+              &.icon-uscc path {
+                fill: $color-point-social_infrastructure;
+              }
+            }
+            &.color-commerce svg path,
+            &.color-commerce svg line,
+            &.color-commerce svg rect {
+              stroke: $color-point-commerce;
+            }
+            &.color-school svg path,
+            &.color-school svg line,
+            &.color-school svg rect {
+              stroke: $color-point-school;
+            }
+            &.color-public_health svg path,
+            &.color-public_health svg line,
+            &.color-public_health svg rect {
+              stroke: $color-point-public_health;
+              color: $color-point-public_health;
+            }
+            &.color-public_health {
+              &.icon-comhel rect {
+                fill: $color-point-public_health;
+              }
+            }
+          }
+          .icon-info {
+            width: 14px;
+            height: 14px;
+            color: $color-untd-gray;
+          }
+        }
+        input {
+          margin-right: 0.35rem;
+          cursor: pointer;
+          // margin-top: 10px;
+        }
+
+        &:first-of-type {
+          margin-top: 2rem;
+        }
+        &:last-of-type {
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
+        }
+
         svg {
           width: 16px;
           height: 16px;
-          margin-top: -3px;
-          margin-right: 6px;
-          path,
-          line,
-          rect {
-            stroke: $color-untd-gray;
-          }
+          margin-left: 0.25rem;
+          color: $turtle-green;
+          margin-top: -2px;
+        }
+
+        /* Hide the browser's default checkbox */
+        input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 18px;
+          width: 18px;
+          background-color: #eee;
+          border-radius: 2px;
+        }
+
+        /* On mouse-over, add a grey background color */
+        &:hover .checkmark {
+          background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        input:checked ~ .checkmark {
+          background-color: #2c390b;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+          content: '';
+          position: absolute;
+          display: none;
+        }
+
+        /* Show the checkmark when checked */
+        input:checked ~ .checkmark:after {
+          display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .checkmark:after {
+          left: 6px;
+          top: 2px;
+          width: 6px;
+          height: 11px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
         }
       }
-
-      .points-group-parent {
-        height: 100%;
-        overflow-y: scroll;
-
-        .layer-group {
-          margin-bottom: 16rem;
-
-          .points-cat-toggle {
-            @include font-gotham-book;
-            color: $color-untd-gray;
-            border: 0;
-            box-shadow: 0;
-            text-decoration: none !important;
-            font-size: 1.6rem !important;
-            color: $turtle-green;
-            padding: 0.375rem 0 0 !important;
-            &:focus,
-            &:active {
-              outline: 0;
-              box-shadow: none !important;
-              text-decoration: none !important;
-            }
-            svg {
-              margin-top: -2px;
-              margin-right: 0.6rem;
-            }
-          }
-
-          .subcat-parent {
-            margin-left: 1rem;
-          }
-
-          input {
-            margin-left: 0.5rem;
-          }
-
-          .layer {
-            display: block;
-            position: relative;
-            padding-left: 28px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            // font-size: 22px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-
-            margin: 1rem 1.2rem 0 1rem;
-
-            label {
-              font-size: 1.3rem;
-              cursor: pointer;
-              .icon {
-                display: inline-block;
-                max-width: 20px;
-                max-height: 20px;
-                svg {
-                  width: 20px;
-                  height: 20px;
-                }
-                // background-size: 18px 18px;
-                background-repeat: no-repeat;
-                background-position: center;
-                margin-right: 9px;
-                &.color-social_infrastructure svg path,
-                &.color-social_infrastructure svg line,
-                &.color-social_infrastructure svg rect {
-                  stroke: $color-point-social_infrastructure;
-                }
-                &.color-social_infrastructure {
-                  &.icon-uscc path {
-                    fill: $color-point-social_infrastructure;
-                  }
-                }
-                &.color-commerce svg path,
-                &.color-commerce svg line,
-                &.color-commerce svg rect {
-                  stroke: $color-point-commerce;
-                }
-                &.color-school svg path,
-                &.color-school svg line,
-                &.color-school svg rect {
-                  stroke: $color-point-school;
-                }
-                &.color-public_health svg path,
-                &.color-public_health svg line,
-                &.color-public_health svg rect {
-                  stroke: $color-point-public_health;
-                  color: $color-point-public_health;
-                }
-                &.color-public_health {
-                  &.icon-comhel rect {
-                    fill: $color-point-public_health;
-                  }
-                }
-              }
-              .icon-info {
-                width: 14px;
-                height: 14px;
-                color: $color-untd-gray;
-              }
-            }
-            input {
-              margin-right: 0.35rem;
-              cursor: pointer;
-              // margin-top: 10px;
-            }
-
-            &:first-of-type {
-              margin-top: 2rem;
-            }
-            &:last-of-type {
-              margin-top: 1rem;
-              margin-bottom: 1.5rem;
-            }
-
-            svg {
-              width: 16px;
-              height: 16px;
-              margin-left: 0.25rem;
-              color: $turtle-green;
-              margin-top: -2px;
-            }
-
-            /* Hide the browser's default checkbox */
-            input {
-              position: absolute;
-              opacity: 0;
-              cursor: pointer;
-              height: 0;
-              width: 0;
-            }
-
-            /* Create a custom checkbox */
-            .checkmark {
-              position: absolute;
-              top: 0;
-              left: 0;
-              height: 18px;
-              width: 18px;
-              background-color: #eee;
-              border-radius: 2px;
-            }
-
-            /* On mouse-over, add a grey background color */
-            &:hover .checkmark {
-              background-color: #ccc;
-            }
-
-            /* When the checkbox is checked, add a blue background */
-            input:checked ~ .checkmark {
-              background-color: #2c390b;
-            }
-
-            /* Create the checkmark/indicator (hidden when not checked) */
-            .checkmark:after {
-              content: '';
-              position: absolute;
-              display: none;
-            }
-
-            /* Show the checkmark when checked */
-            input:checked ~ .checkmark:after {
-              display: block;
-            }
-
-            /* Style the checkmark/indicator */
-            .checkmark:after {
-              left: 6px;
-              top: 2px;
-              width: 6px;
-              height: 11px;
-              border: solid white;
-              border-width: 0 2px 2px 0;
-              -webkit-transform: rotate(45deg);
-              -ms-transform: rotate(45deg);
-              transform: rotate(45deg);
-            }
-          }
-        }
-      }
-    }
-
-    // .layer {
-    //   margin: 1rem 1.2rem 0 1rem;
-
-    //   label {
-    //     cursor: pointer;
-    //   }
-    //   input {
-    //     margin-right: 0.35rem;
-    //     cursor: pointer;
-    //     // margin-top: 10px;
-    //   }
-    //   &:first-of-type {
-    //     margin-top: 2rem;
-    //   }
-    //   &:last-of-type {
-    //     margin-top: 1rem;
-    //     margin-bottom: 1.5rem;
-    //   }
-    //   svg {
-    //     width: 12px;
-    //     height: 12px;
-    //     margin-left: 0.35rem;
-    //     color: $turtle-green;
-    //     margin-top: -2px;
-    //   }
-    // }
-    &.panel-hide {
-      max-height: 0;
-      transition: max-height 400ms ease-out;
-    }
-    &.panel-show {
-      max-height: 300px;
-      transition: max-height 400ms ease-in-out;
     }
   }
+
+  hr {
+    background-color: $color-untd-anothergray;
+    height: 0.5px;
+    border: 0;
+    margin: 3rem -2rem 1rem -2rem;
+  }
+
+  // Static layers.
+  .map-static-layer-toggle {
+    margin-bottom: 1rem;
+
+    h5 {
+      padding: 2rem 0 0rem;
+    }
+    .map-layer-toggle {
+      // Radio buttons container.
+      .layer {
+        label {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          font-size: 1.3rem;
+          input {
+            margin-right: 0.7rem;
+            position: relative;
+          }
+          /* make default radio 'invisible' */
+          input[type='radio'] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+          }
+
+          /* make new radio outer circle */
+          input[type='radio']:before {
+            content: ' ';
+            display: inline-block;
+            position: relative;
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid $color-untd-gray;
+            background-color: transparent;
+          }
+
+          /* change colour of radio outer circle when checked */
+          input[type='radio']:checked:before {
+            border-color: $color-untd-gray;
+          }
+
+          /* make new radio inner circle when checked */
+          input[type='radio']:checked:after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            margin-top: 2px;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            background: $color-untd-gray;
+          }
+        }
+      }
+    }
+  }
+
+  &.panel-hide {
+    max-height: 0;
+    transition: max-height 400ms ease-out;
+  }
+  &.panel-show {
+    max-height: 300px;
+    transition: max-height 400ms ease-in-out;
+  }
+
+  // }
 }
-
-// .map-panel-slideout-layers {
-//   .map-layer-toggle-pane {
-//   .layer {
-//     display: block;
-//     position: relative;
-//     padding-left: 28px;
-//     margin-bottom: 12px;
-//     cursor: pointer;
-//     // font-size: 22px;
-//     -webkit-user-select: none;
-//     -moz-user-select: none;
-//     -ms-user-select: none;
-//     user-select: none;
-//   }
-
-//   /* Hide the browser's default checkbox */
-//   .layer input {
-//     position: absolute;
-//     opacity: 0;
-//     cursor: pointer;
-//     height: 0;
-//     width: 0;
-//   }
-
-//   /* Create a custom checkbox */
-//   .checkmark {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     height: 18px;
-//     width: 18px;
-//     background-color: #eee;
-//     border-radius: 2px;
-//   }
-
-//   /* On mouse-over, add a grey background color */
-//   // .layer:hover input ~ .checkmark {
-//   //   background-color: #ccc;
-//   // }
-
-//   /* When the checkbox is checked, add a blue background */
-//   .layer input:checked ~ .checkmark {
-//     background-color: #2c390b;
-//   }
-
-//   /* Create the checkmark/indicator (hidden when not checked) */
-//   .checkmark:after {
-//     content: '';
-//     position: absolute;
-//     display: none;
-//   }
-
-//   /* Show the checkmark when checked */
-//   .layer input:checked ~ .checkmark:after {
-//     display: block;
-//   }
-
-//   /* Style the checkmark/indicator */
-//   .layer .checkmark:after {
-//     left: 6px;
-//     top: 2px;
-//     width: 6px;
-//     height: 11px;
-//     border: solid white;
-//     border-width: 0 2px 2px 0;
-//     -webkit-transform: rotate(45deg);
-//     -ms-transform: rotate(45deg);
-//     transform: rotate(45deg);
-//   }
-// }
-// }

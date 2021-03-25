@@ -5,8 +5,8 @@ import { FiLayers } from 'react-icons/fi'
 import clsx from 'clsx'
 import { FiInfo } from 'react-icons/fi'
 
-import useStore from './../../store'
-import { UNTD_LAYERS } from './../../../../../constants/layers'
+import useStore from '../store'
+import { UNTD_STATIC_LAYERS } from './../../../../constants/layers'
 
 /**
  * Provides toggle functionality for provided array of layer objects
@@ -21,7 +21,9 @@ const MapLayerToggle = ({ ...props }) => {
   // console.log('activeLayers, ', activeLayers)
 
   const getLayerLabel = id => {
-    const layer = UNTD_LAYERS.find(gr => gr.id === id)
+    const layer = UNTD_STATIC_LAYERS.find(
+      gr => gr.id === id,
+    )
     return layer.label
   }
 
@@ -68,70 +70,56 @@ const MapLayerToggle = ({ ...props }) => {
 
   return (
     <div className="map-layer-toggle">
-      <div
-        className={clsx(
-          `map-layer-toggle-pane`,
-          showPanel ? 'panel-show' : 'panel-hide',
-        )}
-      >
-        {UNTD_LAYERS.map((el, i) => {
-          // to manage tooltip state
-          const [tooltipOpen, setTooltipOpen] = useState(
-            false,
-          )
-          const toggle = () => setTooltipOpen(!tooltipOpen)
-          return (
-            <div className="layer" key={`layer-${el.id}`}>
-              <label
-                key={`label-${el.id}`}
-                id={`label-${el.id}`}
-              >
-                <input
-                  type="checkbox"
-                  id={'layer_' + i}
-                  name="scales"
-                  key={el.id}
-                  data-only-one={el.only_one}
-                  data-only-one-name={el.only_one_name}
-                  checked={
-                    activeLayers[i] === 1 ? true : false
-                  }
-                  readOnly={true}
-                  onClick={e => {
-                    updateLayers(e)
-                  }}
-                />
-                <div className="checkmark"></div>
+      {UNTD_STATIC_LAYERS.map((el, i) => {
+        // to manage tooltip state
+        const [tooltipOpen, setTooltipOpen] = useState(
+          false,
+        )
+        const toggle = () => setTooltipOpen(!tooltipOpen)
+        return (
+          <div className="layer" key={`layer-${el.id}`}>
+            <label
+              key={`label-${el.id}`}
+              id={`label-${el.id}`}
+            >
+              <input
+                type="radio"
+                id={'layer_' + i}
+                name="scales"
+                key={el.id}
+                data-only-one={el.only_one}
+                data-only-one-name={el.only_one_name}
+                checked={
+                  activeLayers[i] === 1 ? true : false
+                }
+                readOnly={true}
+                onClick={e => {
+                  updateLayers(e)
+                }}
+              />
+              <span>
                 {i18n.translate(getLayerLabel(el.id))}
-                {!!el.tooltip && el.tooltip.length > 0 && (
-                  <FiInfo id={'tip_prompt_' + el.id} />
-                )}
-              </label>
+              </span>
               {!!el.tooltip && el.tooltip.length > 0 && (
-                <Tooltip
-                  placement="top"
-                  isOpen={tooltipOpen}
-                  target={'tip_prompt_' + el.id}
-                  toggle={toggle}
-                  autohide={false}
-                  className={'tip-prompt-layer'}
-                  dangerouslySetInnerHTML={{
-                    __html: i18n.translate(el.tooltip),
-                  }}
-                ></Tooltip>
+                <FiInfo id={'tip_prompt_' + el.id} />
               )}
-            </div>
-          )
-        })}
-      </div>
-      <Button
-        color="primary"
-        className="map-layer-toggle-btn"
-        onClick={() => setShowPanel(!showPanel)}
-      >
-        <FiLayers className="icon" />
-        {i18n.translate(`UI_MAP_TOGGLE_LAYERS`)}
-      </Button>
+            </label>
+            {!!el.tooltip && el.tooltip.length > 0 && (
+              <Tooltip
+                placement="top"
+                isOpen={tooltipOpen}
+                target={'tip_prompt_' + el.id}
+                toggle={toggle}
+                autohide={false}
+                className={'tip-prompt-layer'}
+                dangerouslySetInnerHTML={{
+                  __html: i18n.translate(el.tooltip),
+                }}
+              ></Tooltip>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
