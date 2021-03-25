@@ -77,7 +77,7 @@ const isZoomValid = zoom => {
  * @return {Boolean}        [description]
  */
 const isRouteValid = params => {
-  // console.log('isRouteValid(), ', params, ROUTE_SET)
+  console.log('isRouteValid(), ', params, ROUTE_SET)
   let isValid = true
   if (
     // View
@@ -117,24 +117,20 @@ const RouteManager = props => {
   const {
     setStoreValues,
     activeView,
-    viewSelect,
     activeMetric,
     activeQuintiles,
     activeLayers,
     viewport,
     setViewport,
-    shareHash,
     indicators,
     activePointTypes,
-    routeSet,
     allDataLoaded,
+    activeStaticLayers,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
       // Active view type.
       activeView: state.activeView,
-      // Update view select control
-      viewSelect: state.viewSelect,
       // Metric.
       activeMetric: state.activeMetric,
       // Active standard deviations.
@@ -142,11 +138,10 @@ const RouteManager = props => {
       activeLayers: state.activeLayers,
       viewport: state.viewport,
       setViewport: state.setViewport,
-      shareHash: state.shareHash,
       indicators: state.indicators,
       activePointTypes: state.activePointTypes,
-      routeSet: state.routeSet,
       allDataLoaded: state.allDataLoaded,
+      activeStaticLayers: state.activeStaticLayers,
     }),
     shallow,
   )
@@ -165,6 +160,8 @@ const RouteManager = props => {
       activeQuintiles.toString() +
       '/' +
       getLayersString(activeLayers) +
+      '/' +
+      getLayersString(activeStaticLayers) +
       '/' +
       activePointTypes.toString() +
       '/' +
@@ -189,7 +186,7 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    // console.log('setStateFromHash(), ', params)
+    console.log('setStateFromHash(), ', params)
     if (!!params.view) {
       setStoreValues({
         activeView: params.view,
