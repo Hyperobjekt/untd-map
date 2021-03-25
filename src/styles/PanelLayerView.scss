@@ -307,6 +307,9 @@
             margin-right: 0.7rem;
             position: relative;
           }
+          input:focus {
+            outline: none;
+          }
           /* make default radio 'invisible' */
           input[type='radio'] {
             -webkit-appearance: none;

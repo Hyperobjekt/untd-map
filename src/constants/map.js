@@ -169,7 +169,7 @@ export const ROUTE_SET = [
     id: 'static_layers',
     options: ['1', '0'],
     validate: 'contains_only',
-    defaultValue: [0, 0, 0, 0],
+    defaultValue: [0, 0, 0, 0, 0],
   },
   {
     id: 'points',

@@ -17,8 +17,10 @@ const MapLayerToggle = ({ ...props }) => {
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  const activeLayers = useStore(state => state.activeLayers)
-  // console.log('activeLayers, ', activeLayers)
+  const activeStaticLayers = useStore(
+    state => state.activeStaticLayers,
+  )
+  // console.log('activeStaticLayers, ', activeStaticLayers)
 
   const getLayerLabel = id => {
     const layer = UNTD_STATIC_LAYERS.find(
@@ -28,45 +30,28 @@ const MapLayerToggle = ({ ...props }) => {
   }
 
   const updateLayers = e => {
-    // console.log('updateLayers, ', e.currentTarget)
-    // If item is checked, if it's not in array, push it into array
-    // If item is not checked, if it's in array, remove
+    console.log('updateLayers, ', e.currentTarget)
+    // Get index of control
     const index = Number(
-      String(e.currentTarget.id).replace('layer_', ''),
+      String(e.currentTarget.id).replace(
+        'layer_static_',
+        '',
+      ),
     )
-    // document.querySelector('[data-only_one="true"]')
-    // If the element is an only-one element, reset other only-ones of same name.
-    const el = document.getElementById(e.currentTarget.id)
-    const dataset = el.dataset
-    if (dataset.onlyOne === 'true') {
-      // console.log('it is an only-one')
-      const name = dataset.onlyOneName
-      // Remove all the matching only-ones from the activeLayers array.
-      UNTD_LAYERS.forEach((el, i) => {
-        if (
-          el.only_one === true &&
-          el.only_one_name === name
-        ) {
-          activeLayers[i] = 0
-        }
+    console.log('index = ', index)
+    // Create a new array of the same length.
+    const newStaticLayers = activeStaticLayers
+      .slice()
+      .map(el => {
+        return 0
       })
-    }
-    // Reset activeLayers array.
-    if (!!e.currentTarget.checked) {
-      // Checked.
-      activeLayers[index] = 1
-      // setActiveLayers(activeLayers)
-      setStoreValues({ activeLayers: activeLayers })
-    } else {
-      // Not checked.
-      activeLayers[index] = 0
-      // setActiveLayers(activeLayers)
-      setStoreValues({ activeLayers: activeLayers })
-    }
-    // console.log('activeLayers, ', activeLayers)
+    console.log('newStaticLayers = ', newStaticLayers)
+    newStaticLayers[index] = 1
+    console.log('newStaticLayers = ', newStaticLayers)
+    setStoreValues({
+      activeStaticLayers: newStaticLayers,
+    })
   }
-
-  const [showPanel, setShowPanel] = useState(false)
 
   return (
     <div className="map-layer-toggle">
@@ -84,13 +69,13 @@ const MapLayerToggle = ({ ...props }) => {
             >
               <input
                 type="radio"
-                id={'layer_' + i}
+                id={'layer_static_' + i}
                 name="scales"
                 key={el.id}
                 data-only-one={el.only_one}
                 data-only-one-name={el.only_one_name}
                 checked={
-                  activeLayers[i] === 1 ? true : false
+                  activeStaticLayers[i] === 1 ? true : false
                 }
                 readOnly={true}
                 onClick={e => {
