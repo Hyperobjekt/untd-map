@@ -25,7 +25,7 @@ const FeedbackContent = ({ children, ...props }) => {
     setStoreValues,
     feedbackFeature,
     feedbackAddress,
-    feedbackLatLng,
+    feedbackLngLat,
     breakpoint,
   } = useStore(
     state => ({
@@ -33,7 +33,7 @@ const FeedbackContent = ({ children, ...props }) => {
       feedbackFeature: state.feedbackFeature,
       feedbackFeatureType: state.feedbackFeatureType,
       feedbackAddress: state.feedbackAddress,
-      feedbackLatLng: state.feedbackLatLng,
+      feedbackLngLat: state.feedbackLngLat,
       breakpoint: state.breakpoint,
     }),
     shallow,
@@ -95,7 +95,7 @@ const FeedbackContent = ({ children, ...props }) => {
             el.place_type.indexOf('poi') > -1,
         )
         setStoreValues({
-          feedbackLatLng: [
+          feedbackLngLat: [
             position.coords.latitude,
             position.coords.longitude,
           ],
@@ -155,8 +155,8 @@ const FeedbackContent = ({ children, ...props }) => {
       // }, 1400);
 
       values.address = feedbackAddress
-      values.latitude = feedbackLatLng[0]
-      values.longitude = feedbackLatLng[1]
+      values.longitude = feedbackLngLat[0]
+      values.latitude = feedbackLngLat[1]
 
       // detect spam with honeypot
       if (honeypotRef.current.value !== '') return
@@ -172,8 +172,9 @@ const FeedbackContent = ({ children, ...props }) => {
           'form-name': 'map_feedback',
           ...values,
         }),
-      })
-        .then(() => {
+      }).then(response => {
+        console.log('response', response)
+        if (!!response.ok) {
           console.log('Form submission success!')
           // Turn off submitting state.
           formik.setSubmitting(false)
@@ -181,15 +182,27 @@ const FeedbackContent = ({ children, ...props }) => {
           setIsSubmitted(true)
           // Clear form fields
           formik.resetForm()
-        })
-        .catch(error => {
+        } else {
           // Catch submission errors.
-          console.log('Submission error:', error)
+          console.log(
+            'Submission error:',
+            response.status,
+            response.statusText,
+          )
           // Turn off submitting state.
           formik.setSubmitting(false)
           // Enable display of submission error message.
           setIsSubmittedError(true)
-        })
+        }
+      })
+      // .catch(error => {
+      //   // Catch submission errors.
+      //   console.log('Submission error:', error)
+      //   // Turn off submitting state.
+      //   formik.setSubmitting(false)
+      //   // Enable display of submission error message.
+      //   setIsSubmittedError(true)
+      // })
 
       const { email, signup } = values
 
@@ -198,16 +211,31 @@ const FeedbackContent = ({ children, ...props }) => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email }),
-        })
-          .then(res => res.text())
-          .then(text => {
-            console.log('Signup success!', text)
-          })
-          .catch(error => {
+        }).then(response => {
+          console.log('response signup, ', response)
+          if (!!response.ok) {
+            console.log('Signup submission success!')
+          } else {
             // Catch submission errors.
-            console.log('Signup error:', error)
+            console.log(
+              'Signup submission error:',
+              response.status,
+              response.statusText,
+            )
+            // Enable display of submission error message.
             setIsSubmittedError(true)
-          })
+          }
+        })
+
+        // .then(res => res.text())
+        // .then(text => {
+        //   console.log('Signup success!', text)
+        // })
+        // .catch(error => {
+        //   // Catch submission errors.
+        //   console.log('Signup error:', error)
+        //   setIsSubmittedError(true)
+        // })
       }
     },
   })
@@ -461,7 +489,7 @@ const FeedbackContent = ({ children, ...props }) => {
                 id="message"
                 name="message"
                 type="text"
-                rows="5"
+                rows="4"
                 className={`form-control ${
                   formik.touched.message &&
                   formik.errors.message
@@ -517,7 +545,7 @@ const FeedbackContent = ({ children, ...props }) => {
                   {i18n.translate(`FEEDBACK_CANCEL`)}
                 </span>
               </CoreButton>
-              <CoreButton
+              <button
                 type="submit"
                 id="button_submit"
                 className={`btn btn-primary feedback-submit ${
@@ -526,9 +554,7 @@ const FeedbackContent = ({ children, ...props }) => {
                 disabled={
                   formik.isSubmitting ||
                   feedbackAddress.length === 0 ||
-                  feedbackLatLng.length < 2
-                    ? true
-                    : false
+                  feedbackLngLat.length < 2
                 }
                 label={i18n.translate(`FEEDBACK_SUBMIT`)}
                 color="primary"
@@ -549,32 +575,36 @@ const FeedbackContent = ({ children, ...props }) => {
                     </span>
                   </div>
                 ) : null}
-              </CoreButton>
-
-              {isSubmitted && !isSubmittedError ? (
-                <div
-                  className="alert alert-success"
-                  role="alert"
-                >
-                  {i18n.translate(`FEEDBACK_SUCCESS`)}
-                </div>
-              ) : null}
-              {isSubmittedError ? (
-                <div
-                  className="alert alert-danger"
-                  role="alert"
-                >
-                  {i18n.translate(
+              </button>
+            </div>
+          </Col>
+        </Row>
+        <Row className={clsx('row-alert')}>
+          <Col>
+            {isSubmitted && !isSubmittedError ? (
+              <div
+                className="alert alert-success"
+                role="alert"
+              >
+                {i18n.translate(`FEEDBACK_SUCCESS`)}
+              </div>
+            ) : null}
+            {isSubmittedError ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                dangerouslySetInnerHTML={{
+                  __html: i18n.translate(
                     `FEEDBACK_SUBMIT_FAILURE`,
                     {
                       email: i18n.translate(
                         `CONTACT_EMAIL`,
                       ),
                     },
-                  )}
-                </div>
-              ) : null}
-            </div>
+                  ),
+                }}
+              ></div>
+            ) : null}
           </Col>
         </Row>
       </form>

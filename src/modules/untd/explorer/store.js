@@ -278,7 +278,7 @@ const [useStore] = create((set, get) => ({
   // Address for feedback
   feedbackAddress: '',
   // Feedback lat long array
-  feedbackLatLng: [],
+  feedbackLngLat: [],
   showMobileLegend: false,
   interactionsMobile: false,
   runTour: false,

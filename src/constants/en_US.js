@@ -192,9 +192,8 @@ const en_US = {
   FEEDBACK_USE_CURRENT_LOC: `Use my current location`,
   FEEDBACK_SUBMIT: `Submit`,
   CONTACT_EMAIL: `analytics@childpovertyactionlab.org`,
-  CONTACT_MAILTO: `maito:{email}`,
-  FEEDBACK_SUBMIT_FAILURE: `Sorry, something went wrong with the form
-  submission. If you like you can still <a href="mailto:{email}>contact us by email</a>.`,
+  // CONTACT_MAILTO: `maito:{email}`,
+  FEEDBACK_SUBMIT_FAILURE: `Sorry, something went wrong with the form submission. If you like you can still <a href="mailto:{email}">contact us by email</a>.`,
   FEEDBACK_SUCCESS: `Messsage received! Thanks for contacting us.`,
   FEEDBACK_SUBMITTING: `Submitting...`,
   FEEDBACK_CANCEL: `Cancel`,

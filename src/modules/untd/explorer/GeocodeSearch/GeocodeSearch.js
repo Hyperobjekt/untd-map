@@ -38,32 +38,41 @@ const GeocodeSearch = ({ ...props }) => {
 
   // Update the UI according to the context.
   const updateUIWithResult = suggestion => {
-    // console.log('updateUIWithResult, ', suggestion)
+    console.log('updateUIWithResult, ', suggestion)
     // If feature has a bounding box, use the
     // bounding box to fly, otherwise treat it
     // like a point.
-    if (!!suggestion.suggestion.bbox) {
-      flyToBounds([
-        [
-          suggestion.suggestion.bbox[0],
-          suggestion.suggestion.bbox[1],
-        ],
-        [
-          suggestion.suggestion.bbox[2],
-          suggestion.suggestion.bbox[3],
-        ],
-      ])
+    if (props.context && props.context === 'feedback') {
+      console.log('context is feedback')
+      setStoreValues({
+        feedbackAddress: suggestion.suggestionValue,
+        feedbackLngLat: suggestion.suggestion.center,
+      })
     } else {
-      // flyToFeature(suggestion.suggestion)
-      flyToLatLng(
-        suggestion.suggestion.center[1],
-        suggestion.suggestion.center[0],
-      )
+      if (!!suggestion.suggestion.bbox) {
+        flyToBounds([
+          [
+            suggestion.suggestion.bbox[0],
+            suggestion.suggestion.bbox[1],
+          ],
+          [
+            suggestion.suggestion.bbox[2],
+            suggestion.suggestion.bbox[3],
+          ],
+        ])
+      } else {
+        // flyToFeature(suggestion.suggestion)
+        flyToLatLng(
+          suggestion.suggestion.center[1],
+          suggestion.suggestion.center[0],
+        )
+      }
+      // If intro panel is dsplayed, hide it.
+      if (!!showIntroModal) {
+        setStoreValues({ showIntroModal: false })
+      }
     }
-    // If intro panel is dsplayed, hide it.
-    if (!!showIntroModal) {
-      setStoreValues({ showIntroModal: false })
-    }
+
     handleClear()
     setStoreValues({
       eventGeocodeSearch: eventGeocodeSearch + 1,
