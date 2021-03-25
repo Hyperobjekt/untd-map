@@ -26,6 +26,7 @@ const FeedbackContent = ({ children, ...props }) => {
     feedbackAddress,
     feedbackLngLat,
     breakpoint,
+    currentLocation,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -34,41 +35,11 @@ const FeedbackContent = ({ children, ...props }) => {
       feedbackAddress: state.feedbackAddress,
       feedbackLngLat: state.feedbackLngLat,
       breakpoint: state.breakpoint,
+      currentLocation: state.currentLocation,
     }),
     shallow,
   )
-
   // console.log('feedbackFeature, ', feedbackFeature)
-
-  // If there's a feedback feature, pre-populate with
-  // the information for that feature.
-
-  // Hidden input for lat lng
-  // Hidden honeypot
-
-  const [position, setPosition] = useState([])
-
-  useEffect(() => {
-    // Store the user's location when the app loads, to save time.
-    if (
-      'geolocation' in navigator &&
-      navigator.permissions &&
-      navigator.permissions.query({ name: 'geolocation' })
-    ) {
-      // console.log('loaded. setting position.')
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          setPosition([
-            position.coords.longitude,
-            position.coords.latitude,
-          ])
-        },
-        error => {
-          setPosition([])
-        },
-      )
-    }
-  }, [])
 
   /**
    * Submit the form to netlify forms
@@ -76,11 +47,11 @@ const FeedbackContent = ({ children, ...props }) => {
   const submitForm = () => {}
 
   const useCurrentLocation = () => {
-    // console.log('useCurrentLocation(), ', position)
+    // console.log('useCurrentLocation(), ', currentLocation)
     // Get current location from coords.
     const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-      position.coords.longitude
-    },${position.coords.latitude}.json?access_token=${
+      currentLocation[0]
+    },${currentLocation[1]}.json?access_token=${
       process.env.GATSBY_MAPBOX_API_TOKEN
     }&types=address,poi&cachebuster=${Math.floor(
       Date.now(),
@@ -97,8 +68,8 @@ const FeedbackContent = ({ children, ...props }) => {
         )
         setStoreValues({
           feedbackLngLat: [
-            position.coords.longitude,
-            position.coords.latitude,
+            currentLocation[0],
+            currentLocation[1],
           ],
           feedbackAddress: addresses[0].place_name,
         })
@@ -237,7 +208,10 @@ const FeedbackContent = ({ children, ...props }) => {
     // console.log('handleCancel()')
     setStoreValues({
       showFeedbackModal: false,
+      feedbackAddress: '',
+      feedbackFeature: 0,
     })
+    formik.resetForm()
   }
 
   return (
@@ -260,9 +234,9 @@ const FeedbackContent = ({ children, ...props }) => {
         <Row className={clsx('row-location')}>
           <Col
             xs="12"
-            md={position.length === 2 ? 6 : 12}
+            md={currentLocation.length === 2 ? 6 : 12}
             className={clsx(
-              position.length === 2 &&
+              currentLocation.length === 2 &&
                 breakpoint !== 'xs' &&
                 breakpoint !== 'sm'
                 ? 'pr-0'
@@ -271,7 +245,7 @@ const FeedbackContent = ({ children, ...props }) => {
           >
             <GeocodeSearch context="feedback" />
           </Col>
-          {position.length === 2 && (
+          {currentLocation.length === 2 && (
             <>
               <Col
                 xs="12"

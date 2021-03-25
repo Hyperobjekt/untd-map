@@ -271,6 +271,8 @@ const [useStore] = create((set, get) => ({
   isControlHovered: false,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
+  // Current location [lng, lat]
+  currentLocation: [],
   // Display of modal for feedback entry and submission.
   showFeedbackModal: false,
   // The feature for populating the map.
