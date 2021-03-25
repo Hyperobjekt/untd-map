@@ -38,12 +38,12 @@ const GeocodeSearch = ({ ...props }) => {
 
   // Update the UI according to the context.
   const updateUIWithResult = suggestion => {
-    console.log('updateUIWithResult, ', suggestion)
+    // console.log('updateUIWithResult, ', suggestion)
     // If feature has a bounding box, use the
     // bounding box to fly, otherwise treat it
     // like a point.
     if (props.context && props.context === 'feedback') {
-      console.log('context is feedback')
+      // console.log('context is feedback')
       setStoreValues({
         feedbackAddress: suggestion.suggestionValue,
         feedbackLngLat: suggestion.suggestion.center,
