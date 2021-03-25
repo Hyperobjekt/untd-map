@@ -197,6 +197,8 @@ const en_US = {
   FEEDBACK_SUCCESS: `Messsage received! Thanks for contacting us.`,
   FEEDBACK_SUBMITTING: `Submitting...`,
   FEEDBACK_CANCEL: `Cancel`,
+  FEEDBACK: `FEEDBACK`,
+  FEEDBACK_MODAL: `Send us your feedback`,
   OR: `or`,
 }
 

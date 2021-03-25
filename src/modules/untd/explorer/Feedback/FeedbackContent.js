@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { css, cx } from 'emotion'
 import { MdMyLocation } from 'react-icons/md'
 import { Input, Col, Row } from 'reactstrap'
 import { useFormik } from 'formik'
@@ -39,7 +38,7 @@ const FeedbackContent = ({ children, ...props }) => {
     shallow,
   )
 
-  console.log('feedbackFeature, ', feedbackFeature)
+  // console.log('feedbackFeature, ', feedbackFeature)
 
   // If there's a feedback feature, pre-populate with
   // the information for that feature.
@@ -47,7 +46,7 @@ const FeedbackContent = ({ children, ...props }) => {
   // Hidden input for lat lng
   // Hidden honeypot
 
-  const [position, setPosition] = useState(null)
+  const [position, setPosition] = useState([])
 
   useEffect(() => {
     // Store the user's location when the app loads, to save time.
@@ -59,10 +58,13 @@ const FeedbackContent = ({ children, ...props }) => {
       // console.log('loaded. setting position.')
       navigator.geolocation.getCurrentPosition(
         position => {
-          setPosition(position)
+          setPosition([
+            position.coords.longitude,
+            position.coords.latitude,
+          ])
         },
         error => {
-          setPosition(false)
+          setPosition([])
         },
       )
     }
@@ -74,7 +76,7 @@ const FeedbackContent = ({ children, ...props }) => {
   const submitForm = () => {}
 
   const useCurrentLocation = () => {
-    console.log('useCurrentLocation(), ', position)
+    // console.log('useCurrentLocation(), ', position)
     // Get current location from coords.
     const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
       position.coords.longitude
@@ -87,8 +89,7 @@ const FeedbackContent = ({ children, ...props }) => {
     fetch(path)
       .then(r => r.json())
       .then(json => {
-        console.log('response, ', json)
-        // setSuggestions(json.features)
+        // console.log('response, ', json)
         const addresses = json.features.filter(
           el =>
             el.place_type.indexOf('address') > -1 ||
@@ -96,8 +97,8 @@ const FeedbackContent = ({ children, ...props }) => {
         )
         setStoreValues({
           feedbackLngLat: [
-            position.coords.latitude,
             position.coords.longitude,
+            position.coords.latitude,
           ],
           feedbackAddress: addresses[0].place_name,
         })
@@ -173,9 +174,9 @@ const FeedbackContent = ({ children, ...props }) => {
           ...values,
         }),
       }).then(response => {
-        console.log('response', response)
+        // console.log('response', response)
         if (!!response.ok) {
-          console.log('Form submission success!')
+          // console.log('Form submission success!')
           // Turn off submitting state.
           formik.setSubmitting(false)
           // Enable display of submission success message.
@@ -184,25 +185,17 @@ const FeedbackContent = ({ children, ...props }) => {
           formik.resetForm()
         } else {
           // Catch submission errors.
-          console.log(
-            'Submission error:',
-            response.status,
-            response.statusText,
-          )
+          // console.log(
+          //   'Submission error:',
+          //   response.status,
+          //   response.statusText,
+          // )
           // Turn off submitting state.
           formik.setSubmitting(false)
           // Enable display of submission error message.
           setIsSubmittedError(true)
         }
       })
-      // .catch(error => {
-      //   // Catch submission errors.
-      //   console.log('Submission error:', error)
-      //   // Turn off submitting state.
-      //   formik.setSubmitting(false)
-      //   // Enable display of submission error message.
-      //   setIsSubmittedError(true)
-      // })
 
       const { email, signup } = values
 
@@ -212,30 +205,20 @@ const FeedbackContent = ({ children, ...props }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email }),
         }).then(response => {
-          console.log('response signup, ', response)
+          // console.log('response signup, ', response)
           if (!!response.ok) {
-            console.log('Signup submission success!')
+            // console.log('Signup submission success!')
           } else {
             // Catch submission errors.
-            console.log(
-              'Signup submission error:',
-              response.status,
-              response.statusText,
-            )
+            // console.log(
+            //   'Signup submission error:',
+            //   response.status,
+            //   response.statusText,
+            // )
             // Enable display of submission error message.
             setIsSubmittedError(true)
           }
         })
-
-        // .then(res => res.text())
-        // .then(text => {
-        //   console.log('Signup success!', text)
-        // })
-        // .catch(error => {
-        //   // Catch submission errors.
-        //   console.log('Signup error:', error)
-        //   setIsSubmittedError(true)
-        // })
       }
     },
   })
@@ -277,9 +260,9 @@ const FeedbackContent = ({ children, ...props }) => {
         <Row className={clsx('row-location')}>
           <Col
             xs="12"
-            md={!!position ? 6 : 12}
+            md={position.length === 2 ? 6 : 12}
             className={clsx(
-              !!position &&
+              position.length === 2 &&
                 breakpoint !== 'xs' &&
                 breakpoint !== 'sm'
                 ? 'pr-0'
@@ -288,7 +271,7 @@ const FeedbackContent = ({ children, ...props }) => {
           >
             <GeocodeSearch context="feedback" />
           </Col>
-          {!!position && (
+          {position.length === 2 && (
             <>
               <Col
                 xs="12"

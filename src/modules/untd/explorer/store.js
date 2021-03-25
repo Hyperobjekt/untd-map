@@ -272,7 +272,7 @@ const [useStore] = create((set, get) => ({
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
   // Display of modal for feedback entry and submission.
-  showFeedbackModal: true,
+  showFeedbackModal: false,
   // The feature for populating the map.
   feedbackFeature: 0,
   // Address for feedback

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
+import { MdFeedback } from 'react-icons/md'
 
 import { theme } from './../theme'
 import useStore from './../store'
@@ -155,6 +156,13 @@ const ControlPanel = ({ children }) => {
       return 'right'
     }
   }
+
+  const launchFeedback = () => {
+    setStoreValues({
+      showFeedbackModal: true,
+    })
+  }
+
   /**
    * Updates positioning for tooltips on buttons in control panel.
    */
@@ -275,6 +283,24 @@ const ControlPanel = ({ children }) => {
           onClick={handleStartTour}
         />
       )}
+      <Divider />
+      <div className="control-label">
+        {i18n.translate('FEEDBACK')}
+      </div>
+      <CoreButton
+        id="button_toggle_feedback"
+        label={i18n.translate(`FEEDBACK_MODAL`)}
+        tooltip={buttonTooltipPosition}
+        onClick={launchFeedback}
+        color="none"
+        styles={{ display: 'none' }}
+        className={clsx('button-modal-feedback')}
+      >
+        <MdFeedback />
+        <span className="sr-only">
+          {i18n.translate(`FEEDBACK_MODAL`)}
+        </span>
+      </CoreButton>
       <Divider />
       <UnifiedShareBtn className="d-block d-lg-none" />
       <DesktopUnifiedShareBtn className="d-none d-lg-block" />
