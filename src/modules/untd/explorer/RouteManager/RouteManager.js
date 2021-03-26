@@ -77,7 +77,7 @@ const isZoomValid = zoom => {
  * @return {Boolean}        [description]
  */
 const isRouteValid = params => {
-  console.log('isRouteValid(), ', params, ROUTE_SET)
+  // console.log('isRouteValid(), ', params, ROUTE_SET)
   let isValid = true
   if (
     // View
@@ -186,7 +186,7 @@ const RouteManager = props => {
    * @param {[type]} params [description]
    */
   const setStateFromHash = params => {
-    console.log('setStateFromHash(), ', params)
+    // console.log('setStateFromHash(), ', params)
     if (!!params.view) {
       setStoreValues({
         activeView: params.view,
