@@ -1,16 +1,5 @@
-// Array of layers.
+// Array of layers with statistics attached.
 export const UNTD_LAYERS = [
-  {
-    id: `county`,
-    label: `UI_MAP_LAYERS_COUNTIES`,
-    types: [`polygons`],
-    tooltip: null,
-    only_one: true,
-    only_one_name: `basic_geo`,
-    group: 0,
-    index: 0,
-    place_type: `County`,
-  },
   {
     id: `zip`,
     label: `UI_MAP_LAYERS_ZIPS`,
@@ -43,6 +32,65 @@ export const UNTD_LAYERS = [
     group: 0,
     index: 3,
     place_type: `Place`,
+  },
+]
+
+// Static layers without statistics attached.
+export const UNTD_STATIC_LAYERS = [
+  {
+    id: `county`,
+    label: `UI_MAP_LAYERS_COUNTIES`,
+    types: [`polygons`],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: `County`,
+  },
+  {
+    id: `fedcongress`,
+    label: `UI_MAP_FEATURE_FEDCONGRESS`,
+    types: [`polygons`],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: `label`,
+  },
+  {
+    id: `statehouse`,
+    label: `UI_MAP_FEATURE_STATEHOUSE`,
+    types: [`polygons`],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: `label`,
+  },
+  {
+    id: `statesenate`,
+    label: `UI_MAP_FEATURE_STATESENATE`,
+    types: [`polygons`],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: `label`,
+  },
+  {
+    id: `schooldistricts`,
+    label: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    types: [`polygons`],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: `label`,
   },
 ]
 

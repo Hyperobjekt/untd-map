@@ -19,6 +19,7 @@ import MapView from './../MapView/MapView'
 import SlideoutPanel from './../SlideoutPanel/SlideoutPanel'
 import IntroModal from './../IntroModal/IntroModal'
 import PanelModal from './../PanelModal/PanelModal'
+import { FeedbackModal } from './../Feedback'
 import {
   ShareLinkModal,
   UnifiedShareModal,
@@ -159,6 +160,7 @@ const Layout = ({ children, ...props }) => {
               <IntroModal />
               <Tour />
               <PanelModal />
+              <FeedbackModal />
             </>
           )}
         </Canvas>

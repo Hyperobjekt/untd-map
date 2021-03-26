@@ -24,6 +24,7 @@ export const DATA_FILES = [
     popup: 1, // Does this geo feature get a popup?
     id_key: 'GEOID', // What feature property to use for hovered ID?
     label_key: 'NAME', // What feature property to use for label?
+    build_point_set: 1,
   },
   {
     id: 'place',
@@ -63,6 +64,50 @@ export const DATA_FILES = [
     popup: 1,
     id_key: 'FID',
     label_key: 'Type',
+  },
+  {
+    id: 'fedcongress',
+    filename: 'sm_fedcongress',
+    ext: 'geojson',
+    type: 'polygon',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'label',
+    type_label_key: `UI_MAP_FEATURE_FEDCONGRESS`,
+    build_point_set: 1,
+  },
+  {
+    id: 'statehouse',
+    filename: 'sm_statehouse',
+    ext: 'geojson',
+    type: 'polygon',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'label',
+    type_label_key: `UI_MAP_FEATURE_STATEHOUSE`,
+    build_point_set: 1,
+  },
+  {
+    id: 'statesenate',
+    filename: 'sm_statesenate',
+    ext: 'geojson',
+    type: 'polygon',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'label',
+    type_label_key: `UI_MAP_FEATURE_STATESENATE`,
+    build_point_set: 1,
+  },
+  {
+    id: 'schooldistricts',
+    filename: 'sm_schooldistricts',
+    ext: 'geojson',
+    type: 'polygon',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'label',
+    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    build_point_set: 1,
   },
 ]
 
@@ -126,6 +171,12 @@ export const ROUTE_SET = [
     defaultValue: [0, 0, 1, 0],
   },
   {
+    id: 'static_layers',
+    options: ['1', '0'],
+    validate: 'contains_only',
+    defaultValue: [0, 0, 0, 0, 0],
+  },
+  {
     id: 'points',
     options: ['1', '0'],
     validate: 'contains_only',
@@ -152,7 +203,7 @@ export const ROUTE_SET = [
 ]
 
 // '/explorer/tot_popE_18_sd/1,1,1,1,1/0,0,1,0//32.912/-96.866/8/'
-export const DEFAULT_ROUTE = `#/${ROUTE_SET[0].defaultValue}/${ROUTE_SET[1].defaultValue}/${ROUTE_SET[2].defaultValue}/${ROUTE_SET[3].defaultValue}/${ROUTE_SET[4].defaultValue}/${ROUTE_SET[5].defaultValue}/${ROUTE_SET[6].defaultValue}/${ROUTE_SET[7].defaultValue}/`
+export const DEFAULT_ROUTE = `#/${ROUTE_SET[0].defaultValue}/${ROUTE_SET[1].defaultValue}/${ROUTE_SET[2].defaultValue}/${ROUTE_SET[3].defaultValue}/${ROUTE_SET[4].defaultValue}/${ROUTE_SET[5].defaultValue}/${ROUTE_SET[6].defaultValue}/${ROUTE_SET[7].defaultValue}/${ROUTE_SET[8].defaultValue}/`
 
 export const DEFAULT_POPUP = {
   offset: 30,

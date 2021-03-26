@@ -74,6 +74,30 @@ const App = props => {
     })
   }, [])
 
+  useEffect(() => {
+    // Store the user's location when the app loads, to save time.
+    if (
+      'geolocation' in navigator &&
+      navigator.permissions &&
+      navigator.permissions.query({ name: 'geolocation' })
+    ) {
+      // console.log('loaded. setting position.')
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setStoreValues({
+            currentLocation: [
+              position.coords.longitude,
+              position.coords.latitude,
+            ],
+          })
+        },
+        error => {
+          setPosition([])
+        },
+      )
+    }
+  }, [])
+
   // const setEventError = useStore(
   //   state => state.setEventError,
   // )

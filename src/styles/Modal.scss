@@ -130,4 +130,182 @@
       }
     }
   }
+  // Contents of feedback modal only.
+  &.feedback-modal {
+    max-width: 628px;
+    .modal-content {
+      .modal-header {
+        button {
+          display: none;
+        }
+      }
+      .modal-body {
+        margin-top: 1.5rem;
+      }
+
+      color: $color-untd-gray;
+      border-radius: 4px;
+      h2 {
+        @include font-gotham-book;
+        text-transform: none;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 21px;
+      }
+      .row-instructions {
+        margin-bottom: calc(31px - 1rem);
+      }
+      .search-autosuggest {
+        border-radius: 4px;
+        height: 40px;
+        max-width: 100%;
+        .icon-search {
+          width: 18px;
+          height: 18px;
+          left: 8px;
+          color: $color-untd-gray;
+        }
+        input {
+          height: 100%;
+          width: 100%;
+          border-radius: 4px;
+          background-color: transparent;
+          // padding-left: 32px;
+          // padding-right: 12px;
+          &:focus {
+            background-color: $white;
+          }
+        }
+        .button-search-clear {
+          display: none;
+          border-radius: 4px;
+          top: 0;
+          right: 0;
+          svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 0;
+            color: $color-untd-gray;
+          }
+        }
+      }
+      .col-or {
+        min-height: 40px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .feedback-use-my.btn {
+        border-radius: 4px;
+        background-color: #a45e0b;
+        color: #fff;
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          background-color: lighten(#a45e0b, 5%);
+          color: $white;
+          svg {
+            color: $white;
+          }
+        }
+        svg {
+          height: 18px;
+          width: 18px;
+          margin-top: 0;
+          margin-right: 0.6rem;
+        }
+        span {
+          // margin-top: -2px;
+        }
+      }
+      button {
+        font-size: 14px;
+      }
+      input {
+        height: 40px;
+        font-size: 14px;
+      }
+      label {
+        font-size: 12px;
+        margin-bottom: 0;
+      }
+      .row-location,
+      .row-message,
+      .row-subscribe,
+      .row-submit {
+        margin-bottom: 0.5rem;
+        button {
+          width: 104px;
+        }
+      }
+      .row-message textarea {
+        font-size: 14px;
+      }
+      .row-submit .form-group {
+        display: flex;
+        justify-content: flex-end;
+        button {
+          margin-left: 1rem;
+          height: 40px;
+          border-radius: 4px;
+          // $color-untd-blue
+          &.feedback-cancel {
+            background-color: $white;
+            color: $color-untd-gray;
+            border: 1px solid $color-untd-lightgray;
+          }
+          &.feedback-submit {
+            background-color: $color-untd-blue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover {
+              background-color: lighten(
+                $color-untd-blue,
+                5%
+              );
+              color: $white;
+              // color: $color-untd-lightgray;
+            }
+            .spinner-border {
+            }
+          }
+        }
+      }
+      .form-group {
+        margin-bottom: 0;
+      }
+      .form-group.subscribe {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        input {
+          height: auto;
+          margin-right: 0.8rem;
+        }
+      }
+      .row-alert {
+        font-size: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        text-align: right;
+        .alert {
+          background-color: transparent;
+          border: 0;
+          padding: 0.5rem 0 0 0;
+          &.alert-danger {
+            a {
+              color: #721c24;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -204,6 +204,10 @@ const [useStore] = create((set, get) => ({
   activePointTypes: ROUTE_SET.find(el => {
     return el.id === 'points'
   }).defaultValue,
+  // Stores default static layers.
+  activeStaticLayers: ROUTE_SET.find(el => {
+    return el.id === 'static_layers'
+  }).defaultValue,
   // Point categories.
   pointCategories: [],
   defaultMetric: ROUTE_SET.find(el => {
@@ -271,6 +275,16 @@ const [useStore] = create((set, get) => ({
   isControlHovered: false,
   // Position of tooltips in control panel, changes with breakpoint
   buttonTooltipPosition: 'auto',
+  // Current location [lng, lat]
+  currentLocation: [],
+  // Display of modal for feedback entry and submission.
+  showFeedbackModal: false,
+  // The feature for populating the map.
+  feedbackFeature: 0,
+  // Address for feedback
+  feedbackAddress: '',
+  // Feedback lat long array
+  feedbackLngLat: [],
   showMobileLegend: false,
   interactionsMobile: false,
   runTour: false,

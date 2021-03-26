@@ -40,6 +40,7 @@ const MapView = props => {
     activeLayers,
     activePointTypes,
     activeView,
+    activeStaticLayers,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -61,6 +62,7 @@ const MapView = props => {
       activeLayers: state.activeLayers,
       activePointTypes: state.activePointTypes,
       activeView: state.activeView,
+      activeStaticLayers: state.activeStaticLayers,
     }),
     shallow,
   )
@@ -106,6 +108,7 @@ const MapView = props => {
       activePointTypes,
       pointTypes,
       pointTypeLayers,
+      activeStaticLayers,
     }
     return getLayers(remoteJson, context)
   }, [
@@ -114,6 +117,7 @@ const MapView = props => {
     debouncedActiveMetric,
     activeQuintiles,
     activeLayers,
+    activeStaticLayers,
     debouncedActivePointTypes,
     remoteJson,
   ])
