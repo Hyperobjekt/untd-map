@@ -24,6 +24,7 @@ export const DATA_FILES = [
     popup: 1, // Does this geo feature get a popup?
     id_key: 'GEOID', // What feature property to use for hovered ID?
     label_key: 'NAME', // What feature property to use for label?
+    build_point_set: 1,
   },
   {
     id: 'place',
@@ -73,6 +74,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_FEDCONGRESS`,
+    build_point_set: 1,
   },
   {
     id: 'statehouse',
@@ -83,6 +85,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_STATEHOUSE`,
+    build_point_set: 1,
   },
   {
     id: 'statesenate',
@@ -93,6 +96,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_STATESENATE`,
+    build_point_set: 1,
   },
   {
     id: 'schooldistricts',
@@ -103,6 +107,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    build_point_set: 1,
   },
 ]
 

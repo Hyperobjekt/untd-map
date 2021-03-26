@@ -215,6 +215,18 @@ const RouteManager = props => {
       })
     }
 
+    if (
+      params.static_layers &&
+      params.static_layers.length > 0
+    ) {
+      const getLayers = params.static_layers.split(',')
+      setStoreValues({
+        activeStaticLayers: getLayers.map(el => {
+          return Number(el)
+        }),
+      })
+    }
+
     if (params.points && params.points.length > 0) {
       const getPoints = params.points.split(',')
       setStoreValues({

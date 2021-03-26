@@ -4,6 +4,7 @@ import { CRI_COLORS } from './../../../../constants/colors'
 import {
   UNTD_LAYERS,
   POINT_CATEGORIES,
+  UNTD_STATIC_LAYERS,
 } from './../../../../constants/layers'
 
 export const getClusterCountBg = (
@@ -348,6 +349,80 @@ export const getPolygonShapes = (type, context) => {
   })
 }
 
+// Functions for static shapes
+// Lines
+export const getStaticLayerLines = (source, context) => {
+  // console.log('getPolygonLines(), ', context)
+  return fromJS({
+    id: `${source}Lines`,
+    source: source,
+    type: 'line',
+    layout: {
+      visibility: 'visible',
+    },
+    interactive: true,
+    paint: {
+      'line-color': [
+        'case',
+        ['==', source, 'county'],
+        'red',
+        ['==', source, 'fedcongress'],
+        'orange',
+        ['==', source, 'statehouse'],
+        'purple',
+        ['==', source, 'statesenate'],
+        'yellow',
+        ['==', source, 'schooldistricts'],
+        'blue',
+        'blue',
+      ],
+      'line-width': 1,
+    },
+  })
+}
+// Labels
+export const getStaticLayerLabel = (source, context) => {
+  return fromJS({
+    id: `${source}Label`,
+    source: `${source}_points`,
+    type: 'symbol',
+    interactive: false,
+    layout: {
+      'icon-allow-overlap': true,
+      'text-field': ['get', 'label'],
+      'text-font': [
+        'DIN Offc Pro Medium',
+        'Arial Unicode MS Bold',
+      ],
+      'text-size': 12,
+      'text-allow-overlap': true,
+    },
+    paint: {
+      'text-color': [
+        'case',
+        ['==', source, 'county'],
+        'red',
+        ['==', source, 'fedcongress'],
+        'orange',
+        ['==', source, 'statehouse'],
+        'purple',
+        ['==', source, 'statesenate'],
+        'yellow',
+        ['==', source, 'schooldistricts'],
+        'blue',
+        'blue',
+      ],
+      // 'text-color': 'red', // `#303030`,
+      // 'text-translate': [-6, -6],
+    },
+    // filter: [
+    //   'all',
+    //   ['has', 'point_count'],
+    //   ['==', ['number', context.activePointTypes[ind]], 1],
+    // ],
+  })
+}
+
 let z = 20
 
 export const getPolygonLayers = (
@@ -381,7 +456,6 @@ export const getPointLayers = (
   source,
   id,
   context,
-  // color,
   ind,
 ) => {
   // console.log('getRedlineLayers', context)
@@ -421,13 +495,55 @@ export const getPointLayers = (
   ]
 }
 
+z = 30
+/**
+ * Get the static geo shape layer, line and text label
+ * @param String source
+ * @param String id
+ * @param Object context
+ * @param {*} ind
+ * @returns
+ */
+export const getStaticLayer = (source, context) => {
+  // console.log('getStaticLayer', context)
+  return [
+    // Lines.
+    {
+      z: z + 1,
+      style: getStaticLayerLines(source, context),
+      idMap: true,
+      hasFeatureId: true,
+      type: `${source}Lines`,
+    },
+    // Label.
+    {
+      z: z + 2,
+      style: getStaticLayerLabel(source, context),
+      idMap: true,
+      hasFeatureId: true,
+      type: `${source}Label`,
+    },
+  ]
+}
+
 export const getLayers = (sources, context) => {
   // console.log('getLayers', sources, context)
   const layers = []
-  layers.push(...getPolygonLayers('county', context))
+  // Interactive geo shapes
   layers.push(...getPolygonLayers('zip', context))
   layers.push(...getPolygonLayers('tract', context))
   layers.push(...getPolygonLayers('place', context))
+  // Static geo shapes
+  const staticLayer = UNTD_STATIC_LAYERS[
+    context.activeStaticLayers.indexOf(1)
+  ]
+    ? UNTD_STATIC_LAYERS[
+        context.activeStaticLayers.indexOf(1)
+      ].id
+    : false
+  if (!!staticLayer) {
+    layers.push(...getStaticLayer(staticLayer, context))
+  }
   // Add a layer for each point type,
   // and a cluster layer for each point type.
   for (

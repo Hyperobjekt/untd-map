@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { css, cx } from 'emotion'
 import { Progress } from 'reactstrap'
 import clsx from 'clsx'
 import * as Papa from 'papaparse'
+import * as Turf from '@turf/turf'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store.js'
@@ -12,7 +12,6 @@ import {
   DATA_FILES,
   ROUTE_SET,
 } from './../../../../constants/map'
-import { variables } from './../theme'
 
 const isTruthy = val => {
   return (
@@ -48,6 +47,25 @@ const DataLoaderContent = ({ ...props }) => {
       </div>
     </div>
   )
+}
+
+const buildPointSet = (id, data) => {
+  // console.log('buildPointSet()', id, data)
+  const featureSet = {
+    features: [],
+    type: 'FeatureCollection',
+  }
+  // For each feature, find a center, and add a point for that center,
+  // with the appropriate label.
+  data.features.forEach(feature => {
+    // Feature set template into which will be added each point.
+    // const center = Turf.center(feature) // centerOfMass
+    const center = Turf.centerOfMass(feature)
+    center.properties.label = feature.properties.label
+    // console.log('center, ', center)
+    featureSet.features.push(center)
+  })
+  return featureSet
 }
 
 const DataLoader = ({ ...props }) => {
@@ -105,7 +123,22 @@ const DataLoader = ({ ...props }) => {
                   data: _data,
                 }
                 setRemoteJson(obj)
+                // If we need a set of points for putting labels inside polygons,
+                // build the point feature set.
+                if (!!el.build_point_set) {
+                  // console.log(
+                  //   'building point set for, ',
+                  //   el.id,
+                  // )
+                  let pointsObj = {}
+                  pointsObj[`${el.id}_points`] = {
+                    type: `geojson`,
+                    data: buildPointSet(el.id, _data),
+                  }
+                  setRemoteJson(pointsObj)
+                }
               }
+
               if (el.type === 'point') {
                 // Make a list of point types.
                 const point_types = []

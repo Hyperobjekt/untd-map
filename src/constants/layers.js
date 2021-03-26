@@ -1,16 +1,5 @@
 // Array of layers with statistics attached.
 export const UNTD_LAYERS = [
-  // {
-  //   id: `county`,
-  //   label: `UI_MAP_LAYERS_COUNTIES`,
-  //   types: [`polygons`],
-  //   tooltip: null,
-  //   only_one: true,
-  //   only_one_name: `basic_geo`,
-  //   group: 0,
-  //   index: 0,
-  //   place_type: `County`,
-  // },
   {
     id: `zip`,
     label: `UI_MAP_LAYERS_ZIPS`,
