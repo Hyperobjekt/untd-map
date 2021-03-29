@@ -15,6 +15,7 @@ const en_US = {
   BUTTON_TOGGLE_PANEL_LAYERS: `Toggle layers panel`,
   BUTTON_TOGGLE_PANEL_WEIGHT: `Toggle weights panel`,
   BUTTON_TOGGLE_PANEL_INFO: `Toggle info panel`,
+  BUTTON_TOGGLE_PANEL_LOCATION: `Toggle location panel`,
   CONTROL_PANEL_INFO: `HELP`,
   CONTROL_PANEL_METRICS: `DATA CONTROLS`,
   CONTROL_PANEL_LAYERS: `LAYERS`,
@@ -109,6 +110,7 @@ const en_US = {
   UI_CONTROL_PANEL_VIEW: `View`,
   UI_CONTROL_PANEL_VIEW: `Filter`,
   UI_CONTROL_PANEL_VIEW: `Share`,
+  CONTROL_PANEL_LOCATION: `LOCATION`,
   UI_MAP_METRIC_DEM_TOTP: `Total population`,
   UI_MAP_METRIC_DEM_POPWH: `White, Non-Hispanic population`,
   UI_MAP_METRIC_DEM_POPBL: `Black, Non-Hispanic population`,
@@ -206,6 +208,7 @@ const en_US = {
   FEEDBACK: `FEEDBACK`,
   FEEDBACK_MODAL: `Send us your feedback`,
   OR: `or`,
+  PANEL_LOCATION_DEMO: `Demographics`,
 }
 
 export default en_US

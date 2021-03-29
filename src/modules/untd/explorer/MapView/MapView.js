@@ -173,7 +173,22 @@ const MapView = props => {
       console.log('interactive geo feature clicked')
       if (!!interactionsMobile) {
         // Launch a modal for mobile.
+        setStoreValues({
+          activeFeature: feature,
+          showPanelModal: true,
+          slideoutPanel: {
+            active: false,
+            panel: 'location',
+          },
+        })
       } else {
+        setStoreValues({
+          activeFeature: feature,
+          slideoutPanel: {
+            active: true,
+            panel: 'location',
+          },
+        })
       }
     }
     // If feature source = one of the point layers, launch feedback.
