@@ -314,6 +314,8 @@ const [useStore] = create((set, get) => ({
       runTour: true,
     }))
   },
+  // Selected "active" feature (a geo shape (zip, place, tract))
+  activeFeature: 0,
   // Have images been added for map symbol layers?
   mapImagesAdded: 0,
   // Array of map images (because hasImage isn't working)

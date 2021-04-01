@@ -18,6 +18,7 @@ import clsx from 'clsx'
  * @param Function onClick  Click handler for button
  */
 const CoreButton = ({ children, ...props }) => {
+  // console.log('CoreButton, ', props)
   // to manage tooltip state
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
@@ -43,6 +44,7 @@ const CoreButton = ({ children, ...props }) => {
       color={props.color}
       label={props.label}
       className={clsx(props.className, 'button-core')}
+      disabled={props.disabled ? props.disabled : false}
     >
       {children}
       {props.tooltip && props.tooltip.length > 0 ? (

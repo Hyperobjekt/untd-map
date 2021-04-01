@@ -111,7 +111,7 @@ export const getRoundedValue = (
   isCurrency = false,
   isPercent = false,
 ) => {
-  // console.log('getRoundedValue()')
+  // console.log('getRoundedValue(), ', value)
   const type = typeof value
   if (!!isPercent) {
     value = value * 100
@@ -707,4 +707,48 @@ export const checkControlHovered = () => {
     })
   // console.log('isControl, ', isControl)
   return isControl
+}
+
+/**
+ * Returns a feature label specific to the feature type.
+ * @param Object feature
+ * @returns String
+ */
+export const getGeoFeatureLabel = feature => {
+  const source = DATA_FILES.find(item => {
+    return item.id === feature.source
+  })
+  const layerID = feature.layer.source
+  const label = feature.properties[source.label_key]
+    ? feature.properties[source.label_key]
+    : false
+
+  switch (true) {
+    case layerID === 'zip':
+      return i18n.translate(`TOOLTIP_PLACE_ZIP`, {
+        label: label,
+      })
+      break
+    case layerID === 'place':
+      return `${label}`
+      break
+    case layerID === 'tract':
+      return i18n.translate(`TOOLTIP_PLACE_TRACT`, {
+        label: label,
+      })
+      break
+    case layerID === 'county':
+      return i18n.translate(`TOOLTIP_PLACE_COUNTY`, {
+        label: label,
+      })
+      break
+  }
+}
+
+export const setActiveQuintile = quintile => {
+  // console.log('setActiveQuintile, ', quintile)
+  const arr = [0, 0, 0, 0, 0]
+  arr[quintile] = 1
+  // console.log(arr)
+  return arr
 }
