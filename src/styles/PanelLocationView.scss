@@ -44,6 +44,19 @@
       line-height: 1.8rem;
       letter-spacing: 1%;
     }
+    .demo-group {
+      font-size: 12px;
+      line-height: 16px;
+      .demo-label {
+        color: $color-untd-darkgray;
+      }
+      .demo-value {
+        color: $color-untd-gray;
+      }
+    }
+    .demo-total-group {
+      margin: 0.8rem 0 0.7rem;
+    }
   }
   .panel-indicators {
     padding: 1.6rem 2rem;

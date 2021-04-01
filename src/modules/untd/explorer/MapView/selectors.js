@@ -352,7 +352,7 @@ export const getPolygonShapes = (type, context) => {
 // Functions for static shapes
 // Lines
 export const getStaticLayerLines = (source, context) => {
-  // console.log('getPolygonLines(), ', context)
+  // console.log('getStaticLayerLines(), ', context)
   return fromJS({
     id: `${source}Lines`,
     source: source,
@@ -382,6 +382,7 @@ export const getStaticLayerLines = (source, context) => {
 }
 // Labels
 export const getStaticLayerLabel = (source, context) => {
+  // console.log('getStaticLayerLabel(), ', source, context)
   return fromJS({
     id: `${source}Label`,
     source: `${source}_points`,
@@ -412,8 +413,6 @@ export const getStaticLayerLabel = (source, context) => {
         'blue',
         'blue',
       ],
-      // 'text-color': 'red', // `#303030`,
-      // 'text-translate': [-6, -6],
     },
     // filter: [
     //   'all',
@@ -495,7 +494,7 @@ export const getPointLayers = (
   ]
 }
 
-z = 30
+z = 50
 /**
  * Get the static geo shape layer, line and text label
  * @param String source
