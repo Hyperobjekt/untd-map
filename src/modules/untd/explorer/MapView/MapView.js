@@ -170,7 +170,7 @@ const MapView = props => {
         return el.id
       }).indexOf(feature.source) > -1
     ) {
-      console.log('interactive geo feature clicked')
+      // console.log('interactive geo feature clicked')
       if (!!interactionsMobile) {
         // Launch a modal for mobile.
         setStoreValues({

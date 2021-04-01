@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 import { MdFeedback } from 'react-icons/md'
 
-import { theme } from './../theme'
 import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'
 import {

@@ -209,6 +209,8 @@ const en_US = {
   FEEDBACK_MODAL: `Send us your feedback`,
   OR: `or`,
   PANEL_LOCATION_DEMO: `Demographics`,
+  UI_PANEL_LOCATION_FEEDBACK_PROMPT: `Add feedback about this location`,
+  UI_PANEL_LOCATION_FEEDBACK_HEADING: `Your feedback`,
 }
 
 export default en_US

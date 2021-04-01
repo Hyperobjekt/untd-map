@@ -7,6 +7,7 @@ import { FiInfo } from 'react-icons/fi'
 import { Tooltip } from 'reactstrap'
 
 import useStore from './../store'
+import { CoreButton } from './../../../core'
 import {
   getGeoFeatureLabel,
   setActiveQuintile,
@@ -62,12 +63,18 @@ const PanelLocationView = ({ ...props }) => {
     shallow,
   )
 
-  // const layerObj =
-  //   UNTD_LAYERS[getActiveLayerIndex(activeLayers)]
-
-  // const layerIndicators = indicators.filter((el, i) => {
-  //   return el.placeTypes.indexOf(layerObj.id) > -1
-  // })
+  const handleFeedback = () => {
+    console.log('handleFeedback')
+    setStoreValues({
+      showFeedbackModal: true,
+      feedbackFeature: activeFeature,
+      feedbackAddress: getGeoFeatureLabel(activeFeature),
+      feedbackLngLat: [
+        activeFeature.properties.INTPTLAT,
+        activeFeature.properties.INTPTLON,
+      ],
+    })
+  }
 
   if (!!activeFeature) {
     return (
@@ -99,9 +106,6 @@ const PanelLocationView = ({ ...props }) => {
             })
             .map(indicator => {
               // console.log('indicator, ', indicator)
-              // const metric = indicators.find(item => {
-              //   return item.id === activeMetric
-              // })
               const rawMetric = allData.find(d => {
                 return (
                   d.variable ===
@@ -118,10 +122,10 @@ const PanelLocationView = ({ ...props }) => {
                 '_sd',
                 '',
               )
-              console.log('rawMetric, ', rawMetric)
+              // console.log('rawMetric, ', rawMetric)
               const rawValue =
                 activeFeature.properties[rawName]
-              console.log('rawValue, ', rawValue)
+              // console.log('rawValue, ', rawValue)
               return (
                 <div
                   className={clsx(
@@ -162,6 +166,29 @@ const PanelLocationView = ({ ...props }) => {
                 </div>
               )
             })}
+        </div>
+        {/* Feedback panel */}
+        <div className={clsx('panel-bottom-sticky')}>
+          <h5>
+            {i18n.translate(
+              `UI_PANEL_LOCATION_FEEDBACK_HEADING`,
+            )}
+          </h5>
+          <CoreButton
+            id="button_location_feedback"
+            label={i18n.translate(
+              `UI_PANEL_LOCATION_FEEDBACK_PROMPT`,
+            )}
+            onClick={handleFeedback}
+            color="link"
+            className={clsx(
+              'button-panel-location-feedback',
+            )}
+          >
+            {i18n.translate(
+              `UI_PANEL_LOCATION_FEEDBACK_PROMPT`,
+            )}
+          </CoreButton>
         </div>
       </div>
     )

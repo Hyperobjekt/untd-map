@@ -6,7 +6,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { getRoundedValue, getHashLeft } from './../utils'
 
 const LinearScale = ({ ...props }) => {
-  console.log('LinearScale, ', props)
+  // console.log('LinearScale, ', props)
 
   const value = props.value
   const high_is_good = !!Number(props.indicator.highisgood)
@@ -91,16 +91,16 @@ const LinearScale = ({ ...props }) => {
   )
 
   // Preserve: For checking a particular indicator, if there are issues with its presentation.
-  if (props.indicator.variable === 'Tot_EITC') {
-    console.log(
-      'Tot_EITC',
-      meanPercentFromLeft,
-      meanPercentFromLeft > 90 &&
-        String(meanPercentFromLeft).length > 2,
-      meanPercentFromLeft < 10 &&
-        String(meanPercentFromLeft).length > 2,
-    )
-  }
+  // if (props.indicator.variable === 'Tot_EITC') {
+  //   console.log(
+  //     'Tot_EITC',
+  //     meanPercentFromLeft,
+  //     meanPercentFromLeft > 90 &&
+  //       String(meanPercentFromLeft).length > 2,
+  //     meanPercentFromLeft < 10 &&
+  //       String(meanPercentFromLeft).length > 2,
+  //   )
+  // }
 
   return (
     <div
