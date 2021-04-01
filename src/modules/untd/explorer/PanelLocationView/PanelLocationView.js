@@ -10,9 +10,12 @@ import useStore from './../store'
 import {
   getGeoFeatureLabel,
   setActiveQuintile,
+  getActiveLayerIndex,
 } from './../utils'
 import NonInteractiveScale from './../NonInteractiveScale'
+import LinearScale from './../LinearScale'
 import { CRI_COLORS } from './../../../../constants/colors'
+import { UNTD_LAYERS } from './../../../../constants/layers'
 
 const IndicatorTooltip = ({ indicator, ...rest }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false)
@@ -46,6 +49,7 @@ const PanelLocationView = ({ ...props }) => {
     indicators,
     interactionsMobile,
     allData,
+    activeLayers,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -53,9 +57,17 @@ const PanelLocationView = ({ ...props }) => {
       indicators: state.indicators,
       interactionsMobile: state.interactionsMobile,
       allData: state.allData,
+      activeLayers: state.activeLayers,
     }),
     shallow,
   )
+
+  // const layerObj =
+  //   UNTD_LAYERS[getActiveLayerIndex(activeLayers)]
+
+  // const layerIndicators = indicators.filter((el, i) => {
+  //   return el.placeTypes.indexOf(layerObj.id) > -1
+  // })
 
   if (!!activeFeature) {
     return (
@@ -73,11 +85,20 @@ const PanelLocationView = ({ ...props }) => {
             .filter(el => {
               return el.display === 1
             })
+            .filter((el, i) => {
+              return (
+                el.placeTypes.indexOf(
+                  UNTD_LAYERS[
+                    getActiveLayerIndex(activeLayers)
+                  ].id,
+                ) > -1
+              )
+            })
             .sort((a, b) => {
               return a.order - b.order
             })
             .map(indicator => {
-              console.log('indicator, ', indicator)
+              // console.log('indicator, ', indicator)
               // const metric = indicators.find(item => {
               //   return item.id === activeMetric
               // })
@@ -93,10 +114,18 @@ const PanelLocationView = ({ ...props }) => {
               const min = rawMetric.min
               const max = rawMetric.max
               const high_is_good = rawMetric.highisgood
+              const rawName = String(indicator.id).replace(
+                '_sd',
+                '',
+              )
+              console.log('rawMetric, ', rawMetric)
+              const rawValue =
+                activeFeature.properties[rawName]
+              console.log('rawValue, ', rawValue)
               return (
                 <div
                   className={clsx(
-                    'filter',
+                    'indicator-group',
                     `layer-order-${indicator.order}`,
                   )}
                   key={indicator.id}
@@ -109,6 +138,12 @@ const PanelLocationView = ({ ...props }) => {
                       />
                     )}
                   </h6>
+                  {!!rawValue && !!rawMetric && (
+                    <LinearScale
+                      indicator={rawMetric}
+                      value={rawValue}
+                    />
+                  )}
                   <NonInteractiveScale
                     metric={indicator.id}
                     showHash={false}

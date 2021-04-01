@@ -94,8 +94,10 @@ html {
 @import 'PanelModal';
 // Interactive scale appears in filter panel
 @import 'InteractiveScale';
-// Non-interactive scale appears in legend and popup tooltips
+// Non-interactive scale appears in legend and popup tooltips (and in location slideout)
 @import 'NonInteractiveScale';
+// Linear scale for raw values, appears in location slideout)
+@import 'LinearScale';
 // Search in header
 @import 'SchoolSearch';
 @import 'tooltip';

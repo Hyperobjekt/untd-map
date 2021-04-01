@@ -111,7 +111,7 @@ export const getRoundedValue = (
   isCurrency = false,
   isPercent = false,
 ) => {
-  // console.log('getRoundedValue()')
+  // console.log('getRoundedValue(), ', value)
   const type = typeof value
   if (!!isPercent) {
     value = value * 100
