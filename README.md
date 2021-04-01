@@ -111,3 +111,15 @@ git push origin testing
 4. Repeat for the subsequent branches, moving changes to
    `staging`, testing the staging instance of the app, then
    moving changes to `production` and testing once again.
+
+## Configuration
+
+The following values must be provided in a `.env` file when the application builds:
+
+```
+GATSBY_MAPBOX_USER= # Mapbox account username
+GATSBY_MAPBOX_API_TOKEN= # Mapbox api token with appropriate (read-only) permissions
+GATSBY_NODE_ENV= # Not used by the app
+GATSBY_DATA_ENDPOINT= # AWS endpoint for data, no slash at end
+GATSBY_DATA_BRANCH= # Which branch of the client's repo is used loaded into the app, testing, staging, or production
+```

@@ -5,13 +5,13 @@ import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 import { MdFeedback } from 'react-icons/md'
 
-import { theme } from './../theme'
 import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'
 import {
   MetricsIcon,
   FeaturesIcon,
   InfoIcon,
+  LayersIcon,
 } from './../../../core/Icons'
 import {
   UnifiedShareBtn,
@@ -36,6 +36,9 @@ const ControlPanel = ({ children }) => {
     enableTour,
     incrementLaunchTour,
     setUpTour,
+    activeFeature,
+    buttonTooltipPosition,
+    interactionsMobile,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -47,6 +50,9 @@ const ControlPanel = ({ children }) => {
       enableTour: state.enableTour,
       incrementLaunchTour: state.incrementLaunchTour,
       setUpTour: state.setUpTour,
+      activeFeature: state.activeFeature,
+      buttonTooltipPosition: state.buttonTooltipPosition,
+      interactionsMobile: state.interactionsMobile,
     }),
     shallow,
   )
@@ -86,7 +92,8 @@ const ControlPanel = ({ children }) => {
       e.currentTarget.id !==
         'button_toggle_panel_filters' &&
       e.currentTarget.id !== 'button_toggle_panel_layers' &&
-      e.currentTarget.id !== 'button_toggle_panel_info'
+      e.currentTarget.id !== 'button_toggle_panel_info' &&
+      e.currentTarget.id !== 'button_toggle_panel_location'
     )
       return
     // Retrieve clicked
@@ -163,15 +170,6 @@ const ControlPanel = ({ children }) => {
     })
   }
 
-  /**
-   * Updates positioning for tooltips on buttons in control panel.
-   */
-  const buttonTooltipPosition = useStore(
-    state => state.buttonTooltipPosition,
-  )
-  const interactionsMobile = useStore(
-    state => state.interactionsMobile,
-  )
   // Set tooltip position if browser width changes.
   useEffect(() => {
     setStoreValues({
@@ -244,11 +242,36 @@ const ControlPanel = ({ children }) => {
               : '',
           )}
         >
-          {/*
-          <RiMapPinLine /> */}
-          <FeaturesIcon />
+          <LayersIcon />
           <span className="sr-only">
             {i18n.translate(`BUTTON_TOGGLE_PANEL_LAYERS`)}
+          </span>
+        </CoreButton>
+        <Divider />
+        <div className="control-label">
+          {i18n.translate('CONTROL_PANEL_LOCATION')}
+        </div>
+        <CoreButton
+          id="button_toggle_panel_location"
+          label={i18n.translate(
+            `BUTTON_TOGGLE_PANEL_LOCATION`,
+          )}
+          onClick={handlePanel}
+          color="none"
+          tooltip={buttonTooltipPosition}
+          className={clsx(
+            'button-panel-location',
+            slideoutPanel.active &&
+              slideoutPanel.panel === 'location' &&
+              !!activeFeature
+              ? 'active'
+              : '',
+          )}
+          disabled={!activeFeature}
+        >
+          <FeaturesIcon />
+          <span className="sr-only">
+            {i18n.translate(`BUTTON_TOGGLE_PANEL_LOCATION`)}
           </span>
         </CoreButton>
         <Divider />

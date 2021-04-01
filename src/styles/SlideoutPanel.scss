@@ -33,6 +33,7 @@
   }
   .map-panel-slideout-filters,
   .map-panel-slideout-layers,
+  .map-panel-slideout-location,
   .map-panel-slideout-info {
     display: none;
   }
@@ -43,6 +44,11 @@
   }
   &.panel-view-layers {
     .map-panel-slideout-layers {
+      display: block;
+    }
+  }
+  &.panel-view-location {
+    .map-panel-slideout-location {
       display: block;
     }
   }

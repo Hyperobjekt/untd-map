@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import { Button, Tooltip } from 'reactstrap'
-import { FiLayers } from 'react-icons/fi'
+import { Tooltip } from 'reactstrap'
 import clsx from 'clsx'
 import { FiInfo } from 'react-icons/fi'
 
@@ -30,7 +29,7 @@ const MapLayerToggle = ({ ...props }) => {
   }
 
   const updateLayers = e => {
-    console.log('updateLayers, ', e.currentTarget)
+    // console.log('updateLayers, ', e.currentTarget)
     // Get index of control
     const index = Number(
       String(e.currentTarget.id).replace(
@@ -38,16 +37,21 @@ const MapLayerToggle = ({ ...props }) => {
         '',
       ),
     )
-    console.log('index = ', index)
+    // console.log('index = ', index)
     // Create a new array of the same length.
     const newStaticLayers = activeStaticLayers
       .slice()
-      .map(el => {
-        return 0
+      .map((el, i) => {
+        if (i === index) {
+          return el == 1 ? 0 : 1
+        } else {
+          return 0
+        }
       })
-    console.log('newStaticLayers = ', newStaticLayers)
-    newStaticLayers[index] = 1
-    console.log('newStaticLayers = ', newStaticLayers)
+    // console.log('newStaticLayers = ', newStaticLayers)
+    // newStaticLayers[index] =
+    //   newStaticLayers[index] == 1 ? 0 : 1
+    // console.log('newStaticLayers = ', newStaticLayers)
     setStoreValues({
       activeStaticLayers: newStaticLayers,
     })

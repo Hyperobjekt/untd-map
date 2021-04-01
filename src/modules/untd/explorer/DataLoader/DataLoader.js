@@ -320,20 +320,26 @@ const DataLoader = ({ ...props }) => {
                           isTruthy(r['display_variable'])
                             ? 1
                             : 0,
-                        min: r['min'] ? r['min'] : 0,
-                        max: r['max'] ? r['max'] : 100,
+                        min: r['min']
+                          ? Number(r['min'])
+                          : 0,
+                        max: r['max']
+                          ? Number(r['max'])
+                          : 100,
                         range: r['range']
-                          ? r['range']
+                          ? Number(r['range'])
                           : null,
-                        mean: r['mean'] ? r['mean'] : null,
+                        mean: r['mean']
+                          ? Number(r['mean'])
+                          : null,
                         highisgood:
                           // String(
                           //   r['highisgood'],
                           // ).toLowerCase() === 'yes'
                           isTruthy(r['highisgood']) ? 1 : 0,
-                        iscurrency: r['currency'],
-                        ispercent: r['percent'],
-                        decimals: r['decimals'],
+                        iscurrency: Number(r['currency']),
+                        ispercent: Number(r['percent']),
+                        decimals: Number(r['decimals']),
                         years: r['years']
                           .toLowerCase()
                           .replace(/ /g, '')

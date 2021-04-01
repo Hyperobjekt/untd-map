@@ -15,6 +15,7 @@ import {
   getFeatureType,
   useDebounce,
 } from './../utils'
+import { UNTD_LAYERS } from './../../../../constants/layers'
 import useStore from './../store'
 
 const MapView = props => {
@@ -157,38 +158,54 @@ const MapView = props => {
   //   state => state.eventSchoolPage,
   // )
   const handleClick = (feature, coords, geoCoords) => {
-    // console.log('handle click, ', feature)
+    console.log('handle click, ', feature)
     // If the item is hovered, navigate to the school.
     // If the item is not hovered, set it as hovered.
     // setHovered(id, type, geoCoords, feature)
-    if (feature.source === 'schools') {
-      // console.log('school clicked, ', feature)
+
+    // If feature source = one of the interactive geo layers, open slideout.
+    if (
+      feature.source &&
+      UNTD_LAYERS.map(el => {
+        return el.id
+      }).indexOf(feature.source) > -1
+    ) {
+      // console.log('interactive geo feature clicked')
       if (!!interactionsMobile) {
-        // If it's not yet hovered, set it as hovered.
-        // console.log('Small screen, setting up modal.')
-        // console.log('showMapModal, ', showMapModal)
-        const type = `schools`
-        const id = getFeatureProperty(feature, 'TEA')
-        setHovered(id, type, geoCoords, feature)
-        // Launch the map modal
-        // setShowMapModal(true)
-        setStoreValues({ showMapModal: true })
-        // console.log('showMapModal, ', showMapModal)
-      } else {
-        // If it is hovered, then navigate to new window.
-        if (!!window) {
-          const href =
-            window.location.origin +
-            '/schools/' +
-            feature.properties.SLN +
-            '/'
-          window.open(href, '_blank')
-        }
-        // setEventSchoolPage(eventSchoolPage + 1)
+        // Launch a modal for mobile.
         setStoreValues({
-          eventSchoolPage: eventSchoolPage + 1,
+          activeFeature: feature,
+          showPanelModal: true,
+          slideoutPanel: {
+            active: false,
+            panel: 'location',
+          },
+        })
+      } else {
+        setStoreValues({
+          activeFeature: feature,
+          slideoutPanel: {
+            active: true,
+            panel: 'location',
+          },
         })
       }
+    }
+    // If feature source = one of the point layers, launch feedback.
+    if (
+      feature.source &&
+      feature.source.indexOf('points') > -1
+    ) {
+      // console.log('point feature clicked')
+      setStoreValues({
+        showFeedbackModal: true,
+        feedbackFeature: feature,
+        feedbackAddress: `${feature.properties.Name}, ${feature.properties.Address}, ${feature.properties.City}`,
+        feedbackLngLat: [
+          feature.properties.longitude,
+          feature.properties.latitude,
+        ],
+      })
     }
   }
 

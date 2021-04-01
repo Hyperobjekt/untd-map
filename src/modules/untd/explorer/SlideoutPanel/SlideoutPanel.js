@@ -8,6 +8,7 @@ import useStore from './../store.js'
 import PanelFilterView from './../PanelFilterView/PanelFilterView'
 import PanelLayersView from './../PanelLayersView/PanelLayersView'
 import PanelInfoView from './../PanelInfoView/PanelInfoView'
+import PanelLocationView from './../PanelLocationView'
 import { CoreButton } from './../../../core'
 
 const SlideoutPanel = ({ ...props }) => {
@@ -80,6 +81,7 @@ const SlideoutPanel = ({ ...props }) => {
 
       <PanelFilterView />
       <PanelLayersView />
+      <PanelLocationView />
       <PanelInfoView />
     </div>
   )
