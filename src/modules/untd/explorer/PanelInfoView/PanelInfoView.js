@@ -4,6 +4,7 @@ import useStore from './../store.js'
 import i18n from '@pureartisan/simple-i18n'
 
 import { CoreButton, TourIcon } from './../../../core'
+import clsx from 'clsx'
 
 const PanelInfoView = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
@@ -17,7 +18,9 @@ const PanelInfoView = ({ ...props }) => {
   )
 
   const getTourButton = () => {
-    if (!!enableTour && !!interactionsMobile) {
+    // console.log('getTourButton()')
+    if (!!enableTour) {
+      // console.log('return tour button')
       return (
         <CoreButton
           color="light"
@@ -46,18 +49,19 @@ const PanelInfoView = ({ ...props }) => {
 
   const getContents = () => {
     // Right now, just check for feeder OR map.
-    if (activeView === 'feeder') {
-      return i18n.translate('UI_PANEL_INFO_FEEDER')
-    } else {
-      return i18n.translate('UI_PANEL_INFO_MAP')
-    }
+    return i18n.translate('UI_PANEL_INFO_MAP')
   }
   return (
     <div className="map-panel-slideout-info">
-      <div
-        dangerouslySetInnerHTML={{ __html: getContents() }}
-      ></div>
-      {getTourButton()}
+      <div>
+        <div
+          className={clsx('panel-content')}
+          dangerouslySetInnerHTML={{
+            __html: getContents(),
+          }}
+        ></div>
+        {getTourButton()}
+      </div>
     </div>
   )
 }

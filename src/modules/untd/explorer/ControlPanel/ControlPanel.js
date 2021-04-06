@@ -71,11 +71,11 @@ const ControlPanel = ({ children }) => {
   /**
    * Close the intro panel and start the tour
    */
-  const handleStartTour = () => {
-    // console.log('handleStartTour()')
-    incrementLaunchTour()
-    setUpTour()
-  }
+  // const handleStartTour = () => {
+  //   // console.log('handleStartTour()')
+  //   incrementLaunchTour()
+  //   setUpTour()
+  // }
 
   /**
    * Handles click to panel toggle buttons.
@@ -299,32 +299,34 @@ const ControlPanel = ({ children }) => {
           {i18n.translate(`BUTTON_TOGGLE_INFO`)}
         </span>
       </CoreButton>
-      {!!enableTour && (
+      {/* {!!enableTour && (
         <TourButton
           className="d-none d-lg-block"
           tooltip={true}
           onClick={handleStartTour}
         />
-      )}
-      <Divider />
-      <div className="control-label">
+      )} */}
+      {/* <Divider /> */}
+      {/* <div className="control-label">
         {i18n.translate('FEEDBACK')}
-      </div>
+      </div> */}
       <CoreButton
         id="button_toggle_feedback"
-        label={i18n.translate(`FEEDBACK_MODAL`)}
+        label={i18n.translate(`FEEDBACK_BUTTON_TOOLTIP`)}
         tooltip={buttonTooltipPosition}
         onClick={launchFeedback}
         color="none"
         styles={{ display: 'none' }}
-        className={clsx('button-modal-feedback')}
+        className={clsx(
+          'button-modal-feedback, button-feedback-link',
+        )}
       >
-        <MdFeedback />
-        <span className="sr-only">
-          {i18n.translate(`FEEDBACK_MODAL`)}
+        <MdFeedback className="d-block d-lg-none" />
+        <span className="d-none d-lg-block">
+          {i18n.translate(`FEEDBACK`)}
         </span>
       </CoreButton>
-      <Divider />
+      {/* <Divider /> */}
       <UnifiedShareBtn className="d-block d-lg-none" />
       <DesktopUnifiedShareBtn className="d-none d-lg-block" />
     </div>
