@@ -22,6 +22,7 @@ const MapLegend = ({ ...props }) => {
     breakpoint,
     showMobileLegend,
     indicators,
+    activeView,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -30,6 +31,7 @@ const MapLegend = ({ ...props }) => {
       breakpoint: state.breakpoint,
       showMobileLegend: state.showMobileLegend,
       indicators: state.indicators,
+      activeView: state.activeView,
     }),
     shallow,
   )
@@ -105,7 +107,11 @@ const MapLegend = ({ ...props }) => {
             </span>
           </CoreButton>
         )}
-        {!(breakpoint === 'xs' || breakpoint === 'sm') && (
+        {!(
+          breakpoint === 'xs' ||
+          breakpoint === 'sm' ||
+          activeView === 'embed'
+        ) && (
           <div className="map-legend-label">
             {i18n.translate(`UI_MAP_LEGEND_TITLE`)}
             <span
