@@ -4,26 +4,33 @@ const LayersIcon = ({ ...props }) => {
   return (
     <svg
       width="18"
-      height="25"
-      viewBox="0 0 18 25"
+      height="18"
+      viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M2 8.80273L9.11284 5.18703L16.2257 8.80273L9.11284 12.4184L2 8.80273Z"
-        stroke="#626B77"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M12.6693 10.5183L16.2257 12.3262L9.11284 15.9419L2 12.3262L5.55642 10.5183"
-        stroke="#626B77"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M12.6693 14.0418L16.2257 15.8496L9.11284 19.4653L2 15.8496L5.55642 14.0418"
-        stroke="#626B77"
-        strokeWidth="1.5"
-      />
+      <g clip-path="url(#clip0)">
+        <path
+          d="M2 4.68555L9 1.1272L16 4.68555L9 8.24389L2 4.68555Z"
+          stroke="#626B77"
+          stroke-width="1.5"
+        />
+        <path
+          d="M6.375 6.79557L5.5 7.24036L2 9.01953L9 12.5779L16 9.01953L12.5 7.24036L11.625 6.79557"
+          stroke="#626B77"
+          stroke-width="1.5"
+        />
+        <path
+          d="M11.625 11.1286L12.5 11.5734L16 13.3525L9 16.9109L2 13.3525L5.5 11.5734L6.375 11.1286"
+          stroke="#626B77"
+          stroke-width="1.5"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0">
+          <rect width="18" height="18" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   )
 }

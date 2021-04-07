@@ -12,6 +12,8 @@ import {
   FeaturesIcon,
   InfoIcon,
   LayersIcon,
+  FeedbackIcon,
+  LocationIcon,
 } from './../../../core/Icons'
 import {
   UnifiedShareBtn,
@@ -33,9 +35,6 @@ const ControlPanel = ({ children }) => {
     breakpoint,
     browserWidth,
     showIntroModal,
-    enableTour,
-    incrementLaunchTour,
-    setUpTour,
     activeFeature,
     buttonTooltipPosition,
     interactionsMobile,
@@ -47,9 +46,6 @@ const ControlPanel = ({ children }) => {
       breakpoint: state.breakpoint,
       browserWidth: state.browserWidth,
       showIntroModal: state.showIntroModal,
-      enableTour: state.enableTour,
-      incrementLaunchTour: state.incrementLaunchTour,
-      setUpTour: state.setUpTour,
       activeFeature: state.activeFeature,
       buttonTooltipPosition: state.buttonTooltipPosition,
       interactionsMobile: state.interactionsMobile,
@@ -269,7 +265,7 @@ const ControlPanel = ({ children }) => {
           )}
           disabled={!activeFeature}
         >
-          <FeaturesIcon />
+          <LocationIcon />
           <span className="sr-only">
             {i18n.translate(`BUTTON_TOGGLE_PANEL_LOCATION`)}
           </span>
@@ -321,7 +317,7 @@ const ControlPanel = ({ children }) => {
           'button-modal-feedback, button-feedback-link',
         )}
       >
-        <MdFeedback className="d-block d-lg-none" />
+        <FeedbackIcon className="d-block d-lg-none" />
         <span className="d-none d-lg-block">
           {i18n.translate(`FEEDBACK`)}
         </span>

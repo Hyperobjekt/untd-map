@@ -1,8 +1,14 @@
+// UI Icons
 export { default as TourIcon } from './TourIcon'
 export { default as MenuIcon } from './MenuIcon'
 export { default as FeaturesIcon } from './FeaturesIcon'
 export { default as InfoIcon } from './InfoIcon'
 export { default as MetricsIcon } from './MetricsIcon'
+export { default as LayersIcon } from './LayersIcon'
+export { default as FeedbackIcon } from './FeedbackIcon'
+export { default as LocationIcon } from './LocationIcon'
+
+// Point feature icons
 export { default as aftersch } from './aftersch'
 export { default as bank } from './bank'
 export { default as ces } from './ces'
@@ -25,4 +31,3 @@ export { default as uscc } from './uscc'
 export { default as wic } from './wic'
 export { default as fqhc } from './fqhc'
 export { default as vita } from './vita'
-export { default as LayersIcon } from './LayersIcon'
