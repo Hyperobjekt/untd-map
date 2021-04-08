@@ -4,6 +4,7 @@ import { FlyToInterpolator } from 'react-map-gl'
 import WebMercatorViewport from 'viewport-mercator-project'
 import * as ease from 'd3-ease'
 import merge from 'deepmerge'
+import bbox from '@turf/bbox'
 
 import en_US from './../../../constants/en_US'
 import {

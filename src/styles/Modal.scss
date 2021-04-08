@@ -127,11 +127,16 @@
         }
       }
       h2 {
+        .site-title {
+          @include font-knockout-jr-lightweight;
+          font-size: 22px;
+          max-width: 110px;
+        }
         .cpal-logo {
           height: 50px;
           width: 80px;
           display: block;
-          margin-left: 1.8rem;
+          margin-left: 1.2rem;
           background-image: url('./images/cpal.png');
           background-size: contain;
           background-repeat: no-repeat;

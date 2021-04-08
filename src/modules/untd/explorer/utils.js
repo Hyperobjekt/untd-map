@@ -1,5 +1,3 @@
-// import axios from 'axios'
-import circle from '@turf/circle'
 import i18n from '@pureartisan/simple-i18n'
 import { useEffect, useRef, useState } from 'react'
 
@@ -55,25 +53,6 @@ export const loadFeaturesFromRouteParams = params =>
 const getFeatureFromCollection = (id, collection) => {
   const feature = collection.find(
     f => f.properties.id === id,
-  )
-  if (!feature) {
-    throw new Error(
-      'feature ' + id + ' not found from tilequery API',
-    )
-  }
-  return feature
-}
-
-/**
- * Returns the feature with an id property that matches the
- * provided ID
- * @param {string} id
- * @param {FeatureCollection} collection
- * @returns {Feature}
- */
-const getSchoolFeatureFromCollection = (id, collection) => {
-  const feature = collection.find(
-    f => f.properties.SLN === id,
   )
   if (!feature) {
     throw new Error(
@@ -316,132 +295,6 @@ export const getQuintileDesc = quintile => {
       return 'FIFTH'
     }
   }
-}
-
-export const getFeederAverage = (metric, schoolSet) => {
-  // Get all the schools that are in that
-  // console.log('getFeederAverage, ', schoolSet)
-  const values = []
-  schoolSet.forEach(el => {
-    values.push(el[metric])
-  })
-  let total = 0
-  values.forEach(v => (total = total + v))
-  return total / values.length
-}
-
-/**
- * Sort schools asc alpha by name
- */
-const sortSchoolsAlpha = (a, b) => {
-  // console.log('sortSchoolsAlpha')
-  if (a.SCHOOLNAME < b.SCHOOLNAME) return -1
-  if (a.SCHOOLNAME > b.SCHOOLNAME) return 1
-  return 0
-}
-
-/**
- * Gets the set of schools that are in a feeder
- * @return Array Array of school data objects
- */
-export const getSchoolSet = feeder => {
-  // console.log('getSchoolSet')
-  const schools = useStore(
-    state => state.remoteJson.schools,
-  )
-  const set = schools.filter(el => {
-    return Number(el.HIGH_SLN) === Number(feeder)
-  })
-  const high = set
-    .filter(el => {
-      return String(el.LEVEL).toLowerCase() === 'high'
-    })
-    .sort(sortSchoolsAlpha)
-  const middle = set
-    .filter(el => {
-      return String(el.LEVEL).toLowerCase() === 'middle'
-    })
-    .sort(sortSchoolsAlpha)
-  const elementary = set
-    .filter(el => {
-      return String(el.LEVEL).toLowerCase() === 'elementary'
-    })
-    .sort(sortSchoolsAlpha)
-  const fullSet = [...high, ...middle, ...elementary]
-  return fullSet
-}
-
-/**
- * Generates geojson object with school zones (2 mile radius)
- * @return  Object   GeoJSON Object of all schools in client-supplied data
- */
-export const getSchoolGeojson = schools => {
-  // console.log('getSchoolGeojson()')
-  const data = schools
-  const newJson = {
-    type: 'FeatureCollection',
-    features: [],
-  }
-  // Each object in schools is one feature.
-  // Add coords
-  // Put school properties into properties
-  // Add feeder sln (because the client is fucking idiotic)
-  // Push the feature into the newJson array.
-  data.forEach(el => {
-    const newFeature = {
-      type: 'Feature',
-      id: el.TEA,
-      geometry: {
-        type: 'Point',
-        coordinates: [],
-      },
-      properties: {},
-    }
-    newFeature.geometry.coordinates = [
-      el.POINT_X,
-      el.POINT_Y,
-    ]
-    newFeature.properties = el
-    // const feeder = feeders.find(item => {
-    //   return Number(item.TEA) == Number(el.TEA)
-    // })
-    // if (!!feeder) {
-    //   newFeature.properties.feeder = feeder.FEEDER
-    //   newFeature.properties.feeder_sln = feeder.FEEDER_SLN
-    // }
-    newJson.features.push(newFeature)
-  })
-  // console.log(newJson)
-  return newJson
-}
-
-export const getSchoolZones = schools => {
-  // console.log('getSchoolZones')
-  const data = schools
-  // const origJson = schoolsGeojson
-  const newJson = {
-    type: 'FeatureCollection',
-    features: [],
-  }
-  data.forEach(el => {
-    var center = [el.POINT_X, el.POINT_Y]
-    var radius = 2
-    var options = {
-      steps: 64,
-      units: 'miles',
-      properties: el,
-      // properties: {
-      //   tea_id: el.TEA,
-      //   metric_cri: el.cri_weight,
-      // },
-    }
-    const cir = circle(center, radius, options)
-    cir.id = '200' + el.TEA
-    // Insert into new json object.
-    newJson.features.push(cir)
-  })
-  // console.log('newJson', newJson)
-  return newJson
 }
 
 /**
