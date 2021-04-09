@@ -49,25 +49,6 @@ const DataLoaderContent = ({ ...props }) => {
   )
 }
 
-const buildPointSet = (id, data) => {
-  // console.log('buildPointSet()', id, data)
-  const featureSet = {
-    features: [],
-    type: 'FeatureCollection',
-  }
-  // For each feature, find a center, and add a point for that center,
-  // with the appropriate label.
-  data.features.forEach(feature => {
-    // Feature set template into which will be added each point.
-    // const center = Turf.center(feature) // centerOfMass
-    const center = Turf.centerOfMass(feature)
-    center.properties.label = feature.properties.label
-    // console.log('center, ', center)
-    featureSet.features.push(center)
-  })
-  return featureSet
-}
-
 const DataLoader = ({ ...props }) => {
   const {
     setStoreValues,
@@ -123,20 +104,6 @@ const DataLoader = ({ ...props }) => {
                   data: _data,
                 }
                 setRemoteJson(obj)
-                // If we need a set of points for putting labels inside polygons,
-                // build the point feature set.
-                if (!!el.build_point_set) {
-                  // console.log(
-                  //   'building point set for, ',
-                  //   el.id,
-                  // )
-                  let pointsObj = {}
-                  pointsObj[`${el.id}_points`] = {
-                    type: `geojson`,
-                    data: buildPointSet(el.id, _data),
-                  }
-                  setRemoteJson(pointsObj)
-                }
               }
 
               if (el.type === 'point') {

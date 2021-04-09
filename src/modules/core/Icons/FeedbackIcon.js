@@ -12,12 +12,12 @@ const FeedbackIcon = ({ ...props }) => {
       <path
         d="M4.46967 12.4697L0.75 16.1893V0.75H17.25V12.25H5H4.68934L4.46967 12.4697Z"
         stroke="#626B77"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
       <path
         d="M5 5L13 5"
         stroke="#626B77"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
       <line
         x1="5"
@@ -25,7 +25,7 @@ const FeedbackIcon = ({ ...props }) => {
         x2="11"
         y2="8.25"
         stroke="#626B77"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
     </svg>
   )
