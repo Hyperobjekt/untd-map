@@ -47,6 +47,8 @@ export const UNTD_STATIC_LAYERS = [
     group: 0,
     index: 0,
     place_type: `County`,
+    has_labels: 0,
+    label_key: 'NAME',
   },
   {
     id: `fedcongress`,
@@ -58,6 +60,8 @@ export const UNTD_STATIC_LAYERS = [
     group: 0,
     index: 0,
     place_type: `label`,
+    has_labels: 1,
+    label_key: 'Official',
   },
   {
     id: `statehouse`,
@@ -69,6 +73,8 @@ export const UNTD_STATIC_LAYERS = [
     group: 0,
     index: 0,
     place_type: `label`,
+    has_labels: 1,
+    label_key: 'Official',
   },
   {
     id: `statesenate`,
@@ -80,6 +86,8 @@ export const UNTD_STATIC_LAYERS = [
     group: 0,
     index: 0,
     place_type: `label`,
+    has_labels: 1,
+    label_key: 'Official',
   },
   {
     id: `schooldistricts`,
@@ -91,6 +99,8 @@ export const UNTD_STATIC_LAYERS = [
     group: 0,
     index: 0,
     place_type: `label`,
+    has_labels: 1,
+    label_key: 'NAME',
   },
 ]
 

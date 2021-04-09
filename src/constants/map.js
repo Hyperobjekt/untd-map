@@ -4,6 +4,7 @@
 
 // Data files to load from remote.
 export const DATA_FILES = [
+  // Data dictionary.
   {
     id: 'en_US',
     filename: 'DataDictionary',
@@ -16,16 +17,7 @@ export const DATA_FILES = [
     ind_key: 'type', // Table header to use when determining if it's an indicator.
     ind_flag: 'sd', // Column value that indicates that a value is an indicator.
   },
-  {
-    id: 'county',
-    filename: 'sm_counties',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 1, // Does this geo feature get a popup?
-    id_key: 'GEOID', // What feature property to use for hovered ID?
-    label_key: 'NAME', // What feature property to use for label?
-    build_point_set: 1,
-  },
+  // Interactive (choropleth) layers
   {
     id: 'place',
     filename: 'sm_places',
@@ -65,6 +57,16 @@ export const DATA_FILES = [
     id_key: 'FID',
     label_key: 'Type',
   },
+  // Static layers
+  {
+    id: 'county',
+    filename: 'sm_counties',
+    ext: 'geojson',
+    type: 'polygon',
+    popup: 1, // Does this geo feature get a popup?
+    id_key: 'GEOID', // What feature property to use for hovered ID?
+    label_key: 'NAME', // What feature property to use for label?
+  },
   {
     id: 'fedcongress',
     filename: 'sm_fedcongress',
@@ -74,7 +76,6 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_FEDCONGRESS`,
-    build_point_set: 1,
   },
   {
     id: 'statehouse',
@@ -85,7 +86,6 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_STATEHOUSE`,
-    build_point_set: 1,
   },
   {
     id: 'statesenate',
@@ -96,7 +96,6 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_STATESENATE`,
-    build_point_set: 1,
   },
   {
     id: 'schooldistricts',
@@ -107,7 +106,57 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'label',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-    build_point_set: 1,
+  },
+  // Point features for label placement
+  // Uncomment counties when the client has it prepared.
+  // {
+  //   id: 'county_points',
+  //   filename: 'counties_pt',
+  //   ext: 'geojson',
+  //   type: 'polygon',
+  //   popup: 1, // Does this geo feature get a popup?
+  //   id_key: 'GEOID', // What feature property to use for hovered ID?
+  //   label_key: 'NAME', // What feature property to use for label?
+  // },
+  {
+    id: 'schooldistricts_points',
+    filename: 'schooldistricts_pt',
+    ext: 'geojson',
+    type: 'label',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'NAME',
+    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+  },
+  {
+    id: 'fedcongress_points',
+    filename: 'fedcongress_pt',
+    ext: 'geojson',
+    type: 'label',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'Official',
+    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+  },
+  {
+    id: 'statesenate_points',
+    filename: 'statesenate_pt',
+    ext: 'geojson',
+    type: 'label',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'Official',
+    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+  },
+  {
+    id: 'statehouse_points',
+    filename: 'statehouse_pt',
+    ext: 'geojson',
+    type: 'label',
+    popup: 0,
+    id_key: 'GEOID',
+    label_key: 'Official',
+    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
   },
 ]
 

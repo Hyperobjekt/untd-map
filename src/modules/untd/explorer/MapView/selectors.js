@@ -6,6 +6,7 @@ import {
   POINT_CATEGORIES,
   UNTD_STATIC_LAYERS,
 } from './../../../../constants/layers'
+import { replaceWeirdQuestionmark } from './../utils'
 
 export const getClusterCountBg = (
   source,
@@ -383,6 +384,10 @@ export const getStaticLayerLines = (source, context) => {
 // Labels
 export const getStaticLayerLabel = (source, context) => {
   // console.log('getStaticLayerLabel(), ', source, context)
+  const layerObj =
+    UNTD_STATIC_LAYERS[
+      context.activeStaticLayers.indexOf(1)
+    ]
   return fromJS({
     id: `${source}Label`,
     source: `${source}_points`,
@@ -390,7 +395,7 @@ export const getStaticLayerLabel = (source, context) => {
     interactive: false,
     layout: {
       'icon-allow-overlap': true,
-      'text-field': ['get', 'label'],
+      'text-field': ['get', layerObj.label_key],
       'text-font': [
         'DIN Offc Pro Medium',
         'Arial Unicode MS Bold',
@@ -402,16 +407,16 @@ export const getStaticLayerLabel = (source, context) => {
       'text-color': [
         'case',
         ['==', source, 'county'],
-        'red',
+        '#939308',
         ['==', source, 'fedcongress'],
-        'orange',
+        '#C0553E',
         ['==', source, 'statehouse'],
-        'purple',
+        '#7F5CCA',
         ['==', source, 'statesenate'],
-        'yellow',
+        '#796848',
         ['==', source, 'schooldistricts'],
-        'blue',
-        'blue',
+        '#4B6857',
+        '#4B6857',
       ],
     },
     // filter: [
@@ -515,6 +520,21 @@ export const getStaticLayer = (source, context) => {
       type: `${source}Lines`,
     },
     // Label.
+    // {
+    //   z: z + 2,
+    //   style: getStaticLayerLabel(source, context),
+    //   idMap: true,
+    //   hasFeatureId: true,
+    //   type: `${source}Label`,
+    // },
+  ]
+}
+// Necessary to break these out because the client has accidentally
+// removed some label layers at some points during the project.
+export const getStaticLayerLabellll = (source, context) => {
+  // console.log('getStaticLayerLabellll', context)
+  return [
+    // Label.
     {
       z: z + 2,
       style: getStaticLayerLabel(source, context),
@@ -533,6 +553,7 @@ export const getLayers = (sources, context) => {
   layers.push(...getPolygonLayers('tract', context))
   layers.push(...getPolygonLayers('place', context))
   // Static geo shapes
+  // console.log('UNTD_STATIC_LAYERS, ', UNTD_STATIC_LAYERS)
   const staticLayer = UNTD_STATIC_LAYERS[
     context.activeStaticLayers.indexOf(1)
   ]
@@ -542,6 +563,20 @@ export const getLayers = (sources, context) => {
     : false
   if (!!staticLayer) {
     layers.push(...getStaticLayer(staticLayer, context))
+  }
+
+  // Does the static layer get a label?
+  const hasStaticLayerLabel = !!UNTD_STATIC_LAYERS[
+    context.activeStaticLayers.indexOf(1)
+  ]
+    ? UNTD_STATIC_LAYERS[
+        context.activeStaticLayers.indexOf(1)
+      ].has_labels
+    : false
+  if (hasStaticLayerLabel) {
+    layers.push(
+      ...getStaticLayerLabellll(staticLayer, context),
+    )
   }
   // Add a layer for each point type,
   // and a cluster layer for each point type.

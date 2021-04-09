@@ -92,6 +92,7 @@ const DataLoader = ({ ...props }) => {
             loadedCount++
             // console.log(
             //   'file loaded ',
+            //   el.id,
             //   i,
             //   (loadedCount / files.length) * 100,
             // )
@@ -103,6 +104,7 @@ const DataLoader = ({ ...props }) => {
                   type: `geojson`,
                   data: _data,
                 }
+                // console.log('setting remote json, ', el.id)
                 setRemoteJson(obj)
               }
 

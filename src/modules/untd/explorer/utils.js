@@ -605,3 +605,7 @@ export const setActiveQuintile = quintile => {
   // console.log(arr)
   return arr
 }
+
+export const replaceWeirdQuestionmark = str => {
+  return str.replaceAll('�', '')
+}
