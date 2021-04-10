@@ -6,6 +6,7 @@ import useStore from './../store'
 import PanelFilterView from './../PanelFilterView/PanelFilterView'
 import PanelLayersView from './../PanelLayersView/PanelLayersView'
 import PanelInfoView from './../PanelInfoView/PanelInfoView'
+import PanelLocationView from './../PanelLocationView'
 
 const PanelModal = ({ children, ...props }) => {
   // Generic store value setter.
@@ -45,6 +46,7 @@ const PanelModal = ({ children, ...props }) => {
       <ModalBody>
         <PanelFilterView />
         <PanelLayersView />
+        <PanelLocationView />
         <PanelInfoView />
       </ModalBody>
     </Modal>

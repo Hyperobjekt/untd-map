@@ -564,8 +564,8 @@ export const getLayers = (sources, context) => {
   if (!!staticLayer) {
     layers.push(...getStaticLayer(staticLayer, context))
   }
-
-  // Does the static layer get a label?
+  // Does the static layer type get a label?
+  // If so, add a layer for the labels.
   const hasStaticLayerLabel = !!UNTD_STATIC_LAYERS[
     context.activeStaticLayers.indexOf(1)
   ]
