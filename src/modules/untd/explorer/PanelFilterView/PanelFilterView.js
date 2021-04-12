@@ -58,30 +58,32 @@ const PanelFilterView = ({ ...props }) => {
 
   return (
     <div className={clsx('map-panel-slideout-filters')}>
-      <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
-      <div
-        className="map-panel-instructions"
-        dangerouslySetInnerHTML={{
-          __html: i18n.translate(
-            'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
-          ),
-        }}
-      ></div>
-      <Select
-        items={UNTD_LAYERS.map((el, i) => {
-          return {
-            id: el.id,
-            label: el.label,
-            active: activeLayers[i] === 1,
+      <div className={clsx('panel-sticky')}>
+        <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
+        <div
+          className="map-panel-instructions"
+          dangerouslySetInnerHTML={{
+            __html: i18n.translate(
+              'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
+            ),
+          }}
+        ></div>
+        <Select
+          items={UNTD_LAYERS.map((el, i) => {
+            return {
+              id: el.id,
+              label: el.label,
+              active: activeLayers[i] === 1,
+            }
+          })}
+          label={
+            getActiveLayerTitle()
+              ? getActiveLayerTitle()
+              : i18n.translate('MAP_FILTERS_SELECT_LAYER')
           }
-        })}
-        label={
-          getActiveLayerTitle()
-            ? getActiveLayerTitle()
-            : i18n.translate('MAP_FILTERS_SELECT_LAYER')
-        }
-        handleSelect={handleSelect}
-      />
+          handleSelect={handleSelect}
+        />
+      </div>
       <div className={clsx('filters-panel-parent')}>
         <FilterSeries />
       </div>

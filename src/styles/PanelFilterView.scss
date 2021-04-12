@@ -4,10 +4,28 @@
   overflow: hidden;
   .map-panel-slideout-filters {
     @include font-gotham-book;
-    overflow-y: hidden;
     height: 100%;
-    padding: 2.8rem 2rem;
+    // padding: 2.8rem 2rem;
     color: $color-untd-gray;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    .panel-sticky {
+      position: sticky;
+      top: 0;
+      left: 0;
+      background-color: $white;
+      padding: 2.8rem 2rem 2rem;
+      border-bottom: 1px solid $color-untd-anothergray;
+      z-index: 501;
+      h5 {
+        @include font-gotham-book;
+        font-weight: 600;
+        font-size: 1.8rem;
+        line-height: 1.8rem;
+        letter-spacing: 1%;
+      }
+    }
     h3 {
       font-weight: 600;
       font-size: 1.8rem;
@@ -51,11 +69,12 @@
       }
     }
     .filters-panel-parent {
-      overflow-y: scroll;
+      // overflow-y: scroll;
       height: 100%;
       padding: 1rem 0.4rem;
       .filter-panel-filter-series {
-        margin-bottom: 20rem;
+        padding: 1rem 2rem;
+        margin-bottom: 40rem;
         .filter {
           h6 {
             font-weight: 500;
