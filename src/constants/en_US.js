@@ -213,6 +213,9 @@ const en_US = {
   UI_PANEL_LOCATION_FEEDBACK_HEADING: `Your feedback`,
   UI_MAP_POINTS_OVERLAYS: `POINTS & OVERLAYS`,
   UI_MAP_POINTS: `Points`,
+  STATIC_LAYER_NONE: `None`,
+  UI_MAP_LAYERS_NONE: `None`,
+  STATIC_LAYER_TIP: `Enable {type}.`,
 }
 
 export default en_US

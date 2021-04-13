@@ -38,6 +38,19 @@ export const UNTD_LAYERS = [
 // Static layers without statistics attached.
 export const UNTD_STATIC_LAYERS = [
   {
+    id: `none`,
+    label: `UI_MAP_LAYERS_NONE`,
+    types: [],
+    tooltip: null,
+    only_one: true,
+    only_one_name: `static_geo`,
+    group: 0,
+    index: 0,
+    place_type: ``,
+    has_labels: 0,
+    label_key: 'STATIC_LAYER_NONE',
+  },
+  {
     id: `county`,
     label: `UI_MAP_LAYERS_COUNTIES`,
     types: [`polygons`],

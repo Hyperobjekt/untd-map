@@ -43,7 +43,8 @@ const MapLayerToggle = ({ ...props }) => {
       .slice()
       .map((el, i) => {
         if (i === index) {
-          return el == 1 ? 0 : 1
+          // return el == 1 ? 0 : 1
+          return 1
         } else {
           return 0
         }
@@ -102,7 +103,12 @@ const MapLayerToggle = ({ ...props }) => {
                 autohide={false}
                 className={'tip-prompt-layer'}
                 dangerouslySetInnerHTML={{
-                  __html: i18n.translate(el.tooltip),
+                  __html: i18n.translate(
+                    `STATIC_LAYER_TIP`,
+                    {
+                      type: el.tooltip,
+                    },
+                  ),
                 }}
               ></Tooltip>
             )}
