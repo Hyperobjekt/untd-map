@@ -395,7 +395,7 @@ export const getStaticLayerLabel = (source, context) => {
     interactive: false,
     layout: {
       'icon-allow-overlap': true,
-      'text-field': ['get', layerObj.label_key],
+      'text-field': ['get', 'label'],
       'text-font': [
         'DIN Offc Pro Medium',
         'Arial Unicode MS Bold',

@@ -37,8 +37,7 @@ const en_US = {
   MODAL_SHARE_LINK_INPUT: `Current View URL`,
   BTN_CLOSE: `Close`,
   MAP_FILTERS_SELECT_LAYER: `Select a layer`,
-  MAP_FILTERS_SELECT_INFO: `Scroll and select among the indicators listed
-  below to apply them to the shapes in the map.`,
+  MAP_FILTERS_SELECT_INFO: `<p>Scroll and select among the indicators listed below to apply them to the shapes in the map.</p>`,
   MAP_FILTERS_SELECT_NONE: `No indicators are available for this georaphical
   layer.`,
   UI_MAP_FILTERS_INDICATORS: `Indicators`,
@@ -212,6 +211,8 @@ const en_US = {
   PANEL_LOCATION_DEMO: `Demographics`,
   UI_PANEL_LOCATION_FEEDBACK_PROMPT: `Add feedback about this location`,
   UI_PANEL_LOCATION_FEEDBACK_HEADING: `Your feedback`,
+  UI_MAP_POINTS_OVERLAYS: `POINTS & OVERLAYS`,
+  UI_MAP_POINTS: `Points`,
 }
 
 export default en_US

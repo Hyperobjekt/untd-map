@@ -56,9 +56,6 @@ const FilterSeries = ({ ...props }) => {
   if (layerIndicators && layerIndicators.length > 0) {
     return (
       <div className="filter-panel-filter-series filter-panel-indicator-series">
-        <div className="info">
-          <p>{i18n.translate(`MAP_FILTERS_SELECT_INFO`)}</p>
-        </div>
         {layerIndicators
           .filter(el => {
             return el.display === 1

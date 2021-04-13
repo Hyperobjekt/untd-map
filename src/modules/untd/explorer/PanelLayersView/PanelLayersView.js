@@ -78,29 +78,32 @@ const PanelLayersView = ({ ...props }) => {
 
   return (
     <div className={clsx('map-panel-slideout-layers')}>
-      <h5>{i18n.translate(`UI_MAP_LAYER_1_TITLE`)}</h5>
-      <div
-        key={'layer-group-desc-points'}
-        className="layer-group-desc"
-        dangerouslySetInnerHTML={{
-          __html: i18n.translate(`UI_MAP_LAYER_1_DESC`),
-        }}
-      ></div>
+      <div className={clsx('panel-sticky')}>
+        <h5>{i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}</h5>
+      </div>
       <div className={clsx(`map-layer-toggle-pane`)}>
-        <CoreButton
-          onClick={toggleAll}
-          label={i18n.translate('BUTTON_RESET_POINTS')}
-          color="primary"
-          id="button_toggle_all_points"
-          tooltip={`right`}
-          className={clsx(`button-all-toggle`)}
-        >
-          <GrPowerReset />
-          <span>
-            {i18n.translate('BUTTON_RESET_POINTS')}
-          </span>
-        </CoreButton>
         <div className={clsx('points-group-parent')}>
+          <h6>{i18n.translate(`UI_MAP_POINTS`)}</h6>
+          <div
+            key={'layer-group-desc-points'}
+            className="layer-group-desc"
+            dangerouslySetInnerHTML={{
+              __html: i18n.translate(`UI_MAP_LAYER_1_DESC`),
+            }}
+          ></div>
+          <CoreButton
+            onClick={toggleAll}
+            label={i18n.translate('BUTTON_RESET_POINTS')}
+            color="primary"
+            id="button_toggle_all_points"
+            tooltip={`right`}
+            className={clsx(`button-all-toggle`)}
+          >
+            <GrPowerReset />
+            <span>
+              {i18n.translate('BUTTON_RESET_POINTS')}
+            </span>
+          </CoreButton>
           <div
             className={clsx(
               'layer-group',
@@ -297,22 +300,22 @@ const PanelLayersView = ({ ...props }) => {
               )
             })}
           </div>
-          <hr />
-          <div className={clsx('map-static-layer-toggle')}>
-            <h5>
-              {i18n.translate(`UI_MAP_LAYERS_STATIC_TITLE`)}
-            </h5>
-            <div
-              key={'layer-group-desc-static'}
-              className="layer-group-desc"
-              dangerouslySetInnerHTML={{
-                __html: i18n.translate(
-                  `UI_MAP_LAYER_STATIC_DESC`,
-                ),
-              }}
-            ></div>
-            <MapLayerToggle />
-          </div>
+        </div>
+        <hr />
+        <div className={clsx('map-static-layer-toggle')}>
+          <h6>
+            {i18n.translate(`UI_MAP_LAYERS_STATIC_TITLE`)}
+          </h6>
+          <div
+            key={'layer-group-desc-static'}
+            className="layer-group-desc"
+            dangerouslySetInnerHTML={{
+              __html: i18n.translate(
+                `UI_MAP_LAYER_STATIC_DESC`,
+              ),
+            }}
+          ></div>
+          <MapLayerToggle />
         </div>
       </div>
     </div>

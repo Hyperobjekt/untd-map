@@ -35,6 +35,27 @@
   .map-panel-slideout-layers,
   .map-panel-slideout-location,
   .map-panel-slideout-info {
+    .panel-sticky {
+      position: sticky;
+      top: 0;
+      left: 0;
+      background-color: $white;
+      padding: 2.8rem 2rem 2rem;
+      border-bottom: 1px solid $color-untd-anothergray;
+      z-index: 501;
+      h5 {
+        @include font-gotham-book;
+        font-weight: 600;
+        font-size: 1.8rem;
+        line-height: 1.8rem;
+        letter-spacing: 1%;
+      }
+    }
+  }
+  .map-panel-slideout-filters,
+  .map-panel-slideout-layers,
+  .map-panel-slideout-location,
+  .map-panel-slideout-info {
     display: none;
   }
   &.panel-view-filters {

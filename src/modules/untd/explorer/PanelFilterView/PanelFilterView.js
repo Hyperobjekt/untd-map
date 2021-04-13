@@ -83,6 +83,14 @@ const PanelFilterView = ({ ...props }) => {
           }
           handleSelect={handleSelect}
         />
+        <div
+          className="info"
+          dangerouslySetInnerHTML={{
+            __html: i18n.translate(
+              'MAP_FILTERS_SELECT_INFO',
+            ),
+          }}
+        ></div>
       </div>
       <div className={clsx('filters-panel-parent')}>
         <FilterSeries />
