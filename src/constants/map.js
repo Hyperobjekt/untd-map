@@ -109,15 +109,16 @@ export const DATA_FILES = [
   },
   // Point features for label placement
   // Uncomment counties when the client has it prepared.
-  // {
-  //   id: 'county_points',
-  //   filename: 'counties_pt',
-  //   ext: 'geojson',
-  //   type: 'polygon',
-  //   popup: 1, // Does this geo feature get a popup?
-  //   id_key: 'GEOID', // What feature property to use for hovered ID?
-  //   label_key: 'NAME', // What feature property to use for label?
-  // },
+  {
+    id: 'county_points',
+    filename: 'counties_pt',
+    ext: 'geojson',
+    type: 'label',
+    popup: 0, // Does this geo feature get a popup?
+    id_key: 'GEOID', // What feature property to use for hovered ID?
+    label_key: 'NAME', // What feature property to use for label?
+    check_for_label: 1,
+  },
   {
     id: 'schooldistricts_points',
     filename: 'schooldistricts_pt',
@@ -127,6 +128,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'NAME',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    check_for_label: 1,
   },
   {
     id: 'fedcongress_points',
@@ -137,6 +139,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'Official',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    check_for_label: 1,
   },
   {
     id: 'statesenate_points',
@@ -147,6 +150,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'Official',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    check_for_label: 1,
   },
   {
     id: 'statehouse_points',
@@ -157,6 +161,7 @@ export const DATA_FILES = [
     id_key: 'GEOID',
     label_key: 'Official',
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
+    check_for_label: 1,
   },
 ]
 
@@ -223,7 +228,7 @@ export const ROUTE_SET = [
     id: 'static_layers',
     options: ['1', '0'],
     validate: 'contains_only',
-    defaultValue: [1, 0, 0, 0, 0, 0],
+    defaultValue: [0, 0, 0, 0, 0],
   },
   {
     id: 'points',

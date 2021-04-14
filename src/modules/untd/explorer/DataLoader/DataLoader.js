@@ -64,7 +64,7 @@ const DataLoaderContent = ({ ...props }) => {
           <>
             <h2
               dangerouslySetInnerHTML={{
-                __html: `Issues with remote data sources on branch <code>${gitBranch}</code> detected:`,
+                __html: `${dataIssuesLog.length} issues with remote data sources on branch <code>${gitBranch}</code> detected:`,
               }}
             ></h2>
             <ul className={clsx('data-issues-list')}>
@@ -93,6 +93,8 @@ const DataLoader = ({ ...props }) => {
     addIndicators,
     addTooltipItems,
     addDataIssuesLog,
+    allDataLoaded,
+    dataLoadedPercent,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -102,14 +104,16 @@ const DataLoader = ({ ...props }) => {
       addIndicators: state.addIndicators,
       addTooltipItems: state.addTooltipItems,
       addDataIssuesLog: state.addDataIssuesLog,
+      allDataLoaded: state.allDataLoaded,
+      dataLoadedPercent: state.dataLoadedPercent,
     }),
     shallow,
   )
 
-  console.log(
-    'DataLoader: process.env.GATSBY_SHOW_DATA_ISSUES, ',
-    process.env.GATSBY_SHOW_DATA_ISSUES,
-  )
+  // console.log(
+  //   'DataLoader: process.env.GATSBY_SHOW_DATA_ISSUES, ',
+  //   process.env.GATSBY_SHOW_DATA_ISSUES,
+  // )
 
   const showDataIssues = Number(
     process.env.GATSBY_SHOW_DATA_ISSUES,
@@ -120,6 +124,9 @@ const DataLoader = ({ ...props }) => {
   const files = DATA_FILES
   // Counter for loaded files.
   let loadedCount = 0
+  // Track whether data issues are detected.
+  let hasDataIssues = false
+  // const dataIssuesLog = []
 
   // Load each file.
   // Set each file to the store.
@@ -154,6 +161,68 @@ const DataLoader = ({ ...props }) => {
                 // console.log('setting remote json, ', el.id)
                 setRemoteJson(obj)
               }
+
+              let missingLabel = false
+              if (el.type === 'label') {
+                console.log('type is label, ', _data)
+                _data.features.forEach(d => {
+                  // console.log(
+                  //   d.properties.GEOID,
+                  //   d.properties.label,
+                  //   d.properties.label === undefined,
+                  //   !d.properties.label ||
+                  //     d.properties.label.length <= 0 ||
+                  //     d.properties.label === undefined,
+                  // )
+                  if (
+                    !d.properties.label ||
+                    d.properties.label.length <= 0 ||
+                    d.properties.label === undefined
+                  ) {
+                    missingLabel = true
+                  }
+                })
+                if (!!missingLabel) {
+                  hasDataIssues = true
+                  dataIssuesLog.push(
+                    `Some label point features in collection <code>${el.id}</code> are missing a label.`,
+                  )
+                }
+              }
+
+              // Check that every feature has an ID.
+              // Check that every feature has a GEOID.
+              let missingGeoid = false
+              let missingId = false
+              _data.features.forEach(d => {
+                if (
+                  !d.properties.GEOID ||
+                  d.properties.GEOID.length <= 0 ||
+                  d.properties.GEOID === undefined
+                ) {
+                  missingGeoid = true
+                }
+                if (!d.id || d.id === undefined) {
+                  missingId = true
+                }
+              })
+              if (!!missingGeoid) {
+                hasDataIssues = true
+                dataIssuesLog.push(
+                  `Some some features in collection <code>${el.id}</code> are missing an id.`,
+                )
+              }
+              if (!!missingId) {
+                hasDataIssues = true
+                dataIssuesLog.push(
+                  `Some some features in collection <code>${el.id}</code> are missing a GEOID.`,
+                )
+              }
+
+              console.log(
+                'dataIssuesLog line 220, ',
+                dataIssuesLog,
+              )
 
               if (el.type === 'point') {
                 // Make a list of point types.
@@ -208,8 +277,7 @@ const DataLoader = ({ ...props }) => {
                   const pointTypes = []
                   const pointCategories = []
                   const tooltipItems = []
-                  let hasDataIssues = false
-                  const dataIssuesLog = []
+
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
@@ -430,33 +498,47 @@ const DataLoader = ({ ...props }) => {
 
                   // Check that each category assigned to a point or indicator
                   // has a language pack entry.
+                  const missingIndicatorCategories = []
                   indicators.forEach(i => {
                     if (!strings[i.category]) {
-                      hasDataIssues = true
-                      dataIssuesLog.push(
-                        `Missing entry for category <code>${i.category}</code> detected when checking indicator <code>${i.id}</code> in data dictionary. You should have a row with varable <code>${i.category}</code> that contains a label and description.`,
-                      )
+                      if (
+                        missingIndicatorCategories.indexOf(
+                          i.category,
+                        ) < 0
+                      ) {
+                        missingIndicatorCategories.push(
+                          i.category,
+                        )
+                      }
                     }
+                  })
+                  missingIndicatorCategories.forEach(el => {
+                    hasDataIssues = true
+                    dataIssuesLog.push(
+                      `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
+                    )
                   })
                   // pointTypes
+                  const missingPointCategories = []
                   pointTypes.forEach(p => {
                     if (!strings[p.category]) {
-                      hasDataIssues = true
-                      dataIssuesLog.push(
-                        `Missing entry for category <code>${i.category}</code> detected when checking point type <code>${i.id}</code> in data dictionary. You should have a row with varable <code>${i.category}</code> that contains a label and description.`,
-                      )
+                      if (
+                        missingPointCategories.indexOf(
+                          p.category,
+                        ) < 0
+                      ) {
+                        missingPointCategories.push(
+                          p.category,
+                        )
+                      }
                     }
                   })
-
-                  if (!!hasDataIssues && !!showDataIssues) {
-                    setStoreValues({ dataIssues: true })
-                    addDataIssuesLog(dataIssuesLog)
-                  } else {
-                    console.error(
-                      `Issues with remote data sources on branch ${gitBranch} detected:`,
-                      dataIssuesLog,
+                  missingPointCategories.forEach(el => {
+                    hasDataIssues = true
+                    dataIssuesLog.push(
+                      `Missing entry for category <code>${el}</code> detected when checking point type categories  in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
                     )
-                  }
+                  })
 
                   // Save strings to string list.
                   // console.log('strings, ', strings)
@@ -528,6 +610,29 @@ const DataLoader = ({ ...props }) => {
       xhr.send(null)
     })
   }, [])
+
+  // useEffect(() => {
+  //   console.log('allDataLoaded changed, ', allDataLoaded)
+  //   console.log('dataIssuesLog, ', dataIssuesLog)
+  //   console.log('hasDataIssues, ', hasDataIssues)
+  //   if (!!allDataLoaded && dataLoadedPercent === 100) {
+  //     console.log('All data loaded.')
+  //     console.log('dataIssuesLog, ', dataIssuesLog)
+  //     console.log('hasDataIssues, ', hasDataIssues)
+
+  //     if (!!hasDataIssues) {
+  //       if (!!showDataIssues) {
+  //         setStoreValues({ dataIssues: true })
+  //         addDataIssuesLog(dataIssuesLog)
+  //       } else {
+  //         console.error(
+  //           `${dataIssuesLog.length} issues with remote data sources on branch ${gitBranch} detected:`,
+  //           dataIssuesLog,
+  //         )
+  //       }
+  //     }
+  //   }
+  // }, [allDataLoaded, dataLoadedPercent])
 
   return <DataLoaderContent />
 }
