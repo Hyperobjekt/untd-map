@@ -6,7 +6,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { getRoundedValue, getHashLeft } from './../utils'
 
 const LinearScale = ({ ...props }) => {
-  // console.log('LinearScale, ', props)
+  console.log('LinearScale, ', props)
 
   const value = props.value
   const high_is_good = !!Number(props.indicator.highisgood)
@@ -75,19 +75,15 @@ const LinearScale = ({ ...props }) => {
           currency,
           percent,
         )}`
-  const percentFromLeft = Math.round(
-    getHashLeft(
-      value,
-      !!high_is_good ? min : max,
-      !!high_is_good ? max : min,
-    ),
+  const percentFromLeft = getHashLeft(
+    value,
+    !!high_is_good ? min : max,
+    !!high_is_good ? max : min,
   )
-  const meanPercentFromLeft = Math.round(
-    getHashLeft(
-      mean,
-      !!high_is_good ? min : max,
-      !!high_is_good ? max : min,
-    ),
+  const meanPercentFromLeft = getHashLeft(
+    mean,
+    !!high_is_good ? min : max,
+    !!high_is_good ? max : min,
   )
 
   // Preserve: For checking a particular indicator, if there are issues with its presentation.

@@ -20,6 +20,14 @@ const isTruthy = val => {
   )
 }
 
+const roundToDecimals = (val, power) => {
+  if (val < 0) {
+    return (Math.round(val * -1 * power) / power) * -1
+  } else {
+    return Math.round(val * power) / power
+  }
+}
+
 function countDecimals(decimal) {
   var num = parseFloat(decimal) // First convert to number to check if whole
 
@@ -42,12 +50,15 @@ function countDecimals(decimal) {
 const getMinimumPresentableDecimals = (min, max) => {
   let divisor = 1
   if (min < 0) {
-    min = min * -1
+    // Use only the decimal portion
+    // to determine decimals if less than 0.
+    min = (min * -1) % 1
   }
   if (max < 0) {
     max = max * -1
   }
   while (min / divisor < 1 || max / divisor < 1) {
+    // console.log(`divisor = ${divisor}`)
     divisor = divisor / 10
   }
   // console.log('divisor: ', divisor)
@@ -86,13 +97,6 @@ const GenerateMinMaxes = () => {
       indicators.forEach((i, index) => {
         // Get raw metric from sd in indicator id
         const rawMetric = i.id.replace('_sd', '')
-        // Get decimals for raw metric.
-        // const decimals = allData.find(el => {
-        //   return el.variable === rawMetric
-        // }).decimals
-        // console.log(
-        //   `decimals for raw metric ${rawMetric} = ${decimals}`,
-        // )
         // Create placeholders for the values to be calculated.
         i.min = [undefined, undefined, undefined]
         i.max = [undefined, undefined, undefined]
@@ -100,60 +104,68 @@ const GenerateMinMaxes = () => {
         i.decimals = [undefined, undefined, undefined]
         // Iterate through each layer.
         UNTD_LAYERS.forEach((layer, ind) => {
-          if (!!layer.calculate_scale_params) {
-            // Get feature set from remoteJson
-            const featureSet = remoteJson[
-              layer.id
-            ].data.features
-              .filter(item => {
-                // Filter out items without this value.
-                return (
-                  !!item.properties[rawMetric] &&
-                  item.properties[rawMetric] !==
-                    'undefined' &&
-                  item.properties[rawMetric] !== 'NA'
-                )
-              })
-              // Create an array of only these values.
-              .map(item => {
-                return item.properties[rawMetric]
-              })
-            // console.log(
-            //   `featureSet for layer index ${ind} = `,
-            //   featureSet,
-            // )
-            // Set min, max, and mean to the indicator for the shape
-            if (featureSet.length > 0) {
-              const min = Math.min(...featureSet)
-              const max = Math.max(...featureSet)
-              const avg =
-                featureSet.reduce(
-                  (acc, curr) => acc + curr,
-                ) / featureSet.length
-              const minimumPresentableDecimals = getMinimumPresentableDecimals(
-                min,
-                max,
+          // Get feature set from remoteJson
+          const featureSet = remoteJson[
+            layer.id
+          ].data.features
+            .filter(item => {
+              // Filter out items without this value.
+              return (
+                !!item.properties[rawMetric] &&
+                item.properties[rawMetric] !==
+                  'undefined' &&
+                item.properties[rawMetric] !== 'NA'
               )
-              // console.log(
-              //   'minimumPresentableDecimals: ',
-              //   minimumPresentableDecimals,
-              // )
-              const roundBy = Math.pow(
-                10,
+            })
+            // Create an array of only these values.
+            .map(item => {
+              return item.properties[rawMetric]
+            })
+          if (i.id === 'rent_instability_sd') {
+            console.log(
+              `featureSet for ${i.id} layer index ${ind} = `,
+              featureSet,
+            )
+          }
+          // Set min, max, and mean to the indicator for the shape
+          if (featureSet.length > 0) {
+            const min = Math.min(...featureSet)
+            const max = Math.max(...featureSet)
+            if (i.id === 'rent_instability_sd') {
+              console.log('min: ', min, 'max: ', max)
+            }
+            const avg =
+              featureSet.reduce((acc, curr) => acc + curr) /
+              featureSet.length
+            // Determine minimum amount of decimal places for scale
+            // to be cogent and interpretable
+            const minimumPresentableDecimals = getMinimumPresentableDecimals(
+              min,
+              max,
+            )
+            if (i.id === 'rent_instability_sd') {
+              console.log(
+                'minimumPresentableDecimals: ',
                 minimumPresentableDecimals,
-              ) // 1 * minimumPresentableDecimals
-              // console.log('roundBy: ', roundBy)
-              i.decimals[ind] = minimumPresentableDecimals
-              i.min[ind] =
-                min < 0
-                  ? (Math.round(min * -1 * roundBy) /
-                      roundBy) *
-                    -1
-                  : Math.round(min * roundBy) / roundBy
-              i.max[ind] =
-                Math.round(max * roundBy) / roundBy
-              i.mean[ind] =
-                Math.round(avg * roundBy) / roundBy
+              )
+            }
+            // Determine a roundby value (power of 10) to use
+            // to round to a number of decimal places.
+            // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
+            const roundBy = Math.pow(
+              10,
+              minimumPresentableDecimals,
+            )
+            // console.log('roundBy: ', roundBy)
+            i.decimals[ind] = minimumPresentableDecimals
+            i.min[ind] = roundToDecimals(min, roundBy)
+            i.max[ind] = roundToDecimals(max, roundBy)
+            i.mean[ind] = roundToDecimals(avg, roundBy)
+            if (i.id === 'rent_instability_sd') {
+              console.log(
+                `modified indicator for ${i.id} layer index ${ind}`,
+                i,
+              )
             }
           }
         })
@@ -161,14 +173,14 @@ const GenerateMinMaxes = () => {
         // Replace original indicator value with this one.
         localIndicators[index] = i
       })
-      // console.log(
-      //   'Indicators update complete: ',
-      //   indicators,
-      // )
       setStoreValues({
         indicators: localIndicators,
         indicatorRangesSet: true,
       })
+      console.log(
+        'Indicators update complete: ',
+        indicators,
+      )
     }
   }, [allDataLoaded])
   // Returns nothing

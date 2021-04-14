@@ -202,6 +202,7 @@ const [useStore] = create((set, get) => ({
       },
     }))
   },
+  // Array of interactive layers, 1 = active, 0 = inactive
   activeLayers: ROUTE_SET.find(el => {
     return el.id === 'layers'
   }).defaultValue,

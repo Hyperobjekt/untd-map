@@ -66,7 +66,15 @@ const PanelLocationView = ({ ...props }) => {
     shallow,
   )
 
-  console.log('panelLocationView, ', indicators, remoteJson)
+  console.log(
+    'panelLocationView, ',
+    indicators,
+    // activeLayers,
+  )
+
+  // Stores the index of the selected location's layer
+  // for fetching min, max, and mean from indicator arrays.
+  const activeLayerIndex = activeLayers.indexOf(1)
 
   const handleFeedback = () => {
     console.log('handleFeedback')
@@ -166,59 +174,93 @@ const PanelLocationView = ({ ...props }) => {
                   indicator.id.replace('_sd', '')
                 )
               })
-              const valueLabel = i18n.translate(
-                rawMetric.variable,
-              )
-              const min = rawMetric.min
-              const max = rawMetric.max
-              const high_is_good = rawMetric.highisgood
+              // console.log('rawMetric: ', rawMetric)
+              const sdMetric = allData.find(d => {
+                return d.variable === indicator.id
+              })
+              // const valueLabel = i18n.translate(
+              //   rawMetric.variable,
+              // )
+              // Min, max, and mean are calculated and stored in the indicator
+              rawMetric.min =
+                indicator.min[activeLayerIndex]
+              rawMetric.max =
+                indicator.max[activeLayerIndex]
+              rawMetric.mean =
+                indicator.mean[activeLayerIndex]
+              rawMetric.decimals =
+                indicator.decimals[activeLayerIndex]
+              // const high_is_good = rawMetric.highisgood
               const rawName = String(indicator.id).replace(
                 '_sd',
                 '',
               )
               // console.log('rawMetric, ', rawMetric)
+              // Is there a raw value available for the metric on the feature?
               const rawValue =
-                activeFeature.properties[rawName]
+                activeFeature.properties[rawName] &&
+                activeFeature.properties[rawName] !==
+                  undefined &&
+                activeFeature.properties[rawName] !== 'NA'
+                  ? activeFeature.properties[rawName]
+                  : false
+
+              // Is there an sd value available for the metric on the feature?
+              const hasSdValue =
+                activeFeature.properties[indicator.id] &&
+                String(
+                  activeFeature.properties[indicator.id],
+                ).length > 0 &&
+                activeFeature.properties[indicator.id] !==
+                  undefined &&
+                activeFeature.properties[indicator.id] !==
+                  'NA'
+                  ? activeFeature.properties[indicator.id]
+                  : false
               // console.log('rawValue, ', rawValue)
-              return (
-                <div
-                  className={clsx(
-                    'indicator-group',
-                    `layer-order-${indicator.order}`,
-                  )}
-                  key={indicator.id}
-                >
-                  <h6 className={clsx('indicator')}>
-                    {i18n.translate(indicator.id)}
-                    {!interactionsMobile && (
-                      <IndicatorTooltip
-                        indicator={indicator}
+              if (!!hasSdValue || !!rawValue) {
+                return (
+                  <div
+                    className={clsx(
+                      'indicator-group',
+                      `layer-order-${indicator.order}`,
+                    )}
+                    key={indicator.id}
+                  >
+                    <h6 className={clsx('indicator')}>
+                      {i18n.translate(indicator.id)}
+                      {!interactionsMobile && (
+                        <IndicatorTooltip
+                          indicator={indicator}
+                        />
+                      )}
+                    </h6>
+                    {!!rawValue && !!rawMetric && (
+                      <LinearScale
+                        indicator={rawMetric}
+                        value={rawValue}
                       />
                     )}
-                  </h6>
-                  {!!rawValue && !!rawMetric && (
-                    <LinearScale
-                      indicator={rawMetric}
-                      value={rawValue}
+                    <NonInteractiveScale
+                      metric={indicator.id}
+                      showHash={false}
+                      quintiles={setActiveQuintile(
+                        Number(
+                          activeFeature.properties[
+                            indicator.id
+                          ],
+                        ),
+                      )}
+                      colors={CRI_COLORS}
+                      showMinMax={false}
+                      min={sdMetric.min}
+                      max={sdMetric.max}
                     />
-                  )}
-                  <NonInteractiveScale
-                    metric={indicator.id}
-                    showHash={false}
-                    quintiles={setActiveQuintile(
-                      Number(
-                        activeFeature.properties[
-                          indicator.id
-                        ],
-                      ),
-                    )}
-                    colors={CRI_COLORS}
-                    showMinMax={false}
-                    min={min}
-                    max={max}
-                  />
-                </div>
-              )
+                  </div>
+                )
+              } else {
+                return ''
+              }
             })}
         </div>
         {/* Feedback panel */}

@@ -155,7 +155,7 @@ const MapLegend = ({ ...props }) => {
           colors={CRI_COLORS}
           showHash={false}
           hashLeft={null}
-          showMinMax={true}
+          showMinMax={false}
           min={0}
           max={100}
         />

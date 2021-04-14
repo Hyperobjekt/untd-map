@@ -222,7 +222,7 @@ export const ROUTE_SET = [
     id: 'layers',
     options: ['1', '0'],
     validate: 'contains_only',
-    defaultValue: [0, 0, 1, 0],
+    defaultValue: [0, 0, 1],
   },
   {
     id: 'static_layers',
