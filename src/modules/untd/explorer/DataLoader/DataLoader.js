@@ -12,11 +12,167 @@ import {
   DATA_FILES,
   ROUTE_SET,
 } from './../../../../constants/map'
+import { UNTD_LAYERS } from './../../../../constants/layers'
 
 const isTruthy = val => {
   return (
     String(val).toLowerCase() === 'yes' || Number(val) === 1
   )
+}
+
+function countDecimals(decimal) {
+  var num = parseFloat(decimal) // First convert to number to check if whole
+
+  if (Number.isInteger(num) === true) {
+    return 0
+  }
+
+  var text = num.toString() // Convert back to string and check for "1e-8" numbers
+
+  if (text.indexOf('e-') > -1) {
+    var [base, trail] = text.split('e-')
+    var deg = parseInt(trail, 10)
+    return deg
+  } else {
+    var index = text.indexOf('.')
+    return text.length - index - 1 // Otherwise use simple string function to count
+  }
+}
+
+const getMinimumPresentableDecimals = (min, max) => {
+  let divisor = 1
+  if (min < 0) {
+    min = min * -1
+  }
+  if (max < 0) {
+    max = max * -1
+  }
+  while (min / divisor < 1 || max / divisor < 1) {
+    divisor = divisor / 10
+  }
+  // console.log('divisor: ', divisor)
+  return countDecimals(divisor)
+}
+
+const GenerateMinMaxes = () => {
+  // console.log('GenerateMinMaxes')
+
+  const {
+    allDataLoaded,
+    remoteJson,
+    indicators,
+    setStoreValues,
+    indicatorRangesSet,
+    allData,
+  } = useStore(state => ({
+    allDataLoaded: state.allDataLoaded,
+    remoteJson: state.remoteJson,
+    indicators: state.indicators,
+    setStoreValues: state.setStoreValues,
+    indicatorRangesSet: state.indicatorRangesSet,
+    allData: state.allData,
+  }))
+
+  const localIndicators = indicators.slice()
+
+  useEffect(() => {
+    // When all data is loaded, iterate through all feature sets
+    if (!!allDataLoaded && !indicatorRangesSet) {
+      // And set a min, max, and mean for each shape type
+      // console.log(
+      //   'entering indicators update, ',
+      //   indicators,
+      // )
+      indicators.forEach((i, index) => {
+        // Get raw metric from sd in indicator id
+        const rawMetric = i.id.replace('_sd', '')
+        // Get decimals for raw metric.
+        // const decimals = allData.find(el => {
+        //   return el.variable === rawMetric
+        // }).decimals
+        // console.log(
+        //   `decimals for raw metric ${rawMetric} = ${decimals}`,
+        // )
+        // Create placeholders for the values to be calculated.
+        i.min = [undefined, undefined, undefined]
+        i.max = [undefined, undefined, undefined]
+        i.mean = [undefined, undefined, undefined]
+        i.decimals = [undefined, undefined, undefined]
+        // Iterate through each layer.
+        UNTD_LAYERS.forEach((layer, ind) => {
+          if (!!layer.calculate_scale_params) {
+            // Get feature set from remoteJson
+            const featureSet = remoteJson[
+              layer.id
+            ].data.features
+              .filter(item => {
+                // Filter out items without this value.
+                return (
+                  !!item.properties[rawMetric] &&
+                  item.properties[rawMetric] !==
+                    'undefined' &&
+                  item.properties[rawMetric] !== 'NA'
+                )
+              })
+              // Create an array of only these values.
+              .map(item => {
+                return item.properties[rawMetric]
+              })
+            // console.log(
+            //   `featureSet for layer index ${ind} = `,
+            //   featureSet,
+            // )
+            // Set min, max, and mean to the indicator for the shape
+            if (featureSet.length > 0) {
+              const min = Math.min(...featureSet)
+              const max = Math.max(...featureSet)
+              const avg =
+                featureSet.reduce(
+                  (acc, curr) => acc + curr,
+                ) / featureSet.length
+              const minimumPresentableDecimals = getMinimumPresentableDecimals(
+                min,
+                max,
+              )
+              // console.log(
+              //   'minimumPresentableDecimals: ',
+              //   minimumPresentableDecimals,
+              // )
+              const roundBy = Math.pow(
+                10,
+                minimumPresentableDecimals,
+              ) // 1 * minimumPresentableDecimals
+              // console.log('roundBy: ', roundBy)
+              i.decimals[ind] = minimumPresentableDecimals
+              i.min[ind] =
+                min < 0
+                  ? (Math.round(min * -1 * roundBy) /
+                      roundBy) *
+                    -1
+                  : Math.round(min * roundBy) / roundBy
+              i.max[ind] =
+                Math.round(max * roundBy) / roundBy
+              i.mean[ind] =
+                Math.round(avg * roundBy) / roundBy
+            }
+          }
+        })
+        // console.log(`completed indicator ${i.id}: `, i)
+        // Replace original indicator value with this one.
+        localIndicators[index] = i
+      })
+      // console.log(
+      //   'Indicators update complete: ',
+      //   indicators,
+      // )
+      setStoreValues({
+        indicators: localIndicators,
+        indicatorRangesSet: true,
+      })
+    }
+  }, [allDataLoaded])
+  // Returns nothing
+  return ''
 }
 
 const DataLoaderContent = ({ ...props }) => {
@@ -314,6 +470,21 @@ const DataLoader = ({ ...props }) => {
                       }
                     }
 
+                    // Check for properly formatted years column
+                    if (r['years']) {
+                      const lettersAndSpecialChars = /([\@\!\%\^\&\*\(\)\#\ \.\+\/a-zA-Z])/g
+                      if (
+                        r['years'] &&
+                        r['years'].match(
+                          lettersAndSpecialChars,
+                        )
+                      ) {
+                        addDataIssuesLog([
+                          `Years column for row <code>${r.variable}</code> has characters other than ',' and numbes in it. Please compose this column as a comma-delineated list of years.`,
+                        ])
+                      }
+                    }
+
                     // Build list of tooltip items
                     if (
                       !!r.variable &&
@@ -454,18 +625,6 @@ const DataLoader = ({ ...props }) => {
                             isTruthy(r['display_variable'])
                               ? 1
                               : 0,
-                          min: r['min']
-                            ? Number(r['min'])
-                            : 0,
-                          max: r['max']
-                            ? Number(r['max'])
-                            : 100,
-                          range: r['range']
-                            ? Number(r['range'])
-                            : null,
-                          mean: r['mean']
-                            ? Number(r['mean'])
-                            : null,
                           highisgood:
                             // String(
                             //   r['highisgood'],
@@ -634,7 +793,12 @@ const DataLoader = ({ ...props }) => {
     })
   }, [])
 
-  return <DataLoaderContent />
+  return (
+    <>
+      <DataLoaderContent />
+      <GenerateMinMaxes />
+    </>
+  )
 }
 
 export default DataLoader

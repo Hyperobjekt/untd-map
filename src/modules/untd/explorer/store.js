@@ -97,6 +97,8 @@ const [useStore] = create((set, get) => ({
   },
   // List of indicator objects.
   indicators: [],
+  // Have indicators min, max, and mean values been set?
+  indicatorRangesSet: false,
   // Push items to indicator list.
   addIndicators: inds => {
     set(state => ({
