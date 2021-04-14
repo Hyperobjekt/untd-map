@@ -64,6 +64,8 @@ const PanelLocationView = ({ ...props }) => {
     shallow,
   )
 
+  console.log('panelLocationView, ', indicators)
+
   const handleFeedback = () => {
     console.log('handleFeedback')
     setStoreValues({

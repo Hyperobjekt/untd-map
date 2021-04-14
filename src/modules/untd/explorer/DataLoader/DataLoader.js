@@ -22,28 +22,58 @@ const isTruthy = val => {
 const DataLoaderContent = ({ ...props }) => {
   // console.log('DataLoaderContent, ', variables)
 
-  const { dataLoadedPercent, allDataLoaded } = useStore(
-    state => ({
-      dataLoadedPercent: state.dataLoadedPercent,
-      allDataLoaded: state.allDataLoaded,
-    }),
+  const {
+    dataLoadedPercent,
+    allDataLoaded,
+    dataIssues,
+    dataIssuesLog,
+  } = useStore(state => ({
+    dataLoadedPercent: state.dataLoadedPercent,
+    allDataLoaded: state.allDataLoaded,
+    dataIssues: state.dataIssues,
+    dataIssuesLog: state.dataIssuesLog,
+  }))
+
+  const showDataIssues = Number(
+    process.env.GATSBY_SHOW_DATA_ISSUES,
   )
+  const gitBranch = process.env.GATSBY_DATA_BRANCH
 
   return (
     <div
       className={clsx(
         'data-loader',
-        !!allDataLoaded ? 'all-loaded' : '',
+        !!allDataLoaded && !dataIssues && !showDataIssues
+          ? 'all-loaded'
+          : '',
       )}
     >
       <div className="center">
-        <h2>
-          {i18n.translate(`LOADING_DATA`)}
-          <span className={clsx('loading-dot')}>.</span>
-          <span className={clsx('loading-dot')}>.</span>
-          <span className={clsx('loading-dot')}>.</span>
-        </h2>
-        <Progress value={dataLoadedPercent} />
+        {!dataIssues && (
+          <>
+            <h2>
+              {i18n.translate(`LOADING_DATA`)}
+              <span className={clsx('loading-dot')}>.</span>
+              <span className={clsx('loading-dot')}>.</span>
+              <span className={clsx('loading-dot')}>.</span>
+            </h2>
+            <Progress value={dataLoadedPercent} />
+          </>
+        )}
+        {!!dataIssues && !!showDataIssues && (
+          <>
+            <h2
+              dangerouslySetInnerHTML={{
+                __html: `Issues with remote data sources on branch <code>${gitBranch}</code> detected:`,
+              }}
+            ></h2>
+            <ul className={clsx('data-issues-list')}>
+              {dataIssuesLog.map((item, ind) => (
+                <li key={`data-issue-${ind}`}>{item}</li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </div>
   )
@@ -57,6 +87,7 @@ const DataLoader = ({ ...props }) => {
     incrementLangUpdates,
     addIndicators,
     addTooltipItems,
+    addDataIssuesLog,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -65,9 +96,15 @@ const DataLoader = ({ ...props }) => {
       incrementLangUpdates: state.incrementLangUpdates,
       addIndicators: state.addIndicators,
       addTooltipItems: state.addTooltipItems,
+      addDataIssuesLog: state.addDataIssuesLog,
     }),
     shallow,
   )
+
+  const showDataIssues = Number(
+    process.env.GATSBY_SHOW_DATA_ISSUES,
+  )
+  const gitBranch = process.env.GATSBY_DATA_BRANCH
 
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
@@ -161,25 +198,49 @@ const DataLoader = ({ ...props }) => {
                   const pointTypes = []
                   const pointCategories = []
                   const tooltipItems = []
+                  let hasDataIssues = false
+                  const dataIssuesLog = []
                   result.data.forEach(r => {
                     // Build lang string.
                     if (r[el.lang_key]) {
                       // console.log(
                       //   'Lang strings present, adding, ',
-                      //   r[el.lang_value],
+                      //   r,
                       // )
-                      strings[r[el.lang_key]] =
-                        r[el.lang_label].length > 0
-                          ? r[el.lang_label]
-                          : `${
-                              r[el.lang_key]
-                            } label not provided`
-                      strings[`${r[el.lang_key]}_desc`] =
-                        r[el.lang_desc].length > 0
-                          ? r[el.lang_desc]
-                          : `${
-                              r[el.lang_key]
-                            } description not provided`
+                      // if (r.variable === 'ALAND') {
+                      //   console.log(
+                      //     'aland, ',
+                      //     r[el.lang_desc],
+                      //     r[el.lang_desc].length,
+                      //   )
+                      // }
+
+                      if (r[el.lang_label].length > 0) {
+                        strings[r[el.lang_key]] =
+                          r[el.lang_label].length > 0
+                            ? r[el.lang_label]
+                            : `${
+                                r[el.lang_key]
+                              } label not provided`
+                      } else {
+                        hasDataIssues = true
+                        dataIssuesLog.push(
+                          `Label not provided for ${r.variable} in data dictionary.`,
+                        )
+                      }
+                      if (r[el.lang_desc].length > 0) {
+                        strings[`${r[el.lang_key]}_desc`] =
+                          r[el.lang_desc].length > 0
+                            ? r[el.lang_desc]
+                            : `${
+                                r[el.lang_key]
+                              } description not provided`
+                      } else {
+                        hasDataIssues = true
+                        dataIssuesLog.push(
+                          `Description not provided for ${r.variable} in data dictionary.`,
+                        )
+                      }
                     }
 
                     // Build list of tooltip items
@@ -187,6 +248,7 @@ const DataLoader = ({ ...props }) => {
                       !!r.variable &&
                       isTruthy(r.tooltip)
                     ) {
+                      // TODO: ADD CHECK FOR DUPLICATE tooltip items.
                       // console.log('tooltip item, ', r)
                       tooltipItems.push({
                         id: r[el.lang_key]
@@ -224,103 +286,148 @@ const DataLoader = ({ ...props }) => {
                       r.type === 'point' &&
                       !!r.variable
                     ) {
-                      pointTypes.push({
-                        id: r.variable,
-                        label: r.variable,
-                        types: [`points`],
-                        tooltip: `${r.variable}_desc`,
-                        only_one: false,
-                        group: 1,
-                        index: pointTypes.length,
-                        icon: `${r.variable}-icon`,
-                        category: r['category']
-                          ? r['category']
-                          : false,
-                        subcategory: r['subcategory']
-                          ? r['subcategory']
-                          : false,
-                        category_order: r['category_order']
-                          ? r['category_order']
-                          : 0,
-                        subcategory_order: r[
-                          'subcategory_order'
-                        ]
-                          ? r['subcategory_order']
-                          : 0,
-                      })
-                      if (
-                        r['category'] &&
-                        pointCategories.indexOf(
-                          r['category'],
-                        ) <= -1
-                      ) {
-                        pointCategories.push(r['category'])
+                      const pointAlreadyExists =
+                        pointTypes.length === 0
+                          ? false
+                          : !!pointTypes.find(item => {
+                              return item.id === r.variable
+                            })
+                      if (!pointAlreadyExists) {
+                        pointTypes.push({
+                          id: r.variable,
+                          label: r.variable,
+                          types: [`points`],
+                          tooltip: `${r.variable}_desc`,
+                          only_one: false,
+                          group: 1,
+                          index: pointTypes.length,
+                          icon: `${r.variable}-icon`,
+                          category: r['category']
+                            ? r['category']
+                            : false,
+                          subcategory: r['subcategory']
+                            ? r['subcategory']
+                            : false,
+                          category_order: r[
+                            'category_order'
+                          ]
+                            ? r['category_order']
+                            : 0,
+                          subcategory_order: r[
+                            'subcategory_order'
+                          ]
+                            ? r['subcategory_order']
+                            : 0,
+                        })
+                        if (
+                          r['category'] &&
+                          pointCategories.indexOf(
+                            r['category'],
+                          ) <= -1
+                        ) {
+                          pointCategories.push(
+                            r['category'],
+                          )
+                        }
+                      } else {
+                        hasDataIssues = true
+                        dataIssuesLog.push(
+                          `Duplicate point type ${r.variable} in data dictionary.`,
+                        )
                       }
                     }
-                    // Build indicator list, array of objects.
-                    const exists =
-                      indicators.length === 0
-                        ? false
-                        : !!indicators.find(item => {
-                            return (
-                              item.id === r[el.lang_key]
-                            )
-                          })
-                    // console.log(
-                    //   'exists: ',
-                    //   exists,
-                    //   indicators,
-                    //   r,
-                    // )
-                    if (
-                      !exists &&
-                      r[el.ind_key] === el.ind_flag
-                    ) {
-                      // console.log('adding an indicator')
-                      indicators.push({
-                        id: r[el.lang_key]
-                          ? r[el.lang_key]
-                          : r.variable,
-                        display:
-                          // String(r.variable).indexOf('18') >
-                          // 0
-                          //   ? 1
-                          //   : 0,
-                          isTruthy(r['display_variable'])
-                            ? 1
+
+                    if (r.type === 'sd') {
+                      // Build indicator list, array of objects.
+                      const exists =
+                        indicators.length === 0
+                          ? false
+                          : !!indicators.find(item => {
+                              return (
+                                item.id === r[el.lang_key]
+                              )
+                            })
+                      // console.log(
+                      //   'exists: ',
+                      //   exists,
+                      //   indicators,
+                      //   r,
+                      // )
+                      if (
+                        !exists &&
+                        r[el.ind_key] === el.ind_flag
+                      ) {
+                        // console.log('adding an indicator')
+                        indicators.push({
+                          id: r[el.lang_key]
+                            ? r[el.lang_key]
+                            : r.variable,
+                          display:
+                            // String(r.variable).indexOf('18') >
+                            // 0
+                            //   ? 1
+                            //   : 0,
+                            isTruthy(r['display_variable'])
+                              ? 1
+                              : 0,
+                          min: r['min']
+                            ? Number(r['min'])
                             : 0,
-                        min: r['min']
-                          ? Number(r['min'])
-                          : 0,
-                        max: r['max']
-                          ? Number(r['max'])
-                          : 100,
-                        range: r['range']
-                          ? Number(r['range'])
-                          : null,
-                        mean: r['mean']
-                          ? Number(r['mean'])
-                          : null,
-                        highisgood:
-                          // String(
-                          //   r['highisgood'],
-                          // ).toLowerCase() === 'yes'
-                          isTruthy(r['highisgood']) ? 1 : 0,
-                        iscurrency: Number(r['currency']),
-                        ispercent: Number(r['percent']),
-                        decimals: Number(r['decimals']),
-                        years: r['years']
-                          .toLowerCase()
-                          .replace(/ /g, '')
-                          .split(','),
-                        placeTypes: r['place']
-                          .toLowerCase()
-                          .replace(/ /g, '')
-                          .split(','),
-                        order: r['indicator_order'],
-                      })
+                          max: r['max']
+                            ? Number(r['max'])
+                            : 100,
+                          range: r['range']
+                            ? Number(r['range'])
+                            : null,
+                          mean: r['mean']
+                            ? Number(r['mean'])
+                            : null,
+                          highisgood:
+                            // String(
+                            //   r['highisgood'],
+                            // ).toLowerCase() === 'yes'
+                            isTruthy(r['highisgood'])
+                              ? 1
+                              : 0,
+                          iscurrency: Number(r['currency']),
+                          ispercent: Number(r['percent']),
+                          decimals: Number(r['decimals']),
+                          category: r['category']
+                            .toLowerCase()
+                            .replace(/ /g, ''),
+                          years: r['years']
+                            .toLowerCase()
+                            .replace(/ /g, '')
+                            .split(','),
+                          placeTypes: r['place']
+                            .toLowerCase()
+                            .replace(/ /g, '')
+                            .split(','),
+                          order: r['indicator_order'],
+                        })
+                      } else {
+                        hasDataIssues = true
+                        dataIssuesLog.push(
+                          `Duplicate indicator ${
+                            r[el.lang_key]
+                              ? r[el.lang_key]
+                              : r.variable
+                          } in data dictionary.`,
+                        )
+                      }
                     }
                   })
+
+                  if (!!hasDataIssues && !!showDataIssues) {
+                    setStoreValues({ dataIssues: true })
+                    addDataIssuesLog(dataIssuesLog)
+                  } else {
+                    console.error(
+                      `Issues with remote data sources on branch ${gitBranch} detected:`,
+                      dataIssuesLog,
+                    )
+                  }
+
                   // Save strings to string list.
                   // console.log('strings, ', strings)
                   setLang('en_US', strings)

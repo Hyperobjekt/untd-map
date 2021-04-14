@@ -117,6 +117,15 @@ const [useStore] = create((set, get) => ({
   dataLoadedPercent: 0,
   // Error flag for loading failure.
   dataLoaderFailed: false,
+  // Are there issues with the format of the remote data?
+  dataIssues: false,
+  dataIssuesLog: [],
+  // Push items to issues log
+  addDataIssuesLog: items => {
+    set(state => ({
+      dataIssuesLog: [...state.dataIssuesLog, ...items],
+    }))
+  },
   // Set JSON loaded from remote location.
   remoteJson: {},
   setRemoteJson: json =>

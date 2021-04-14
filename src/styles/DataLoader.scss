@@ -48,5 +48,9 @@
         background-color: $color-untd-darklemon;
       }
     }
+    .data-issues-list {
+      height: 30vh;
+      overflow-y: scroll;
+    }
   }
 }
