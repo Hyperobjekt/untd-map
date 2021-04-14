@@ -117,8 +117,7 @@ const [useStore] = create((set, get) => ({
   dataLoadedPercent: 0,
   // Error flag for loading failure.
   dataLoaderFailed: false,
-  // Are there issues with the format of the remote data?
-  dataIssues: false,
+  // Array to collect any issues with the format of the remote data
   dataIssuesLog: [],
   // Push items to issues log
   addDataIssuesLog: items => {

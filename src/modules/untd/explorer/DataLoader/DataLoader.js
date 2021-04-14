@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import { Progress } from 'reactstrap'
@@ -25,12 +25,10 @@ const DataLoaderContent = ({ ...props }) => {
   const {
     dataLoadedPercent,
     allDataLoaded,
-    dataIssues,
     dataIssuesLog,
   } = useStore(state => ({
     dataLoadedPercent: state.dataLoadedPercent,
     allDataLoaded: state.allDataLoaded,
-    dataIssues: state.dataIssues,
     dataIssuesLog: state.dataIssuesLog,
   }))
 
@@ -39,17 +37,38 @@ const DataLoaderContent = ({ ...props }) => {
   )
   const gitBranch = process.env.GATSBY_DATA_BRANCH
 
+  const [renderDataIssues, setRenderDataIssues] = useState(
+    false,
+  )
+
+  useEffect(() => {
+    console.log('allDataLoaded changed, ', allDataLoaded)
+    if (!!allDataLoaded && dataLoadedPercent === 100) {
+      console.log('All data loaded.')
+      if (dataIssuesLog.length > 0) {
+        if (!!showDataIssues) {
+          setRenderDataIssues(true)
+        } else {
+          console.error(
+            `${dataIssuesLog.length} issues with remote data sources on branch ${gitBranch} detected:`,
+            dataIssuesLog,
+          )
+        }
+      }
+    }
+  }, [allDataLoaded, dataLoadedPercent])
+
   return (
     <div
       className={clsx(
         'data-loader',
-        !!allDataLoaded && !dataIssues && !showDataIssues
+        !!allDataLoaded && !renderDataIssues
           ? 'all-loaded'
           : '',
       )}
     >
       <div className="center">
-        {!dataIssues && (
+        {!renderDataIssues && (
           <>
             <h2>
               {i18n.translate(`LOADING_DATA`)}
@@ -60,7 +79,7 @@ const DataLoaderContent = ({ ...props }) => {
             <Progress value={dataLoadedPercent} />
           </>
         )}
-        {!!dataIssues && !!showDataIssues && (
+        {!!renderDataIssues && (
           <>
             <h2
               dangerouslySetInnerHTML={{
@@ -93,8 +112,6 @@ const DataLoader = ({ ...props }) => {
     addIndicators,
     addTooltipItems,
     addDataIssuesLog,
-    allDataLoaded,
-    dataLoadedPercent,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -104,8 +121,6 @@ const DataLoader = ({ ...props }) => {
       addIndicators: state.addIndicators,
       addTooltipItems: state.addTooltipItems,
       addDataIssuesLog: state.addDataIssuesLog,
-      allDataLoaded: state.allDataLoaded,
-      dataLoadedPercent: state.dataLoadedPercent,
     }),
     shallow,
   )
@@ -124,9 +139,6 @@ const DataLoader = ({ ...props }) => {
   const files = DATA_FILES
   // Counter for loaded files.
   let loadedCount = 0
-  // Track whether data issues are detected.
-  let hasDataIssues = false
-  // const dataIssuesLog = []
 
   // Load each file.
   // Set each file to the store.
@@ -183,10 +195,9 @@ const DataLoader = ({ ...props }) => {
                   }
                 })
                 if (!!missingLabel) {
-                  hasDataIssues = true
-                  dataIssuesLog.push(
+                  addDataIssuesLog([
                     `Some label point features in collection <code>${el.id}</code> are missing a label.`,
-                  )
+                  ])
                 }
               }
 
@@ -207,22 +218,15 @@ const DataLoader = ({ ...props }) => {
                 }
               })
               if (!!missingGeoid) {
-                hasDataIssues = true
-                dataIssuesLog.push(
+                addDataIssuesLog([
                   `Some some features in collection <code>${el.id}</code> are missing an id.`,
-                )
+                ])
               }
               if (!!missingId) {
-                hasDataIssues = true
-                dataIssuesLog.push(
+                addDataIssuesLog([
                   `Some some features in collection <code>${el.id}</code> are missing a GEOID.`,
-                )
+                ])
               }
-
-              console.log(
-                'dataIssuesLog line 220, ',
-                dataIssuesLog,
-              )
 
               if (el.type === 'point') {
                 // Make a list of point types.
@@ -301,10 +305,9 @@ const DataLoader = ({ ...props }) => {
                                 r[el.lang_key]
                               } label not provided`
                       } else {
-                        hasDataIssues = true
-                        dataIssuesLog.push(
+                        addDataIssuesLog([
                           `Label not provided for <code>${r.variable}</code> in data dictionary.`,
-                        )
+                        ])
                       }
                       if (r[el.lang_desc].length > 0) {
                         strings[`${r[el.lang_key]}_desc`] =
@@ -314,10 +317,9 @@ const DataLoader = ({ ...props }) => {
                                 r[el.lang_key]
                               } description not provided`
                       } else {
-                        hasDataIssues = true
-                        dataIssuesLog.push(
+                        addDataIssuesLog([
                           `Description not provided for <code>${r.variable}</code> in data dictionary.`,
-                        )
+                        ])
                       }
                     }
 
@@ -408,10 +410,9 @@ const DataLoader = ({ ...props }) => {
                           )
                         }
                       } else {
-                        hasDataIssues = true
-                        dataIssuesLog.push(
+                        addDataIssuesLog([
                           `Duplicate point type <code>${r.variable}</code> in data dictionary.`,
-                        )
+                        ])
                       }
                     }
 
@@ -484,14 +485,13 @@ const DataLoader = ({ ...props }) => {
                           order: r['indicator_order'],
                         })
                       } else {
-                        hasDataIssues = true
-                        dataIssuesLog.push(
+                        addDataIssuesLog([
                           `Duplicate indicator <code>${
                             r[el.lang_key]
                               ? r[el.lang_key]
                               : r.variable
                           }</code> in data dictionary.`,
-                        )
+                        ])
                       }
                     }
                   })
@@ -513,10 +513,9 @@ const DataLoader = ({ ...props }) => {
                     }
                   })
                   missingIndicatorCategories.forEach(el => {
-                    hasDataIssues = true
-                    dataIssuesLog.push(
+                    addDataIssuesLog([
                       `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
-                    )
+                    ])
                   })
                   // pointTypes
                   const missingPointCategories = []
@@ -534,10 +533,9 @@ const DataLoader = ({ ...props }) => {
                     }
                   })
                   missingPointCategories.forEach(el => {
-                    hasDataIssues = true
-                    dataIssuesLog.push(
+                    addDataIssuesLog([
                       `Missing entry for category <code>${el}</code> detected when checking point type categories  in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
-                    )
+                    ])
                   })
 
                   // Save strings to string list.
@@ -610,29 +608,6 @@ const DataLoader = ({ ...props }) => {
       xhr.send(null)
     })
   }, [])
-
-  // useEffect(() => {
-  //   console.log('allDataLoaded changed, ', allDataLoaded)
-  //   console.log('dataIssuesLog, ', dataIssuesLog)
-  //   console.log('hasDataIssues, ', hasDataIssues)
-  //   if (!!allDataLoaded && dataLoadedPercent === 100) {
-  //     console.log('All data loaded.')
-  //     console.log('dataIssuesLog, ', dataIssuesLog)
-  //     console.log('hasDataIssues, ', hasDataIssues)
-
-  //     if (!!hasDataIssues) {
-  //       if (!!showDataIssues) {
-  //         setStoreValues({ dataIssues: true })
-  //         addDataIssuesLog(dataIssuesLog)
-  //       } else {
-  //         console.error(
-  //           `${dataIssuesLog.length} issues with remote data sources on branch ${gitBranch} detected:`,
-  //           dataIssuesLog,
-  //         )
-  //       }
-  //     }
-  //   }
-  // }, [allDataLoaded, dataLoadedPercent])
 
   return <DataLoaderContent />
 }
