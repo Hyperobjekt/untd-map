@@ -176,16 +176,7 @@ const DataLoader = ({ ...props }) => {
 
               let missingLabel = false
               if (el.type === 'label') {
-                // console.log('type is label, ', _data)
                 _data.features.forEach(d => {
-                  // console.log(
-                  //   d.properties.GEOID,
-                  //   d.properties.label,
-                  //   d.properties.label === undefined,
-                  //   !d.properties.label ||
-                  //     d.properties.label.length <= 0 ||
-                  //     d.properties.label === undefined,
-                  // )
                   if (
                     !d.properties.label ||
                     d.properties.label.length <= 0 ||
@@ -409,6 +400,20 @@ const DataLoader = ({ ...props }) => {
                             r['category'],
                           )
                         }
+                        // Check for capital letters in point category
+                        // Check for spaces in point categoroy
+                        // Check for special characters in point category
+                        const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
+                        if (
+                          r['category'] &&
+                          r['category'].match(
+                            capAndSpecCharsRegex,
+                          )
+                        ) {
+                          addDataIssuesLog([
+                            `Category <code>${r['category']}</code> listed for point type <code>${r.variable}</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                          ])
+                        }
                       } else {
                         addDataIssuesLog([
                           `Duplicate point type <code>${r.variable}</code> in data dictionary.`,
@@ -484,6 +489,26 @@ const DataLoader = ({ ...props }) => {
                             .split(','),
                           order: r['indicator_order'],
                         })
+                        // Check for capital letters in point category
+                        // Check for spaces in point categoroy
+                        // Check for special characters in point category
+                        const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
+                        if (
+                          r['category'] &&
+                          r['category'].match(
+                            capAndSpecCharsRegex,
+                          )
+                        ) {
+                          addDataIssuesLog([
+                            `Category <code>${
+                              r['category']
+                            }</code> listed for indicator <code>${
+                              r[el.lang_key]
+                                ? r[el.lang_key]
+                                : r.variable
+                            }</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                          ])
+                        }
                       } else {
                         addDataIssuesLog([
                           `Duplicate indicator <code>${

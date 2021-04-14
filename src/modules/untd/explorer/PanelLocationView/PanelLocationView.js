@@ -52,6 +52,7 @@ const PanelLocationView = ({ ...props }) => {
     interactionsMobile,
     allData,
     activeLayers,
+    remoteJson,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -60,11 +61,12 @@ const PanelLocationView = ({ ...props }) => {
       interactionsMobile: state.interactionsMobile,
       allData: state.allData,
       activeLayers: state.activeLayers,
+      remoteJson: state.remoteJson,
     }),
     shallow,
   )
 
-  console.log('panelLocationView, ', indicators)
+  console.log('panelLocationView, ', indicators, remoteJson)
 
   const handleFeedback = () => {
     console.log('handleFeedback')
