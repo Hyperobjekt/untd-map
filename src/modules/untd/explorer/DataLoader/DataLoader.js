@@ -121,19 +121,19 @@ const GenerateMinMaxes = () => {
             .map(item => {
               return item.properties[rawMetric]
             })
-          if (i.id === 'rent_instability_sd') {
-            console.log(
-              `featureSet for ${i.id} layer index ${ind} = `,
-              featureSet,
-            )
-          }
+          // if (i.id === 'rent_instability_sd') {
+          //   console.log(
+          //     `featureSet for ${i.id} layer index ${ind} = `,
+          //     featureSet,
+          //   )
+          // }
           // Set min, max, and mean to the indicator for the shape
           if (featureSet.length > 0) {
             const min = Math.min(...featureSet)
             const max = Math.max(...featureSet)
-            if (i.id === 'rent_instability_sd') {
-              console.log('min: ', min, 'max: ', max)
-            }
+            // if (i.id === 'rent_instability_sd') {
+            //   console.log('min: ', min, 'max: ', max)
+            // }
             const avg =
               featureSet.reduce((acc, curr) => acc + curr) /
               featureSet.length
@@ -143,12 +143,12 @@ const GenerateMinMaxes = () => {
               min,
               max,
             )
-            if (i.id === 'rent_instability_sd') {
-              console.log(
-                'minimumPresentableDecimals: ',
-                minimumPresentableDecimals,
-              )
-            }
+            // if (i.id === 'rent_instability_sd') {
+            //   console.log(
+            //     'minimumPresentableDecimals: ',
+            //     minimumPresentableDecimals,
+            //   )
+            // }
             // Determine a roundby value (power of 10) to use
             // to round to a number of decimal places.
             // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
@@ -161,12 +161,12 @@ const GenerateMinMaxes = () => {
             i.min[ind] = roundToDecimals(min, roundBy)
             i.max[ind] = roundToDecimals(max, roundBy)
             i.mean[ind] = roundToDecimals(avg, roundBy)
-            if (i.id === 'rent_instability_sd') {
-              console.log(
-                `modified indicator for ${i.id} layer index ${ind}`,
-                i,
-              )
-            }
+            // if (i.id === 'rent_instability_sd') {
+            //   console.log(
+            //     `modified indicator for ${i.id} layer index ${ind}`,
+            //     i,
+            //   )
+            // }
           }
         })
         // console.log(`completed indicator ${i.id}: `, i)
@@ -177,10 +177,10 @@ const GenerateMinMaxes = () => {
         indicators: localIndicators,
         indicatorRangesSet: true,
       })
-      console.log(
-        'Indicators update complete: ',
-        indicators,
-      )
+      // console.log(
+      //   'Indicators update complete: ',
+      //   indicators,
+      // )
     }
   }, [allDataLoaded])
   // Returns nothing
