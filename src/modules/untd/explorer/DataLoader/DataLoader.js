@@ -42,9 +42,9 @@ const DataLoaderContent = ({ ...props }) => {
   )
 
   useEffect(() => {
-    console.log('allDataLoaded changed, ', allDataLoaded)
+    // console.log('allDataLoaded changed, ', allDataLoaded)
     if (!!allDataLoaded && dataLoadedPercent === 100) {
-      console.log('All data loaded.')
+      // console.log('All data loaded.')
       if (dataIssuesLog.length > 0) {
         if (!!showDataIssues) {
           setRenderDataIssues(true)
@@ -176,7 +176,7 @@ const DataLoader = ({ ...props }) => {
 
               let missingLabel = false
               if (el.type === 'label') {
-                console.log('type is label, ', _data)
+                // console.log('type is label, ', _data)
                 _data.features.forEach(d => {
                   // console.log(
                   //   d.properties.GEOID,
