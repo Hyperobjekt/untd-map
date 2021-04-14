@@ -106,6 +106,11 @@ const DataLoader = ({ ...props }) => {
     shallow,
   )
 
+  console.log(
+    'DataLoader: process.env.GATSBY_SHOW_DATA_ISSUES, ',
+    process.env.GATSBY_SHOW_DATA_ISSUES,
+  )
+
   const showDataIssues = Number(
     process.env.GATSBY_SHOW_DATA_ISSUES,
   )
