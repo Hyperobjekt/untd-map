@@ -38,6 +38,7 @@ jobs:
           echo GATSBY_MAPBOX_API_TOKEN=${{ secrets.GATSBY_MAPBOX_API_TOKEN }} >> .env
           echo GATSBY_DATA_ENDPOINT=${{ secrets.GATSBY_DATA_ENDPOINT }} >> .env
           echo GATSBY_DATA_BRANCH=${{ secrets.GATSBY_DATA_BRANCH }} >> .env
+          echo GATSBY_SHOW_DATA_ISSUES=${{ secrets.GATSBY_SHOW_DATA_ISSUES }} >> .env
           cat .env
 
       - name: Run nwb build
