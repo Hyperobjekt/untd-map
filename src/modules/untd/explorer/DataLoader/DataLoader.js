@@ -69,7 +69,12 @@ const DataLoaderContent = ({ ...props }) => {
             ></h2>
             <ul className={clsx('data-issues-list')}>
               {dataIssuesLog.map((item, ind) => (
-                <li key={`data-issue-${ind}`}>{item}</li>
+                <li
+                  key={`data-issue-${ind}`}
+                  dangerouslySetInnerHTML={{
+                    __html: item,
+                  }}
+                ></li>
               ))}
             </ul>
           </>
@@ -225,7 +230,7 @@ const DataLoader = ({ ...props }) => {
                       } else {
                         hasDataIssues = true
                         dataIssuesLog.push(
-                          `Label not provided for ${r.variable} in data dictionary.`,
+                          `Label not provided for <code>${r.variable}</code> in data dictionary.`,
                         )
                       }
                       if (r[el.lang_desc].length > 0) {
@@ -238,7 +243,7 @@ const DataLoader = ({ ...props }) => {
                       } else {
                         hasDataIssues = true
                         dataIssuesLog.push(
-                          `Description not provided for ${r.variable} in data dictionary.`,
+                          `Description not provided for <code>${r.variable}</code> in data dictionary.`,
                         )
                       }
                     }
@@ -332,7 +337,7 @@ const DataLoader = ({ ...props }) => {
                       } else {
                         hasDataIssues = true
                         dataIssuesLog.push(
-                          `Duplicate point type ${r.variable} in data dictionary.`,
+                          `Duplicate point type <code>${r.variable}</code> in data dictionary.`,
                         )
                       }
                     }
@@ -408,13 +413,33 @@ const DataLoader = ({ ...props }) => {
                       } else {
                         hasDataIssues = true
                         dataIssuesLog.push(
-                          `Duplicate indicator ${
+                          `Duplicate indicator <code>${
                             r[el.lang_key]
                               ? r[el.lang_key]
                               : r.variable
-                          } in data dictionary.`,
+                          }</code> in data dictionary.`,
                         )
                       }
+                    }
+                  })
+
+                  // Check that each category assigned to a point or indicator
+                  // has a language pack entry.
+                  indicators.forEach(i => {
+                    if (!strings[i.category]) {
+                      hasDataIssues = true
+                      dataIssuesLog.push(
+                        `Missing entry for category <code>${i.category}</code> detected when checking indicator <code>${i.id}</code> in data dictionary. You should have a row with varable <code>${i.category}</code> that contains a label and description.`,
+                      )
+                    }
+                  })
+                  // pointTypes
+                  pointTypes.forEach(p => {
+                    if (!strings[p.category]) {
+                      hasDataIssues = true
+                      dataIssuesLog.push(
+                        `Missing entry for category <code>${i.category}</code> detected when checking point type <code>${i.id}</code> in data dictionary. You should have a row with varable <code>${i.category}</code> that contains a label and description.`,
+                      )
                     }
                   })
 
