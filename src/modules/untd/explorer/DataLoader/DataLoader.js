@@ -336,6 +336,17 @@ const DataLoader = ({ ...props }) => {
                 el.type !== 'point' &&
                 el.type !== 'data'
               ) {
+                // Add ids to every feature.
+                _data.features = _data.features.map(
+                  feature => {
+                    feature.id = Math.round(
+                      Math.random() * 1000000000000,
+                    )
+                    return feature
+                  },
+                )
+
+                // Create an object to save to the store.
                 let obj = {}
                 obj[el.id] = {
                   type: `geojson`,
