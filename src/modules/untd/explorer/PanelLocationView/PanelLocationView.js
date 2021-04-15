@@ -70,8 +70,8 @@ const PanelLocationView = ({ ...props }) => {
   console.log(
     'panelLocationView, ',
     indicators,
-    trendData,
-    activeFeature,
+    // trendData,
+    // activeFeature,
   )
 
   const validTrendRows = !!activeFeature

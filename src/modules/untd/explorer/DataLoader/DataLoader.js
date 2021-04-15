@@ -75,6 +75,8 @@ const GenerateMinMaxes = () => {
     setStoreValues,
     indicatorRangesSet,
     allData,
+    trendData,
+    trendMinMaxSet,
   } = useStore(state => ({
     allDataLoaded: state.allDataLoaded,
     remoteJson: state.remoteJson,
@@ -82,11 +84,70 @@ const GenerateMinMaxes = () => {
     setStoreValues: state.setStoreValues,
     indicatorRangesSet: state.indicatorRangesSet,
     allData: state.allData,
+    trendData: state.trendData,
+    trendMinMaxSet: state.trendMinMaxSet,
   }))
 
   const localIndicators = indicators.slice()
-
+  const localTrendMinMax = {}
   useEffect(() => {
+    if (!!allDataLoaded && !trendMinMaxSet) {
+      // console.log('calculating trend minmaxes')
+      // Fetch each column in the dataset
+      const columns = Object.keys(trendData[0]).filter(
+        item => {
+          return (
+            indicators.filter(indicator => {
+              return (
+                `${item}_19_sd` === indicator.id &&
+                indicator.display === 1
+              )
+            }).length > 0
+          )
+        },
+      )
+      columns.forEach(col => {
+        localTrendMinMax[col] = {
+          min: [],
+          max: [],
+          highisgood: indicators.find(
+            el => `${col}_19_sd` === el.id,
+          ).highisgood,
+        }
+      })
+      // console.log('columns = ', columns)
+      // console.log('trendData = ', trendData)
+      UNTD_LAYERS.forEach((layer, ind) => {
+        // console.log('layer, ', layer)
+        // store an entry with min and max for each shape type
+        // Filter the data to get the right shape.
+        const shapeSet = trendData.filter(el => {
+          return String(el.type).toLowerCase() === layer.id
+        })
+        // console.log('shapeSet: ', shapeSet)
+        // For each column, for each shape type,
+        columns.forEach(col => {
+          const metricSet = shapeSet.map(i => {
+            return Number(i[col])
+          })
+          // console.log('metricSet: ', metricSet)
+          localTrendMinMax[col].min[ind] = Math.min(
+            ...metricSet,
+          )
+          localTrendMinMax[col].max[ind] = Math.max(
+            ...metricSet,
+          )
+        })
+      })
+      console.log(
+        'completed trend min max: ',
+        localTrendMinMax,
+      )
+      setStoreValues({
+        trendMinMaxSet: true,
+        trendMinMax: localTrendMinMax,
+      })
+    }
     // When all data is loaded, iterate through all feature sets
     if (!!allDataLoaded && !indicatorRangesSet) {
       // And set a min, max, and mean for each shape type

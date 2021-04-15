@@ -216,6 +216,7 @@ const en_US = {
   STATIC_LAYER_NONE: `None`,
   UI_MAP_LAYERS_NONE: `None`,
   STATIC_LAYER_TIP: `Enable {type}.`,
+  TREND_CHART_HEADING: `{years} year trend`,
 }
 
 export default en_US
