@@ -6,6 +6,8 @@ import clsx from 'clsx'
 import {
   LineChart,
   Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -22,17 +24,33 @@ const TrendChart = ({ ...props }) => {
   console.log('dataset: ', dataSet)
 
   return (
-    <LineChart
-      width={250}
-      height={150}
+    <AreaChart
+      width={150}
+      height={80}
       data={dataSet}
       // margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
-      <XAxis dataKey="name" />
-      <YAxis dataKey="value" />
-      <Tooltip />
-      <Line type="monotone" dataKey="value" stroke="red" />
-    </LineChart>
+      <XAxis dataKey="name" tick={false} />
+      <YAxis
+        dataKey="value"
+        domain={['dataMin', 'dataMax']}
+        tick={false}
+      />
+      {/* <Tooltip /> */}
+      <Area
+        type="monotone"
+        dataKey="value"
+        stroke="#626B77"
+        fill="#EAEFF4"
+        dot={false}
+      />
+      {/* <Line
+        type="monotone"
+        dataKey="value"
+        stroke="red"
+        dot={false}
+      /> */}
+    </AreaChart>
   )
 }
 
