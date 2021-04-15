@@ -16,6 +16,7 @@ import {
 } from './../utils'
 import NonInteractiveScale from './../NonInteractiveScale'
 import LinearScale from './../LinearScale'
+import TrendChart from './TrendChart'
 import { CRI_COLORS } from './../../../../constants/colors'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 
@@ -52,7 +53,7 @@ const PanelLocationView = ({ ...props }) => {
     interactionsMobile,
     allData,
     activeLayers,
-    remoteJson,
+    trendData,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -61,7 +62,7 @@ const PanelLocationView = ({ ...props }) => {
       interactionsMobile: state.interactionsMobile,
       allData: state.allData,
       activeLayers: state.activeLayers,
-      remoteJson: state.remoteJson,
+      trendData: state.trendData,
     }),
     shallow,
   )
@@ -69,8 +70,18 @@ const PanelLocationView = ({ ...props }) => {
   console.log(
     'panelLocationView, ',
     indicators,
-    // activeLayers,
+    trendData,
+    activeFeature,
   )
+
+  const validTrendRows = !!activeFeature
+    ? trendData.filter(
+        el =>
+          Number(el.GEOID) ===
+          Number(activeFeature.properties.GEOID),
+      )
+    : false
+  console.log('validTrendRows, ', validTrendRows)
 
   // Stores the index of the selected location's layer
   // for fetching min, max, and mean from indicator arrays.
@@ -207,7 +218,6 @@ const PanelLocationView = ({ ...props }) => {
 
               // Is there an sd value available for the metric on the feature?
               const hasSdValue =
-                activeFeature.properties[indicator.id] &&
                 String(
                   activeFeature.properties[indicator.id],
                 ).length > 0 &&
@@ -215,7 +225,7 @@ const PanelLocationView = ({ ...props }) => {
                   undefined &&
                 activeFeature.properties[indicator.id] !==
                   'NA'
-                  ? activeFeature.properties[indicator.id]
+                  ? true
                   : false
               // console.log('rawValue, ', rawValue)
               if (!!hasSdValue || !!rawValue) {
@@ -241,21 +251,35 @@ const PanelLocationView = ({ ...props }) => {
                         value={rawValue}
                       />
                     )}
-                    <NonInteractiveScale
-                      metric={indicator.id}
-                      showHash={false}
-                      quintiles={setActiveQuintile(
-                        Number(
-                          activeFeature.properties[
-                            indicator.id
-                          ],
-                        ),
-                      )}
-                      colors={CRI_COLORS}
-                      showMinMax={false}
-                      min={sdMetric.min}
-                      max={sdMetric.max}
-                    />
+                    {!!hasSdValue && (
+                      <NonInteractiveScale
+                        metric={indicator.id}
+                        showHash={false}
+                        quintiles={setActiveQuintile(
+                          Number(
+                            activeFeature.properties[
+                              indicator.id
+                            ],
+                          ),
+                        )}
+                        colors={CRI_COLORS}
+                        showMinMax={false}
+                        min={sdMetric.min}
+                        max={sdMetric.max}
+                      />
+                    )}
+                    {/* Check for trend item */}
+                    {!!validTrendRows[0][
+                      String(rawName).replace('_19', '')
+                    ] && (
+                      <TrendChart
+                        data={validTrendRows}
+                        metric={String(rawName).replace(
+                          '_19',
+                          '',
+                        )}
+                      />
+                    )}
                   </div>
                 )
               } else {
