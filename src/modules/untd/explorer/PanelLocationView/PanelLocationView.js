@@ -127,49 +127,48 @@ const PanelLocationView = ({ ...props }) => {
                     )}
                     key={indicator.id}
                   >
+                    {/* Metric title and button to switch metrics. */}
                     <IndicatorButton
                       indicator={indicator}
                     />
-                    {/* <h6 className={clsx('indicator')}>
-                      {i18n.translate(indicator.id)}
-                      {!interactionsMobile && (
-                        <IndicatorTooltip
-                          indicator={indicator}
+                    <div
+                      className={clsx('charts-subgroup')}
+                    >
+                      {/* Linear scale */}
+                      {!!hasRawValue && !!rawMetric && (
+                        <LinearScale
+                          indicator={rawMetric}
+                          value={hasRawValue}
                         />
                       )}
-                    </h6> */}
-                    {!!hasRawValue && !!rawMetric && (
-                      <LinearScale
-                        indicator={rawMetric}
-                        value={hasRawValue}
-                      />
-                    )}
-                    {!!hasSdValue && (
-                      <NonInteractiveScale
-                        metric={indicator.id}
-                        showHash={false}
-                        quintiles={setActiveQuintile(
-                          Number(
-                            activeFeature.properties[
-                              indicator.id
-                            ],
-                          ),
-                        )}
-                        colors={CRI_COLORS}
-                        showMinMax={false}
-                        min={0}
-                        max={4}
-                      />
-                    )}
-                    {/* Check for trend item */}
-                    {!!validTrendRows[0][
-                      String(rawName).replace('_19', '')
-                    ] && (
-                      <TrendChart
-                        data={validTrendRows}
-                        config={indicator.trend}
-                      />
-                    )}
+                      {/* Standard deviation scale */}
+                      {!!hasSdValue && (
+                        <NonInteractiveScale
+                          metric={indicator.id}
+                          showHash={false}
+                          quintiles={setActiveQuintile(
+                            Number(
+                              activeFeature.properties[
+                                indicator.id
+                              ],
+                            ),
+                          )}
+                          colors={CRI_COLORS}
+                          showMinMax={false}
+                          min={0}
+                          max={4}
+                        />
+                      )}
+                      {/* Check for trend item, display trend chart */}
+                      {!!validTrendRows[0][
+                        String(rawName).replace('_19', '')
+                      ] && (
+                        <TrendChart
+                          data={validTrendRows}
+                          config={indicator.trend}
+                        />
+                      )}
+                    </div>
                   </div>
                 )
               } else {
