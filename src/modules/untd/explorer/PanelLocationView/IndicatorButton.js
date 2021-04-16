@@ -27,9 +27,6 @@ const IndicatorButton = ({ indicator, ...props }) => {
   return (
     <CoreButton
       id="location_select_metric"
-      label={i18n.translate(
-        `LOCATION_SELECT_METRIC_FILTERS`,
-      )}
       onClick={handleSelectMetric}
       color="none"
       className={clsx('button-panel-location-metric')}

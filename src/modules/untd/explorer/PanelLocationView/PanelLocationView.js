@@ -93,6 +93,7 @@ const PanelLocationView = ({ ...props }) => {
                 highisgood: indicator.raw.highisgood,
                 currency: indicator.raw.currency,
                 percent: indicator.raw.percent,
+                id: indicator.raw.id,
               }
 
               // Is there a raw value available for the metric on the feature?
@@ -143,21 +144,50 @@ const PanelLocationView = ({ ...props }) => {
                       )}
                       {/* Standard deviation scale */}
                       {!!hasSdValue && (
-                        <NonInteractiveScale
-                          metric={indicator.id}
-                          showHash={false}
-                          quintiles={setActiveQuintile(
-                            Number(
-                              activeFeature.properties[
-                                indicator.id
-                              ],
-                            ),
-                          )}
-                          colors={CRI_COLORS}
-                          showMinMax={false}
-                          min={0}
-                          max={4}
-                        />
+                        <>
+                          <h6
+                            className={clsx(
+                              'label-sd-scale',
+                            )}
+                          >
+                            {i18n.translate(
+                              `LABEL_LOCATION_SD_SCALE`,
+                            )}
+                          </h6>
+                          <div
+                            className={clsx(
+                              'sd-scale-group',
+                            )}
+                          >
+                            <div
+                              className={clsx(
+                                'sd-scale-parent',
+                              )}
+                            >
+                              <NonInteractiveScale
+                                metric={indicator.id}
+                                showHash={false}
+                                quintiles={setActiveQuintile(
+                                  Number(
+                                    activeFeature
+                                      .properties[
+                                      indicator.id
+                                    ],
+                                  ),
+                                )}
+                                colors={CRI_COLORS}
+                                showMinMax={false}
+                                min={0}
+                                max={4}
+                              />
+                            </div>
+                            <div
+                              className={clsx(
+                                'sd-scale-label',
+                              )}
+                            ></div>
+                          </div>
+                        </>
                       )}
                       {/* Check for trend item, display trend chart */}
                       {!!validTrendRows[0][

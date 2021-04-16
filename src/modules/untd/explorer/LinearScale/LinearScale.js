@@ -1,22 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
+import { Tooltip } from 'reactstrap'
+import shallow from 'zustand/shallow'
 
 import { getRoundedValue, getHashLeft } from './../utils'
+import useStore from './../store'
 
-const LinearScale = ({ ...props }) => {
+const LinearScale = ({ indicator, value, ...props }) => {
   // console.log('LinearScale, ', props)
 
-  const value = props.value
-  const high_is_good = !!Number(props.indicator.highisgood)
-  const currency = !!Number(props.indicator.currency)
-  const decimals = Number(props.indicator.decimals)
-  const alt_u = props.indicator.alt_u
-  const min = Number(props.indicator.min)
-  const max = Number(props.indicator.max)
-  const mean = Number(props.indicator.mean)
-  const percent = !!Number(props.indicator.percent)
+  const { interactionsMobile } = useStore(
+    state => ({
+      interactionsMobile: state.interactionsMobile,
+    }),
+    shallow,
+  )
+
+  const high_is_good = !!Number(indicator.highisgood)
+  const currency = !!Number(indicator.currency)
+  const decimals = Number(indicator.decimals)
+  const alt_u = indicator.alt_u
+  const min = Number(indicator.min)
+  const max = Number(indicator.max)
+  const mean = Number(indicator.mean)
+  const percent = !!Number(indicator.percent)
 
   /**
    * Founds a number in exponential notation to a whole number.
@@ -98,12 +107,13 @@ const LinearScale = ({ ...props }) => {
   //   )
   // }
 
+  // Manage tooltip state.
+  const [tooltipOpen, setTooltipOpen] = useState(false)
+  const toggle = () => setTooltipOpen(!tooltipOpen)
+
   return (
     <div
-      className={clsx(
-        'linear-scale',
-        `${props.indicator.variable}`,
-      )}
+      className={clsx('linear-scale', `${indicator.id}`)}
     >
       <div className={clsx('linear-scale-bar')}></div>
       <div
@@ -140,6 +150,7 @@ const LinearScale = ({ ...props }) => {
           )}
         ></div>
         <span
+          id={`linear_scale_tooltip_target_${indicator.id}`}
           className={clsx(
             'label',
             'scale-label',
@@ -148,9 +159,21 @@ const LinearScale = ({ ...props }) => {
             meanPercentFromLeft > 90 ? 'justify-right' : '',
             meanPercentFromLeft < 10 ? 'justify-left' : '',
           )}
+          href="#"
         >
           {meanLabel}
         </span>
+        <Tooltip
+          placement={
+            !!interactionsMobile ? 'auto' : 'right'
+          }
+          boundariesElement={`window`}
+          isOpen={tooltipOpen}
+          target={`linear_scale_tooltip_target_${indicator.id}`}
+          toggle={toggle}
+        >
+          {i18n.translate(`LINEAR_SCALE_MEAN_DESC`)}
+        </Tooltip>
       </div>
       <div
         className={clsx(

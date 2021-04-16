@@ -218,6 +218,9 @@ const en_US = {
   STATIC_LAYER_TIP: `Enable {type}.`,
   TREND_CHART_HEADING: `{years} year trend`,
   LOCATION_SELECT_METRIC: `<p>{desc}</p><p>Click to apply this metric to the map.</p>`,
+  LINEAR_SCALE_MEAN_DESC: `The mean of the total range of values in the data.`,
+  LABEL_LOCATION_LINEAR_SCALE: ``,
+  LABEL_LOCATION_SD_SCALE: `Standard Deviation Scale`,
 }
 
 export default en_US

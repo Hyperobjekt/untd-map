@@ -73,7 +73,7 @@ const GenerateMinMaxes = () => {
         const metric = allData.find(el => {
           return el.variable === `${col}_19`
         })
-        console.log(`metric for ${col}: `, metric)
+        // console.log(`metric for ${col}: `, metric)
         // Adds some general number format information
         // about the metric from the data dictionary.
         localIndicators.find(el => {
@@ -136,7 +136,7 @@ const GenerateMinMaxes = () => {
           const metric = allData.find(el => {
             return el.variable === rawMetric
           })
-          console.log('metric: ', metric)
+          // console.log('metric: ', metric)
           // Create placeholders for the values to be calculated.
           i.raw = {
             id: rawMetric,
