@@ -217,6 +217,7 @@ const en_US = {
   UI_MAP_LAYERS_NONE: `None`,
   STATIC_LAYER_TIP: `Enable {type}.`,
   TREND_CHART_HEADING: `{years} year trend`,
+  LOCATION_SELECT_METRIC: `<p>{desc}</p><p>Click to apply this metric to the map.</p>`,
 }
 
 export default en_US

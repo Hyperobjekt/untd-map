@@ -13,7 +13,7 @@ import {
 import NonInteractiveScale from './../NonInteractiveScale'
 import LinearScale from './../LinearScale'
 import TrendChart from './TrendChart'
-import IndicatorTooltip from './IndicatorTooltip'
+import IndicatorButton from './IndicatorButton'
 import DemographicsPanel from './DemographicsPanel'
 import FeedbackPanel from './FeedbackPanel'
 import { CRI_COLORS } from './../../../../constants/colors'
@@ -24,14 +24,12 @@ const PanelLocationView = ({ ...props }) => {
   const {
     activeFeature,
     indicators,
-    interactionsMobile,
     activeLayers,
     trendData,
   } = useStore(
     state => ({
       activeFeature: state.activeFeature,
       indicators: state.indicators,
-      interactionsMobile: state.interactionsMobile,
       activeLayers: state.activeLayers,
       trendData: state.trendData,
     }),
@@ -129,14 +127,17 @@ const PanelLocationView = ({ ...props }) => {
                     )}
                     key={indicator.id}
                   >
-                    <h6 className={clsx('indicator')}>
+                    <IndicatorButton
+                      indicator={indicator}
+                    />
+                    {/* <h6 className={clsx('indicator')}>
                       {i18n.translate(indicator.id)}
                       {!interactionsMobile && (
                         <IndicatorTooltip
                           indicator={indicator}
                         />
                       )}
-                    </h6>
+                    </h6> */}
                     {!!hasRawValue && !!rawMetric && (
                       <LinearScale
                         indicator={rawMetric}

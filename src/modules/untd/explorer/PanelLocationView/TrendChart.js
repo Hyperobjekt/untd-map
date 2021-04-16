@@ -126,7 +126,7 @@ const TrendChart = ({ data, config, ...props }) => {
 }
 
 TrendChart.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
   config: PropTypes.object,
 }
 
