@@ -20,51 +20,6 @@ const isTruthy = val => {
   )
 }
 
-const roundToDecimals = (val, power) => {
-  if (val < 0) {
-    return (Math.round(val * -1 * power) / power) * -1
-  } else {
-    return Math.round(val * power) / power
-  }
-}
-
-function countDecimals(decimal) {
-  var num = parseFloat(decimal) // First convert to number to check if whole
-
-  if (Number.isInteger(num) === true) {
-    return 0
-  }
-
-  var text = num.toString() // Convert back to string and check for "1e-8" numbers
-
-  if (text.indexOf('e-') > -1) {
-    var [base, trail] = text.split('e-')
-    var deg = parseInt(trail, 10)
-    return deg
-  } else {
-    var index = text.indexOf('.')
-    return text.length - index - 1 // Otherwise use simple string function to count
-  }
-}
-
-const getMinimumPresentableDecimals = (min, max) => {
-  let divisor = 1
-  if (min < 0) {
-    // Use only the decimal portion
-    // to determine decimals if less than 0.
-    min = (min * -1) % 1
-  }
-  if (max < 0) {
-    max = max * -1
-  }
-  while (min / divisor < 1 || max / divisor < 1) {
-    // console.log(`divisor = ${divisor}`)
-    divisor = divisor / 10
-  }
-  // console.log('divisor: ', divisor)
-  return countDecimals(divisor)
-}
-
 const GenerateMinMaxes = () => {
   // console.log('GenerateMinMaxes')
 
@@ -75,6 +30,8 @@ const GenerateMinMaxes = () => {
     setStoreValues,
     indicatorRangesSet,
     allData,
+    trendData,
+    trendMinMaxSet,
   } = useStore(state => ({
     allDataLoaded: state.allDataLoaded,
     remoteJson: state.remoteJson,
@@ -82,98 +39,150 @@ const GenerateMinMaxes = () => {
     setStoreValues: state.setStoreValues,
     indicatorRangesSet: state.indicatorRangesSet,
     allData: state.allData,
+    trendData: state.trendData,
+    trendMinMaxSet: state.trendMinMaxSet,
   }))
 
-  const localIndicators = indicators.slice()
+  // console.log('GenerateMinMaxes, allData: ', allData)
 
+  const localIndicators = indicators.slice()
   useEffect(() => {
-    // When all data is loaded, iterate through all feature sets
+    /**
+     * Stores a minimum and maximum for the trend data for
+     * a given geographic shape. This is done so that the
+     * y-axis of the trend charts for each metric is relevant
+     * to the metric's overall data range for that shape type.
+     */
+    if (!!allDataLoaded && !trendMinMaxSet) {
+      // console.log('calculating trend minmaxes')
+      // Fetch each column in the dataset
+      const columns = Object.keys(trendData[0]).filter(
+        item => {
+          return (
+            indicators.filter(indicator => {
+              return (
+                `${item}_19_sd` === indicator.id &&
+                indicator.display === 1
+              )
+            }).length > 0
+          )
+        },
+      )
+      columns.forEach(col => {
+        // console.log('col: ', col, `${col}_19_sd`)
+        const metric = allData.find(el => {
+          return el.variable === `${col}_19`
+        })
+        // console.log(`metric for ${col}: `, metric)
+        // Adds some general number format information
+        // about the metric from the data dictionary.
+        localIndicators.find(el => {
+          return el.id === `${col}_19_sd`
+        }).trend = {
+          id: col,
+          min: [undefined, undefined, undefined],
+          max: [undefined, undefined, undefined],
+          decimals: Number(metric.decimals),
+          highisgood: Number(metric.highisgood),
+          currency: Number(metric.currency),
+          percent: Number(metric.percent),
+        }
+      })
+      // console.log('columns = ', columns)
+      // console.log('trendData = ', trendData)
+      UNTD_LAYERS.forEach((layer, ind) => {
+        // console.log('layer, ', layer)
+        // Store an entry with min and max for each shape type
+        // Filter the data to get the right shape.
+        const shapeSet = trendData.filter(el => {
+          return String(el.type).toLowerCase() === layer.id
+        })
+        // console.log('shapeSet: ', shapeSet)
+        // For each column, for each shape type,
+        // store the min and the max.
+        columns.forEach(col => {
+          const metricSet = shapeSet.map(i => {
+            return Number(i[col])
+          })
+          const min = Math.min(...metricSet)
+          const max = Math.max(...metricSet)
+          localIndicators.find(el => {
+            return el.id === `${col}_19_sd`
+          }).trend.min[ind] = min
+          localIndicators.find(el => {
+            return el.id === `${col}_19_sd`
+          }).trend.max[ind] = max
+        })
+      })
+    }
+    /**
+     * When all data is loaded, iterate through all feature sets
+     * Store the raw data range as well as other info about the raw
+     * data point on the indicator node. Necessary because we have
+     * 3 different shape types an each will have its different
+     * min and max, expecially for metrics that are a person-related
+     * count (like degrees, children, etc) that will naturally be
+     * lower for smaller geographic entities.
+     */
     if (!!allDataLoaded && !indicatorRangesSet) {
       // And set a min, max, and mean for each shape type
-      // console.log(
-      //   'entering indicators update, ',
-      //   indicators,
-      // )
-      indicators.forEach((i, index) => {
-        // Get raw metric from sd in indicator id
-        const rawMetric = i.id.replace('_sd', '')
-        // Create placeholders for the values to be calculated.
-        i.min = [undefined, undefined, undefined]
-        i.max = [undefined, undefined, undefined]
-        i.mean = [undefined, undefined, undefined]
-        i.decimals = [undefined, undefined, undefined]
-        // Iterate through each layer.
-        UNTD_LAYERS.forEach((layer, ind) => {
-          // Get feature set from remoteJson
-          const featureSet = remoteJson[
-            layer.id
-          ].data.features
-            .filter(item => {
-              // Filter out items without this value.
-              return (
-                !!item.properties[rawMetric] &&
-                item.properties[rawMetric] !==
-                  'undefined' &&
-                item.properties[rawMetric] !== 'NA'
-              )
-            })
-            // Create an array of only these values.
-            .map(item => {
-              return item.properties[rawMetric]
-            })
-          // if (i.id === 'rent_instability_sd') {
-          //   console.log(
-          //     `featureSet for ${i.id} layer index ${ind} = `,
-          //     featureSet,
-          //   )
-          // }
-          // Set min, max, and mean to the indicator for the shape
-          if (featureSet.length > 0) {
-            const min = Math.min(...featureSet)
-            const max = Math.max(...featureSet)
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log('min: ', min, 'max: ', max)
-            // }
-            const avg =
-              featureSet.reduce((acc, curr) => acc + curr) /
-              featureSet.length
-            // Determine minimum amount of decimal places for scale
-            // to be cogent and interpretable
-            const minimumPresentableDecimals = getMinimumPresentableDecimals(
-              min,
-              max,
-            )
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log(
-            //     'minimumPresentableDecimals: ',
-            //     minimumPresentableDecimals,
-            //   )
-            // }
-            // Determine a roundby value (power of 10) to use
-            // to round to a number of decimal places.
-            // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
-            const roundBy = Math.pow(
-              10,
-              minimumPresentableDecimals,
-            )
-            // console.log('roundBy: ', roundBy)
-            i.decimals[ind] = minimumPresentableDecimals
-            i.min[ind] = roundToDecimals(min, roundBy)
-            i.max[ind] = roundToDecimals(max, roundBy)
-            i.mean[ind] = roundToDecimals(avg, roundBy)
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log(
-            //     `modified indicator for ${i.id} layer index ${ind}`,
-            //     i,
-            //   )
-            // }
-          }
+      indicators
+        .filter(el => {
+          return Number(el.display) === 1
         })
-        // console.log(`completed indicator ${i.id}: `, i)
-        // Replace original indicator value with this one.
-        localIndicators[index] = i
-      })
+        .forEach((i, index) => {
+          // Get raw metric from sd in indicator id
+          const rawMetric = i.id.replace('_sd', '')
+          const metric = allData.find(el => {
+            return el.variable === rawMetric
+          })
+          // console.log('metric: ', metric)
+          // Create placeholders for the values to be calculated.
+          i.raw = {
+            id: rawMetric,
+            min: [undefined, undefined, undefined],
+            max: [undefined, undefined, undefined],
+            mean: [undefined, undefined, undefined],
+            decimals: Number(metric.decimals), // [undefined, undefined, undefined],
+            currency: Number(metric.currency),
+            percent: Number(metric.percent),
+            highisgood: Number(metric.highisgood),
+          }
+          // Iterate through each layer.
+          UNTD_LAYERS.forEach((layer, ind) => {
+            // Get feature set from remoteJson
+            const featureSet = remoteJson[
+              layer.id
+            ].data.features
+              .filter(item => {
+                // Filter out items without this value.
+                return (
+                  !!item.properties[rawMetric] &&
+                  item.properties[rawMetric] !==
+                    'undefined' &&
+                  item.properties[rawMetric] !== 'NA'
+                )
+              })
+              // Create an array of only these values.
+              .map(item => {
+                return item.properties[rawMetric]
+              })
+            // Set min, max, and mean to the indicator for the shape
+            if (featureSet.length > 0) {
+              i.raw.min[ind] = Math.min(...featureSet)
+              i.raw.max[ind] = Math.max(...featureSet)
+              i.raw.mean[ind] =
+                featureSet.reduce(
+                  (acc, curr) => acc + curr,
+                ) / featureSet.length
+            }
+          })
+          // console.log(`completed indicator ${i.id}: `, i)
+          // Replace original indicator value with this one.
+          localIndicators[index] = i
+        })
       setStoreValues({
+        trendMinMaxSet: true,
         indicators: localIndicators,
         indicatorRangesSet: true,
       })
@@ -330,9 +339,23 @@ const DataLoader = ({ ...props }) => {
             //   i,
             //   (loadedCount / files.length) * 100,
             // )
-            if (el.type !== 'dict') {
+            if (el.ext === 'json' || el.ext === 'geojson') {
               const _data = JSON.parse(xhr.responseText)
-              if (el.type !== 'point') {
+              if (
+                el.type !== 'point' &&
+                el.type !== 'data'
+              ) {
+                // Add ids to every feature.
+                _data.features = _data.features.map(
+                  feature => {
+                    feature.id = Math.round(
+                      Math.random() * 1000000000000,
+                    )
+                    return feature
+                  },
+                )
+
+                // Create an object to save to the store.
                 let obj = {}
                 obj[el.id] = {
                   type: `geojson`,
@@ -426,230 +449,115 @@ const DataLoader = ({ ...props }) => {
                   pointTypeLayers: point_types,
                 })
               }
-            } else {
+            }
+            if (el.ext === 'csv') {
               // Parse the file and merge with lang file.
-              const lang = Papa.parse(xhr.responseText, {
+              const parse = Papa.parse(xhr.responseText, {
                 header: true,
                 complete: result => {
-                  // console.log(
-                  //   'parse done, result: ',
-                  //   result.data,
-                  // )
-                  const strings = {}
-                  const indicators = []
-                  const pointTypes = []
-                  const pointCategories = []
-                  const tooltipItems = []
+                  if (el.type === 'data') {
+                    setStoreValues({
+                      [el.storeTarget]: result.data,
+                    })
+                  }
 
-                  result.data.forEach(r => {
-                    // Build lang string.
-                    if (r[el.lang_key]) {
-                      // console.log(
-                      //   'Lang strings present, adding, ',
-                      //   r,
-                      // )
-                      // if (r.variable === 'ALAND') {
-                      //   console.log(
-                      //     'aland, ',
-                      //     r[el.lang_desc],
-                      //     r[el.lang_desc].length,
-                      //   )
-                      // }
+                  if (el.type === 'dict') {
+                    // console.log(
+                    //   'parse done, result: ',
+                    //   result.data,
+                    // )
+                    const strings = {}
+                    const indicators = []
+                    const pointTypes = []
+                    const pointCategories = []
+                    const tooltipItems = []
 
-                      if (r[el.lang_label].length > 0) {
-                        strings[r[el.lang_key]] =
-                          r[el.lang_label].length > 0
-                            ? r[el.lang_label]
-                            : `${
-                                r[el.lang_key]
-                              } label not provided`
-                      } else {
-                        addDataIssuesLog([
-                          `Label not provided for <code>${r.variable}</code> in data dictionary.`,
-                        ])
-                      }
-                      if (r[el.lang_desc].length > 0) {
-                        strings[`${r[el.lang_key]}_desc`] =
-                          r[el.lang_desc].length > 0
-                            ? r[el.lang_desc]
-                            : `${
-                                r[el.lang_key]
-                              } description not provided`
-                      } else {
-                        addDataIssuesLog([
-                          `Description not provided for <code>${r.variable}</code> in data dictionary.`,
-                        ])
-                      }
-                    }
+                    result.data.forEach(r => {
+                      // Build lang string.
+                      if (r[el.lang_key]) {
+                        // console.log(
+                        //   'Lang strings present, adding, ',
+                        //   r,
+                        // )
+                        // if (r.variable === 'ALAND') {
+                        //   console.log(
+                        //     'aland, ',
+                        //     r[el.lang_desc],
+                        //     r[el.lang_desc].length,
+                        //   )
+                        // }
 
-                    // Check for properly formatted years column
-                    if (r['years']) {
-                      const lettersAndSpecialChars = /([\@\!\%\^\&\*\(\)\#\ \.\+\/a-zA-Z])/g
-                      if (
-                        r['years'] &&
-                        r['years'].match(
-                          lettersAndSpecialChars,
-                        )
-                      ) {
-                        addDataIssuesLog([
-                          `Years column for row <code>${r.variable}</code> has characters other than ',' and numbes in it. Please compose this column as a comma-delineated list of years.`,
-                        ])
-                      }
-                    }
-
-                    // Build list of tooltip items
-                    if (
-                      !!r.variable &&
-                      isTruthy(r.tooltip)
-                    ) {
-                      // TODO: ADD CHECK FOR DUPLICATE tooltip items.
-                      // console.log('tooltip item, ', r)
-                      tooltipItems.push({
-                        id: r[el.lang_key]
-                          ? r[el.lang_key]
-                          : r.variable,
-                        display: isTruthy(
-                          r['display_variable'],
-                        ),
-                        min: r['min'] ? r['min'] : 0,
-                        max: r['max'] ? r['max'] : 100,
-                        range: r['range']
-                          ? r['range']
-                          : null,
-                        mean: r['mean'] ? r['mean'] : null,
-                        highisgood: isTruthy(
-                          r['highisgood'],
-                        ),
-                        currency: isTruthy(r['currency']),
-                        percent: isTruthy(r['percent']),
-                        decimals: Number(r['decimals']),
-                        years: r['years']
-                          .toLowerCase()
-                          .replace(/ /g, '')
-                          .split(','),
-                        placeTypes: r['place']
-                          .toLowerCase()
-                          .replace(/ /g, '')
-                          .split(','),
-                        order: Number(r['tooltip_order']),
-                      })
-                    }
-
-                    // Build point types list
-                    if (
-                      r.type === 'point' &&
-                      !!r.variable
-                    ) {
-                      const pointAlreadyExists =
-                        pointTypes.length === 0
-                          ? false
-                          : !!pointTypes.find(item => {
-                              return item.id === r.variable
-                            })
-                      if (!pointAlreadyExists) {
-                        pointTypes.push({
-                          id: r.variable,
-                          label: r.variable,
-                          types: [`points`],
-                          tooltip: `${r.variable}_desc`,
-                          only_one: false,
-                          group: 1,
-                          index: pointTypes.length,
-                          icon: `${r.variable}-icon`,
-                          category: r['category']
-                            ? r['category']
-                            : false,
-                          subcategory: r['subcategory']
-                            ? r['subcategory']
-                            : false,
-                          category_order: r[
-                            'category_order'
-                          ]
-                            ? r['category_order']
-                            : 0,
-                          subcategory_order: r[
-                            'subcategory_order'
-                          ]
-                            ? r['subcategory_order']
-                            : 0,
-                        })
-                        if (
-                          r['category'] &&
-                          pointCategories.indexOf(
-                            r['category'],
-                          ) <= -1
-                        ) {
-                          pointCategories.push(
-                            r['category'],
-                          )
+                        if (r[el.lang_label].length > 0) {
+                          strings[r[el.lang_key]] =
+                            r[el.lang_label].length > 0
+                              ? r[el.lang_label]
+                              : `${
+                                  r[el.lang_key]
+                                } label not provided`
+                        } else {
+                          addDataIssuesLog([
+                            `Label not provided for <code>${r.variable}</code> in data dictionary.`,
+                          ])
                         }
-                        // Check for capital letters in point category
-                        // Check for spaces in point categoroy
-                        // Check for special characters in point category
-                        const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
+                        if (r[el.lang_desc].length > 0) {
+                          strings[
+                            `${r[el.lang_key]}_desc`
+                          ] =
+                            r[el.lang_desc].length > 0
+                              ? r[el.lang_desc]
+                              : `${
+                                  r[el.lang_key]
+                                } description not provided`
+                        } else {
+                          addDataIssuesLog([
+                            `Description not provided for <code>${r.variable}</code> in data dictionary.`,
+                          ])
+                        }
+                      }
+
+                      // Check for properly formatted years column
+                      if (r['years']) {
+                        const lettersAndSpecialChars = /([\@\!\%\^\&\*\(\)\#\ \.\+\/a-zA-Z])/g
                         if (
-                          r['category'] &&
-                          r['category'].match(
-                            capAndSpecCharsRegex,
+                          r['years'] &&
+                          r['years'].match(
+                            lettersAndSpecialChars,
                           )
                         ) {
                           addDataIssuesLog([
-                            `Category <code>${r['category']}</code> listed for point type <code>${r.variable}</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                            `Years column for row <code>${r.variable}</code> has characters other than ',' and numbes in it. Please compose this column as a comma-delineated list of years.`,
                           ])
                         }
-                      } else {
-                        addDataIssuesLog([
-                          `Duplicate point type <code>${r.variable}</code> in data dictionary.`,
-                        ])
                       }
-                    }
 
-                    if (r.type === 'sd') {
-                      // Build indicator list, array of objects.
-                      const exists =
-                        indicators.length === 0
-                          ? false
-                          : !!indicators.find(item => {
-                              return (
-                                item.id === r[el.lang_key]
-                              )
-                            })
-                      // console.log(
-                      //   'exists: ',
-                      //   exists,
-                      //   indicators,
-                      //   r,
-                      // )
+                      // Build list of tooltip items
                       if (
-                        !exists &&
-                        r[el.ind_key] === el.ind_flag
+                        !!r.variable &&
+                        isTruthy(r.tooltip)
                       ) {
-                        // console.log('adding an indicator')
-                        indicators.push({
+                        // TODO: ADD CHECK FOR DUPLICATE tooltip items.
+                        // console.log('tooltip item, ', r)
+                        tooltipItems.push({
                           id: r[el.lang_key]
                             ? r[el.lang_key]
                             : r.variable,
-                          display:
-                            // String(r.variable).indexOf('18') >
-                            // 0
-                            //   ? 1
-                            //   : 0,
-                            isTruthy(r['display_variable'])
-                              ? 1
-                              : 0,
-                          highisgood:
-                            // String(
-                            //   r['highisgood'],
-                            // ).toLowerCase() === 'yes'
-                            isTruthy(r['highisgood'])
-                              ? 1
-                              : 0,
-                          iscurrency: Number(r['currency']),
-                          ispercent: Number(r['percent']),
+                          display: isTruthy(
+                            r['display_variable'],
+                          ),
+                          min: r['min'] ? r['min'] : 0,
+                          max: r['max'] ? r['max'] : 100,
+                          range: r['range']
+                            ? r['range']
+                            : null,
+                          mean: r['mean']
+                            ? r['mean']
+                            : null,
+                          highisgood: isTruthy(
+                            r['highisgood'],
+                          ),
+                          currency: isTruthy(r['currency']),
+                          percent: isTruthy(r['percent']),
                           decimals: Number(r['decimals']),
-                          category: r['category']
-                            .toLowerCase()
-                            .replace(/ /g, ''),
                           years: r['years']
                             .toLowerCase()
                             .replace(/ /g, '')
@@ -658,124 +566,258 @@ const DataLoader = ({ ...props }) => {
                             .toLowerCase()
                             .replace(/ /g, '')
                             .split(','),
-                          order: r['indicator_order'],
+                          order: Number(r['tooltip_order']),
                         })
-                        // Check for capital letters in point category
-                        // Check for spaces in point categoroy
-                        // Check for special characters in point category
-                        const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
-                        if (
-                          r['category'] &&
-                          r['category'].match(
-                            capAndSpecCharsRegex,
-                          )
-                        ) {
+                      }
+
+                      // Build point types list
+                      if (
+                        r.type === 'point' &&
+                        !!r.variable
+                      ) {
+                        const pointAlreadyExists =
+                          pointTypes.length === 0
+                            ? false
+                            : !!pointTypes.find(item => {
+                                return (
+                                  item.id === r.variable
+                                )
+                              })
+                        if (!pointAlreadyExists) {
+                          pointTypes.push({
+                            id: r.variable,
+                            label: r.variable,
+                            types: [`points`],
+                            tooltip: `${r.variable}_desc`,
+                            only_one: false,
+                            group: 1,
+                            index: pointTypes.length,
+                            icon: `${r.variable}-icon`,
+                            category: r['category']
+                              ? r['category']
+                              : false,
+                            subcategory: r['subcategory']
+                              ? r['subcategory']
+                              : false,
+                            category_order: r[
+                              'category_order'
+                            ]
+                              ? r['category_order']
+                              : 0,
+                            subcategory_order: r[
+                              'subcategory_order'
+                            ]
+                              ? r['subcategory_order']
+                              : 0,
+                          })
+                          if (
+                            r['category'] &&
+                            pointCategories.indexOf(
+                              r['category'],
+                            ) <= -1
+                          ) {
+                            pointCategories.push(
+                              r['category'],
+                            )
+                          }
+                          // Check for capital letters in point category
+                          // Check for spaces in point categoroy
+                          // Check for special characters in point category
+                          const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
+                          if (
+                            r['category'] &&
+                            r['category'].match(
+                              capAndSpecCharsRegex,
+                            )
+                          ) {
+                            addDataIssuesLog([
+                              `Category <code>${r['category']}</code> listed for point type <code>${r.variable}</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                            ])
+                          }
+                        } else {
                           addDataIssuesLog([
-                            `Category <code>${
-                              r['category']
-                            }</code> listed for indicator <code>${
+                            `Duplicate point type <code>${r.variable}</code> in data dictionary.`,
+                          ])
+                        }
+                      }
+
+                      if (r.type === 'sd') {
+                        // Build indicator list, array of objects.
+                        const exists =
+                          indicators.length === 0
+                            ? false
+                            : !!indicators.find(item => {
+                                return (
+                                  item.id === r[el.lang_key]
+                                )
+                              })
+                        // console.log(
+                        //   'exists: ',
+                        //   exists,
+                        //   indicators,
+                        //   r,
+                        // )
+                        if (
+                          !exists &&
+                          r[el.ind_key] === el.ind_flag &&
+                          Number(r['display_variable']) ===
+                            1
+                        ) {
+                          // console.log('adding an indicator')
+                          indicators.push({
+                            id: r[el.lang_key]
+                              ? r[el.lang_key]
+                              : r.variable,
+                            display: isTruthy(
+                              r['display_variable'],
+                            )
+                              ? 1
+                              : 0,
+                            highisgood: isTruthy(
+                              r['highisgood'],
+                            )
+                              ? 1
+                              : 0,
+                            min: Number(r['min']),
+                            max: Number(r['min']),
+                            currency: Number(r['currency']),
+                            percent: Number(r['percent']),
+                            decimals: Number(r['decimals']),
+                            category: r['category']
+                              .toLowerCase()
+                              .replace(/ /g, ''),
+                            years: r['years']
+                              .toLowerCase()
+                              .replace(/ /g, '')
+                              .split(','),
+                            placeTypes: r['place']
+                              .toLowerCase()
+                              .replace(/ /g, '')
+                              .split(','),
+                            order: r['indicator_order'],
+                          })
+                          // Check for capital letters in point category
+                          // Check for spaces in point categoroy
+                          // Check for special characters in point category
+                          const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
+                          if (
+                            r['category'] &&
+                            r['category'].match(
+                              capAndSpecCharsRegex,
+                            )
+                          ) {
+                            addDataIssuesLog([
+                              `Category <code>${
+                                r['category']
+                              }</code> listed for indicator <code>${
+                                r[el.lang_key]
+                                  ? r[el.lang_key]
+                                  : r.variable
+                              }</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                            ])
+                          }
+                        } else {
+                          addDataIssuesLog([
+                            `Duplicate indicator <code>${
                               r[el.lang_key]
                                 ? r[el.lang_key]
                                 : r.variable
-                            }</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
+                            }</code> in data dictionary.`,
                           ])
                         }
-                      } else {
-                        addDataIssuesLog([
-                          `Duplicate indicator <code>${
-                            r[el.lang_key]
-                              ? r[el.lang_key]
-                              : r.variable
-                          }</code> in data dictionary.`,
-                        ])
                       }
-                    }
-                  })
-
-                  // Check that each category assigned to a point or indicator
-                  // has a language pack entry.
-                  const missingIndicatorCategories = []
-                  indicators.forEach(i => {
-                    if (!strings[i.category]) {
-                      if (
-                        missingIndicatorCategories.indexOf(
-                          i.category,
-                        ) < 0
-                      ) {
-                        missingIndicatorCategories.push(
-                          i.category,
-                        )
-                      }
-                    }
-                  })
-                  missingIndicatorCategories.forEach(el => {
-                    addDataIssuesLog([
-                      `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
-                    ])
-                  })
-                  // pointTypes
-                  const missingPointCategories = []
-                  pointTypes.forEach(p => {
-                    if (!strings[p.category]) {
-                      if (
-                        missingPointCategories.indexOf(
-                          p.category,
-                        ) < 0
-                      ) {
-                        missingPointCategories.push(
-                          p.category,
-                        )
-                      }
-                    }
-                  })
-                  missingPointCategories.forEach(el => {
-                    addDataIssuesLog([
-                      `Missing entry for category <code>${el}</code> detected when checking point type categories  in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
-                    ])
-                  })
-
-                  // Save strings to string list.
-                  // console.log('strings, ', strings)
-                  setLang('en_US', strings)
-                  incrementLangUpdates()
-                  // console.log(
-                  //   'tooltipItems, ',
-                  //   tooltipItems,
-                  // )
-                  addTooltipItems(tooltipItems)
-                  // Save indicators to indicator list.
-                  // console.log('indicators, ', indicators)
-                  addIndicators(indicators)
-                  const indicatorKeys = indicators.map(
-                    el => {
-                      return el.id
-                    },
-                  )
-                  const routeSet = ROUTE_SET
-                  // console.log('routeSet, ', routeSet)
-                  const metricIndex = routeSet
-                    .map(el => {
-                      return el.id
                     })
-                    .indexOf('metric')
-                  // console.log('metricIndex, ', metricIndex)
-                  routeSet[
-                    metricIndex
-                  ].options = indicatorKeys
-                  // console.log('routeSet, ', routeSet)
-                  // Save point types to point type list
-                  const activePointTypes = pointTypes.map(
-                    el => {
-                      return 0
-                    },
-                  )
-                  // console.log('result.data, ', result.data)
-                  setStoreValues({
-                    routeSet: routeSet,
-                    pointTypes: pointTypes,
-                    activePointTypes: activePointTypes,
-                    allData: result.data,
-                  })
+
+                    // Check that each category assigned to a point or indicator
+                    // has a language pack entry.
+                    const missingIndicatorCategories = []
+                    indicators.forEach(i => {
+                      if (!strings[i.category]) {
+                        if (
+                          missingIndicatorCategories.indexOf(
+                            i.category,
+                          ) < 0
+                        ) {
+                          missingIndicatorCategories.push(
+                            i.category,
+                          )
+                        }
+                      }
+                    })
+                    missingIndicatorCategories.forEach(
+                      el => {
+                        addDataIssuesLog([
+                          `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
+                        ])
+                      },
+                    )
+                    // pointTypes
+                    const missingPointCategories = []
+                    pointTypes.forEach(p => {
+                      if (!strings[p.category]) {
+                        if (
+                          missingPointCategories.indexOf(
+                            p.category,
+                          ) < 0
+                        ) {
+                          missingPointCategories.push(
+                            p.category,
+                          )
+                        }
+                      }
+                    })
+                    missingPointCategories.forEach(el => {
+                      addDataIssuesLog([
+                        `Missing entry for category <code>${el}</code> detected when checking point type categories  in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
+                      ])
+                    })
+
+                    // Save strings to string list.
+                    // console.log('strings, ', strings)
+                    setLang('en_US', strings)
+                    incrementLangUpdates()
+                    // console.log(
+                    //   'tooltipItems, ',
+                    //   tooltipItems,
+                    // )
+                    addTooltipItems(tooltipItems)
+                    // Save indicators to indicator list.
+                    // console.log(
+                    //   'indicators array from data dict, ',
+                    //   indicators,
+                    // )
+                    addIndicators(indicators)
+                    const indicatorKeys = indicators.map(
+                      el => {
+                        return el.id
+                      },
+                    )
+                    const routeSet = ROUTE_SET
+                    // console.log('routeSet, ', routeSet)
+                    const metricIndex = routeSet
+                      .map(el => {
+                        return el.id
+                      })
+                      .indexOf('metric')
+                    // console.log('metricIndex, ', metricIndex)
+                    routeSet[
+                      metricIndex
+                    ].options = indicatorKeys
+                    // console.log('routeSet, ', routeSet)
+                    // Save point types to point type list
+                    const activePointTypes = pointTypes.map(
+                      el => {
+                        return 0
+                      },
+                    )
+                    // console.log('result.data, ', result.data)
+                    setStoreValues({
+                      routeSet: routeSet,
+                      pointTypes: pointTypes,
+                      activePointTypes: activePointTypes,
+                      allData: result.data,
+                    })
+                  }
                 },
               })
             }

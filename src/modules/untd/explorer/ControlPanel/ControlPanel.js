@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
-import { MdFeedback } from 'react-icons/md'
 
 import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'

@@ -133,6 +133,9 @@ const [useStore] = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
+  trendData: [],
+  trendMinMax: {},
+  trendMinMaxSet: false,
   // Default route.
   defaultRoute: DEFAULT_ROUTE,
   // Route set with constants for route validation.

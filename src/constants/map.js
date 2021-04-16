@@ -163,6 +163,14 @@ export const DATA_FILES = [
     type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
     check_for_label: 1,
   },
+  // Trend data csv
+  {
+    id: 'trends',
+    filename: 'TimeSeriesAllGeographies_Long',
+    ext: 'csv',
+    type: 'data', // It's  dictionary file.
+    storeTarget: 'trendData',
+  },
 ]
 
 export const BOUNDS = {
