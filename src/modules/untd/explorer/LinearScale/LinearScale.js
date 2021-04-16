@@ -123,12 +123,12 @@ const LinearScale = ({ indicator, value, ...props }) => {
         <span
           className={clsx(
             'label',
-            percentFromLeft > 90 &&
-              String(valueLabel).length > 2
+            percentFromLeft > 92 &&
+              String(valueLabel).length > 3
               ? 'justify-right'
               : '',
-            percentFromLeft < 10 &&
-              String(valueLabel).length > 2
+            percentFromLeft < 8 &&
+              String(valueLabel).length > 3
               ? 'justify-left'
               : '',
           )}

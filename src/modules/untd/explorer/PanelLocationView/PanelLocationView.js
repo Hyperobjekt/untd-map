@@ -9,6 +9,7 @@ import {
   getGeoFeatureLabel,
   setActiveQuintile,
   getActiveLayerIndex,
+  getSDRobo,
 } from './../utils'
 import NonInteractiveScale from './../NonInteractiveScale'
 import LinearScale from './../LinearScale'
@@ -183,9 +184,17 @@ const PanelLocationView = ({ ...props }) => {
                             </div>
                             <div
                               className={clsx(
-                                'sd-scale-label',
+                                'sd-scale-desc',
                               )}
-                            ></div>
+                            >
+                              {getSDRobo(
+                                Number(
+                                  activeFeature.properties[
+                                    indicator.id
+                                  ],
+                                ),
+                              )}
+                            </div>
                           </div>
                         </>
                       )}

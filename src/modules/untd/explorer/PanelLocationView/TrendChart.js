@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  ResponsiveContainer,
 } from 'recharts'
 
 import useStore from './../store'
@@ -84,43 +85,48 @@ const TrendChart = ({ data, config, ...props }) => {
           years: yearDiff,
         })}
       </h6>
-      <AreaChart width={150} height={80} data={dataSet}>
-        <XAxis dataKey="name" tick={false} height={1} />
-        <YAxis
-          dataKey="value"
-          // domain={['dataMin', 'dataMax']}
-          domain={[min, max]}
-          tick={false}
-          reversed={false}
-          width={1}
-        />
-        <Tooltip
-          allowEscapeViewBox={{ x: true, y: true }}
-          content={<CustomTooltip />}
-          animationBegin={1200}
-          isAnimationActive={false}
-          animationEasing={'linear'}
-          itemStyle={{
-            backgroundColor: 'white',
-          }}
-          wrapperStyle={{
-            fontSize: 12,
-            fontFamily: 'Knockout 49 A',
-            color: 'white',
-            backgroundColor: '#2c390b',
-            padding: '1.5rem',
-            borderRadius: '4px',
-          }}
-        />
-        <Area
-          type="monotone"
-          dataKey="value"
-          stroke="#626B77"
-          fill="#EAEFF4"
-          dot={false}
-          reversed={false}
-        />
-      </AreaChart>
+      <ResponsiveContainer width={'43%'} height={24}>
+        <AreaChart data={dataSet}>
+          <XAxis dataKey="name" tick={false} height={1} />
+          <YAxis
+            dataKey="value"
+            domain={['dataMin', 'dataMax']}
+            // domain={[min, max]}
+            tick={false}
+            reversed={false}
+            width={1}
+          />
+          <Tooltip
+            allowEscapeViewBox={{ x: true, y: true }}
+            content={<CustomTooltip />}
+            animationBegin={1200}
+            isAnimationActive={false}
+            animationEasing={'linear'}
+            itemStyle={{
+              backgroundColor: 'white',
+            }}
+            wrapperStyle={{
+              fontSize: 12,
+              fontFamily: 'Knockout 49 A',
+              color: 'white',
+              backgroundColor: '#2c390b',
+              padding: '1.5rem',
+              borderRadius: '4px',
+            }}
+          />
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke="#626B77"
+            fill="#EAEFF4"
+            dot={false}
+            reversed={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+      <div className={clsx('trend-robo')}>
+        {i18n.translate(`PLACEHOLDER_ROBO`)}
+      </div>
     </div>
   )
 }

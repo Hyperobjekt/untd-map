@@ -221,6 +221,13 @@ const en_US = {
   LINEAR_SCALE_MEAN_DESC: `The mean of the total range of values in the data.`,
   LABEL_LOCATION_LINEAR_SCALE: ``,
   LABEL_LOCATION_SD_SCALE: `Standard Deviation Scale`,
+  SD_ROBO_0: `Falls within 3 standard deviations below the mean`,
+  SD_ROBO_1: `Falls within 2 standard deviations below the mean`,
+  SD_ROBO_2: `Falls within 1 standard deviations from the mean`,
+  SD_ROBO_3: `Falls within 2 standard deviations above the mean`,
+  SD_ROBO_4: `Falls within 3 standard deviations above the mean`,
+  SD_ROBO_ERROR: `Description unavailable`,
+  PLACEHOLDER_ROBO: `Sit voluptate veniam aliqua et robo`,
 }
 
 export default en_US
