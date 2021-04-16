@@ -1,67 +1,38 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { FiInfo } from 'react-icons/fi'
-import { Tooltip } from 'reactstrap'
 
 import useStore from './../store'
-import { CoreButton } from './../../../core'
 import {
   getGeoFeatureLabel,
   setActiveQuintile,
   getActiveLayerIndex,
-  getRoundedValue,
+  getSDRobo,
 } from './../utils'
 import NonInteractiveScale from './../NonInteractiveScale'
 import LinearScale from './../LinearScale'
+import TrendChart from './TrendChart'
+import IndicatorButton from './IndicatorButton'
+import DemographicsPanel from './DemographicsPanel'
+import FeedbackPanel from './FeedbackPanel'
 import { CRI_COLORS } from './../../../../constants/colors'
 import { UNTD_LAYERS } from './../../../../constants/layers'
-
-const IndicatorTooltip = ({ indicator, ...rest }) => {
-  const [tooltipOpen, setTooltipOpen] = useState(false)
-  const toggle = () => setTooltipOpen(!tooltipOpen)
-  return (
-    <>
-      <FiInfo
-        className={clsx('indicator-tip')}
-        id={'tip_prompt_' + indicator.id}
-      />
-      <Tooltip
-        placement="top"
-        isOpen={tooltipOpen}
-        target={'tip_prompt_' + indicator.id}
-        toggle={toggle}
-        autohide={false}
-        className={'tip-prompt-layer'}
-        dangerouslySetInnerHTML={{
-          __html: i18n.translate(`${indicator.id}_desc`),
-        }}
-      ></Tooltip>
-    </>
-  )
-}
 
 const PanelLocationView = ({ ...props }) => {
   // Generic store value setter.
   const {
-    setStoreValues,
     activeFeature,
     indicators,
-    interactionsMobile,
-    allData,
     activeLayers,
-    remoteJson,
+    trendData,
   } = useStore(
     state => ({
-      setStoreValues: state.setStoreValues,
       activeFeature: state.activeFeature,
       indicators: state.indicators,
-      interactionsMobile: state.interactionsMobile,
-      allData: state.allData,
       activeLayers: state.activeLayers,
-      remoteJson: state.remoteJson,
+      trendData: state.trendData,
     }),
     shallow,
   )
@@ -69,85 +40,30 @@ const PanelLocationView = ({ ...props }) => {
   console.log(
     'panelLocationView, ',
     indicators,
-    // activeLayers,
+    // trendData,
+    // activeFeature,
   )
+
+  const validTrendRows = !!activeFeature
+    ? trendData.filter(
+        el =>
+          Number(el.GEOID) ===
+          Number(activeFeature.properties.GEOID),
+      )
+    : false
+  // console.log('validTrendRows, ', validTrendRows)
 
   // Stores the index of the selected location's layer
   // for fetching min, max, and mean from indicator arrays.
   const activeLayerIndex = activeLayers.indexOf(1)
 
-  const handleFeedback = () => {
-    console.log('handleFeedback')
-    setStoreValues({
-      showFeedbackModal: true,
-      feedbackFeature: activeFeature,
-      feedbackAddress: getGeoFeatureLabel(activeFeature),
-      feedbackLngLat: [
-        activeFeature.properties.INTPTLAT,
-        activeFeature.properties.INTPTLON,
-      ],
-    })
-  }
-
   if (!!activeFeature) {
-    const demographics = Object.keys(
-      activeFeature.properties,
-    )
-      .filter(el => {
-        return (
-          el.indexOf('_sd') < 0 && el.indexOf('popE') > -1
-        )
-      })
-      .map(el => {
-        return {
-          id: el,
-          value: activeFeature.properties[el],
-        }
-      })
-    const demoTotal = demographics.find(
-      el => el.id.indexOf('tot') > -1,
-    )
-    // console.log('demographics, ', demographics)
     return (
       <div className={clsx('map-panel-slideout-location')}>
         <div className={clsx('panel-sticky')}>
           <h5>{getGeoFeatureLabel(activeFeature)}</h5>
         </div>
-        {/* Demographics */}
-        <div className={clsx('panel-demographics')}>
-          <h6>{i18n.translate(`PANEL_LOCATION_DEMO`)}</h6>
-          <div
-            className={clsx(
-              'demo-total-group',
-              'demo-group',
-            )}
-          >
-            <span className={clsx('demo-label')}>
-              {i18n.translate(demoTotal.id)}
-            </span>
-            {`: `}
-            <span className={clsx('demo-value')}>
-              {getRoundedValue(demoTotal.value)}
-            </span>
-          </div>
-          {demographics
-            .filter(el => el.id.indexOf('tot') < 0)
-            .sort((a, b) => b.value - a.value)
-            .map(d => (
-              <div
-                className={clsx('demo-group')}
-                key={`demo-${d.id}`}
-              >
-                <span className={clsx('demo-label')}>
-                  {i18n.translate(d.id)}
-                </span>
-                {`: `}
-                <span className={clsx('demo-value')}>
-                  {getRoundedValue(d.value)}
-                </span>
-              </div>
-            ))}
-        </div>
+        <DemographicsPanel activeFeature={activeFeature} />
         {/* Indicators */}
         <div className={clsx('panel-indicators')}>
           {indicators
@@ -168,36 +84,22 @@ const PanelLocationView = ({ ...props }) => {
             })
             .map(indicator => {
               // console.log('indicator, ', indicator)
-              const rawMetric = allData.find(d => {
-                return (
-                  d.variable ===
-                  indicator.id.replace('_sd', '')
-                )
-              })
-              // console.log('rawMetric: ', rawMetric)
-              const sdMetric = allData.find(d => {
-                return d.variable === indicator.id
-              })
-              // const valueLabel = i18n.translate(
-              //   rawMetric.variable,
-              // )
-              // Min, max, and mean are calculated and stored in the indicator
-              rawMetric.min =
-                indicator.min[activeLayerIndex]
-              rawMetric.max =
-                indicator.max[activeLayerIndex]
-              rawMetric.mean =
-                indicator.mean[activeLayerIndex]
-              rawMetric.decimals =
-                indicator.decimals[activeLayerIndex]
-              // const high_is_good = rawMetric.highisgood
-              const rawName = String(indicator.id).replace(
-                '_sd',
-                '',
-              )
-              // console.log('rawMetric, ', rawMetric)
+
+              // Set up object to pass to linear scale.
+              const rawMetric = {
+                min: indicator.raw.min[activeLayerIndex],
+                max: indicator.raw.max[activeLayerIndex],
+                mean: indicator.raw.mean[activeLayerIndex],
+                decimals: indicator.raw.decimals,
+                highisgood: indicator.raw.highisgood,
+                currency: indicator.raw.currency,
+                percent: indicator.raw.percent,
+                id: indicator.raw.id,
+              }
+
               // Is there a raw value available for the metric on the feature?
-              const rawValue =
+              const rawName = indicator.raw.id
+              const hasRawValue =
                 activeFeature.properties[rawName] &&
                 activeFeature.properties[rawName] !==
                   undefined &&
@@ -207,7 +109,6 @@ const PanelLocationView = ({ ...props }) => {
 
               // Is there an sd value available for the metric on the feature?
               const hasSdValue =
-                activeFeature.properties[indicator.id] &&
                 String(
                   activeFeature.properties[indicator.id],
                 ).length > 0 &&
@@ -215,10 +116,11 @@ const PanelLocationView = ({ ...props }) => {
                   undefined &&
                 activeFeature.properties[indicator.id] !==
                   'NA'
-                  ? activeFeature.properties[indicator.id]
+                  ? true
                   : false
-              // console.log('rawValue, ', rawValue)
-              if (!!hasSdValue || !!rawValue) {
+
+              // console.log('hasRawValue, ', hasRawValue)
+              if (!!hasSdValue || !!hasRawValue) {
                 return (
                   <div
                     className={clsx(
@@ -227,35 +129,85 @@ const PanelLocationView = ({ ...props }) => {
                     )}
                     key={indicator.id}
                   >
-                    <h6 className={clsx('indicator')}>
-                      {i18n.translate(indicator.id)}
-                      {!interactionsMobile && (
-                        <IndicatorTooltip
-                          indicator={indicator}
+                    {/* Metric title and button to switch metrics. */}
+                    <IndicatorButton
+                      indicator={indicator}
+                    />
+                    <div
+                      className={clsx('charts-subgroup')}
+                    >
+                      {/* Linear scale */}
+                      {!!hasRawValue && !!rawMetric && (
+                        <LinearScale
+                          indicator={rawMetric}
+                          value={hasRawValue}
                         />
                       )}
-                    </h6>
-                    {!!rawValue && !!rawMetric && (
-                      <LinearScale
-                        indicator={rawMetric}
-                        value={rawValue}
-                      />
-                    )}
-                    <NonInteractiveScale
-                      metric={indicator.id}
-                      showHash={false}
-                      quintiles={setActiveQuintile(
-                        Number(
-                          activeFeature.properties[
-                            indicator.id
-                          ],
-                        ),
+                      {/* Standard deviation scale */}
+                      {!!hasSdValue && (
+                        <>
+                          <h6
+                            className={clsx(
+                              'label-sd-scale',
+                            )}
+                          >
+                            {i18n.translate(
+                              `LABEL_LOCATION_SD_SCALE`,
+                            )}
+                          </h6>
+                          <div
+                            className={clsx(
+                              'sd-scale-group',
+                            )}
+                          >
+                            <div
+                              className={clsx(
+                                'sd-scale-parent',
+                              )}
+                            >
+                              <NonInteractiveScale
+                                metric={indicator.id}
+                                showHash={false}
+                                quintiles={setActiveQuintile(
+                                  Number(
+                                    activeFeature
+                                      .properties[
+                                      indicator.id
+                                    ],
+                                  ),
+                                )}
+                                colors={CRI_COLORS}
+                                showMinMax={false}
+                                min={0}
+                                max={4}
+                              />
+                            </div>
+                            <div
+                              className={clsx(
+                                'sd-scale-desc',
+                              )}
+                            >
+                              {getSDRobo(
+                                Number(
+                                  activeFeature.properties[
+                                    indicator.id
+                                  ],
+                                ),
+                              )}
+                            </div>
+                          </div>
+                        </>
                       )}
-                      colors={CRI_COLORS}
-                      showMinMax={false}
-                      min={sdMetric.min}
-                      max={sdMetric.max}
-                    />
+                      {/* Check for trend item, display trend chart */}
+                      {!!validTrendRows[0][
+                        String(rawName).replace('_19', '')
+                      ] && (
+                        <TrendChart
+                          data={validTrendRows}
+                          config={indicator.trend}
+                        />
+                      )}
+                    </div>
                   </div>
                 )
               } else {
@@ -264,28 +216,7 @@ const PanelLocationView = ({ ...props }) => {
             })}
         </div>
         {/* Feedback panel */}
-        <div className={clsx('panel-bottom-sticky')}>
-          <h5>
-            {i18n.translate(
-              `UI_PANEL_LOCATION_FEEDBACK_HEADING`,
-            )}
-          </h5>
-          <CoreButton
-            id="button_location_feedback"
-            label={i18n.translate(
-              `UI_PANEL_LOCATION_FEEDBACK_PROMPT`,
-            )}
-            onClick={handleFeedback}
-            color="link"
-            className={clsx(
-              'button-panel-location-feedback',
-            )}
-          >
-            {i18n.translate(
-              `UI_PANEL_LOCATION_FEEDBACK_PROMPT`,
-            )}
-          </CoreButton>
-        </div>
+        <FeedbackPanel />
       </div>
     )
   } else {

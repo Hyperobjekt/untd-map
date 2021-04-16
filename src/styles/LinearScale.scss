@@ -1,13 +1,15 @@
 .linear-scale {
   width: 100%;
-  height: 34px;
+  height: 100px;
+  display: block;
   position: relative;
-  margin: 4rem 0 2.5rem;
+  margin: 0 0 2rem;
   .linear-scale-bar {
     height: 1px;
-    width: 100.2%;
+    width: 100%;
     display: block;
-    top: 0;
+    position: absolute;
+    top: 40px;
     left: 0;
     background-color: $color-untd-anothergray;
     background-size: 100% 1px;
@@ -16,7 +18,7 @@
       content: '';
       display: block;
       position: absolute;
-      height: 37px;
+      height: 43px;
       width: 1px;
       left: 0;
       top: -10px;
@@ -28,17 +30,21 @@
     }
   }
   .linear-scale-labels {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     font-size: 1.4rem;
     color: $color-untd-gray;
-    margin: 26px 0;
+    // margin: 32px 0 0;
+    position: absolute;
+    left: 0;
+    top: 75px;
   }
   .linear-scale-value,
   .hash-group {
     position: absolute;
     box-sizing: content-box;
-    margin-top: -30px;
+    top: 8px;
     z-index: 500;
     .linear-scale-hash-value {
       width: 16px;
@@ -46,7 +52,7 @@
       border-radius: 50%;
       //   margin-top: -8px;
       margin-left: -8px;
-      background-color: $color-untd-blue;
+      background-color: $color-untd-gray; // $color-untd-blue;
     }
     .label {
       //   border: 1px solid blue;
@@ -54,23 +60,30 @@
       text-align: center;
       margin-left: -50%;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       color: $color-untd-gray;
     }
   }
+  .linear-scale-value .label {
+    font-size: 16px;
+    font-weight: 600;
+  }
   .linear-scale-mean {
     width: auto;
-    margin-top: 0;
+    position: absolute;
+    top: 42px;
     z-index: 499;
     .linear-scale-hash-mean {
       width: 1px;
       height: 19px;
       margin-top: -9px;
-      background-color: $color-untd-anothergray;
+      background-color: $color-untd-gray; // $color-untd-anothergray;
     }
     .label {
       font-weight: 400;
       color: $color-untd-gray;
+      border-bottom: 2px dotted
+        $color-untd-another-another-gray;
     }
   }
 

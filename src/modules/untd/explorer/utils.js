@@ -5,6 +5,32 @@ import useStore from './store.js'
 import { MAP_CONTROLS_CLASSES } from './../../../constants/map'
 import { DATA_FILES } from './../../../constants/map'
 
+/**
+ * Get robotext for the sd bucket
+ * @param Number sd Number 0 - 4
+ */
+export const getSDRobo = sd => {
+  switch (true) {
+    case sd === 0:
+      return i18n.translate(`SD_ROBO_0`)
+      break
+    case sd === 1:
+      return i18n.translate(`SD_ROBO_1`)
+      break
+    case sd === 2:
+      return i18n.translate(`SD_ROBO_2`)
+      break
+    case sd === 3:
+      return i18n.translate(`SD_ROBO_3`)
+      break
+    case sd === 4:
+      return i18n.translate(`SD_ROBO_4`)
+      break
+    default:
+      return i18n.translate(`SD_ROBO_ERROR`)
+  }
+}
+
 export const getActiveLayerIndex = layers => {
   return layers.indexOf(1)
 }
