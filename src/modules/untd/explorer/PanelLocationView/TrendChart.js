@@ -39,7 +39,7 @@ const TrendChart = ({ data, config, ...props }) => {
     shallow,
   )
 
-  console.log('TrendChart: ', data, config)
+  // console.log('TrendChart: ', data, config)
 
   const activeLayerIndex = activeLayers.indexOf(1)
   const min = config.min[activeLayerIndex]
@@ -75,7 +75,7 @@ const TrendChart = ({ data, config, ...props }) => {
     })
     .sort((a, b) => a.year - b.year)
 
-  console.log('dataset: ', dataSet)
+  // console.log('dataset: ', dataSet)
 
   return (
     <div className={clsx('section', 'section-trend-chart')}>

@@ -6,7 +6,7 @@ import i18n from '@pureartisan/simple-i18n'
 import { getRoundedValue, getHashLeft } from './../utils'
 
 const LinearScale = ({ ...props }) => {
-  console.log('LinearScale, ', props)
+  // console.log('LinearScale, ', props)
 
   const value = props.value
   const high_is_good = !!Number(props.indicator.highisgood)

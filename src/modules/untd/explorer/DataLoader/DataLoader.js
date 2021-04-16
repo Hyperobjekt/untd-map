@@ -20,51 +20,6 @@ const isTruthy = val => {
   )
 }
 
-const roundToDecimals = (val, power) => {
-  if (val < 0) {
-    return (Math.round(val * -1 * power) / power) * -1
-  } else {
-    return Math.round(val * power) / power
-  }
-}
-
-function countDecimals(decimal) {
-  var num = parseFloat(decimal) // First convert to number to check if whole
-
-  if (Number.isInteger(num) === true) {
-    return 0
-  }
-
-  var text = num.toString() // Convert back to string and check for "1e-8" numbers
-
-  if (text.indexOf('e-') > -1) {
-    var [base, trail] = text.split('e-')
-    var deg = parseInt(trail, 10)
-    return deg
-  } else {
-    var index = text.indexOf('.')
-    return text.length - index - 1 // Otherwise use simple string function to count
-  }
-}
-
-const getMinimumPresentableDecimals = (min, max) => {
-  let divisor = 1
-  if (min < 0) {
-    // Use only the decimal portion
-    // to determine decimals if less than 0.
-    min = (min * -1) % 1
-  }
-  if (max < 0) {
-    max = max * -1
-  }
-  while (min / divisor < 1 || max / divisor < 1) {
-    // console.log(`divisor = ${divisor}`)
-    divisor = divisor / 10
-  }
-  // console.log('divisor: ', divisor)
-  return countDecimals(divisor)
-}
-
 const GenerateMinMaxes = () => {
   // console.log('GenerateMinMaxes')
 
@@ -212,55 +167,14 @@ const GenerateMinMaxes = () => {
               .map(item => {
                 return item.properties[rawMetric]
               })
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log(
-            //     `featureSet for ${i.id} layer index ${ind} = `,
-            //     featureSet,
-            //   )
-            // }
             // Set min, max, and mean to the indicator for the shape
             if (featureSet.length > 0) {
-              const min = Math.min(...featureSet)
-              const max = Math.max(...featureSet)
-              // if (i.id === 'rent_instability_sd') {
-              //   console.log('min: ', min, 'max: ', max)
-              // }
-              const avg =
+              i.raw.min[ind] = Math.min(...featureSet)
+              i.raw.max[ind] = Math.max(...featureSet)
+              i.raw.mean[ind] =
                 featureSet.reduce(
                   (acc, curr) => acc + curr,
                 ) / featureSet.length
-              // Determine minimum amount of decimal places for scale
-              // to be cogent and interpretable
-              // const minimumPresentableDecimals = getMinimumPresentableDecimals(
-              //   !!metric.percent ? min * 100 : min,
-              //   !!metric.percent ? max * 100 : max,
-              // )
-              // if (i.id === 'rent_instability_sd') {
-              //   console.log(
-              //     'minimumPresentableDecimals: ',
-              //     minimumPresentableDecimals,
-              //   )
-              // }
-              // Determine a roundby value (power of 10) to use
-              // to round to a number of decimal places.
-              // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
-              // const roundBy = Math.pow(
-              //   10,
-              //   minimumPresentableDecimals,
-              // )
-              // console.log('roundBy: ', roundBy)
-              // i.raw.decimals[
-              //   ind
-              // ] = minimumPresentableDecimals
-              i.raw.min[ind] = min
-              i.raw.max[ind] = max
-              i.raw.mean[ind] = avg
-              // if (i.id === 'rent_instability_sd') {
-              //   console.log(
-              //     `modified indicator for ${i.id} layer index ${ind}`,
-              //     i,
-              //   )
-              // }
             }
           })
           // console.log(`completed indicator ${i.id}: `, i)
