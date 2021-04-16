@@ -186,10 +186,10 @@ const GenerateMinMaxes = () => {
         indicators: localIndicators,
         indicatorRangesSet: true,
       })
-      console.log(
-        'Indicators update complete: ',
-        indicators,
-      )
+      // console.log(
+      //   'Indicators update complete: ',
+      //   indicators,
+      // )
     }
   }, [allDataLoaded])
   // Returns nothing
