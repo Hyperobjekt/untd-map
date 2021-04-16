@@ -6,6 +6,7 @@ import { FiInfo } from 'react-icons/fi'
 
 import useStore from '../store'
 import { UNTD_STATIC_LAYERS } from './../../../../constants/layers'
+import { ROUTE_SET } from './../../../../constants/map'
 
 /**
  * Provides toggle functionality for provided array of layer objects
@@ -37,8 +38,7 @@ const MapLayerToggle = ({ ...props }) => {
         '',
       ),
     )
-    // console.log('index = ', index)
-    // Create a new array of the same length.
+    // console.log('index: ', index)
     const newStaticLayers = activeStaticLayers
       .slice()
       .map((el, i) => {
@@ -49,10 +49,6 @@ const MapLayerToggle = ({ ...props }) => {
           return 0
         }
       })
-    // console.log('newStaticLayers = ', newStaticLayers)
-    // newStaticLayers[index] =
-    //   newStaticLayers[index] == 1 ? 0 : 1
-    // console.log('newStaticLayers = ', newStaticLayers)
     setStoreValues({
       activeStaticLayers: newStaticLayers,
     })

@@ -350,10 +350,22 @@ export const getPolygonShapes = (type, context) => {
   })
 }
 
+const getVisibleStaticLayers = context => {
+  return UNTD_STATIC_LAYERS.filter((el, i) => {
+    return context.activeStaticLayers[i] === 1
+  }).map(el => {
+    return el.id
+  })
+}
+
 // Functions for static shapes
 // Lines
 export const getStaticLayerLines = (source, context) => {
   // console.log('getStaticLayerLines(), ', context)
+  const visibleStaticLayers = getVisibleStaticLayers(
+    context,
+  )
+  // console.log('visibleStaticLayers: ', visibleStaticLayers)
   return fromJS({
     id: `${source}Lines`,
     source: source,
@@ -379,15 +391,15 @@ export const getStaticLayerLines = (source, context) => {
       ],
       'line-width': 1,
     },
+    filter: visibleStaticLayers.indexOf(source) > -1,
   })
 }
 // Labels
 export const getStaticLayerLabel = (source, context) => {
   // console.log('getStaticLayerLabel(), ', source, context)
-  const layerObj =
-    UNTD_STATIC_LAYERS[
-      context.activeStaticLayers.indexOf(1)
-    ]
+  const visibleStaticLayers = getVisibleStaticLayers(
+    context,
+  )
   return fromJS({
     id: `${source}Label`,
     source: `${source}_points`,
@@ -419,11 +431,7 @@ export const getStaticLayerLabel = (source, context) => {
         '#4B6857',
       ],
     },
-    // filter: [
-    //   'all',
-    //   ['has', 'point_count'],
-    //   ['==', ['number', context.activePointTypes[ind]], 1],
-    // ],
+    filter: visibleStaticLayers.indexOf(source) > -1,
   })
 }
 
@@ -520,13 +528,13 @@ export const getStaticLayer = (source, context) => {
       type: `${source}Lines`,
     },
     // Label.
-    // {
-    //   z: z + 2,
-    //   style: getStaticLayerLabel(source, context),
-    //   idMap: true,
-    //   hasFeatureId: true,
-    //   type: `${source}Label`,
-    // },
+    {
+      z: z + 2,
+      style: getStaticLayerLabel(source, context),
+      idMap: true,
+      hasFeatureId: true,
+      type: `${source}Label`,
+    },
   ]
 }
 // Necessary to break these out because the client has accidentally
@@ -548,43 +556,56 @@ export const getStaticLayerLabellll = (source, context) => {
 export const getLayers = (sources, context) => {
   // console.log('getLayers', sources, context)
   const layers = []
+
   // Interactive geo shapes
   layers.push(...getPolygonLayers('zip', context))
   layers.push(...getPolygonLayers('tract', context))
   layers.push(...getPolygonLayers('place', context))
+
   // Static geo shapes
+  // County
+  layers.push(...getStaticLayer('county', context))
+  // Fedcongress
+  layers.push(...getStaticLayer('fedcongress', context))
+  // School districts
+  layers.push(...getStaticLayer('schooldistricts', context))
+  // State house
+  layers.push(...getStaticLayer('statehouse', context))
+  // State senate
+  layers.push(...getStaticLayer('statesenate', context))
+
   // console.log('UNTD_STATIC_LAYERS, ', UNTD_STATIC_LAYERS)
-  if (context.activeStaticLayers.indexOf(1) !== 0) {
-    const staticLayer = UNTD_STATIC_LAYERS[
-      context.activeStaticLayers.indexOf(1)
-    ]
-      ? UNTD_STATIC_LAYERS[
-          context.activeStaticLayers.indexOf(1)
-        ].id
-      : false
-    if (!!staticLayer) {
-      console.log('staticLayer, ', staticLayer)
-      layers.push(...getStaticLayer(staticLayer, context))
-    }
-    // Does the static layer type get a label?
-    // If so, add a layer for the labels.
-    const hasStaticLayerLabel =
-      !!UNTD_STATIC_LAYERS[
-        context.activeStaticLayers.indexOf(1)
-      ] &&
-      !UNTD_STATIC_LAYERS[
-        context.activeStaticLayers.indexOf(1)
-      ] == 0
-        ? UNTD_STATIC_LAYERS[
-            context.activeStaticLayers.indexOf(1)
-          ].has_labels
-        : false
-    if (hasStaticLayerLabel) {
-      layers.push(
-        ...getStaticLayerLabellll(staticLayer, context),
-      )
-    }
-  }
+  // if (context.activeStaticLayers.indexOf(1) !== 0) {
+  //   const staticLayer = UNTD_STATIC_LAYERS[
+  //     context.activeStaticLayers.indexOf(1)
+  //   ]
+  //     ? UNTD_STATIC_LAYERS[
+  //         context.activeStaticLayers.indexOf(1)
+  //       ].id
+  //     : false
+  //   if (!!staticLayer) {
+  //     console.log('staticLayer, ', staticLayer)
+  //     layers.push(...getStaticLayer(staticLayer, context))
+  //   }
+  //   // Does the static layer type get a label?
+  //   // If so, add a layer for the labels.
+  //   const hasStaticLayerLabel =
+  //     !!UNTD_STATIC_LAYERS[
+  //       context.activeStaticLayers.indexOf(1)
+  //     ] &&
+  //     !UNTD_STATIC_LAYERS[
+  //       context.activeStaticLayers.indexOf(1)
+  //     ] == 0
+  //       ? UNTD_STATIC_LAYERS[
+  //           context.activeStaticLayers.indexOf(1)
+  //         ].has_labels
+  //       : false
+  //   if (hasStaticLayerLabel) {
+  //     layers.push(
+  //       ...getStaticLayerLabellll(staticLayer, context),
+  //     )
+  //   }
+  // }
   // Add a layer for each point type,
   // and a cluster layer for each point type.
   for (
