@@ -12,16 +12,17 @@ import {
 } from 'recharts'
 
 import useStore from './../store'
+import { getRoundedValue } from './../utils'
 
 const CustomTooltip = ({ active, payload, label }) => {
-  console.log('CustomTooltip, ', active, payload, label)
+  // console.log('CustomTooltip, ', active, payload, label)
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip">
+      <div className="trend-chart-tooltip">
         <span className={clsx('label')}>{label}</span>
         {': '}
         <span className={clsx('value')}>
-          {payload[0].payload.raw}
+          {payload[0].payload.display}
         </span>
       </div>
     )
@@ -30,31 +31,46 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null
 }
 
-const TrendChart = ({ ...props }) => {
-  const { trendMinMax, activeLayers } = useStore(
+const TrendChart = ({ data, config, ...props }) => {
+  const { activeLayers } = useStore(
     state => ({
-      trendMinMax: state.trendMinMax,
       activeLayers: state.activeLayers,
     }),
     shallow,
   )
 
-  const activeLayerIndex = activeLayers.indexOf(1)
-  const min =
-    trendMinMax[props.metric].min[activeLayerIndex]
-  const max =
-    trendMinMax[props.metric].max[activeLayerIndex]
+  console.log('TrendChart: ', data, config)
 
-  const dataSet = props.data
+  const activeLayerIndex = activeLayers.indexOf(1)
+  const min = config.min[activeLayerIndex]
+  const max = config.max[activeLayerIndex]
+  const currency = config.currency
+  const percent = config.percent
+  const decimals = config.decimals
+  const id = config.id
+  const years = data.map(el => {
+    return Number(el.year)
+  })
+  const yearMax = Math.max(...years)
+  const yearMin = Math.min(...years)
+  const yearDiff = yearMax - yearMin + 1
+
+  const dataSet = data
     .map(el => {
       return {
         name: Number(el.year),
-        value:
-          // Number(el[props.metric]),
-          trendMinMax[props.metric].highisgood
-            ? Number(el[props.metric])
-            : max - Number(el[props.metric]),
-        raw: Number(el[props.metric]),
+        // Flip the value calc if high is not good.
+        value: !!config.highisgood
+          ? Number(el[config.id])
+          : max - Number(el[config.id]),
+        raw: Number(el[config.id]),
+        display: getRoundedValue(
+          Number(el[config.id]),
+          decimals,
+          false,
+          currency,
+          percent,
+        ),
       }
     })
     .sort((a, b) => a.year - b.year)
@@ -65,18 +81,18 @@ const TrendChart = ({ ...props }) => {
     <div className={clsx('section', 'section-trend-chart')}>
       <h6>
         {i18n.translate(`TREND_CHART_HEADING`, {
-          years: dataSet.length,
+          years: yearDiff,
         })}
       </h6>
       <AreaChart width={150} height={80} data={dataSet}>
-        <XAxis dataKey="name" tick={false} height={3} />
+        <XAxis dataKey="name" tick={false} height={1} />
         <YAxis
           dataKey="value"
           // domain={['dataMin', 'dataMax']}
           domain={[min, max]}
           tick={false}
           reversed={false}
-          width={3}
+          width={1}
         />
         <Tooltip
           allowEscapeViewBox={{ x: true, y: true }}
@@ -88,9 +104,12 @@ const TrendChart = ({ ...props }) => {
             backgroundColor: 'white',
           }}
           wrapperStyle={{
+            fontSize: 12,
+            fontFamily: 'Knockout 49 A',
             color: 'white',
-            backgroundColor: 'black',
-            padding: '2rem 1rem 0.5rem 1rem',
+            backgroundColor: '#2c390b',
+            padding: '1.5rem',
+            borderRadius: '4px',
           }}
         />
         <Area
@@ -108,7 +127,7 @@ const TrendChart = ({ ...props }) => {
 
 TrendChart.propTypes = {
   data: PropTypes.object,
-  metric: PropTypes.string,
+  config: PropTypes.object,
 }
 
 export default TrendChart

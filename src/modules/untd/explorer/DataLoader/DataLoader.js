@@ -88,9 +88,16 @@ const GenerateMinMaxes = () => {
     trendMinMaxSet: state.trendMinMaxSet,
   }))
 
+  // console.log('GenerateMinMaxes, allData: ', allData)
+
   const localIndicators = indicators.slice()
-  const localTrendMinMax = {}
   useEffect(() => {
+    /**
+     * Stores a minimum and maximum for the trend data for
+     * a given geographic shape. This is done so that the
+     * y-axis of the trend charts for each metric is relevant
+     * to the metric's overall data range for that shape type.
+     */
     if (!!allDataLoaded && !trendMinMaxSet) {
       // console.log('calculating trend minmaxes')
       // Fetch each column in the dataset
@@ -107,141 +114,168 @@ const GenerateMinMaxes = () => {
         },
       )
       columns.forEach(col => {
-        localTrendMinMax[col] = {
-          min: [],
-          max: [],
-          highisgood: indicators.find(
-            el => `${col}_19_sd` === el.id,
-          ).highisgood,
+        // console.log('col: ', col, `${col}_19_sd`)
+        const metric = allData.find(el => {
+          return el.variable === `${col}_19`
+        })
+        console.log(`metric for ${col}: `, metric)
+        // Adds some general number format information
+        // about the metric from the data dictionary.
+        localIndicators.find(el => {
+          return el.id === `${col}_19_sd`
+        }).trend = {
+          id: col,
+          min: [undefined, undefined, undefined],
+          max: [undefined, undefined, undefined],
+          decimals: Number(metric.decimals),
+          highisgood: Number(metric.highisgood),
+          currency: Number(metric.currency),
+          percent: Number(metric.percent),
         }
       })
       // console.log('columns = ', columns)
       // console.log('trendData = ', trendData)
       UNTD_LAYERS.forEach((layer, ind) => {
         // console.log('layer, ', layer)
-        // store an entry with min and max for each shape type
+        // Store an entry with min and max for each shape type
         // Filter the data to get the right shape.
         const shapeSet = trendData.filter(el => {
           return String(el.type).toLowerCase() === layer.id
         })
         // console.log('shapeSet: ', shapeSet)
         // For each column, for each shape type,
+        // store the min and the max.
         columns.forEach(col => {
           const metricSet = shapeSet.map(i => {
             return Number(i[col])
           })
-          // console.log('metricSet: ', metricSet)
-          localTrendMinMax[col].min[ind] = Math.min(
-            ...metricSet,
-          )
-          localTrendMinMax[col].max[ind] = Math.max(
-            ...metricSet,
-          )
+          const min = Math.min(...metricSet)
+          const max = Math.max(...metricSet)
+          localIndicators.find(el => {
+            return el.id === `${col}_19_sd`
+          }).trend.min[ind] = min
+          localIndicators.find(el => {
+            return el.id === `${col}_19_sd`
+          }).trend.max[ind] = max
         })
-      })
-      console.log(
-        'completed trend min max: ',
-        localTrendMinMax,
-      )
-      setStoreValues({
-        trendMinMaxSet: true,
-        trendMinMax: localTrendMinMax,
       })
     }
-    // When all data is loaded, iterate through all feature sets
+    /**
+     * When all data is loaded, iterate through all feature sets
+     * Store the raw data range as well as other info about the raw
+     * data point on the indicator node. Necessary because we have
+     * 3 different shape types an each will have its different
+     * min and max, expecially for metrics that are a person-related
+     * count (like degrees, children, etc) that will naturally be
+     * lower for smaller geographic entities.
+     */
     if (!!allDataLoaded && !indicatorRangesSet) {
       // And set a min, max, and mean for each shape type
-      // console.log(
-      //   'entering indicators update, ',
-      //   indicators,
-      // )
-      indicators.forEach((i, index) => {
-        // Get raw metric from sd in indicator id
-        const rawMetric = i.id.replace('_sd', '')
-        // Create placeholders for the values to be calculated.
-        i.min = [undefined, undefined, undefined]
-        i.max = [undefined, undefined, undefined]
-        i.mean = [undefined, undefined, undefined]
-        i.decimals = [undefined, undefined, undefined]
-        // Iterate through each layer.
-        UNTD_LAYERS.forEach((layer, ind) => {
-          // Get feature set from remoteJson
-          const featureSet = remoteJson[
-            layer.id
-          ].data.features
-            .filter(item => {
-              // Filter out items without this value.
-              return (
-                !!item.properties[rawMetric] &&
-                item.properties[rawMetric] !==
-                  'undefined' &&
-                item.properties[rawMetric] !== 'NA'
-              )
-            })
-            // Create an array of only these values.
-            .map(item => {
-              return item.properties[rawMetric]
-            })
-          // if (i.id === 'rent_instability_sd') {
-          //   console.log(
-          //     `featureSet for ${i.id} layer index ${ind} = `,
-          //     featureSet,
-          //   )
-          // }
-          // Set min, max, and mean to the indicator for the shape
-          if (featureSet.length > 0) {
-            const min = Math.min(...featureSet)
-            const max = Math.max(...featureSet)
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log('min: ', min, 'max: ', max)
-            // }
-            const avg =
-              featureSet.reduce((acc, curr) => acc + curr) /
-              featureSet.length
-            // Determine minimum amount of decimal places for scale
-            // to be cogent and interpretable
-            const minimumPresentableDecimals = getMinimumPresentableDecimals(
-              min,
-              max,
-            )
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log(
-            //     'minimumPresentableDecimals: ',
-            //     minimumPresentableDecimals,
-            //   )
-            // }
-            // Determine a roundby value (power of 10) to use
-            // to round to a number of decimal places.
-            // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
-            const roundBy = Math.pow(
-              10,
-              minimumPresentableDecimals,
-            )
-            // console.log('roundBy: ', roundBy)
-            i.decimals[ind] = minimumPresentableDecimals
-            i.min[ind] = roundToDecimals(min, roundBy)
-            i.max[ind] = roundToDecimals(max, roundBy)
-            i.mean[ind] = roundToDecimals(avg, roundBy)
-            // if (i.id === 'rent_instability_sd') {
-            //   console.log(
-            //     `modified indicator for ${i.id} layer index ${ind}`,
-            //     i,
-            //   )
-            // }
-          }
+      indicators
+        .filter(el => {
+          return Number(el.display) === 1
         })
-        // console.log(`completed indicator ${i.id}: `, i)
-        // Replace original indicator value with this one.
-        localIndicators[index] = i
-      })
+        .forEach((i, index) => {
+          // Get raw metric from sd in indicator id
+          const rawMetric = i.id.replace('_sd', '')
+          const metric = allData.find(el => {
+            return el.variable === rawMetric
+          })
+          console.log('metric: ', metric)
+          // Create placeholders for the values to be calculated.
+          i.raw = {
+            id: rawMetric,
+            min: [undefined, undefined, undefined],
+            max: [undefined, undefined, undefined],
+            mean: [undefined, undefined, undefined],
+            decimals: Number(metric.decimals), // [undefined, undefined, undefined],
+            currency: Number(metric.currency),
+            percent: Number(metric.percent),
+            highisgood: Number(metric.highisgood),
+          }
+          // Iterate through each layer.
+          UNTD_LAYERS.forEach((layer, ind) => {
+            // Get feature set from remoteJson
+            const featureSet = remoteJson[
+              layer.id
+            ].data.features
+              .filter(item => {
+                // Filter out items without this value.
+                return (
+                  !!item.properties[rawMetric] &&
+                  item.properties[rawMetric] !==
+                    'undefined' &&
+                  item.properties[rawMetric] !== 'NA'
+                )
+              })
+              // Create an array of only these values.
+              .map(item => {
+                return item.properties[rawMetric]
+              })
+            // if (i.id === 'rent_instability_sd') {
+            //   console.log(
+            //     `featureSet for ${i.id} layer index ${ind} = `,
+            //     featureSet,
+            //   )
+            // }
+            // Set min, max, and mean to the indicator for the shape
+            if (featureSet.length > 0) {
+              const min = Math.min(...featureSet)
+              const max = Math.max(...featureSet)
+              // if (i.id === 'rent_instability_sd') {
+              //   console.log('min: ', min, 'max: ', max)
+              // }
+              const avg =
+                featureSet.reduce(
+                  (acc, curr) => acc + curr,
+                ) / featureSet.length
+              // Determine minimum amount of decimal places for scale
+              // to be cogent and interpretable
+              // const minimumPresentableDecimals = getMinimumPresentableDecimals(
+              //   !!metric.percent ? min * 100 : min,
+              //   !!metric.percent ? max * 100 : max,
+              // )
+              // if (i.id === 'rent_instability_sd') {
+              //   console.log(
+              //     'minimumPresentableDecimals: ',
+              //     minimumPresentableDecimals,
+              //   )
+              // }
+              // Determine a roundby value (power of 10) to use
+              // to round to a number of decimal places.
+              // https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
+              // const roundBy = Math.pow(
+              //   10,
+              //   minimumPresentableDecimals,
+              // )
+              // console.log('roundBy: ', roundBy)
+              // i.raw.decimals[
+              //   ind
+              // ] = minimumPresentableDecimals
+              i.raw.min[ind] = min
+              i.raw.max[ind] = max
+              i.raw.mean[ind] = avg
+              // if (i.id === 'rent_instability_sd') {
+              //   console.log(
+              //     `modified indicator for ${i.id} layer index ${ind}`,
+              //     i,
+              //   )
+              // }
+            }
+          })
+          // console.log(`completed indicator ${i.id}: `, i)
+          // Replace original indicator value with this one.
+          localIndicators[index] = i
+        })
       setStoreValues({
+        trendMinMaxSet: true,
         indicators: localIndicators,
         indicatorRangesSet: true,
       })
-      // console.log(
-      //   'Indicators update complete: ',
-      //   indicators,
-      // )
+      console.log(
+        'Indicators update complete: ',
+        indicators,
+      )
     }
   }, [allDataLoaded])
   // Returns nothing
@@ -711,34 +745,29 @@ const DataLoader = ({ ...props }) => {
                         // )
                         if (
                           !exists &&
-                          r[el.ind_key] === el.ind_flag
+                          r[el.ind_key] === el.ind_flag &&
+                          Number(r['display_variable']) ===
+                            1
                         ) {
                           // console.log('adding an indicator')
                           indicators.push({
                             id: r[el.lang_key]
                               ? r[el.lang_key]
                               : r.variable,
-                            display:
-                              // String(r.variable).indexOf('18') >
-                              // 0
-                              //   ? 1
-                              //   : 0,
-                              isTruthy(
-                                r['display_variable'],
-                              )
-                                ? 1
-                                : 0,
-                            highisgood:
-                              // String(
-                              //   r['highisgood'],
-                              // ).toLowerCase() === 'yes'
-                              isTruthy(r['highisgood'])
-                                ? 1
-                                : 0,
-                            iscurrency: Number(
-                              r['currency'],
-                            ),
-                            ispercent: Number(r['percent']),
+                            display: isTruthy(
+                              r['display_variable'],
+                            )
+                              ? 1
+                              : 0,
+                            highisgood: isTruthy(
+                              r['highisgood'],
+                            )
+                              ? 1
+                              : 0,
+                            min: Number(r['min']),
+                            max: Number(r['min']),
+                            currency: Number(r['currency']),
+                            percent: Number(r['percent']),
                             decimals: Number(r['decimals']),
                             category: r['category']
                               .toLowerCase()
@@ -839,7 +868,10 @@ const DataLoader = ({ ...props }) => {
                     // )
                     addTooltipItems(tooltipItems)
                     // Save indicators to indicator list.
-                    // console.log('indicators, ', indicators)
+                    // console.log(
+                    //   'indicators array from data dict, ',
+                    //   indicators,
+                    // )
                     addIndicators(indicators)
                     const indicatorKeys = indicators.map(
                       el => {

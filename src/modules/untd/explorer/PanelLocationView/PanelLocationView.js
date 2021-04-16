@@ -179,36 +179,42 @@ const PanelLocationView = ({ ...props }) => {
             })
             .map(indicator => {
               // console.log('indicator, ', indicator)
-              const rawMetric = allData.find(d => {
-                return (
-                  d.variable ===
-                  indicator.id.replace('_sd', '')
-                )
-              })
+              // const rawMetric = allData.find(d => {
+              //   return (
+              //     d.variable ===
+              //     indicator.id.replace('_sd', '')
+              //   )
+              // })
               // console.log('rawMetric: ', rawMetric)
-              const sdMetric = allData.find(d => {
-                return d.variable === indicator.id
-              })
+              // const sdMetric = allData.find(d => {
+              //   return d.variable === indicator.id
+              // })
               // const valueLabel = i18n.translate(
               //   rawMetric.variable,
               // )
               // Min, max, and mean are calculated and stored in the indicator
-              rawMetric.min =
-                indicator.min[activeLayerIndex]
-              rawMetric.max =
-                indicator.max[activeLayerIndex]
-              rawMetric.mean =
-                indicator.mean[activeLayerIndex]
-              rawMetric.decimals =
-                indicator.decimals[activeLayerIndex]
+              // rawMetric.min =
+              //   indicator.min[activeLayerIndex]
+              // rawMetric.max =
+              //   indicator.max[activeLayerIndex]
+              // rawMetric.mean =
+              //   indicator.mean[activeLayerIndex]
+              // rawMetric.decimals =
+              //   indicator.decimals[activeLayerIndex]
+              const rawMetric = {
+                min: indicator.raw.min[activeLayerIndex],
+                max: indicator.raw.max[activeLayerIndex],
+                mean: indicator.raw.mean[activeLayerIndex],
+                decimals: indicator.raw.decimals,
+                highisgood: indicator.raw.highisgood,
+                currency: indicator.raw.currency,
+                percent: indicator.raw.percent,
+              }
               // const high_is_good = rawMetric.highisgood
-              const rawName = String(indicator.id).replace(
-                '_sd',
-                '',
-              )
+              const rawName = indicator.raw.id
               // console.log('rawMetric, ', rawMetric)
               // Is there a raw value available for the metric on the feature?
-              const rawValue =
+              const hasRawValue =
                 activeFeature.properties[rawName] &&
                 activeFeature.properties[rawName] !==
                   undefined &&
@@ -227,8 +233,8 @@ const PanelLocationView = ({ ...props }) => {
                   'NA'
                   ? true
                   : false
-              // console.log('rawValue, ', rawValue)
-              if (!!hasSdValue || !!rawValue) {
+              // console.log('hasRawValue, ', hasRawValue)
+              if (!!hasSdValue || !!hasRawValue) {
                 return (
                   <div
                     className={clsx(
@@ -245,10 +251,10 @@ const PanelLocationView = ({ ...props }) => {
                         />
                       )}
                     </h6>
-                    {!!rawValue && !!rawMetric && (
+                    {!!hasRawValue && !!rawMetric && (
                       <LinearScale
                         indicator={rawMetric}
-                        value={rawValue}
+                        value={hasRawValue}
                       />
                     )}
                     {!!hasSdValue && (
@@ -264,8 +270,8 @@ const PanelLocationView = ({ ...props }) => {
                         )}
                         colors={CRI_COLORS}
                         showMinMax={false}
-                        min={sdMetric.min}
-                        max={sdMetric.max}
+                        min={0}
+                        max={4}
                       />
                     )}
                     {/* Check for trend item */}
@@ -274,10 +280,7 @@ const PanelLocationView = ({ ...props }) => {
                     ] && (
                       <TrendChart
                         data={validTrendRows}
-                        metric={String(rawName).replace(
-                          '_19',
-                          '',
-                        )}
+                        config={indicator.trend}
                       />
                     )}
                   </div>
