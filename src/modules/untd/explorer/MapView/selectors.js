@@ -587,23 +587,23 @@ export const getLayers = (sources, context) => {
   }
   // Add a layer for each point type,
   // and a cluster layer for each point type.
-  // for (
-  //   var i = 0;
-  //   i < context.activePointTypes.length;
-  //   i++
-  // ) {
-  //   const id = context.pointTypes[i].id
-  //   if (!!sources[`points_${id}`]) {
-  //     layers.push(
-  //       ...getPointLayers(
-  //         `points_${id}`,
-  //         id,
-  //         context,
-  //         // color,
-  //         i,
-  //       ),
-  //     )
-  //   }
-  // }
+  for (
+    var i = 0;
+    i < context.activePointTypes.length;
+    i++
+  ) {
+    const id = context.pointTypes[i].id
+    if (!!sources[`points_${id}`]) {
+      layers.push(
+        ...getPointLayers(
+          `points_${id}`,
+          id,
+          context,
+          // color,
+          i,
+        ),
+      )
+    }
+  }
   return layers
 }
