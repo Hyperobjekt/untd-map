@@ -2,6 +2,53 @@
  * default viewport on map view
  */
 
+//  `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}.gz`
+
+export const DEFAULT_REMOTE_SOURCES = {
+  // Static layers
+  county: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_counties.geojson.gz`,
+  },
+  fedcongress: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_fedcongress.geojson.gz`,
+  },
+  statehouse: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_statehouse.geojson.gz`,
+  },
+  statesenate: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_statesenate.geojson.gz`,
+  },
+  schooldistricts: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_schooldistricts.geojson.gz`,
+  },
+  // Static layer point features for label placement
+  county_points: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/counties_pt.geojson.gz`,
+  },
+  schooldistricts_points: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/schooldistricts_pt.geojson.gz`,
+  },
+  fedcongress_points: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/fedcongress_pt.geojson.gz`,
+  },
+  statesenate_points: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/statesenate_pt.geojson.gz`,
+  },
+  statehouse_points: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/statehouse_pt.geojson.gz`,
+  },
+}
+
 // Data files to load from remote.
 export const DATA_FILES = [
   // Data dictionary.
@@ -48,6 +95,7 @@ export const DATA_FILES = [
     label_key: 'GEOID',
     type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
+  // Point features.
   {
     id: 'points',
     filename: 'sm_featureset',
@@ -56,112 +104,6 @@ export const DATA_FILES = [
     popup: 1,
     id_key: 'FID',
     label_key: 'Type',
-  },
-  // Static layers
-  {
-    id: 'county',
-    filename: 'sm_counties',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 1, // Does this geo feature get a popup?
-    id_key: 'GEOID', // What feature property to use for hovered ID?
-    label_key: 'NAME', // What feature property to use for label?
-  },
-  {
-    id: 'fedcongress',
-    filename: 'sm_fedcongress',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'label',
-    type_label_key: `UI_MAP_FEATURE_FEDCONGRESS`,
-  },
-  {
-    id: 'statehouse',
-    filename: 'sm_statehouse',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'label',
-    type_label_key: `UI_MAP_FEATURE_STATEHOUSE`,
-  },
-  {
-    id: 'statesenate',
-    filename: 'sm_statesenate',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'label',
-    type_label_key: `UI_MAP_FEATURE_STATESENATE`,
-  },
-  {
-    id: 'schooldistricts',
-    filename: 'sm_schooldistricts',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'label',
-    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-  },
-  // Point features for label placement
-  // Uncomment counties when the client has it prepared.
-  {
-    id: 'county_points',
-    filename: 'counties_pt',
-    ext: 'geojson',
-    type: 'label',
-    popup: 0, // Does this geo feature get a popup?
-    id_key: 'GEOID', // What feature property to use for hovered ID?
-    label_key: 'NAME', // What feature property to use for label?
-    check_for_label: 1,
-  },
-  {
-    id: 'schooldistricts_points',
-    filename: 'schooldistricts_pt',
-    ext: 'geojson',
-    type: 'label',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'NAME',
-    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-    check_for_label: 1,
-  },
-  {
-    id: 'fedcongress_points',
-    filename: 'fedcongress_pt',
-    ext: 'geojson',
-    type: 'label',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'Official',
-    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-    check_for_label: 1,
-  },
-  {
-    id: 'statesenate_points',
-    filename: 'statesenate_pt',
-    ext: 'geojson',
-    type: 'label',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'Official',
-    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-    check_for_label: 1,
-  },
-  {
-    id: 'statehouse_points',
-    filename: 'statehouse_pt',
-    ext: 'geojson',
-    type: 'label',
-    popup: 0,
-    id_key: 'GEOID',
-    label_key: 'Official',
-    type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-    check_for_label: 1,
   },
   // Trend data csv
   {
@@ -223,20 +165,22 @@ export const ROUTE_SET = [
     id: 'quintiles',
     options: ['1', '0'], // Strings because that's what we get from the hash.
     validate: 'contains_only',
-    length: 5,
     defaultValue: [1, 1, 1, 1, 1],
+    check_length: 1,
   },
   {
     id: 'layers',
     options: ['1', '0'],
     validate: 'contains_only',
     defaultValue: [0, 0, 1],
+    check_length: 1,
   },
   {
     id: 'static_layers',
     options: ['1', '0'],
     validate: 'contains_only',
-    defaultValue: [0, 0, 0, 0, 0],
+    defaultValue: [1, 0, 0, 0, 0, 0],
+    check_length: 1,
   },
   {
     id: 'points',

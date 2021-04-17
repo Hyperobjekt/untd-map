@@ -12,6 +12,7 @@ import {
   DEFAULT_ROUTE,
   DEFAULT_ACTIVE_LAYERS,
   ROUTE_SET,
+  DEFAULT_REMOTE_SOURCES,
 } from './../../../constants/map'
 
 const getFeatureGeometryType = feature => {
@@ -128,7 +129,7 @@ const [useStore] = create((set, get) => ({
     }))
   },
   // Set JSON loaded from remote location.
-  remoteJson: {},
+  remoteJson: DEFAULT_REMOTE_SOURCES,
   setRemoteJson: json =>
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
