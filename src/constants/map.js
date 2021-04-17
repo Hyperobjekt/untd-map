@@ -95,6 +95,7 @@ export const DATA_FILES = [
     label_key: 'GEOID',
     type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
+  // Point features.
   {
     id: 'points',
     filename: 'sm_featureset',
@@ -104,63 +105,6 @@ export const DATA_FILES = [
     id_key: 'FID',
     label_key: 'Type',
   },
-
-  // Point features for label placement
-  // Uncomment counties when the client has it prepared.
-  // {
-  //   id: 'county_points',
-  //   filename: 'counties_pt',
-  //   ext: 'geojson',
-  //   type: 'label',
-  //   popup: 0, // Does this geo feature get a popup?
-  //   id_key: 'GEOID', // What feature property to use for hovered ID?
-  //   label_key: 'NAME', // What feature property to use for label?
-  //   check_for_label: 1,
-  // },
-  // {
-  //   id: 'schooldistricts_points',
-  //   filename: 'schooldistricts_pt',
-  //   ext: 'geojson',
-  //   type: 'label',
-  //   popup: 0,
-  //   id_key: 'GEOID',
-  //   label_key: 'NAME',
-  //   type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-  //   check_for_label: 1,
-  // },
-  // {
-  //   id: 'fedcongress_points',
-  //   filename: 'fedcongress_pt',
-  //   ext: 'geojson',
-  //   type: 'label',
-  //   popup: 0,
-  //   id_key: 'GEOID',
-  //   label_key: 'Official',
-  //   type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-  //   check_for_label: 1,
-  // },
-  // {
-  //   id: 'statesenate_points',
-  //   filename: 'statesenate_pt',
-  //   ext: 'geojson',
-  //   type: 'label',
-  //   popup: 0,
-  //   id_key: 'GEOID',
-  //   label_key: 'Official',
-  //   type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-  //   check_for_label: 1,
-  // },
-  // {
-  //   id: 'statehouse_points',
-  //   filename: 'statehouse_pt',
-  //   ext: 'geojson',
-  //   type: 'label',
-  //   popup: 0,
-  //   id_key: 'GEOID',
-  //   label_key: 'Official',
-  //   type_label_key: `UI_MAP_FEATURE_SCHOOLDISTRICTS`,
-  //   check_for_label: 1,
-  // },
   // Trend data csv
   {
     id: 'trends',

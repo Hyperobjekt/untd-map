@@ -220,8 +220,6 @@ const MapView = props => {
     isLoaded.current = true
   }
 
-  console.log('remoteJson: ', remoteJson)
-
   return (
     <MapBase
       sources={!!allDataLoaded ? remoteJson : null}
