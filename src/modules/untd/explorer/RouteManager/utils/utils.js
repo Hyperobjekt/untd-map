@@ -7,6 +7,12 @@
  */
 export const validateRouteOption = (optionsItem, value) => {
   // console.log('validateRouteOption, ', optionsItem, value)
+  // Check length of arrays.
+  if (!!optionsItem.check_length) {
+    if (value.length !== optionsItem.defaultValue.length) {
+      return false
+    }
+  }
   // Case to validate via different methods.
   switch (true) {
     case optionsItem.validate === 'regex':
