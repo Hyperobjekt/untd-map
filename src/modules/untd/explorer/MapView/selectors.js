@@ -400,6 +400,11 @@ export const getStaticLayerLabel = (source, context) => {
   const visibleStaticLayers = getVisibleStaticLayers(
     context,
   )
+  // console.log(
+  //   'visibleStaticLayers, ',
+  //   visibleStaticLayers,
+  //   visibleStaticLayers.indexOf(source) > -1,
+  // )
   return fromJS({
     id: `${source}Label`,
     source: `${source}_points`,
@@ -539,22 +544,22 @@ export const getStaticLayer = (source, context) => {
 }
 // Necessary to break these out because the client has accidentally
 // removed some label layers at some points during the project.
-export const getStaticLayerLabellll = (source, context) => {
-  // console.log('getStaticLayerLabellll', context)
-  return [
-    // Label.
-    {
-      z: z + 2,
-      style: getStaticLayerLabel(source, context),
-      idMap: true,
-      hasFeatureId: true,
-      type: `${source}Label`,
-    },
-  ]
-}
+// export const getStaticLayerLabellll = (source, context) => {
+//   // console.log('getStaticLayerLabellll', context)
+//   return [
+//     // Label.
+//     {
+//       z: z + 2,
+//       style: getStaticLayerLabel(source, context),
+//       idMap: true,
+//       hasFeatureId: true,
+//       type: `${source}Label`,
+//     },
+//   ]
+// }
 
 export const getLayers = (sources, context) => {
-  // console.log('getLayers', sources, context)
+  console.log('getLayers', sources, context)
   const layers = []
 
   // Interactive geo shapes

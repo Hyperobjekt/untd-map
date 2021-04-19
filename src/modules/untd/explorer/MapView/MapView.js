@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react'
-import { fromJS } from 'immutable'
+// import { fromJS } from 'immutable'
 import i18n from '@pureartisan/simple-i18n'
 import shallow from 'zustand/shallow'
 import { getLayers } from './selectors'
@@ -77,14 +77,14 @@ const MapView = props => {
   // Allows activePointTypes to update and
   // point features pane to re-render
   // before map layers are reprocessed.
-  const debouncedActivePointTypes = useDebounce(
-    activePointTypes,
-    50,
-  )
-  const debouncedActiveMetric = useDebounce(
-    activeMetric,
-    50,
-  )
+  // const debouncedActivePointTypes = useDebounce(
+  //   activePointTypes,
+  //   50,
+  // )
+  // const debouncedActiveMetric = useDebounce(
+  //   activeMetric,
+  //   50,
+  // )
   // const debouncedActiveLayers = useDebounce(
   //   activeLayers,
   //   50,
@@ -115,11 +115,11 @@ const MapView = props => {
   }, [
     isLoaded.current,
     allDataLoaded,
-    debouncedActiveMetric,
+    activeMetric, // debouncedActiveMetric,
     activeQuintiles,
     activeLayers,
     activeStaticLayers,
-    debouncedActivePointTypes,
+    activePointTypes, // debouncedActivePointTypes,
     remoteJson,
   ])
 
