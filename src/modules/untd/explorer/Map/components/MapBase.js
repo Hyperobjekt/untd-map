@@ -190,6 +190,7 @@ const MapBase = ({
     // Enable event tracking once map is loaded.
     setStoreValues({
       doTrackEvents: true,
+      mapLoaded: true,
     })
     if (!loaded) {
       setLoaded(true)
