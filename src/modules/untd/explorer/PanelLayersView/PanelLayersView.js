@@ -202,52 +202,55 @@ const PanelLayersView = ({ ...props }) => {
                           )
                           // }
                         })}
+
                     {/* Point types with category but not subcategory */}
-                    {pointTypes
-                      .filter(point => {
-                        return (
-                          point.category === cat.id &&
-                          !!(
-                            point.subcategory ===
-                              undefined ||
-                            point.subcategory ===
-                              'undefined' ||
-                            point.subcategory === 'NA' ||
-                            point.subcategory === '' ||
-                            point.subcategory === false
+                    {!!(cat.subcategories.length > 0) &&
+                      pointTypes
+                        .filter(point => {
+                          return (
+                            point.category === cat.id &&
+                            !!(
+                              point.subcategory ===
+                                undefined ||
+                              point.subcategory ===
+                                'undefined' ||
+                              point.subcategory === 'NA' ||
+                              point.subcategory === '' ||
+                              point.subcategory === false
+                            )
                           )
-                        )
-                      })
-                      .map((point, ind) => {
-                        console.log(
-                          'point, ',
-                          point,
-                          cat.id,
-                        )
-                        const pointIndex = getPointIndex(
-                          pointTypes,
-                          point.id,
-                        )
-                        const isChecked = !!activePointTypes[
-                          pointIndex
-                        ]
-                        return (
-                          <LayersInput
-                            key={`layer-input-group-${point.id}-${ind}`}
-                            layer={point}
-                            id={`input_${point.id}`}
-                            ind={pointIndex}
-                            isChecked={isChecked}
-                            label={getLayerLabel(
-                              point.id,
-                              pointTypes,
-                            )}
-                            tooltip={point.tooltip}
-                            update={updatePoints}
-                            className={clsx()}
-                          />
-                        )
-                      })}
+                        })
+                        .map((point, ind) => {
+                          console.log(
+                            'point, ',
+                            point,
+                            cat.id,
+                          )
+                          const pointIndex = getPointIndex(
+                            pointTypes,
+                            point.id,
+                          )
+                          const isChecked = !!activePointTypes[
+                            pointIndex
+                          ]
+                          return (
+                            <LayersInput
+                              key={`layer-input-group-${point.id}-${ind}`}
+                              layer={point}
+                              id={`input_${point.id}`}
+                              ind={pointIndex}
+                              isChecked={isChecked}
+                              label={getLayerLabel(
+                                point.id,
+                                pointTypes,
+                              )}
+                              tooltip={point.tooltip}
+                              update={updatePoints}
+                              className={clsx()}
+                            />
+                          )
+                        })}
+
                     {/* Points for categories with a subcategory */}
                     {!!(cat.subcategories.length > 0) &&
                       // Uncomment this to restore subcategory processing.
