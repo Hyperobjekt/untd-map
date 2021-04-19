@@ -559,7 +559,7 @@ export const getStaticLayer = (source, context) => {
 // }
 
 export const getLayers = (sources, context) => {
-  console.log('getLayers', sources, context)
+  // console.log('getLayers', sources, context)
   const layers = []
 
   // Interactive geo shapes
@@ -579,38 +579,6 @@ export const getLayers = (sources, context) => {
   // State senate
   layers.push(...getStaticLayer('statesenate', context))
 
-  // console.log('UNTD_STATIC_LAYERS, ', UNTD_STATIC_LAYERS)
-  // if (context.activeStaticLayers.indexOf(1) !== 0) {
-  //   const staticLayer = UNTD_STATIC_LAYERS[
-  //     context.activeStaticLayers.indexOf(1)
-  //   ]
-  //     ? UNTD_STATIC_LAYERS[
-  //         context.activeStaticLayers.indexOf(1)
-  //       ].id
-  //     : false
-  //   if (!!staticLayer) {
-  //     console.log('staticLayer, ', staticLayer)
-  //     layers.push(...getStaticLayer(staticLayer, context))
-  //   }
-  //   // Does the static layer type get a label?
-  //   // If so, add a layer for the labels.
-  //   const hasStaticLayerLabel =
-  //     !!UNTD_STATIC_LAYERS[
-  //       context.activeStaticLayers.indexOf(1)
-  //     ] &&
-  //     !UNTD_STATIC_LAYERS[
-  //       context.activeStaticLayers.indexOf(1)
-  //     ] == 0
-  //       ? UNTD_STATIC_LAYERS[
-  //           context.activeStaticLayers.indexOf(1)
-  //         ].has_labels
-  //       : false
-  //   if (hasStaticLayerLabel) {
-  //     layers.push(
-  //       ...getStaticLayerLabellll(staticLayer, context),
-  //     )
-  //   }
-  // }
   // Add a layer for each point type,
   // and a cluster layer for each point type.
   for (
