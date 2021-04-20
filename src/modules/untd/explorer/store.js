@@ -116,6 +116,8 @@ const [useStore] = create((set, get) => ({
   },
   // Track loading of remote data files.
   allDataLoaded: false,
+  // Map loaded
+  mapLoaded: false,
   // Percent loaded for remote data files.
   dataLoadedPercent: 0,
   // Error flag for loading failure.
