@@ -36,7 +36,7 @@ const PanelLayersView = ({ ...props }) => {
     shallow,
   )
 
-  console.log('panelLayersView, pointTypes: ', pointTypes)
+  // console.log('panelLayersView, pointTypes: ', pointTypes)
 
   const getLayerLabel = (id, items) => {
     const layer = items.find(gr => gr.id === id)
@@ -221,11 +221,11 @@ const PanelLayersView = ({ ...props }) => {
                           )
                         })
                         .map((point, ind) => {
-                          console.log(
-                            'point, ',
-                            point,
-                            cat.id,
-                          )
+                          // console.log(
+                          //   'point, ',
+                          //   point,
+                          //   cat.id,
+                          // )
                           const pointIndex = getPointIndex(
                             pointTypes,
                             point.id,

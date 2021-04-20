@@ -14,6 +14,7 @@ import {
   ROUTE_SET,
   DEFAULT_REMOTE_SOURCES,
 } from './../../../constants/map'
+import { UNTD_LAYERS } from './../../../constants/layers'
 
 const getFeatureGeometryType = feature => {
   if (!feature.geometry || !feature.geometry.type)
@@ -136,6 +137,9 @@ const [useStore] = create((set, get) => ({
     set(state => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
+  // Track whether all interactive layers have loaded.
+  interactiveSourcesLoaded: [0, 0, 0],
+  // Trend data.
   trendData: [],
   trendMinMax: {},
   trendMinMaxSet: false,
