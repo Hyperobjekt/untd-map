@@ -19,6 +19,7 @@ import { getClosest } from '../utils'
 import {
   usePrevious,
   checkControlHovered,
+  useDebounce,
 } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
@@ -104,10 +105,14 @@ const MapBase = ({
     setViewport,
     flyToReset,
     activeView,
-    interactiveSourcesLoaded,
     allDataLoaded,
     indicatorRangesSet,
     indicators,
+    allData,
+    loadedSources,
+    pushLoadedSources,
+    rangedSources,
+    pushRangedSources,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -115,11 +120,14 @@ const MapBase = ({
       setViewport: state.setViewport,
       flyToReset: state.flyToReset,
       activeView: state.activeView,
-      interactiveSourcesLoaded:
-        state.interactiveSourcesLoaded,
       allDataLoaded: state.allDataLoaded,
       indicatorRangesSet: state.indicatorRangesSet,
       indicators: state.indicators,
+      allData: state.allData,
+      loadedSources: state.loadedSources,
+      pushLoadedSources: state.pushLoadedSources,
+      rangedSources: state.rangedSources,
+      pushRangedSources: state.pushRangedSources,
     }),
     shallow,
   )
@@ -149,18 +157,22 @@ const MapBase = ({
     selectedIds,
   })
 
+  /**
+   * Adds shape range data to indicators array as they are loaded.
+   */
   useEffect(() => {
-    console.log(
-      'updating indicators from useeffect, ',
-      interactiveSourcesLoaded,
-    )
-    if (
-      !!allDataLoaded &&
-      !indicatorRangesSet &&
-      !!interactiveSourcesLoaded.every(el => el === 1)
-    ) {
-      console.log('updating indicators from basemap')
+    // console.log(
+    //   'in useeffect, ',
+    //   loadedSources,
+    //   loadedSources.length,
+    // )
+    if (!!allDataLoaded) {
+      // console.log(
+      //   'updating indicators from basemap, ',
+      //   loadedSources,
+      // )
       // And set a min, max, and mean for each shape type
+      const localIndicators = indicators.slice()
       indicators
         .filter(el => {
           return Number(el.display) === 1
@@ -184,39 +196,49 @@ const MapBase = ({
             highisgood: Number(metric.highisgood),
           }
           // Iterate through each layer.
-          UNTD_LAYERS.forEach((layer, ind) => {
-            // Get feature set from remoteJson
-            // const featureSet = remoteJson[
-            //   layer.id
-            // ].data.features
-            const featureSet = currentMap
-              .querySourceFeatures(layer.id, {
-                sourceLayer: `${layer.id}Lines`,
+          loadedSources.forEach(layer => {
+            // console.log(
+            //   `Inside loaded sources layer, ${layer}`,
+            // )
+            // If it hasn't yet been handled...
+            if (rangedSources.indexOf(layer) < 0) {
+              const ind = UNTD_LAYERS.map(el => {
+                return el.id
+              }).indexOf(layer)
+              // console.log('ind = ', ind)
+              // Get feature set from the map
+              const featureSet = currentMap
+                .querySourceFeatures(layer)
+                .filter(item => {
+                  // Filter out items without this value.
+                  return (
+                    !!item.properties[rawMetric] &&
+                    item.properties[rawMetric] !==
+                      'undefined' &&
+                    item.properties[rawMetric] !== 'NA'
+                  )
+                })
+                // Create an array of only these values.
+                .map(item => {
+                  return item.properties[rawMetric]
+                })
+              // Set min, max, and mean to the indicator for the shape
+              if (featureSet.length > 0) {
+                i.raw.min[ind] = Math.min(...featureSet)
+                i.raw.max[ind] = Math.max(...featureSet)
+                i.raw.mean[ind] =
+                  featureSet.reduce(
+                    (acc, curr) => acc + curr,
+                  ) / featureSet.length
+              }
+              const newRangedSources = rangedSources.slice()
+              newRangedSources[ind] = layer
+              setStoreValues({
+                rangedSources: newRangedSources,
               })
-              .filter(item => {
-                // Filter out items without this value.
-                return (
-                  !!item.properties[rawMetric] &&
-                  item.properties[rawMetric] !==
-                    'undefined' &&
-                  item.properties[rawMetric] !== 'NA'
-                )
-              })
-              // Create an array of only these values.
-              .map(item => {
-                return item.properties[rawMetric]
-              })
-            // Set min, max, and mean to the indicator for the shape
-            if (featureSet.length > 0) {
-              i.raw.min[ind] = Math.min(...featureSet)
-              i.raw.max[ind] = Math.max(...featureSet)
-              i.raw.mean[ind] =
-                featureSet.reduce(
-                  (acc, curr) => acc + curr,
-                ) / featureSet.length
             }
           })
-          console.log(`completed indicator ${i.id}: `, i)
+          // console.log(`completed indicator ${i.id}: `, i)
           // Replace original indicator value with this one.
           localIndicators[index] = i
         })
@@ -225,40 +247,29 @@ const MapBase = ({
         indicatorRangesSet: true,
       })
     }
-  }, [
-    allDataLoaded,
-    indicatorRangesSet,
-    interactiveSourcesLoaded,
-  ])
+  }, [allDataLoaded, ...loadedSources])
 
   useEffect(() => {
     if (!!currentMap) {
       function sourceCallback() {
-        console.log('sourceCallback')
-        UNTD_LAYERS.forEach((layer, i) => {
+        UNTD_LAYERS.forEach((layer, ind) => {
+          // console.log(
+          //   `Checking the untd_layers, ${layer.id}`,
+          // )
           if (
             currentMap.getSource(layer.id) &&
-            currentMap.isSourceLoaded(layer.id)
+            currentMap.isSourceLoaded(layer.id) &&
+            currentMap.querySourceFeatures(layer.id)
+              .length > 0
           ) {
-            console.log(`${layer.id} loaded!`)
-            // interactiveSourcesLoaded[i] = 1
-            console.log(
-              'interactiveSourcesLoaded before: ',
-              interactiveSourcesLoaded,
-            )
-            if (interactiveSourcesLoaded[i] === 0) {
-              const localISL = interactiveSourcesLoaded.slice()
-              console.log('localISL: ', localISL)
-              localISL[i] = 1
-              console.log('localISL: ', localISL)
+            if (loadedSources.indexOf(layer.id) < 0) {
+              // pushLoadedSources(layer.id)
+              const newLoadedSources = loadedSources.slice()
+              newLoadedSources[ind] = layer.id
               setStoreValues({
-                interactiveSourcesLoaded: localISL,
+                loadedSources: newLoadedSources,
               })
             }
-            console.log(
-              'updated interactiveSourcesLoaded: ',
-              interactiveSourcesLoaded,
-            )
           }
         })
       }

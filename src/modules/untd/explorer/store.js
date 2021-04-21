@@ -138,7 +138,19 @@ const [useStore] = create((set, get) => ({
       remoteJson: { ...state.remoteJson, ...json },
     })),
   // Track whether all interactive layers have loaded.
-  interactiveSourcesLoaded: [0, 0, 0],
+  // interactiveSourcesLoaded: false,
+  rangedSources: [undefined, undefined, undefined],
+  pushRangedSources: item => {
+    set(state => ({
+      rangedSources: [...state.rangedSources, item],
+    }))
+  },
+  loadedSources: [undefined, undefined, undefined],
+  pushLoadedSources: item => {
+    set(state => ({
+      loadedSources: [...state.loadedSources, item],
+    }))
+  },
   // Trend data.
   trendData: [],
   trendMinMax: {},

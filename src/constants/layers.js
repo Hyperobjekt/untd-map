@@ -10,6 +10,10 @@ export const UNTD_LAYERS = [
     group: 0,
     index: 1,
     place_type: `Zip`,
+    popup: 1,
+    id_key: 'GEOID',
+    label_key: 'GEOID',
+    type_label_key: `UI_MAP_FEATURE_ZIP`,
   },
   {
     id: `tract`,
@@ -21,6 +25,10 @@ export const UNTD_LAYERS = [
     group: 0,
     index: 2,
     place_type: `Tract`,
+    popup: 1,
+    id_key: 'GEOID',
+    label_key: 'NAME',
+    type_label_key: `UI_MAP_FEATURE_TRACT`,
   },
   {
     id: `place`,
@@ -32,6 +40,10 @@ export const UNTD_LAYERS = [
     group: 0,
     index: 3,
     place_type: `Place`,
+    popup: 1,
+    id_key: 'GEOID',
+    label_key: 'NAME',
+    type_label_key: `UI_MAP_FEATURE_PLACE`,
   },
 ]
 

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import useStore from './store.js'
 import { MAP_CONTROLS_CLASSES } from './../../../constants/map'
 import { DATA_FILES } from './../../../constants/map'
+import { UNTD_LAYERS } from './../../../constants/layers'
 
 /**
  * Get robotext for the sd bucket
@@ -594,7 +595,7 @@ export const checkControlHovered = () => {
  * @returns String
  */
 export const getGeoFeatureLabel = feature => {
-  const source = DATA_FILES.find(item => {
+  const source = UNTD_LAYERS.find(item => {
     return item.id === feature.source
   })
   const layerID = feature.layer.source
