@@ -37,12 +37,12 @@ const PanelLocationView = ({ ...props }) => {
     shallow,
   )
 
-  console.log(
-    'panelLocationView, ',
-    indicators,
-    // trendData,
-    // activeFeature,
-  )
+  // console.log(
+  //   'panelLocationView, ',
+  //   indicators,
+  //   // trendData,
+  //   // activeFeature,
+  // )
 
   const validTrendRows = !!activeFeature
     ? trendData.filter(

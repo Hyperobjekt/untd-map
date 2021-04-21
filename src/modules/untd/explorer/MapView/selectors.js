@@ -291,10 +291,14 @@ export const getPolygonLines = (type, context) => {
         CRI_COLORS[4],
         CRI_COLORS[2],
       ],
-      // 'line-color': polygonColors.find(
-      //   el => el.type === type,
-      // ).color,
-      'line-width': 0.5,
+      'line-width': [
+        'case',
+        ['==', ['feature-state', 'hover'], true],
+        0.8,
+        ['==', ['feature-state', 'selected'], true],
+        1.1,
+        0.5,
+      ],
     },
     filter: getFilter(
       type,
