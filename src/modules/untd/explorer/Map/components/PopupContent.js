@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow'
 
 import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
 import { CRI_COLORS } from './../../../../../constants/colors'
-import { DATA_FILES } from './../../../../../constants/map'
+import { UNTD_LAYERS } from './../../../../../constants/layers'
 import {
   getRoundedValue,
   getFeatureId,
@@ -40,7 +40,7 @@ const PopupContent = ({ ...props }) => {
     }),
     shallow,
   )
-  const source = DATA_FILES.find(item => {
+  const source = UNTD_LAYERS.find(item => {
     return item.id === props.feature.source
   })
   const metric = indicators.find(item => {

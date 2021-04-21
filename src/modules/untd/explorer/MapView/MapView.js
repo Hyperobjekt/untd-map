@@ -131,21 +131,21 @@ const MapView = props => {
 
   /** handler for map hover */
   const handleHover = (feature, coords, geoCoords) => {
-    console.log(
-      'handleHover in mapview, ',
-      feature,
-      coords,
-      geoCoords,
-    )
+    // console.log(
+    //   'handleHover in mapview, ',
+    //   feature,
+    //   coords,
+    //   geoCoords,
+    // )
     if (!!interactionsMobile) return
     const source = getFeatureSource(feature)
     const source_data = getFeatureTypeObj(feature)
     // console.log('source_data, ', source_data)
-    if (source_data && !!source_data.popup) {
+    if (!!source_data) {
       // console.log('has source data, has popup')
       const id = getFeatureId(feature)
       const type = getFeatureType(feature)
-      console.log('setting hovered, ', feature, id)
+      // console.log('setting hovered, ', feature, id)
       setHovered(id, type, geoCoords, feature)
       // }
     } else {

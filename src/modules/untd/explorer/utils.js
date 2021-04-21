@@ -372,14 +372,22 @@ export const getFeatureSource = feature => {
  */
 export const getFeatureTypeObj = feature => {
   const source = getFeatureSource(feature)
-  // if (source && source.indexOf('points') > -1) {
-  //   return 'points'
-  // }
-  return source
-    ? UNTD_LAYERS.find(el => {
-        return el.id === source
-      })
-    : null
+  // Points features are in a different config object
+  // (loaded locally) than the layers, which exist as
+  // remote sources.
+  if (source && source.indexOf('points') > -1) {
+    return source
+      ? DATA_FILES.find(el => {
+          return el.id === source
+        })
+      : null
+  } else {
+    return source
+      ? UNTD_LAYERS.find(el => {
+          return el.id === source
+        })
+      : null
+  }
 }
 
 export const getFeatureId = feature => {
