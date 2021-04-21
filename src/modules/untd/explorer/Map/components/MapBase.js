@@ -164,7 +164,7 @@ const MapBase = ({
     // console.log(
     //   'in useeffect, ',
     //   loadedSources,
-    //   loadedSources.length,
+    //   rangedSources,
     // )
     if (!!allDataLoaded) {
       // console.log(
@@ -185,15 +185,17 @@ const MapBase = ({
           })
           // console.log('metric: ', metric)
           // Create placeholders for the values to be calculated.
-          i.raw = {
-            id: rawMetric,
-            min: [undefined, undefined, undefined],
-            max: [undefined, undefined, undefined],
-            mean: [undefined, undefined, undefined],
-            decimals: Number(metric.decimals), // [undefined, undefined, undefined],
-            currency: Number(metric.currency),
-            percent: Number(metric.percent),
-            highisgood: Number(metric.highisgood),
+          if (!i.raw) {
+            i.raw = {
+              id: rawMetric,
+              min: [undefined, undefined, undefined],
+              max: [undefined, undefined, undefined],
+              mean: [undefined, undefined, undefined],
+              decimals: Number(metric.decimals), // [undefined, undefined, undefined],
+              currency: Number(metric.currency),
+              percent: Number(metric.percent),
+              highisgood: Number(metric.highisgood),
+            }
           }
           // Iterate through each layer.
           loadedSources.forEach(layer => {
@@ -201,7 +203,13 @@ const MapBase = ({
             //   `Inside loaded sources layer, ${layer}`,
             // )
             // If it hasn't yet been handled...
-            if (rangedSources.indexOf(layer) < 0) {
+            if (
+              layer !== undefined &&
+              rangedSources.indexOf(layer) < 0
+            ) {
+              // console.log(
+              //   `it hasn not been handled yet ${layer}`,
+              // )
               const ind = UNTD_LAYERS.map(el => {
                 return el.id
               }).indexOf(layer)
@@ -252,6 +260,7 @@ const MapBase = ({
   useEffect(() => {
     if (!!currentMap) {
       function sourceCallback() {
+        const newLoadedSources = loadedSources.slice()
         UNTD_LAYERS.forEach((layer, ind) => {
           // console.log(
           //   `Checking the untd_layers, ${layer.id}`,
@@ -264,13 +273,17 @@ const MapBase = ({
           ) {
             if (loadedSources.indexOf(layer.id) < 0) {
               // pushLoadedSources(layer.id)
-              const newLoadedSources = loadedSources.slice()
+              // const newLoadedSources = loadedSources.slice()
               newLoadedSources[ind] = layer.id
-              setStoreValues({
-                loadedSources: newLoadedSources,
-              })
+            } else {
+              // console.log(
+              //   `${layer.id} is already in loadedSources.`,
+              // )
             }
           }
+        })
+        setStoreValues({
+          loadedSources: newLoadedSources,
         })
       }
       currentMap.on('sourcedata', sourceCallback)
