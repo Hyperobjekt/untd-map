@@ -114,6 +114,11 @@ const GenerateMinMaxes = () => {
           }).trend.max[ind] = max
         })
       })
+      setStoreValues({
+        trendMinMaxSet: true,
+        indicators: localIndicators,
+        // indicatorRangesSet: true,
+      })
     }
     /**
      * When all data is loaded, iterate through all feature sets
@@ -124,73 +129,73 @@ const GenerateMinMaxes = () => {
      * count (like degrees, children, etc) that will naturally be
      * lower for smaller geographic entities.
      */
-    if (!!allDataLoaded && !indicatorRangesSet) {
-      // And set a min, max, and mean for each shape type
-      indicators
-        .filter(el => {
-          return Number(el.display) === 1
-        })
-        .forEach((i, index) => {
-          // Get raw metric from sd in indicator id
-          const rawMetric = i.id.replace('_sd', '')
-          const metric = allData.find(el => {
-            return el.variable === rawMetric
-          })
-          // console.log('metric: ', metric)
-          // Create placeholders for the values to be calculated.
-          i.raw = {
-            id: rawMetric,
-            min: [undefined, undefined, undefined],
-            max: [undefined, undefined, undefined],
-            mean: [undefined, undefined, undefined],
-            decimals: Number(metric.decimals), // [undefined, undefined, undefined],
-            currency: Number(metric.currency),
-            percent: Number(metric.percent),
-            highisgood: Number(metric.highisgood),
-          }
-          // Iterate through each layer.
-          UNTD_LAYERS.forEach((layer, ind) => {
-            // Get feature set from remoteJson
-            const featureSet = remoteJson[
-              layer.id
-            ].data.features
-              .filter(item => {
-                // Filter out items without this value.
-                return (
-                  !!item.properties[rawMetric] &&
-                  item.properties[rawMetric] !==
-                    'undefined' &&
-                  item.properties[rawMetric] !== 'NA'
-                )
-              })
-              // Create an array of only these values.
-              .map(item => {
-                return item.properties[rawMetric]
-              })
-            // Set min, max, and mean to the indicator for the shape
-            if (featureSet.length > 0) {
-              i.raw.min[ind] = Math.min(...featureSet)
-              i.raw.max[ind] = Math.max(...featureSet)
-              i.raw.mean[ind] =
-                featureSet.reduce(
-                  (acc, curr) => acc + curr,
-                ) / featureSet.length
-            }
-          })
-          // console.log(`completed indicator ${i.id}: `, i)
-          // Replace original indicator value with this one.
-          localIndicators[index] = i
-        })
-      setStoreValues({
-        trendMinMaxSet: true,
-        indicators: localIndicators,
-        indicatorRangesSet: true,
-      })
-      // console.log(
-      //   'Indicators update complete: ',
-      //   indicators,
-      // )
-    }
+    // if (!!allDataLoaded && !indicatorRangesSet) {
+    //   // And set a min, max, and mean for each shape type
+    //   indicators
+    //     .filter(el => {
+    //       return Number(el.display) === 1
+    //     })
+    //     .forEach((i, index) => {
+    //       // Get raw metric from sd in indicator id
+    //       const rawMetric = i.id.replace('_sd', '')
+    //       const metric = allData.find(el => {
+    //         return el.variable === rawMetric
+    //       })
+    //       // console.log('metric: ', metric)
+    //       // Create placeholders for the values to be calculated.
+    //       i.raw = {
+    //         id: rawMetric,
+    //         min: [undefined, undefined, undefined],
+    //         max: [undefined, undefined, undefined],
+    //         mean: [undefined, undefined, undefined],
+    //         decimals: Number(metric.decimals), // [undefined, undefined, undefined],
+    //         currency: Number(metric.currency),
+    //         percent: Number(metric.percent),
+    //         highisgood: Number(metric.highisgood),
+    //       }
+    //       // Iterate through each layer.
+    //       UNTD_LAYERS.forEach((layer, ind) => {
+    //         // Get feature set from remoteJson
+    //         const featureSet = remoteJson[
+    //           layer.id
+    //         ].data.features
+    //           .filter(item => {
+    //             // Filter out items without this value.
+    //             return (
+    //               !!item.properties[rawMetric] &&
+    //               item.properties[rawMetric] !==
+    //                 'undefined' &&
+    //               item.properties[rawMetric] !== 'NA'
+    //             )
+    //           })
+    //           // Create an array of only these values.
+    //           .map(item => {
+    //             return item.properties[rawMetric]
+    //           })
+    //         // Set min, max, and mean to the indicator for the shape
+    //         if (featureSet.length > 0) {
+    //           i.raw.min[ind] = Math.min(...featureSet)
+    //           i.raw.max[ind] = Math.max(...featureSet)
+    //           i.raw.mean[ind] =
+    //             featureSet.reduce(
+    //               (acc, curr) => acc + curr,
+    //             ) / featureSet.length
+    //         }
+    //       })
+    //       // console.log(`completed indicator ${i.id}: `, i)
+    //       // Replace original indicator value with this one.
+    //       localIndicators[index] = i
+    //     })
+    //   setStoreValues({
+    //     trendMinMaxSet: true,
+    //     indicators: localIndicators,
+    //     // indicatorRangesSet: true,
+    //   })
+    //   // console.log(
+    //   //   'Indicators update complete: ',
+    //   //   indicators,
+    //   // )
+    // }
   }, [allDataLoaded])
   // Returns nothing
   return ''

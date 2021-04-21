@@ -47,6 +47,18 @@ export const DEFAULT_REMOTE_SOURCES = {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/statehouse_pt.geojson.gz`,
   },
+  place: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_places.geojson.gz`,
+  },
+  tract: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_tracts.geojson.gz`,
+  },
+  zip: {
+    type: 'geojson',
+    data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_zcta.geojson.gz`,
+  },
 }
 
 // Data files to load from remote.
@@ -65,36 +77,36 @@ export const DATA_FILES = [
     ind_flag: 'sd', // Column value that indicates that a value is an indicator.
   },
   // Interactive (choropleth) layers
-  {
-    id: 'place',
-    filename: 'sm_places',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 1,
-    id_key: 'GEOID',
-    label_key: 'NAME',
-    type_label_key: `UI_MAP_FEATURE_PLACE`,
-  },
-  {
-    id: 'tract',
-    filename: 'sm_tracts',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 1,
-    id_key: 'GEOID',
-    label_key: 'NAME',
-    type_label_key: `UI_MAP_FEATURE_TRACT`,
-  },
-  {
-    id: 'zip',
-    filename: 'sm_zcta',
-    ext: 'geojson',
-    type: 'polygon',
-    popup: 1,
-    id_key: 'GEOID',
-    label_key: 'GEOID',
-    type_label_key: `UI_MAP_FEATURE_ZIP`,
-  },
+  // {
+  //   id: 'place',
+  //   filename: 'sm_places',
+  //   ext: 'geojson',
+  //   type: 'polygon',
+  //   popup: 1,
+  //   id_key: 'GEOID',
+  //   label_key: 'NAME',
+  //   type_label_key: `UI_MAP_FEATURE_PLACE`,
+  // },
+  // {
+  //   id: 'tract',
+  //   filename: 'sm_tracts',
+  //   ext: 'geojson',
+  //   type: 'polygon',
+  //   popup: 1,
+  //   id_key: 'GEOID',
+  //   label_key: 'NAME',
+  //   type_label_key: `UI_MAP_FEATURE_TRACT`,
+  // },
+  // {
+  //   id: 'zip',
+  //   filename: 'sm_zcta',
+  //   ext: 'geojson',
+  //   type: 'polygon',
+  //   popup: 1,
+  //   id_key: 'GEOID',
+  //   label_key: 'GEOID',
+  //   type_label_key: `UI_MAP_FEATURE_ZIP`,
+  // },
   // Point features.
   {
     id: 'points',

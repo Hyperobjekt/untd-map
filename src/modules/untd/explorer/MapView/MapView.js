@@ -141,7 +141,7 @@ const MapView = props => {
     const source = getFeatureSource(feature)
     const source_data = getFeatureTypeObj(feature)
     // console.log('source_data, ', source_data)
-    if (source_data && !!source_data.popup) {
+    if (!!source_data) {
       // console.log('has source data, has popup')
       const id = getFeatureId(feature)
       const type = getFeatureType(feature)

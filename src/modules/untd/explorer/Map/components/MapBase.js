@@ -19,6 +19,7 @@ import { getClosest } from '../utils'
 import {
   usePrevious,
   checkControlHovered,
+  useDebounce,
 } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
@@ -28,6 +29,7 @@ import MapPopup from './MapPopup'
 import MapMobileModal from './MapMobileModal'
 import AddMapImages from './AddMapImages'
 import { BOUNDS } from './../../../../../constants/map'
+import { UNTD_LAYERS } from './../../../../../constants/layers'
 import useStore from './../../store'
 import { variables } from './../../theme'
 import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
@@ -103,6 +105,14 @@ const MapBase = ({
     setViewport,
     flyToReset,
     activeView,
+    allDataLoaded,
+    indicatorRangesSet,
+    indicators,
+    allData,
+    loadedSources,
+    pushLoadedSources,
+    rangedSources,
+    pushRangedSources,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -110,6 +120,14 @@ const MapBase = ({
       setViewport: state.setViewport,
       flyToReset: state.flyToReset,
       activeView: state.activeView,
+      allDataLoaded: state.allDataLoaded,
+      indicatorRangesSet: state.indicatorRangesSet,
+      indicators: state.indicators,
+      allData: state.allData,
+      loadedSources: state.loadedSources,
+      pushLoadedSources: state.pushLoadedSources,
+      rangedSources: state.rangedSources,
+      pushRangedSources: state.pushRangedSources,
     }),
     shallow,
   )
@@ -138,6 +156,139 @@ const MapBase = ({
     hoveredType,
     selectedIds,
   })
+
+  /**
+   * Adds shape range data to indicators array as they are loaded.
+   */
+  useEffect(() => {
+    // console.log(
+    //   'in useeffect, ',
+    //   loadedSources,
+    //   rangedSources,
+    // )
+    if (!!allDataLoaded) {
+      // console.log(
+      //   'updating indicators from basemap, ',
+      //   loadedSources,
+      // )
+      // And set a min, max, and mean for each shape type
+      const localIndicators = indicators.slice()
+      indicators
+        .filter(el => {
+          return Number(el.display) === 1
+        })
+        .forEach((i, index) => {
+          // Get raw metric from sd in indicator id
+          const rawMetric = i.id.replace('_sd', '')
+          const metric = allData.find(el => {
+            return el.variable === rawMetric
+          })
+          // console.log('metric: ', metric)
+          // Create placeholders for the values to be calculated.
+          if (!i.raw) {
+            i.raw = {
+              id: rawMetric,
+              min: [undefined, undefined, undefined],
+              max: [undefined, undefined, undefined],
+              mean: [undefined, undefined, undefined],
+              decimals: Number(metric.decimals), // [undefined, undefined, undefined],
+              currency: Number(metric.currency),
+              percent: Number(metric.percent),
+              highisgood: Number(metric.highisgood),
+            }
+          }
+          // Iterate through each layer.
+          loadedSources.forEach(layer => {
+            // console.log(
+            //   `Inside loaded sources layer, ${layer}`,
+            // )
+            // If it hasn't yet been handled...
+            if (
+              layer !== undefined &&
+              rangedSources.indexOf(layer) < 0
+            ) {
+              // console.log(
+              //   `it hasn not been handled yet ${layer}`,
+              // )
+              const ind = UNTD_LAYERS.map(el => {
+                return el.id
+              }).indexOf(layer)
+              // console.log('ind = ', ind)
+              // Get feature set from the map
+              const featureSet = currentMap
+                .querySourceFeatures(layer)
+                .filter(item => {
+                  // Filter out items without this value.
+                  return (
+                    !!item.properties[rawMetric] &&
+                    item.properties[rawMetric] !==
+                      'undefined' &&
+                    item.properties[rawMetric] !== 'NA'
+                  )
+                })
+                // Create an array of only these values.
+                .map(item => {
+                  return item.properties[rawMetric]
+                })
+              // Set min, max, and mean to the indicator for the shape
+              if (featureSet.length > 0) {
+                i.raw.min[ind] = Math.min(...featureSet)
+                i.raw.max[ind] = Math.max(...featureSet)
+                i.raw.mean[ind] =
+                  featureSet.reduce(
+                    (acc, curr) => acc + curr,
+                  ) / featureSet.length
+              }
+              const newRangedSources = rangedSources.slice()
+              newRangedSources[ind] = layer
+              setStoreValues({
+                rangedSources: newRangedSources,
+              })
+            }
+          })
+          // console.log(`completed indicator ${i.id}: `, i)
+          // Replace original indicator value with this one.
+          localIndicators[index] = i
+        })
+      setStoreValues({
+        indicators: localIndicators,
+        indicatorRangesSet: true,
+      })
+    }
+  }, [allDataLoaded, ...loadedSources])
+
+  useEffect(() => {
+    if (!!currentMap) {
+      function sourceCallback() {
+        const newLoadedSources = loadedSources.slice()
+        UNTD_LAYERS.forEach((layer, ind) => {
+          // console.log(
+          //   `Checking the untd_layers, ${layer.id}`,
+          // )
+          if (
+            currentMap.getSource(layer.id) &&
+            currentMap.isSourceLoaded(layer.id) &&
+            currentMap.querySourceFeatures(layer.id)
+              .length > 0
+          ) {
+            if (loadedSources.indexOf(layer.id) < 0) {
+              // pushLoadedSources(layer.id)
+              // const newLoadedSources = loadedSources.slice()
+              newLoadedSources[ind] = layer.id
+            } else {
+              // console.log(
+              //   `${layer.id} is already in loadedSources.`,
+              // )
+            }
+          }
+        })
+        setStoreValues({
+          loadedSources: newLoadedSources,
+        })
+      }
+      currentMap.on('sourcedata', sourceCallback)
+    }
+  }, [currentMap])
 
   const setFeatureState = useCallback(
     (featureId, type, state) => {
@@ -223,6 +374,9 @@ const MapBase = ({
       //     geolocateControl.onAdd(currentMap),
       //   )
       // }
+
+      // Test query of sources
+
       // trigger load callback
       if (typeof onLoad === 'function') {
         onLoad(e)

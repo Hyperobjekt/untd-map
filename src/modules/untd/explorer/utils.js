@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import useStore from './store.js'
 import { MAP_CONTROLS_CLASSES } from './../../../constants/map'
 import { DATA_FILES } from './../../../constants/map'
+import { UNTD_LAYERS } from './../../../constants/layers'
 
 /**
  * Get robotext for the sd bucket
@@ -371,14 +372,22 @@ export const getFeatureSource = feature => {
  */
 export const getFeatureTypeObj = feature => {
   const source = getFeatureSource(feature)
-  // if (source && source.indexOf('points') > -1) {
-  //   return 'points'
-  // }
-  return source
-    ? DATA_FILES.find(el => {
-        return el.id === source
-      })
-    : null
+  // Points features are in a different config object
+  // (loaded locally) than the layers, which exist as
+  // remote sources.
+  if (source && source.indexOf('points') > -1) {
+    return source
+      ? DATA_FILES.find(el => {
+          return el.id === source
+        })
+      : null
+  } else {
+    return source
+      ? UNTD_LAYERS.find(el => {
+          return el.id === source
+        })
+      : null
+  }
 }
 
 export const getFeatureId = feature => {
@@ -594,7 +603,7 @@ export const checkControlHovered = () => {
  * @returns String
  */
 export const getGeoFeatureLabel = feature => {
-  const source = DATA_FILES.find(item => {
+  const source = UNTD_LAYERS.find(item => {
     return item.id === feature.source
   })
   const layerID = feature.layer.source
