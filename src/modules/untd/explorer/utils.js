@@ -376,7 +376,7 @@ export const getFeatureTypeObj = feature => {
   //   return 'points'
   // }
   return source
-    ? DATA_FILES.find(el => {
+    ? UNTD_LAYERS.find(el => {
         return el.id === source
       })
     : null
