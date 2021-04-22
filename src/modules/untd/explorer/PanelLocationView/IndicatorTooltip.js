@@ -24,8 +24,7 @@ const IndicatorTooltip = ({ indicator, ...rest }) => {
         id={'tip_prompt_' + indicator.id}
       />
       <Tooltip
-        placement={!!interactionsMobile ? 'auto' : 'right'}
-        boundariesElement={`window`}
+        placement={!!interactionsMobile ? 'auto' : 'top'}
         isOpen={tooltipOpen}
         target={'tip_prompt_' + indicator.id}
         toggle={toggle}

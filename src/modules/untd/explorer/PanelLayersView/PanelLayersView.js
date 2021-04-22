@@ -98,7 +98,6 @@ const PanelLayersView = ({ ...props }) => {
             label={i18n.translate('BUTTON_RESET_POINTS')}
             color="primary"
             id="button_toggle_all_points"
-            tooltip={`right`}
             className={clsx(`button-all-toggle`)}
           >
             <GrPowerReset />
