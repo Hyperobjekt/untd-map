@@ -533,6 +533,30 @@ const DataLoader = ({ ...props }) => {
                               r['category'],
                             )
                           }
+                          // Check for category and subcategory.
+                          if (
+                            String(r['category_order'])
+                              .length < 1
+                          ) {
+                            addDataIssuesLog([
+                              `No <code>category_order</code> set for point type <code>${r.variable}</code>`,
+                            ])
+                          }
+                          if (
+                            String(r['subcategory_order'])
+                              .length < 1
+                          ) {
+                            addDataIssuesLog([
+                              `No <code>subcategory_order</code> set for point type <code>${r.variable}</code>`,
+                            ])
+                          }
+                          if (
+                            String(r['category']).length < 1
+                          ) {
+                            addDataIssuesLog([
+                              `No category set for point type <code>${r.variable}</code>`,
+                            ])
+                          }
                           // Check for capital letters in point category
                           // Check for spaces in point categoroy
                           // Check for special characters in point category
