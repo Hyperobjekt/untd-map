@@ -42,6 +42,7 @@ const MapView = props => {
     activePointTypes,
     activeView,
     activeStaticLayers,
+    activeFeature,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -64,6 +65,7 @@ const MapView = props => {
       activePointTypes: state.activePointTypes,
       activeView: state.activeView,
       activeStaticLayers: state.activeStaticLayers,
+      activeFeature: state.activeFeature,
     }),
     shallow,
   )
@@ -139,15 +141,14 @@ const MapView = props => {
     // )
     if (!!interactionsMobile) return
     const source = getFeatureSource(feature)
+    // console.log('source, ', source)
     const source_data = getFeatureTypeObj(feature)
     // console.log('source_data, ', source_data)
-    if (!!source_data) {
-      // console.log('has source data, has popup')
+    if (!!source_data && !!source) {
       const id = getFeatureId(feature)
       const type = getFeatureType(feature)
-      // console.log('setting hovered, ', feature, id)
-      setHovered(id, type, geoCoords, feature)
-      // }
+      // console.log('setting hovered, ', feature, id, source)
+      setHovered(id, source, geoCoords, feature)
     } else {
       setHovered(false, false, geoCoords, false)
     }
@@ -158,12 +159,12 @@ const MapView = props => {
   //   state => state.eventSchoolPage,
   // )
   const handleClick = (feature, coords, geoCoords) => {
-    console.log('handle click, ', feature)
+    // console.log('handle click, ', feature)
     // If the item is hovered, navigate to the school.
     // If the item is not hovered, set it as hovered.
     // setHovered(id, type, geoCoords, feature)
 
-    // If feature source = one of the interactive geo layers, open slideout.
+    // If feature source = one of the interactive geo layers
     if (
       feature.source &&
       UNTD_LAYERS.map(el => {
@@ -171,21 +172,37 @@ const MapView = props => {
       }).indexOf(feature.source) > -1
     ) {
       // console.log('interactive geo feature clicked')
-      if (!!interactionsMobile) {
-        // Launch a modal for mobile.
+      if (
+        !activeFeature ||
+        activeFeature.id !== feature.id
+      ) {
+        if (!!interactionsMobile) {
+          // If it isn't already having a selected hover state.
+          // Launch a modal for mobile.
+          setStoreValues({
+            activeFeature: feature,
+            showPanelModal: true,
+            slideoutPanel: {
+              active: false,
+              panel: 'location',
+            },
+          })
+        } else {
+          setStoreValues({
+            activeFeature: feature,
+            slideoutPanel: {
+              active: true,
+              panel: 'location',
+            },
+          })
+        }
+      } else {
+        // Already selected.
         setStoreValues({
-          activeFeature: feature,
-          showPanelModal: true,
+          activeFeature: 0,
+          showPanelModal: false,
           slideoutPanel: {
             active: false,
-            panel: 'location',
-          },
-        })
-      } else {
-        setStoreValues({
-          activeFeature: feature,
-          slideoutPanel: {
-            active: true,
             panel: 'location',
           },
         })

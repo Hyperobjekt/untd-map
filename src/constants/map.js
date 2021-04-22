@@ -9,55 +9,71 @@ export const DEFAULT_REMOTE_SOURCES = {
   county: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_counties.geojson.gz`,
+    generateId: false,
   },
   fedcongress: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_fedcongress.geojson.gz`,
+    generateId: false,
   },
   statehouse: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_statehouse.geojson.gz`,
+    generateId: false,
   },
   statesenate: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_statesenate.geojson.gz`,
+    generateId: false,
   },
   schooldistricts: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_schooldistricts.geojson.gz`,
+    generateId: false,
   },
   // Static layer point features for label placement
   county_points: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/counties_pt.geojson.gz`,
+    generateId: false,
   },
   schooldistricts_points: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/schooldistricts_pt.geojson.gz`,
+    generateId: false,
   },
   fedcongress_points: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/fedcongress_pt.geojson.gz`,
+    generateId: false,
   },
   statesenate_points: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/statesenate_pt.geojson.gz`,
+    generateId: false,
   },
   statehouse_points: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/statehouse_pt.geojson.gz`,
+    generateId: false,
   },
   place: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_places.geojson.gz`,
+    // generateId: true,
+    promoteId: 'GEOID',
   },
   tract: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_tracts.geojson.gz`,
+    // generateId: true,
+    promoteId: 'GEOID',
   },
   zip: {
     type: 'geojson',
     data: `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/sm_zcta.geojson.gz`,
+    // generateId: true,
+    promoteId: 'GEOID',
   },
 }
 

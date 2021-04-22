@@ -271,7 +271,7 @@ const [useStore] = create((set, get) => ({
   // Hovered feature ID
   hoveredID: null,
   // Hovered feature type.
-  type: null,
+  hoveredType: null,
   // Hovered feature object.
   hoveredFeature: null,
   // geo coords of hovered object.
@@ -294,7 +294,7 @@ const [useStore] = create((set, get) => ({
     // )
     set(state => ({
       hoveredID: hoveredId,
-      type: hoveredType,
+      hoveredType: hoveredType,
       coords: coords ? coords : state.coords,
       hoveredFeature: feature,
     }))
