@@ -330,12 +330,12 @@ const DataLoader = ({ ...props }) => {
               })
               if (!!missingGeoid) {
                 addDataIssuesLog([
-                  `Some some features in collection <code>${el.id}</code> are missing an id.`,
+                  `Some features in collection <code>${el.id}</code> are missing an id.`,
                 ])
               }
               if (!!missingId) {
                 addDataIssuesLog([
-                  `Some some features in collection <code>${el.id}</code> are missing a GEOID.`,
+                  `Some features in collection <code>${el.id}</code> are missing a GEOID.`,
                 ])
               }
 
@@ -446,21 +446,6 @@ const DataLoader = ({ ...props }) => {
                         }
                       }
 
-                      // Check for properly formatted years column
-                      if (r['years']) {
-                        const lettersAndSpecialChars = /([\@\!\%\^\&\*\(\)\#\ \.\+\/a-zA-Z])/g
-                        if (
-                          r['years'] &&
-                          r['years'].match(
-                            lettersAndSpecialChars,
-                          )
-                        ) {
-                          addDataIssuesLog([
-                            `Years column for row <code>${r.variable}</code> has characters other than ',' and numbes in it. Please compose this column as a comma-delineated list of years.`,
-                          ])
-                        }
-                      }
-
                       // Build list of tooltip items
                       if (
                         !!r.variable &&
@@ -489,10 +474,7 @@ const DataLoader = ({ ...props }) => {
                           currency: isTruthy(r['currency']),
                           percent: isTruthy(r['percent']),
                           decimals: Number(r['decimals']),
-                          years: r['years']
-                            .toLowerCase()
-                            .replace(/ /g, '')
-                            .split(','),
+                          years: r['years'].toLowerCase(),
                           placeTypes: r['place']
                             .toLowerCase()
                             .replace(/ /g, '')
@@ -588,6 +570,18 @@ const DataLoader = ({ ...props }) => {
                         //   indicators,
                         //   r,
                         // )
+                        // If it already exists, flag duplicate.
+                        if (!!exists) {
+                          addDataIssuesLog([
+                            `Duplicate indicator <code>${
+                              r[el.lang_key]
+                                ? r[el.lang_key]
+                                : r.variable
+                            }</code> in data dictionary.`,
+                          ])
+                        }
+                        // If it does not yet exist in indicators array
+                        // And it is to be displayed, add to indicators array.
                         if (
                           !exists &&
                           r[el.ind_key] === el.ind_flag &&
@@ -617,10 +611,7 @@ const DataLoader = ({ ...props }) => {
                             category: r['category']
                               .toLowerCase()
                               .replace(/ /g, ''),
-                            years: r['years']
-                              .toLowerCase()
-                              .replace(/ /g, '')
-                              .split(','),
+                            years: r['years'].toLowerCase(),
                             placeTypes: r['place']
                               .toLowerCase()
                               .replace(/ /g, '')
@@ -647,14 +638,6 @@ const DataLoader = ({ ...props }) => {
                               }</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
                             ])
                           }
-                        } else {
-                          addDataIssuesLog([
-                            `Duplicate indicator <code>${
-                              r[el.lang_key]
-                                ? r[el.lang_key]
-                                : r.variable
-                            }</code> in data dictionary.`,
-                          ])
                         }
                       }
                     })
