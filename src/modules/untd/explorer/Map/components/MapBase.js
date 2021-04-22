@@ -106,13 +106,11 @@ const MapBase = ({
     flyToReset,
     activeView,
     allDataLoaded,
-    indicatorRangesSet,
     indicators,
     allData,
     loadedSources,
-    pushLoadedSources,
     rangedSources,
-    pushRangedSources,
+    activeFeature,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -121,13 +119,11 @@ const MapBase = ({
       flyToReset: state.flyToReset,
       activeView: state.activeView,
       allDataLoaded: state.allDataLoaded,
-      indicatorRangesSet: state.indicatorRangesSet,
       indicators: state.indicators,
       allData: state.allData,
       loadedSources: state.loadedSources,
-      pushLoadedSources: state.pushLoadedSources,
       rangedSources: state.rangedSources,
-      pushRangedSources: state.pushRangedSources,
+      activeFeature: state.activeFeature,
     }),
     shallow,
   )
@@ -155,6 +151,7 @@ const MapBase = ({
     hoveredId,
     hoveredType,
     selectedIds,
+    activeFeature,
   })
 
   /**
@@ -301,15 +298,15 @@ const MapBase = ({
         return
       // console.log('setFeatureState', featureId, type, state)
       // console.log('layers = ', layers)
-      const layer = layers.find(l => l.type === type)
+      // const layer = layers.find(l => l.type === type)
       // console.log('layer = ', layer)
-      const id = idMap[featureId]
-        ? idMap[featureId]
-        : featureId
-      if (layer) {
+      // const id = idMap[featureId]
+      //   ? idMap[featureId]
+      //   : featureId
+      if (!!featureId && !!type) {
         const source = {
-          source: layer.style.get('source'),
-          id,
+          source: type,
+          id: featureId,
         }
         currentMap.setFeatureState(source, state)
       }
@@ -462,6 +459,7 @@ const MapBase = ({
     srcEvent,
     ...rest
   }) => {
+    // console.log('handleClick in MapBase, ', features)
     // was the click on a control
     const isControl =
       getClosest(srcEvent.target, '.mapboxgl-ctrl-group') ||
@@ -485,8 +483,37 @@ const MapBase = ({
         features[0] && features[0].geometry
           ? features[0].geometry.coordinates
           : null
+      // Does the feature already have a selected state?
+      if (features[0].state.selected === true) {
+        setFeatureState(
+          features[0].id,
+          features[0].source,
+          {
+            selected: false,
+          },
+        )
+      } else {
+        // Set previous to not clicked
+        setFeatureState(
+          prev.activeFeature.id,
+          features[0].source,
+          {
+            selected: false,
+          },
+        )
+        // Set current to clicked
+        setFeatureState(
+          features[0].id,
+          features[0].source,
+          {
+            selected: true,
+          },
+        )
+        // If not, set selected state and call onclick.
+        // onClick(features[0], coords, geoCoordinates)
+        // console.log('click, ', features[0].properties)
+      }
       onClick(features[0], coords, geoCoordinates)
-      // console.log('click, ', features[0].properties)
     }
   }
 
@@ -505,7 +532,13 @@ const MapBase = ({
 
   // set hovered feature state when hoveredId changes
   useEffect(() => {
-    // console.log('hoveredId changed, hoveredId', hoveredId)
+    // console.log(
+    //   'hoveredId changed, hoveredId',
+    //   hoveredId,
+    //   hoveredType,
+    // )
+    // const activeSource =
+    //   UNTD_LAYERS[activeLayers.indexOf(1)]
     if (prev && prev.hoveredId && prev.hoveredType) {
       // Set state for unhovered school.
       setFeatureState(prev.hoveredId, prev.hoveredType, {
@@ -513,6 +546,7 @@ const MapBase = ({
       })
     }
     if (hoveredId) {
+      // console.log('setting hovered')
       // Set state for hovered school.
       setFeatureState(hoveredId, hoveredType, {
         hover: true,

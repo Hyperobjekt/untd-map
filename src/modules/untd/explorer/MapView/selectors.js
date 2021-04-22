@@ -294,10 +294,10 @@ export const getPolygonLines = (type, context) => {
       'line-width': [
         'case',
         ['==', ['feature-state', 'hover'], true],
-        0.8,
+        2,
         ['==', ['feature-state', 'selected'], true],
-        1.1,
-        0.5,
+        4,
+        0.4,
       ],
     },
     filter: getFilter(
@@ -341,8 +341,10 @@ export const getPolygonShapes = (type, context) => {
       ],
       'fill-opacity': [
         'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        0.2,
+        ['==', ['feature-state', 'hover'], true],
+        0.6,
+        ['==', ['feature-state', 'selected'], true],
+        0.8,
         0.4,
       ],
     },
