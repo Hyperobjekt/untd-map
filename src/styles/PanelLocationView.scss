@@ -1,6 +1,7 @@
 .map-panel-slideout-location {
   overflow-y: scroll;
   height: 100%;
+  overflow-x: hidden;
   margin-bottom: 100px;
   .panel-sticky,
   .panel-bottom-sticky {
