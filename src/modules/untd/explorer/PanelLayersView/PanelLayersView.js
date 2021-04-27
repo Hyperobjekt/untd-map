@@ -6,12 +6,56 @@ import clsx from 'clsx'
 import { Collapse, Button } from 'reactstrap'
 import { FiChevronRight } from 'react-icons/fi'
 import { GrPowerReset } from 'react-icons/gr'
+import { css, cx } from 'emotion'
 
 import useStore from './../store'
 import { POINT_CATEGORIES } from './../../../../constants/layers'
 import LayersInput from './LayersInput'
 import CoreButton from './../../../core/CoreButton'
 import MapLayerToggle from './MapLayerToggle'
+import { variables } from './../theme'
+
+const btnReset = css`
+  height: 36px;
+  font-size: 12px !important;
+  font-weight: 200 !important;
+  margin: 16px auto 20px auto;
+  color: ${variables.colors.untdGray} !important;
+  background-color: #fff !important;
+  border: 1px solid #cfd3c2 !important;
+  padding: 0 14px !important;
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-top: -3px;
+    margin-right: 6px;
+    path,
+    line,
+    rect {
+      stroke: ${variables.colors.untdGray} !important;
+    }
+  }
+  &:active,
+  &:hover {
+    background-color: ${variables.colors
+      .untdLemon} !important;
+    border-color: transparent !important;
+    color: ${variables.colors.untdGray} !important;
+    svg {
+      path,
+      line,
+      rect {
+        stroke: ${variables.colors.untdGray} !important;
+      }
+    }
+  }
+  &:focus {
+    border: 0;
+    border-color: ${variables.colors.untdLemon} !important;
+    outline: ${variables.colors.untdLemon} auto 1px !important;
+    box-shadow: none !important;
+  }
+`
 
 const getPointIndex = (collection, id) => {
   return collection
@@ -98,7 +142,10 @@ const PanelLayersView = ({ ...props }) => {
             label={i18n.translate('BUTTON_RESET_POINTS')}
             color="primary"
             id="button_toggle_all_points"
-            className={clsx(`button-all-toggle`)}
+            className={clsx(
+              `button-all-toggle`,
+              cx(btnReset),
+            )}
           >
             <GrPowerReset />
             <span>

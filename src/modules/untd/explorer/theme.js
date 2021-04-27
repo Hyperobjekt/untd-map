@@ -32,6 +32,15 @@ export const variables = {
     cpLabelColor: '#606b44',
     cpalOrange: '#e55934',
     cpalOrangeLight: '#ffeee5',
+    untdGray: '#626b77',
+    untdDarkgray: '#303030',
+    untdLemon: '#f1f1ad',
+    untdDarklemon: '#98980d',
+    untdBlue: '#447a9c',
+    untdLightgray: '#b5bcc6',
+    untdAnothergray: '#e0e2e5',
+    untdAnotherAnotherGray: '#86939c',
+    untdLightblue: '#f9fafb',
   },
   dimensions: {
     navbarHeight: '64px',
@@ -48,58 +57,58 @@ export const theme = {
   elements: {
     redBorder: { border: '1px solid red' },
     icon: css(`
-      width: 16px;
-      height: 16px;
+      width: 16px,
+      height: 16px,
     `),
     mapButton: css(`
-      background-color: ${variables.colors.white} !important;
-      box-shadow: 1px 1px 3px #ccc;
-      border-radius: 0 !important;
-      height: 29px;
-      width: 29px;
+      background-color: ${variables.colors.white} !important,
+      box-shadow: 1px 1px 3px #ccc,
+      border-radius: 0 !important,
+      height: 29px,
+      width: 29px,
     `),
     // tooltip: css(`
-    //   z-index: 5000;
-    //   border-radius: 0;
-    //   margin-left: 16px;
+    //   z-index: 5000,
+    //   border-radius: 0,
+    //   margin-left: 16px,
     //   .arrow {
-    //     display: none;
+    //     display: none,
     //   }
     //   .tooltip-inner {
-    //     background-color: #2c390b;
-    //     border-radius: 0;
-    //     font-size: 1.4rem;
-    //     font-family: halyard-text;
-    //     padding: 0.8rem;
+    //     background-color: #2c390b,
+    //     border-radius: 0,
+    //     font-size: 1.4rem,
+    //     font-family: halyard-text,
+    //     padding: 0.8rem,
     //   }
     // `),
     // Tooltip triggered by desktop universal share.
     tooltipCustomShare: css`
-      opacity: 1;
+      opacity: 1,
       .tooltip {
-        opacity: 1;
+        opacity: 1,
         .tooltip-inner {
-          border-radius: 2px;
-          background-color: ${variables.colors.white};
-          box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
-          text-align: left;
-          opacity: 1;
-          padding: 1rem;
+          border-radius: 2px,
+          background-color: ${variables.colors.white},
+          box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05),
+          text-align: left,
+          opacity: 1,
+          padding: 1rem,
           .item {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.4rem,
             &:last-of-type {
-              margin-bottom: 0;
+              margin-bottom: 0,
             }
             span {
-              font-family: ${variables.fonts.primary};
-              font-weight: 300;
-              font-size: 1.3rem;
-              line-height: 1.5rem;
+              font-family: ${variables.fonts.primary},
+              font-weight: 300,
+              font-size: 1.3rem,
+              line-height: 1.5rem,
             }
             svg {
-              width: 14px;
-              height: 14px;
-              margin-right: 1rem;
+              width: 14px,
+              height: 14px,
+              margin-right: 1rem,
             }
           }
         }

@@ -84,38 +84,38 @@
     margin-top: 1.3rem;
   }
 
-  .button-all-toggle {
-    height: 36px;
-    font-size: 12px;
-    font-weight: 200;
-    margin: 16px auto 20px auto;
-    color: $color-untd-gray;
-    background-color: #fff;
-    border: 1px solid #cfd3c2;
-    padding: 0 14px;
-    svg {
-      width: 16px;
-      height: 16px;
-      margin-top: -3px;
-      margin-right: 6px;
-      path,
-      line,
-      rect {
-        stroke: $color-untd-gray;
-      }
-    }
-    &:active {
-      background-color: $color-untd-lemon !important;
-      border-color: $color-untd-darklemon !important;
-      color: $color-untd-gray;
-    }
-    &:focus {
-      border: 0;
-      border-color: $color-untd-darklemon !important;
-      outline: $color-untd-gray auto 1px !important;
-      box-shadow: none;
-    }
-  }
+  // .button-all-toggle {
+  //   height: 36px;
+  //   font-size: 12px;
+  //   font-weight: 200;
+  //   margin: 16px auto 20px auto;
+  //   color: $color-untd-gray;
+  //   background-color: #fff;
+  //   border: 1px solid #cfd3c2;
+  //   padding: 0 14px;
+  //   svg {
+  //     width: 16px;
+  //     height: 16px;
+  //     margin-top: -3px;
+  //     margin-right: 6px;
+  //     path,
+  //     line,
+  //     rect {
+  //       stroke: $color-untd-gray;
+  //     }
+  //   }
+  //   &:active {
+  //     background-color: $color-untd-lemon !important;
+  //     border-color: $color-untd-darklemon !important;
+  //     color: $color-untd-gray;
+  //   }
+  //   &:focus {
+  //     border: 0;
+  //     border-color: $color-untd-darklemon !important;
+  //     outline: $color-untd-gray auto 1px !important;
+  //     box-shadow: none;
+  //   }
+  // }
 
   .points-group-parent {
     .layer-group {
