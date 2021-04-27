@@ -19,6 +19,7 @@ import useStore from './../store'
 import TwitterShareBtn from './TwitterShareBtn'
 import FacebookShareBtn from './FacebookShareBtn'
 import MailShareBtn from './MailShareBtn'
+import clsx from 'clsx'
 
 const UnifiedShareModal = props => {
   // Generic store value setter.
@@ -79,16 +80,27 @@ const UnifiedShareModal = props => {
           <TwitterShareBtn />
           <FacebookShareBtn />
           <MailShareBtn />
-          <p>{i18n.translate('MODAL_SHARE_LINK_INSTR')}</p>
-          {i18n.translate('MODAL_SHARE_LINK_INPUT')}
-          <InputGroup>
-            <Input value={shareLinkValue} readOnly={true} />
-            <InputGroupAddon addonType="append">
-              <Button color="secondary" onClick={onCopy}>
-                <FaCopy />
-              </Button>
-            </InputGroupAddon>
-          </InputGroup>
+
+          <div className={clsx('input-group-parent')}>
+            <p>
+              {i18n.translate('MODAL_SHARE_LINK_INSTR')}
+            </p>
+            <label id="share_input_label">
+              {i18n.translate('MODAL_SHARE_LINK_INPUT')}
+            </label>
+            <InputGroup>
+              <Input
+                value={shareLinkValue}
+                readOnly={true}
+                ariaLabelledby={'share_input_label'}
+              />
+              <InputGroupAddon addonType="append">
+                <Button color="secondary" onClick={onCopy}>
+                  <FaCopy />
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
         </ModalBody>
       </Modal>
     </div>

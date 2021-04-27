@@ -11,20 +11,36 @@
       // p {
       //   margin: 2rem 0;
       // }
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
       h3 {
         margin-bottom: 2rem;
+        width: 100%;
       }
-      .input-group {
-        margin: 0.5rem 0;
-        border-radius: 0;
-        input {
-          min-height: 3.2rem;
-          font-size: 1.2rem;
+      .input-group-parent {
+        margin-top: 2rem;
+        .input-group {
+          margin: 0.5rem 0;
           border-radius: 0;
-        }
-        .input-group-append {
-          button {
+          input {
+            min-height: 3.2rem;
+            font-size: 1.2rem;
             border-radius: 0;
+          }
+          .input-group-append {
+            button {
+              border-radius: 0;
+              &:hover {
+                background-color: $color-untd-lemon;
+                border: 1px solid $color-untd-lemon;
+                color: $color-untd-gray;
+              }
+              svg {
+                width: 18px;
+                height: 18px;
+              }
+            }
           }
         }
       }
@@ -33,14 +49,31 @@
       &.button-share-twitter,
       &.button-share-facebook,
       &.button-share-email {
-        margin-bottom: 2rem;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 1rem;
         &:hover,
         &:focus {
-          background-color: transparent !important;
-          color: $cpal-orange;
+          background-color: $color-untd-lemon !important;
+          color: $color-untd-darklemon !important;
+          svg {
+            stroke: $color-untd-darklemon !important;
+            fill: $color-untd-darklemon !important;
+            color: $color-untd-darklemon !important;
+          }
         }
         svg {
           font-size: 3rem;
+          margin: auto;
+          width: 22px;
+          height: 22px;
+          stroke: $color-untd-gray !important;
+          fill: $color-untd-gray !important;
+          // margin-right: 0;
         }
       }
     }
