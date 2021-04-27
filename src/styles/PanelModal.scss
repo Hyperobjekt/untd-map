@@ -3,6 +3,7 @@
   max-height: 60vh;
   .modal-header {
     border-bottom: none;
+    z-index: 1500;
   }
   .map-panel-slideout-filters,
   .map-panel-slideout-layers,
@@ -18,10 +19,26 @@
   .map-panel-slideout-location {
     margin-bottom: 0;
   }
-  .map-panel-slideout-filters,
-  .map-panel-slideout-layers,
   .map-panel-slideout-info {
     padding: 0 0.5rem 2rem;
+  }
+  .map-panel-slideout-filters,
+  .map-panel-slideout-layers,
+  .map-panel-slideout-location {
+    // padding: 0 0.5rem 2rem;
+    margin: -38px -24px -24px -24px;
+  }
+  .map-panel-slideout-layers .panel-sticky {
+    border-bottom: 1px solid $color-untd-anothergray;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: $white;
+    padding: 2.8rem 2rem 2rem 2rem;
+    z-index: 1400;
+  }
+  .map-panel-slideout-filters .filter-panel-filter-series {
+    margin-bottom: 2rem !important;
   }
   &.panel-view-filters {
     .map-panel-slideout-filters {
