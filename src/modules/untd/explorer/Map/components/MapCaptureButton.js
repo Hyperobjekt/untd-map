@@ -6,7 +6,28 @@ import { MdPhotoCamera } from 'react-icons/md'
 import { CoreButton } from './../../../../core'
 
 import useStore from './../../store'
-import { theme } from './../../theme'
+import { variables } from './../../theme'
+
+const mapButton = css`
+  background-color: ${variables.colors.white} !important;
+  box-shadow: 1px 1px 3px #ccc;
+  border-radius: 0 !important;
+  padding: 0;
+  height: 29px;
+  width: 29px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+`
+
+const icon = css`
+  width: 16px;
+  height: 16px;
+`
+
+const borderTop = css`
+  border-top: 1px solid #ddd !important;
+`
 
 /**
  * Button that captures map canvas and triggers download
@@ -39,27 +60,21 @@ const MapCaptureButton = ({ currentMap, ...props }) => {
     setStoreValues({ eventMapCapture: eventMapCapture + 1 })
   }
 
-  const borderTop = css`
-    border-top: 1px solid #ddd !important;
-  `
-
   return (
     <CoreButton
       color="none"
       active={true}
       id="map_capture_button"
       className={clsx(
-        cx(theme.elements.mapButton, borderTop),
         `map-capture-btn`,
         `mapboxgl-ctrl-icon`,
+        cx(mapButton, borderTop),
       )}
       onClick={captureMap}
       label={i18n.translate(`UI_MAP_CAPTURE`)}
       tooltip={!interactionsMobile ? 'left' : ''}
     >
-      <MdPhotoCamera
-        className={clsx(cx(theme.elements.icon))}
-      />
+      <MdPhotoCamera className={clsx(cx(icon))} />
       <span className="sr-only">
         {i18n.translate(`UI_MAP_CAPTURE`)}
       </span>

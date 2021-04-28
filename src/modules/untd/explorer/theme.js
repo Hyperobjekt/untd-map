@@ -56,17 +56,17 @@ export const variables = {
 export const theme = {
   elements: {
     redBorder: { border: '1px solid red' },
-    icon: css(`
-      width: 16px,
-      height: 16px,
-    `),
-    mapButton: css(`
-      background-color: ${variables.colors.white} !important,
-      box-shadow: 1px 1px 3px #ccc,
-      border-radius: 0 !important,
-      height: 29px,
-      width: 29px,
-    `),
+    // icon: css(`
+    //   width: 16px,
+    //   height: 16px,
+    // `),
+    // mapButton: css`
+    //   background-color: ${variables.colors.white} !important,
+    //   box-shadow: 1px 1px 3px #ccc,
+    //   border-radius: 0 !important,
+    //   height: 29px,
+    //   width: 29px,
+    // `,
     // tooltip: css(`
     //   z-index: 5000,
     //   border-radius: 0,

@@ -660,7 +660,10 @@ const MapBase = ({
                 onViewportChange={setViewport}
                 captureClick={true}
               ></NavigationControl>
-              <div className="map-btn-group">
+              <div
+                className="map-btn-group"
+                className={clsx(cx(btnGroupStyles))}
+              >
                 <MapResetButton
                   resetViewport={handleResetViewport}
                 />
@@ -750,4 +753,9 @@ const mapZoomStyles = css`
     background-repeat: no-repeat;
     background-position: center center;
   }
+`
+
+const btnGroupStyles = css`
+  background-color: #fff;
+  width: 29px;
 `
