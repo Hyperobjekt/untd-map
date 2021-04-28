@@ -71,6 +71,18 @@
         border-right: 0;
         border-left: 0;
         background-color: $color-untd-lightblue;
+        &:hover {
+          background-color: darken(
+            $color-untd-lightblue,
+            10%
+          );
+        }
+        &:active {
+          background-color: darken(
+            $color-untd-lightblue,
+            20%
+          );
+        }
         h6.indicator {
           @include font-gotham-book;
           font-weight: 600;
