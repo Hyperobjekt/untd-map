@@ -92,7 +92,7 @@ const App = props => {
           })
         },
         error => {
-          setPosition([])
+          console.log(error)
         },
       )
     }

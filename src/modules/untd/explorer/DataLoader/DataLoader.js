@@ -4,7 +4,6 @@ import i18n from '@pureartisan/simple-i18n'
 import { Progress } from 'reactstrap'
 import clsx from 'clsx'
 import * as Papa from 'papaparse'
-import * as Turf from '@turf/turf'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store.js'
@@ -314,29 +313,34 @@ const DataLoader = ({ ...props }) => {
 
               // Check that every feature has an ID.
               // Check that every feature has a GEOID.
-              let missingGeoid = false
-              let missingId = false
-              _data.features.forEach(d => {
-                if (
-                  !d.properties.GEOID ||
-                  d.properties.GEOID.length <= 0 ||
-                  d.properties.GEOID === undefined
-                ) {
-                  missingGeoid = true
-                }
-                if (!d.id || d.id === undefined) {
-                  missingId = true
-                }
-              })
-              if (!!missingGeoid) {
+              const missingGeoids = _data.features.filter(
+                d => !Boolean(d.properties.GEOID),
+              )
+              const missingIds = _data.features.filter(
+                d => !Boolean(d.id),
+              )
+              // points do not need id on the root level, so ignore
+              if (
+                missingIds.length > 0 &&
+                el.id !== 'points'
+              ) {
                 addDataIssuesLog([
                   `Some features in collection <code>${el.id}</code> are missing an id.`,
                 ])
+                console.warn(
+                  `features missing id: `,
+                  missingIds,
+                )
               }
-              if (!!missingId) {
+              if (missingGeoids.length > 0) {
                 addDataIssuesLog([
                   `Some features in collection <code>${el.id}</code> are missing a GEOID.`,
                 ])
+
+                console.warn(
+                  `features missing geoid: `,
+                  missingGeoids,
+                )
               }
 
               if (el.type === 'point') {
