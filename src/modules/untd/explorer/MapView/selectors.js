@@ -342,10 +342,10 @@ export const getPolygonShapes = (type, context) => {
       'fill-opacity': [
         'case',
         ['==', ['feature-state', 'hover'], true],
-        0.6,
+        0.9,
         ['==', ['feature-state', 'selected'], true],
+        1,
         0.8,
-        0.4,
       ],
     },
     filter: getFilter(
@@ -457,7 +457,7 @@ export const getPolygonLayers = (
   z = z + 2
   return [
     {
-      z: z,
+      z: 500,
       style: getPolygonShapes(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,

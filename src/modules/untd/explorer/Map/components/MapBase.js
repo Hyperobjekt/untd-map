@@ -61,10 +61,12 @@ const getUpdatedMapStyle = (
 ) => {
   const updatedSources = style.get('sources').merge(sources)
   const updatedLayers = layers.reduce(
-    (newLayers, layer) =>
-      newLayers.splice(layer.z, 0, layer.style),
+    (newLayers, layer) => {
+      return newLayers.splice(6, 0, layer.style)
+    },
     style.get('layers'),
   )
+
   return style
     .set('sources', updatedSources)
     .set('layers', updatedLayers)
