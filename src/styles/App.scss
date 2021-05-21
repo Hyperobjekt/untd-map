@@ -1,3 +1,84 @@
+/**
+ * GLOBAL BOOTSTRAP OVERRIDES
+ */
+
+// provide a basic primary button
+.btn {
+  font-size: 1.4rem;
+}
+
+label {
+  font-size: 1.4rem;
+}
+
+// outlined buttons
+.btn.btn-outlined {
+  background-color: transparent;
+  color: $color-primary;
+  border-color: #ccc;
+  text-transform: capitalize;
+  &:not(:disabled):not(.disabled).active {
+    background-color: $color-untd-lemon;
+    color: $color-primary;
+    &:focus,
+    &:hover {
+      background-color: darken($color-untd-lemon, 15%);
+    }
+  }
+  &:not(:disabled):not(.disabled):hover,
+  &:not(:disabled):not(.disabled):focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-shadow: none;
+  }
+  &:not(:disabled):not(.disabled):active {
+    background-color: rgba(0, 0, 0, 0.07);
+    color: $color-primary;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+// transparent buttons
+.btn.btn-transparent {
+  background-color: transparent;
+  color: $color-primary;
+  border: none;
+  &:not(:disabled):not(.disabled).active {
+    background-color: $color-untd-lemon;
+    color: $color-primary;
+    &:focus {
+      background-color: darken($color-untd-lemon, 15%);
+    }
+  }
+  &:not(:disabled):not(.disabled):hover,
+  &:not(:disabled):not(.disabled):focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+  &:not(:disabled):not(.disabled):focus {
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+  &:not(:disabled):not(.disabled):active {
+    background-color: rgba(0, 0, 0, 0.07);
+    color: $color-primary;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+// drop rounded corners from button lists
+
+.list-group-item > .btn {
+  border-radius: 0;
+}
+
 // @import url('https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css');
 
 // #demo,

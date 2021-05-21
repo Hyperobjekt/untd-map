@@ -4,95 +4,57 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 
-import { Select } from './../../../core'
 import useStore from './../store.js'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import FilterSeries from './FilterSeries'
-import { toSentenceCase } from './../utils'
+import { ButtonGroup, Button } from 'reactstrap'
 
 const PanelFilterView = ({ ...props }) => {
   // Generic state setter.
-  const { setStoreValues, activeLayers } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      activeLayers: state.activeLayers,
-    }),
+  const [setStoreValues, activeLayers] = useStore(
+    state => [state.setStoreValues, state.activeLayers],
     shallow,
   )
 
-  const getLayerId = () => {
-    let layer = ''
-    for (var i = 1; i < 4; i++) {
-      if (activeLayers[i] === 1) {
-        layer = UNTD_LAYERS[i].id
-      }
-      break
-    }
-    return layer
-  }
-
   const handleSelect = e => {
     // console.log('layer selected, ', e.currentTarget.id)
-    const layerId = e.currentTarget.id
-    const layerIndex = UNTD_LAYERS.map(function (el) {
-      return el.id
-    }).indexOf(layerId)
-    const layersCopy = activeLayers.slice().map(el => {
-      return 0
-    })
-    layersCopy[layerIndex] = 1
-    // console.log('layersCopy, ', layersCopy)
-    setStoreValues({
-      activeLayers: layersCopy,
-      activeQuintiles: [1, 1, 1, 1, 1],
-    })
-  }
-
-  const getActiveLayerTitle = () => {
-    // Return the title of the active layer.
-    const activeLayerIndex = activeLayers.indexOf(1)
-    return toSentenceCase(
-      i18n.translate(UNTD_LAYERS[activeLayerIndex].label),
+    const layerIndex = UNTD_LAYERS.findIndex(
+      layer => layer.id === e.currentTarget.value,
     )
+    setStoreValues({
+      activeLayers: activeLayers.map((layer, index) =>
+        index === layerIndex ? 1 : 0,
+      ),
+    })
   }
 
   return (
     <div className={clsx('map-panel-slideout-filters')}>
       <div className={clsx('panel-sticky')}>
         <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
-        <div
+        <label
+          htmlFor="geographyGroup"
           className="map-panel-instructions"
-          dangerouslySetInnerHTML={{
-            __html: i18n.translate(
-              'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
-            ),
-          }}
-        ></div>
-        <Select
-          items={UNTD_LAYERS.map((el, i) => {
-            return {
-              id: el.id,
-              label: el.label,
-              active: activeLayers[i] === 1,
-            }
-          })}
-          label={
-            getActiveLayerTitle()
-              ? getActiveLayerTitle()
-              : i18n.translate('MAP_FILTERS_SELECT_LAYER')
-          }
-          handleSelect={handleSelect}
-        />
-        <div
-          className="info"
-          dangerouslySetInnerHTML={{
-            __html: i18n.translate(
-              'MAP_FILTERS_SELECT_INFO',
-            ),
-          }}
-        ></div>
+        >
+          {i18n.translate(
+            'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
+          )}
+        </label>
+
+        <ButtonGroup id="geographyGroup">
+          {UNTD_LAYERS.map((el, i) => (
+            <Button
+              color="outlined"
+              value={el.id}
+              active={activeLayers[i] === 1}
+              onClick={handleSelect}
+            >
+              {i18n.translate(el.label)}
+            </Button>
+          ))}
+        </ButtonGroup>
       </div>
-      <div className={clsx('filters-panel-parent')}>
+      <div>
         <FilterSeries />
       </div>
     </div>

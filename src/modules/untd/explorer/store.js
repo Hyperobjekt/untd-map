@@ -70,7 +70,7 @@ const getViewportForBounds = (
 
 const [useStore] = create((set, get) => ({
   // Set any store values by passing in an object of values to merge.
-  setStoreValues: obj => set({ ...obj }),
+  setStoreValues: set,
   // Active language
   activeLang: `en_US`,
   // Counter for lang pack updates.

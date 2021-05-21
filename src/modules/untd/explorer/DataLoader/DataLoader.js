@@ -639,6 +639,11 @@ const DataLoader = ({ ...props }) => {
                             category: r['category']
                               .toLowerCase()
                               .replace(/ /g, ''),
+                            subcategory: r['subcategory'],
+                            categoryOrder:
+                              r['category_order'],
+                            subcategoryOrder:
+                              r['subcategory_order'],
                             years: r['years'].toLowerCase(),
                             placeTypes: r['place']
                               .toLowerCase()

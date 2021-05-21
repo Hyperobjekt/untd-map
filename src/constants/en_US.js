@@ -43,7 +43,7 @@ const en_US = {
   UI_MAP_FILTERS_INDICATORS: `Indicators`,
   UI_MAP_BUTTON_RESET_FILTER: `Reset active filter`,
   UI_MAP_FILTER_INSTRUCTIONS: `<p>Click the scale(s) below to activate metrics on the map. The brackets within each scale can be clicked on and off to filter the schools on the map. Clear filters by pressing the "reset" {icon} button above.</p>`,
-  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `<p>Different metrics are available for different geographic entities. Use the control below to select a different geographic entity.`,
+  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `Geography`,
   SELECT_VIEW: `Select a view`,
   SELECT_ITEM_MAP: `Map view`,
   SELECT_ITEM_FEEDER: `Feeder view`,
