@@ -2,12 +2,96 @@
  * GLOBAL BOOTSTRAP OVERRIDES
  */
 
-// provide a basic primary button
-.btn {
+// set readable text size for elements
+button,
+label,
+p {
   font-size: 1.4rem;
 }
 
-label {
+// gotham scale
+
+[class*='gotham'] {
+  @include font-gotham-book;
+  margin: 0;
+}
+.gotham18 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham16 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham15 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham14 {
+  font-size: 1.4rem;
+  font-weight: normal;
+}
+.gotham13 {
+  font-size: 1.3rem;
+  font-weight: normal;
+}
+.gotham12 {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+// knockout scale
+
+[class*='knockout'] {
+  @include font-knockout-jr-lightweight;
+  text-transform: uppercase;
+}
+.knockout14 {
+  font-size: 1.4rem;
+}
+.knockout13 {
+  font-size: 1.3rem;
+}
+.knockout12 {
+  font-size: 1.2rem;
+}
+
+.grey1 {
+  color: $color-untd-darkgray;
+}
+.grey2 {
+  color: $color-untd-gray;
+}
+.grey3 {
+  color: $color-untd-lightgray;
+}
+.grey4 {
+  color: $color-untd-anothergray;
+}
+
+// spacing utilities
+
+.p-2 {
+  padding: 1rem !important;
+}
+.p-3 {
+  padding: 1.5rem !important;
+}
+.p-4 {
+  padding: 2rem !important;
+}
+.p-5 {
+  padding: 3rem !important;
+}
+
+// provide a basic primary button
+.btn {
   font-size: 1.4rem;
 }
 
@@ -74,9 +158,17 @@ label {
 }
 
 // drop rounded corners from button lists
-
 .list-group-item > .btn {
   border-radius: 0;
+}
+
+// text hints
+.hint {
+  color: $color-untd-gray;
+  font-size: 1.2rem;
+  margin-top: 0.8rem;
+  display: block;
+  margin-bottom: 0;
 }
 
 // @import url('https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css');

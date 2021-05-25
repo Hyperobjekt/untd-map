@@ -14,6 +14,9 @@ import LayersInput from './LayersInput'
 import CoreButton from './../../../core/CoreButton'
 import MapLayerToggle from './MapLayerToggle'
 import { variables } from './../theme'
+import Panel from '../../../core/Panel/Panel'
+import PanelHeader from '../../../core/Panel/PanelHeader'
+import PanelBody from '../../../core/Panel/PanelBody'
 
 const btnReset = css`
   height: 36px;
@@ -123,13 +126,17 @@ const PanelLayersView = ({ ...props }) => {
   // console.log('pointTypes, ', pointTypes)
 
   return (
-    <div className={clsx('map-panel-slideout-layers')}>
-      <div className={clsx('panel-sticky')}>
-        <h5>{i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}</h5>
-      </div>
-      <div className={clsx(`map-layer-toggle-pane`)}>
+    <Panel className="map-panel-slideout-layers">
+      <PanelHeader>
+        <h2 className="gotham18">
+          {i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}
+        </h2>
+      </PanelHeader>
+      <PanelBody>
         <div className={clsx('points-group-parent')}>
-          <h6>{i18n.translate(`UI_MAP_POINTS`)}</h6>
+          <h3 className="gotham16">
+            {i18n.translate(`UI_MAP_POINTS`)}
+          </h3>
           <div
             key={'layer-group-desc-points'}
             className="layer-group-desc"
@@ -402,9 +409,9 @@ const PanelLayersView = ({ ...props }) => {
         </div>
         <hr />
         <div className={clsx('map-static-layer-toggle')}>
-          <h6>
+          <h3 className="gotham16">
             {i18n.translate(`UI_MAP_LAYERS_STATIC_TITLE`)}
-          </h6>
+          </h3>
           <div
             key={'layer-group-desc-static'}
             className="layer-group-desc"
@@ -416,8 +423,8 @@ const PanelLayersView = ({ ...props }) => {
           ></div>
           <MapLayerToggle />
         </div>
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
   )
 }
 

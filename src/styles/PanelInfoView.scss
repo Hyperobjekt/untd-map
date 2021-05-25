@@ -1,40 +1,16 @@
 .map-panel-slideout-info {
-  padding: 2.8rem 2rem;
-  font-size: 1.6rem;
-  font-weight: 300;
-  height: 100%;
-  > div {
-    height: 100%;
-    overflow-y: scroll;
-    h5 {
-      margin-bottom: 1.6rem;
-      font-weight: 400;
-      font-size: 18px;
-      line-height: 28px;
-      color: #2c390b;
+  .btn.button-core {
+    border-radius: 0;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    font-weight: 300;
+    padding: 1rem;
+    svg {
+      margin-right: 1rem;
+      margin-top: -3px;
     }
-    p {
-      margin: 1rem 0;
-      @include font-gotham-book;
-      font-weight: 200;
-      font-size: 1.4rem;
-      line-height: 22px;
-      color: #606b44;
-      margin-bottom: 0.8rem;
-    }
-    .btn.button-core {
-      border-radius: 0;
-      font-size: 1.4rem;
-      line-height: 1.4rem;
-      font-weight: 300;
-      padding: 1rem;
-      svg {
-        margin-right: 1rem;
-        margin-top: -3px;
-      }
-    }
-    button {
-      margin: 1.5rem 0;
-    }
+  }
+  button {
+    margin: 1.5rem 0;
   }
 }

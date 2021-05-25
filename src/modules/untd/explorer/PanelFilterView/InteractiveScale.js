@@ -48,57 +48,19 @@ const InteractiveScale = ({ ...props }) => {
     }
   }
 
-  const handleScaleClick = e => {
-    e.preventDefault()
-    // console.log('handleScaleClick(), ', e.currentTarget)
-    // If already active, just return
-    if (e.currentTarget.classList.contains('active')) {
-      return
-    } else {
-      // setActiveMetric
-      const metric = String(e.currentTarget.id).replace(
-        'metric_select_',
-        '',
-      )
-      setStoreValues({
-        activeMetric: metric,
-        activeQuintiles: [1, 1, 1, 1, 1],
-      })
-      // setActiveMetric(metric)
-      // setActiveQuintiles([1, 1, 1, 1, 1])
-    }
-  }
-
   const getElIndex = element =>
     Array.from(element.parentNode.children).indexOf(element)
 
   const handleQuintileClick = e => {
     e.preventDefault()
     // console.log('handleQuintileClick(), ', e.currentTarget)
-    // If parent not active, just return
-    if (
-      !e.currentTarget.parentNode.classList.contains(
-        'active',
-      )
-    ) {
-      return
-    }
+
     const quintile = getElIndex(e.currentTarget)
     let quintiles = activeQuintiles.slice()
-    // If set was all enabled, knock other selections.
-    if (
-      quintiles[0] === 1 &&
-      quintiles[1] === 1 &&
-      quintiles[2] === 1 &&
-      quintiles[3] === 1 &&
-      quintiles[4] === 1
-    ) {
-      quintiles = [0, 0, 0, 0, 0]
-      quintiles[quintile] = 1
-    } else {
-      quintiles[quintile] =
-        Number(quintiles[quintile]) === 1 ? 0 : 1
-    }
+
+    quintiles[quintile] =
+      Number(quintiles[quintile]) === 1 ? 0 : 1
+
     // setActiveQuintiles(quintiles)
     setStoreValues({
       activeQuintiles: quintiles,
@@ -120,46 +82,50 @@ const InteractiveScale = ({ ...props }) => {
   }
 
   return (
-    <div
-      className={clsx(
-        'interactive-scale',
-        'button-metric',
-        activeMetric === props.metric.id ? 'active' : '',
-        'button-' + props.metric.id,
-      )}
-      id={'metric_select_' + props.metric.id}
-      onClick={handleScaleClick}
-      aria-label={getScaleAriaLabel()}
-    >
-      {activeQuintiles.map((val, i) => {
-        return (
-          <div
-            className={clsx(
-              'quintile-button',
-              props.metric.id === activeMetric &&
-                Number(val) === 1
-                ? 'active'
-                : '',
-              'quintile-' + i,
-            )}
-            style={{
-              backgroundColor:
+    <>
+      <div
+        className={clsx(
+          'interactive-scale',
+          'button-metric',
+          activeMetric === props.metric.id ? 'active' : '',
+          'button-' + props.metric.id,
+        )}
+        id={'metric_select_' + props.metric.id}
+        aria-label={getScaleAriaLabel()}
+      >
+        {activeQuintiles.map((val, i) => {
+          return (
+            <button
+              className={clsx(
+                'quintile-button',
                 props.metric.id === activeMetric &&
-                Number(val) === 1
-                  ? getBgColor(props.metric, i)
-                  : DISABLED_COLORS[i],
-            }}
-            onClick={handleQuintileClick}
-            key={'quintile_button_' + i}
-            aria-label={getQuintileAriaLabel(i)}
-          >
-            <span className="sr-only">
-              {getQuintileAriaLabel(i)}
-            </span>
-          </div>
-        )
-      })}
-    </div>
+                  Number(val) === 1
+                  ? 'active'
+                  : '',
+                'quintile-' + i,
+              )}
+              style={{
+                backgroundColor:
+                  props.metric.id === activeMetric &&
+                  Number(val) === 1
+                    ? getBgColor(props.metric, i)
+                    : DISABLED_COLORS[i],
+              }}
+              onClick={handleQuintileClick}
+              key={'quintile_button_' + i}
+              aria-label={getQuintileAriaLabel(i)}
+            >
+              <span className="sr-only">
+                {getQuintileAriaLabel(i)}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      <span className="hint">
+        click on a color to toggle filters
+      </span>
+    </>
   )
 }
 

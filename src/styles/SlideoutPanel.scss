@@ -17,8 +17,8 @@
   }
   .button-close-panel {
     position: absolute;
-    right: 16px;
-    top: 8px;
+    right: 1rem;
+    top: 1rem;
     z-index: 2000;
     background-color: $white;
     svg {
@@ -32,52 +32,17 @@
       color: $cpal-orange;
     }
   }
+  .map-panel-slideout-location,
   .map-panel-slideout-filters,
   .map-panel-slideout-layers,
-  .map-panel-slideout-location,
-  .map-panel-slideout-info {
-    .panel-sticky {
-      position: sticky;
-      top: 0;
-      left: 0;
-      background-color: $white;
-      padding: 2.8rem 2rem 2rem;
-      border-bottom: 1px solid $color-untd-anothergray;
-      z-index: 501;
-      h5 {
-        @include font-gotham-book;
-        font-weight: 600;
-        font-size: 1.8rem;
-        line-height: 1.8rem;
-        letter-spacing: 1%;
-      }
-    }
-  }
-  .map-panel-slideout-filters,
-  .map-panel-slideout-layers,
-  .map-panel-slideout-location,
   .map-panel-slideout-info {
     display: none;
   }
-  &.panel-view-filters {
-    .map-panel-slideout-filters {
-      display: block;
-    }
-  }
-  &.panel-view-layers {
-    .map-panel-slideout-layers {
-      display: block;
-    }
-  }
-  &.panel-view-location {
-    .map-panel-slideout-location {
-      display: block;
-    }
-  }
-  &.panel-view-info {
-    .map-panel-slideout-info {
-      display: block;
-    }
+  &.panel-view-filters .map-panel-slideout-filters,
+  &.panel-view-layers .map-panel-slideout-layers,
+  &.panel-view-location .map-panel-slideout-location,
+  &.panel-view-info .map-panel-slideout-info {
+    display: flex;
   }
 }
 
@@ -100,4 +65,8 @@
       transition: left 500ms ease-in-out;
     }
   }
+}
+
+.panel__header {
+  border-bottom: 1px solid $color-untd-anothergray;
 }

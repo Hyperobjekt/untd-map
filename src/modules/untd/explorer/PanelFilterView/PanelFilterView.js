@@ -8,6 +8,9 @@ import useStore from './../store.js'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import FilterSeries from './FilterSeries'
 import { ButtonGroup, Button } from 'reactstrap'
+import Panel from '../../../core/Panel/Panel.js'
+import PanelHeader from '../../../core/Panel/PanelHeader.js'
+import PanelBody from '../../../core/Panel/PanelBody.js'
 
 const PanelFilterView = ({ ...props }) => {
   // Generic state setter.
@@ -29,18 +32,19 @@ const PanelFilterView = ({ ...props }) => {
   }
 
   return (
-    <div className={clsx('map-panel-slideout-filters')}>
-      <div className={clsx('panel-sticky')}>
-        <h3>{i18n.translate('UI_MAP_PANEL_HEADING')}</h3>
+    <Panel className="map-panel-slideout-filters">
+      <PanelHeader className="flex-column align-items-start">
+        <h2 className="gotham18">
+          {i18n.translate('UI_MAP_PANEL_HEADING')}
+        </h2>
         <label
           htmlFor="geographyGroup"
-          className="map-panel-instructions"
+          className="map-panel-instructions mt-3"
         >
           {i18n.translate(
             'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
           )}
         </label>
-
         <ButtonGroup id="geographyGroup">
           {UNTD_LAYERS.map((el, i) => (
             <Button
@@ -53,11 +57,11 @@ const PanelFilterView = ({ ...props }) => {
             </Button>
           ))}
         </ButtonGroup>
-      </div>
-      <div>
+      </PanelHeader>
+      <PanelBody>
         <FilterSeries />
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
   )
 }
 

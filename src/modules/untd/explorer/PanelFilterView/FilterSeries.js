@@ -3,9 +3,9 @@ import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
 import useStore from './../store.js'
 import shallow from 'zustand/shallow'
-import IndicatorList from './IndicatorList'
 import styled from 'styled-components'
 import useCategorizedIndicators from '../App/hooks/useCategorizedIndicators.js'
+import IndicatorList from '../Indicators/IndicatorList.js'
 
 const FilterSeries = ({ ...props }) => {
   // console.log('FilterSeries, tab = ', props)
@@ -44,7 +44,7 @@ const FilterSeries = ({ ...props }) => {
     <>
       {indicatorsByCategory.map(({ name, indicators }) => (
         <CategoryWrapper key={name}>
-          <h3>{name}</h3>
+          <h3 className="gotham16">{name}</h3>
           <IndicatorList
             indicators={indicators}
             showHints={!interactionsMobile}

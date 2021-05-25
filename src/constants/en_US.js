@@ -10,7 +10,7 @@ const en_US = {
   BUTTON_SEARCH: `Select to search`,
   INPUT_SEARCH: `Search for an address or location...`,
   INPUT_PLACEHOLDER_SEARCH: `Search... `,
-  LINK_OPEN_FILTER_PANEL: `(change)`,
+  LINK_OPEN_FILTER_PANEL: `change`,
   BUTTON_TOGGLE_PANEL_FILTERS: `Toggle metrics/filters panel`,
   BUTTON_TOGGLE_PANEL_LAYERS: `Toggle layers panel`,
   BUTTON_TOGGLE_PANEL_WEIGHT: `Toggle weights panel`,
@@ -131,8 +131,8 @@ const en_US = {
   UI_MAP_METRIC_DEM_PERM: `Percent of Male Population, All Ages in Buffer`,
   UI_MAP_METRIC_DEM_PERSE: `Percent of Senior Population (65 and Over) in Buffer`,
   // End added 2020-08-26
-  UI_PANEL_INFO_MAP: `<h5>Exploring in the map view</h5>
-
+  UI_PANEL_INFO_TITLE: 'Exploring in the map view',
+  UI_PANEL_INFO_MAP: `
   <p>The map displays North Dallas geographic entities, each color-coded to show their score within the selected economic opportunity metric. The color scale has 5 blocks, each representing a quintile within the scale. The lighter the color, the higher the score.</p>
 
   <p>You can change the metric shown on the map by clicking the METRICS button and making selections. You can also use this feature to filter geographic entities on the map by quintile.</p>
@@ -211,7 +211,7 @@ const en_US = {
   PANEL_LOCATION_DEMO: `Demographics`,
   UI_PANEL_LOCATION_FEEDBACK_PROMPT: `Add feedback about this location`,
   UI_PANEL_LOCATION_FEEDBACK_HEADING: `Your feedback`,
-  UI_MAP_POINTS_OVERLAYS: `POINTS & OVERLAYS`,
+  UI_MAP_POINTS_OVERLAYS: `Points & Overlays`,
   UI_MAP_POINTS: `Points`,
   STATIC_LAYER_NONE: `None`,
   UI_MAP_LAYERS_NONE: `None`,

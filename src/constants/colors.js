@@ -5,11 +5,11 @@ export const TURTLE_GREEN = '#2c390b'
  * colors for disabled scale
  */
 export const DISABLED_COLORS = [
-  '#303030',
-  '#595959',
-  '#7E7E7E',
-  '#A8A8A9',
-  '#D2D2D2',
+  '#aaa',
+  '#ccc',
+  '#eee',
+  '#ccc',
+  '#aaa',
 ]
 
 export const POINT_TYPES_COLORS = [

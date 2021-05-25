@@ -7,20 +7,22 @@ import { Tooltip } from 'reactstrap'
 
 import useStore from './../store'
 
-const IndicatorTooltip = ({ indicator, ...rest }) => {
-  const { interactionsMobile } = useStore(
-    state => ({
-      interactionsMobile: state.interactionsMobile,
-    }),
-    shallow,
+const IndicatorTooltip = ({
+  indicator,
+  size = 16,
+  ...rest
+}) => {
+  const interactionsMobile = useStore(
+    state => state.interactionsMobile,
   )
-
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
+
   return (
     <>
       <FiInfo
-        className={clsx('indicator-tip')}
+        className={'indicator-tip'}
+        style={{ fontSize: size }}
         id={'tip_prompt_' + indicator.id}
       />
       <Tooltip

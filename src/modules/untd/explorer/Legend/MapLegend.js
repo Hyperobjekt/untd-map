@@ -10,6 +10,8 @@ import { CoreButton } from './../../../core'
 import { CRI_COLORS } from './../../../../constants/colors'
 import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
 import { getMetric } from '../utils'
+import InteractiveScale from '../PanelFilterView/InteractiveScale'
+import { Button } from 'reactstrap'
 
 /**
  * Legend for map
@@ -107,15 +109,16 @@ const MapLegend = ({ ...props }) => {
             </span>
           </CoreButton>
         )}
-        {!(
-          breakpoint === 'xs' ||
-          breakpoint === 'sm' ||
-          activeView === 'embed'
-        ) && (
-          <div className="map-legend-label">
-            {i18n.translate(`UI_MAP_LEGEND_TITLE`)}
-            <span
+        <div className="map-legend-metric-title">
+          <h3>{metricLabel(metric)}</h3>
+          {!(
+            breakpoint === 'xs' ||
+            breakpoint === 'sm' ||
+            activeView === 'embed'
+          ) && (
+            <Button
               id="map_legend_open_filter"
+              color="transparent"
               className={clsx(
                 'map-legend-open-filter-panel',
                 !!slideoutPanel.active &&
@@ -126,11 +129,8 @@ const MapLegend = ({ ...props }) => {
               onClick={toggleFilterPanel}
             >
               {i18n.translate('LINK_OPEN_FILTER_PANEL')}
-            </span>
-          </div>
-        )}
-        <div className="map-legend-metric-title">
-          {metricLabel(metric)}
+            </Button>
+          )}
         </div>
         <div className="map-legend-zone-labels">
           <div className="fewer">
@@ -149,16 +149,7 @@ const MapLegend = ({ ...props }) => {
             </div>
           </div>
         </div>
-        <NonInteractiveScale
-          metric={activeMetric}
-          quintiles={activeQuintiles}
-          colors={CRI_COLORS}
-          showHash={false}
-          hashLeft={null}
-          showMinMax={false}
-          min={0}
-          max={100}
-        />
+        <InteractiveScale metric={metric} />
       </div>
     )
   } else {

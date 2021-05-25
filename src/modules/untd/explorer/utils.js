@@ -644,3 +644,7 @@ export const setActiveQuintile = quintile => {
 export const replaceWeirdQuestionmark = str => {
   return str.replaceAll('�', '')
 }
+
+/** Returns true if value has is numeric */
+export const hasValue = value =>
+  (value || value === 0) && !isNaN(value)

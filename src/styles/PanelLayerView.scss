@@ -1,29 +1,4 @@
 .map-panel-slideout-layers {
-  @include font-gotham-book;
-  // padding: 2.8rem 2rem 2.8rem;
-  font-size: 1.4rem;
-  font-weight: 300;
-  height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-
-  p {
-    margin: 1rem 0;
-    @include font-gotham-book;
-    font-weight: 200;
-    font-size: 14px;
-    line-height: 22px;
-    color: #606b44;
-    margin-bottom: 0.8rem;
-  }
-  h5 {
-    // margin-bottom: 1.6rem;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 28px;
-    color: #2c390b;
-  }
-
   .button-all-toggle {
     color: $turtle-green;
     @include font-gotham-book;
@@ -32,47 +7,9 @@
     font-size: 15px;
   }
 
-  // .map-layer-toggle-pane {
-  // background-color: #fff;
-  // overflow: hidden;
-  // overflow-y: scroll;
-  // font-size: 1.4rem;
-  // line-height: 1.6rem;
-  // font-weight: 300;
-  // height: 100%;
-
-  // .layer-group-points {
-  // height: 100%;
-
-  .map-layer-panel-sticky {
-    position: sticky;
-    top: 0;
-    left: 0;
-    background-color: $white;
-    padding: 2.8rem 0 2rem;
-    z-index: 1999;
-  }
   .points-group-parent,
   .map-static-layer-toggle {
     padding: 2rem;
-  }
-
-  h5 {
-    @include font-gotham-book;
-    color: $color-untd-darkgray;
-    font-weight: 600;
-    font-size: 1.8rem;
-    line-height: 1.8rem;
-    letter-spacing: 1%;
-  }
-
-  h6 {
-    @include font-gotham-book;
-    color: $color-untd-darkgray;
-    font-weight: 600;
-    font-size: 1.5rem;
-    line-height: 1.5rem;
-    letter-spacing: 1%;
   }
 
   .layer-group-desc,

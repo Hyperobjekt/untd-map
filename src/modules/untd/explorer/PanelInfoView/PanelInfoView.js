@@ -5,6 +5,9 @@ import i18n from '@pureartisan/simple-i18n'
 
 import { CoreButton, TourIcon } from './../../../core'
 import clsx from 'clsx'
+import Panel from '../../../core/Panel/Panel.js'
+import PanelHeader from '../../../core/Panel/PanelHeader.js'
+import PanelBody from '../../../core/Panel/PanelBody.js'
 
 const PanelInfoView = ({ ...props }) => {
   const activeView = useStore(state => state.activeView)
@@ -16,27 +19,6 @@ const PanelInfoView = ({ ...props }) => {
   const interactionsMobile = useStore(
     state => state.interactionsMobile,
   )
-
-  const getTourButton = () => {
-    // console.log('getTourButton()')
-    if (!!enableTour) {
-      // console.log('return tour button')
-      return (
-        <CoreButton
-          color="light"
-          label={i18n.translate(
-            'UI_MAP_INTRO_MODAL_TOUR_BTN',
-          )}
-          onClick={handleStartTour}
-        >
-          <TourIcon />
-          {i18n.translate('UI_MAP_INTRO_MODAL_TOUR_BTN')}
-        </CoreButton>
-      )
-    } else {
-      return ''
-    }
-  }
 
   /**
    * Close the intro panel and start the tour
@@ -52,17 +34,33 @@ const PanelInfoView = ({ ...props }) => {
     return i18n.translate('UI_PANEL_INFO_MAP')
   }
   return (
-    <div className="map-panel-slideout-info">
-      <div>
+    <Panel className="map-panel-slideout-info">
+      <PanelHeader>
+        <h3 className="gotham18">
+          {i18n.translate('UI_PANEL_INFO_TITLE')}
+        </h3>
+      </PanelHeader>
+      <PanelBody>
         <div
-          className={clsx('panel-content')}
+          className="panel-content p-4"
           dangerouslySetInnerHTML={{
             __html: getContents(),
           }}
         ></div>
-        {getTourButton()}
-      </div>
-    </div>
+        {enableTour && (
+          <CoreButton
+            color="light"
+            label={i18n.translate(
+              'UI_MAP_INTRO_MODAL_TOUR_BTN',
+            )}
+            onClick={handleStartTour}
+          >
+            <TourIcon />
+            {i18n.translate('UI_MAP_INTRO_MODAL_TOUR_BTN')}
+          </CoreButton>
+        )}
+      </PanelBody>
+    </Panel>
   )
 }
 
