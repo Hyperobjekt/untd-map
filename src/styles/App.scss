@@ -9,8 +9,7 @@ p {
   font-size: 1.4rem;
 }
 
-// gotham scale
-
+// gotham typeface helpers
 [class*='gotham'] {
   @include font-gotham-book;
   margin: 0;
@@ -46,8 +45,7 @@ p {
   font-weight: normal;
 }
 
-// knockout scale
-
+// knockout typeface helpers
 [class*='knockout'] {
   @include font-knockout-jr-lightweight;
   text-transform: uppercase;
@@ -62,6 +60,10 @@ p {
   font-size: 1.2rem;
 }
 
+// color helpers
+.grey0 {
+  color: #000;
+}
 .grey1 {
   color: $color-untd-darkgray;
 }
@@ -74,9 +76,34 @@ p {
 .grey4 {
   color: $color-untd-anothergray;
 }
+.grey9 {
+  color: #fff;
+}
+
+// font weight helpers
+.w300 {
+  font-weight: 300;
+}
+.w400 {
+  font-weight: 400;
+}
+.w500 {
+  font-weight: 500;
+}
+.w600 {
+  font-weight: 600;
+}
+.w700 {
+  font-weight: 700;
+}
+.w800 {
+  font-weight: 800;
+}
+.w900 {
+  font-weight: 900;
+}
 
 // spacing utilities
-
 .p-2 {
   padding: 1rem !important;
 }
@@ -87,6 +114,9 @@ p {
   padding: 2rem !important;
 }
 .p-5 {
+  padding: 2.5rem !important;
+}
+.p-6 {
   padding: 3rem !important;
 }
 
@@ -100,7 +130,6 @@ p {
   background-color: transparent;
   color: $color-primary;
   border-color: #ccc;
-  text-transform: capitalize;
   &:not(:disabled):not(.disabled).active {
     background-color: $color-untd-lemon;
     color: $color-primary;

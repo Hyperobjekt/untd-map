@@ -603,6 +603,7 @@ export const checkControlHovered = () => {
  * @returns String
  */
 export const getGeoFeatureLabel = feature => {
+  if (!feature) return 'Unknown'
   const source = UNTD_LAYERS.find(item => {
     return item.id === feature.source
   })
@@ -611,25 +612,23 @@ export const getGeoFeatureLabel = feature => {
     ? feature.properties[source.label_key]
     : false
 
-  switch (true) {
-    case layerID === 'zip':
+  switch (layerID) {
+    case 'zip':
       return i18n.translate(`TOOLTIP_PLACE_ZIP`, {
         label: label,
       })
-      break
-    case layerID === 'place':
+    case 'place':
       return `${label}`
-      break
-    case layerID === 'tract':
+    case 'tract':
       return i18n.translate(`TOOLTIP_PLACE_TRACT`, {
         label: label,
       })
-      break
-    case layerID === 'county':
+    case 'county':
       return i18n.translate(`TOOLTIP_PLACE_COUNTY`, {
         label: label,
       })
-      break
+    default:
+      return 'unknown'
   }
 }
 

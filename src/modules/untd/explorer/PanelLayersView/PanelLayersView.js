@@ -68,7 +68,7 @@ const getPointIndex = (collection, id) => {
     .indexOf(id)
 }
 
-const PanelLayersView = ({ ...props }) => {
+const PanelLayersView = ({ onClose, ...props }) => {
   // Generic store value setter.
   const {
     setStoreValues,
@@ -126,8 +126,8 @@ const PanelLayersView = ({ ...props }) => {
   // console.log('pointTypes, ', pointTypes)
 
   return (
-    <Panel className="map-panel-slideout-layers">
-      <PanelHeader>
+    <Panel className="map-panel-slideout-layers" {...props}>
+      <PanelHeader onClose={onClose}>
         <h2 className="gotham18">
           {i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}
         </h2>

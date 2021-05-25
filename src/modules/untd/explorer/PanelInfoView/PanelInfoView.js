@@ -9,7 +9,7 @@ import Panel from '../../../core/Panel/Panel.js'
 import PanelHeader from '../../../core/Panel/PanelHeader.js'
 import PanelBody from '../../../core/Panel/PanelBody.js'
 
-const PanelInfoView = ({ ...props }) => {
+const PanelInfoView = ({ onClose, ...props }) => {
   const activeView = useStore(state => state.activeView)
   const enableTour = useStore(state => state.enableTour)
   const setUpTour = useStore(state => state.setUpTour)
@@ -34,8 +34,8 @@ const PanelInfoView = ({ ...props }) => {
     return i18n.translate('UI_PANEL_INFO_MAP')
   }
   return (
-    <Panel className="map-panel-slideout-info">
-      <PanelHeader>
+    <Panel className="map-panel-slideout-info" {...props}>
+      <PanelHeader onClose={onClose}>
         <h3 className="gotham18">
           {i18n.translate('UI_PANEL_INFO_TITLE')}
         </h3>

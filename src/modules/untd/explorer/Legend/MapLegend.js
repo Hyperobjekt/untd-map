@@ -87,6 +87,7 @@ const MapLegend = ({ ...props }) => {
       <div
         className={clsx(
           'map-legend',
+          'p-4',
           !!showMobileLegend
             ? 'show-mobile'
             : 'hide-mobile',
@@ -110,7 +111,9 @@ const MapLegend = ({ ...props }) => {
           </CoreButton>
         )}
         <div className="map-legend-metric-title">
-          <h3>{metricLabel(metric)}</h3>
+          <h3 className="gotham16 w600">
+            {metricLabel(metric)}
+          </h3>
           {!(
             breakpoint === 'xs' ||
             breakpoint === 'sm' ||
@@ -118,21 +121,19 @@ const MapLegend = ({ ...props }) => {
           ) && (
             <Button
               id="map_legend_open_filter"
-              color="transparent"
-              className={clsx(
-                'map-legend-open-filter-panel',
-                !!slideoutPanel.active &&
-                  slideoutPanel.panel === 'filters'
-                  ? 'disabled'
-                  : '',
-              )}
+              color="outlined"
+              className="map-legend-open-filter-panel knockout12 px-2 py-0"
+              disabled={
+                slideoutPanel.active &&
+                slideoutPanel.panel === 'filters'
+              }
               onClick={toggleFilterPanel}
             >
               {i18n.translate('LINK_OPEN_FILTER_PANEL')}
             </Button>
           )}
         </div>
-        <div className="map-legend-zone-labels">
+        <div className="map-legend-zone-labels gotham12">
           <div className="fewer">
             <div className="vertically-center">
               {i18n.translate(`UI_MAP_LEGEND_FEWER`)}

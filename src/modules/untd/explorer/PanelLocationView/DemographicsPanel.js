@@ -25,7 +25,7 @@ const DemographicStat = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   min-width: 50%;
-  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 `
 
 const DemographicsPanel = ({ activeFeature, ...props }) => {
@@ -46,7 +46,7 @@ const DemographicsPanel = ({ activeFeature, ...props }) => {
   )
 
   return (
-    <div className="p-4">
+    <div {...props}>
       <h3 className="gotham16 mb-4">
         {i18n.translate(`PANEL_LOCATION_DEMO`)}
       </h3>

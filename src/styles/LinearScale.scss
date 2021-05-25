@@ -45,8 +45,10 @@
     top: -17px;
     z-index: 500;
     .linear-scale-hash-value {
+      position: absolute;
       width: 16px;
       height: 16px;
+      top: 21px;
       border-radius: 50%;
       //   margin-top: -8px;
       margin-left: -8px;
@@ -79,9 +81,10 @@
   }
 
   .label.justify-right {
-    width: 56px;
+    position: absolute;
     text-align: right;
-    margin-left: -100%;
+    margin-left: 0;
+    right: 0;
   }
   .label.justify-left {
     margin-left: 0;

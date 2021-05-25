@@ -1,10 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
 import styled from 'styled-components'
+import { MdClose } from 'react-icons/md'
+import { Button } from 'reactstrap'
 
 const HeaderWrapper = styled.div`
   min-width: 100%;
-  min-height: 6rem;
   display: flex;
   align-items: center;
   background-color: #fff;
@@ -20,7 +21,21 @@ const HeaderWrapper = styled.div`
   }
 `
 
-const PanelHeader = ({ className, children, ...props }) => {
+const CloseButton = styled(Button)`
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  svg {
+    font-size: 24px;
+  }
+`
+
+const PanelHeader = ({
+  className,
+  children,
+  onClose,
+  ...props
+}) => {
   return (
     <HeaderWrapper
       className={clsx(
@@ -30,6 +45,11 @@ const PanelHeader = ({ className, children, ...props }) => {
       {...props}
     >
       {children}
+      {onClose && (
+        <CloseButton color="none" onClick={onClose}>
+          <MdClose aria-label="close panel" />
+        </CloseButton>
+      )}
     </HeaderWrapper>
   )
 }

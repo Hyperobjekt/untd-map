@@ -12,7 +12,7 @@ import Panel from '../../../core/Panel/Panel.js'
 import PanelHeader from '../../../core/Panel/PanelHeader.js'
 import PanelBody from '../../../core/Panel/PanelBody.js'
 
-const PanelFilterView = ({ ...props }) => {
+const PanelFilterView = ({ onClose, ...props }) => {
   // Generic state setter.
   const [setStoreValues, activeLayers] = useStore(
     state => [state.setStoreValues, state.activeLayers],
@@ -32,8 +32,14 @@ const PanelFilterView = ({ ...props }) => {
   }
 
   return (
-    <Panel className="map-panel-slideout-filters">
-      <PanelHeader className="flex-column align-items-start">
+    <Panel
+      className="map-panel-slideout-filters"
+      {...props}
+    >
+      <PanelHeader
+        onClose={onClose}
+        className="flex-column align-items-start"
+      >
         <h2 className="gotham18">
           {i18n.translate('UI_MAP_PANEL_HEADING')}
         </h2>

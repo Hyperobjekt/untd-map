@@ -8,7 +8,6 @@ import { BREAKPOINTS } from './../../../../constants/layers'
 import { DataLoader } from './../DataLoader'
 import RouteManager from './../RouteManager/RouteManager'
 import LangManager from './../LangManager/LangManager'
-
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 /**

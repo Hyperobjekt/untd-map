@@ -3,47 +3,10 @@
   height: calc(100vh - 64px - 64px - 16px - 16px);
   // max-height: 480px;
   top: calc(64px + 16px);
-  left: -352px;
+  left: 70px;
   // Do not change based on device width.
-  background-color: #fff;
   position: absolute;
-  transition: left 500ms ease-in-out;
-  width: 350px;
   z-index: 400; // 1999;
-  box-shadow: 1px 1px 2px #ddd;
-  &.active {
-    left: 0px;
-    transition: left 500ms ease-in-out;
-  }
-  .button-close-panel {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 2000;
-    background-color: $white;
-    svg {
-      width: 24px;
-      height: 24px;
-      // fill: #606b44 !important;
-      margin-top: 4px;
-    }
-    &:hover,
-    &:focus {
-      color: $cpal-orange;
-    }
-  }
-  .map-panel-slideout-location,
-  .map-panel-slideout-filters,
-  .map-panel-slideout-layers,
-  .map-panel-slideout-info {
-    display: none;
-  }
-  &.panel-view-filters .map-panel-slideout-filters,
-  &.panel-view-layers .map-panel-slideout-layers,
-  &.panel-view-location .map-panel-slideout-location,
-  &.panel-view-info .map-panel-slideout-info {
-    display: flex;
-  }
 }
 
 @media only screen and (min-width: 768px) {
@@ -59,11 +22,6 @@
   .map-panel-slideout {
     top: 0;
     height: 100%;
-    left: -350px;
-    &.active {
-      left: 72px;
-      transition: left 500ms ease-in-out;
-    }
   }
 }
 

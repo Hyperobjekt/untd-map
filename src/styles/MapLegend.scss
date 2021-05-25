@@ -19,58 +19,25 @@
     }
   }
   background: #fff;
-  padding: 16px;
   @include media-breakpoint-up(md) {
     padding: 16px 16px 8px;
   }
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  .map-legend-open-filter-panel {
-    color: $color-untd-blue;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0.2rem;
-
-    &.disabled {
-      color: lighten($turtle-green, 15%);
-    }
-  }
-  .map-legend-label {
-    @include font-gotham-book;
-    font-weight: 300;
-    font-size: 1.3rem;
-    line-height: 1.3rem;
-    letter-spacing: 1%;
-    color: $color-untd-gray;
-  }
   .map-legend-zone-labels {
     display: flex;
     width: 100%;
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.2rem;
+    line-height: 1;
     margin-bottom: 0.7rem;
     justify-content: space-between;
-    .fewer,
-    .avg,
-    .more {
-      flex: 1 1 33.33%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
     .fewer {
       text-align: left;
-      justify-content: flex-start;
     }
     .avg {
       text-align: center;
-      justify-content: center;
     }
     .more {
       text-align: right;
-      justify-content: flex-end;
     }
   }
   .map-legend-metric-title {
@@ -84,63 +51,8 @@
   .map-legend-metric-title h3 {
     margin: 0.2rem 0 0 0;
     display: inline-flex;
-    @include font-gotham-book;
-    color: $color-untd-darkgray;
-    font-size: 1.4rem;
-    line-height: 2rem;
-
-    font-weight: 600;
-    @include media-breakpoint-up(md) {
-      font-size: 1.6rem;
-      line-height: 1.8rem;
-    }
-  }
-  .n-i-scale {
-    .n-i-scale-minmax {
-      .n-i-scale-min,
-      .n-i-scale-max {
-        font-weight: 300;
-        font-size: 1.2rem;
-        line-height: 1.2rem;
-        color: $color-untd-gray;
-      }
-    }
   }
 
-  .census-scale {
-    margin-top: 1.6rem;
-    @include font-gotham-book;
-    font-weight: 300;
-    h5 {
-      font-size: 1.4rem;
-      font-weight: 300;
-    }
-    .scale-parent {
-      display: flex;
-      width: 100%;
-      height: 16px;
-      border: 1px solid #959b84;
-      // background-color: blue;
-      .scale-block {
-        flex: 0 0 20%;
-        border-right: 1px solid #959b84;
-        &.scale-block-4 {
-          border-right: 0;
-        }
-      }
-    }
-    .scale-range {
-      display: flex;
-      width: 100%;
-      @include font-gotham-book;
-      .scale-range-minmax {
-        flex: 0 0 50%;
-        &.max {
-          text-align: right;
-        }
-      }
-    }
-  }
   .button-close-legend {
     color: $black;
     opacity: 0.5;
