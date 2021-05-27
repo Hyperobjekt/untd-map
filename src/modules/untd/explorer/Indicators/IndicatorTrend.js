@@ -10,9 +10,16 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
-
+import { max, min } from 'd3-array'
 import useStore from './../store'
-import { getRoundedValue } from './../utils'
+import {
+  formatIndicatorValue,
+  getRoundedValue,
+} from './../utils'
+import styled from 'styled-components'
+
+const roundValue = (num, dec) =>
+  Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
 
 const CustomTooltip = ({ active, payload, label }) => {
   // console.log('CustomTooltip, ', active, payload, label)
@@ -28,9 +35,14 @@ const CustomTooltip = ({ active, payload, label }) => {
   )
 }
 
+// bring chart forward in z direction
+const ChartContainer = styled(ResponsiveContainer)`
+  position: relative;
+  z-index: 501;
+  left: -5px;
+`
+
 const TrendChart = ({ data, config, layerIndex }) => {
-  const min = config.min[layerIndex]
-  const max = config.max[layerIndex]
   const currency = config.currency
   const percent = config.percent
   const decimals = config.decimals
@@ -40,12 +52,13 @@ const TrendChart = ({ data, config, layerIndex }) => {
       return {
         name: Number(el.year),
         // Flip the value calc if high is not good.
-        value: !!config.highisgood
-          ? Number(el[config.id])
-          : max - Number(el[config.id]),
-        raw: Number(el[config.id]),
+        value: roundValue(
+          Number(el[id]),
+          percent ? decimals + 2 : decimals,
+        ),
+        raw: Number(el[id]),
         display: getRoundedValue(
-          Number(el[config.id]),
+          Number(el[id]),
           decimals,
           false,
           currency,
@@ -54,8 +67,9 @@ const TrendChart = ({ data, config, layerIndex }) => {
       }
     })
     .sort((a, b) => a.year - b.year)
+
   return (
-    <ResponsiveContainer width="100%" height={32}>
+    <ChartContainer width="82%" height={32}>
       <AreaChart data={dataSet}>
         <XAxis dataKey="name" tick={false} height={1} />
         <YAxis
@@ -75,13 +89,18 @@ const TrendChart = ({ data, config, layerIndex }) => {
           itemStyle={{
             backgroundColor: 'white',
           }}
+          position={{
+            x: 200,
+            y: 36,
+          }}
           wrapperStyle={{
             fontSize: 12,
             fontFamily: 'Knockout 49 A',
             color: 'white',
             backgroundColor: '#2c390b',
-            padding: '1.5rem',
+            padding: '1rem',
             borderRadius: '4px',
+            left: '-50%',
           }}
         />
         <Area
@@ -93,13 +112,11 @@ const TrendChart = ({ data, config, layerIndex }) => {
           reversed={false}
         />
       </AreaChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   )
 }
 
 const IndicatorTrend = ({ data, config, ...props }) => {
-  console.log(data, config)
-
   const activeLayers = useStore(state => state.activeLayers)
   const years = data.map(el => {
     return Number(el.year)
@@ -108,20 +125,45 @@ const IndicatorTrend = ({ data, config, ...props }) => {
   const yearMin = Math.min(...years)
   const yearDiff = yearMax - yearMin + 1
 
+  const values = data.map(d =>
+    roundValue(
+      Number(d[config.id]),
+      config.percent
+        ? config.decimals + 2
+        : config.decimals,
+    ),
+  )
+  const highIsGood = Number(config.highisgood)
+  const current = values[values.length - 1]
+  const diff = current - values[0]
+  const diffLabel =
+    diff > 0 && highIsGood ? 'increased' : 'decreased'
+  const diffValue = formatIndicatorValue(
+    Math.abs(diff),
+    config,
+  )
+  const roboKey =
+    diff === 0 ? `TREND_ROBO_NO_DIFF` : `TREND_ROBO_DIFF`
+  const context = {
+    diff,
+    diffLabel,
+    diffValue,
+    years: [yearMin, yearMax].join(' - '),
+  }
+  const roboText = i18n.translate(roboKey, context)
+
   return (
-    <>
-      <p className="gotham12">
-        {i18n.translate(`TREND_CHART_HEADING`, {
-          years: yearDiff,
-        })}
-        {i18n.translate(`PLACEHOLDER_ROBO`)}
-      </p>
+    <div {...props}>
+      <p
+        className="gotham12 mb-3"
+        dangerouslySetInnerHTML={{ __html: roboText }}
+      />
       <TrendChart
         data={data}
         config={config}
         layerIndex={activeLayers.indexOf(1)}
       />
-    </>
+    </div>
   )
 }
 

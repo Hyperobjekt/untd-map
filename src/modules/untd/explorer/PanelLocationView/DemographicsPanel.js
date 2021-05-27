@@ -47,7 +47,7 @@ const DemographicsPanel = ({ activeFeature, ...props }) => {
 
   return (
     <div {...props}>
-      <h3 className="gotham16 mb-4">
+      <h3 className="gotham16 mb-5">
         {i18n.translate(`PANEL_LOCATION_DEMO`)}
       </h3>
       <DemographicStat>

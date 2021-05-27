@@ -1,7 +1,7 @@
 .popup-content {
   // @include font-knockout-jr-lightweight;
   @include font-gotham-book;
-  padding: 24px;
+  padding: 2rem;
   margin: 0 !important;
   width: 282px;
 
@@ -10,7 +10,7 @@
     @include font-gotham-book;
     color: $color-untd-darkgray;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1.6rem;
     line-height: 1.8rem;
     letter-spacing: 1%;

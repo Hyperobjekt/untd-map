@@ -17,6 +17,7 @@ import {
 } from './../utils'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import useStore from './../store'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 const MapView = props => {
   // Generic state updates for store.
@@ -69,6 +70,8 @@ const MapView = props => {
     }),
     shallow,
   )
+
+  const { showFeedbackForPoint } = useFeedbackPanel()
 
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)
@@ -213,16 +216,7 @@ const MapView = props => {
       feature.source &&
       feature.source.indexOf('points') > -1
     ) {
-      // console.log('point feature clicked')
-      setStoreValues({
-        showFeedbackModal: true,
-        feedbackFeature: feature,
-        feedbackAddress: `${feature.properties.Name}, ${feature.properties.Address}, ${feature.properties.City}`,
-        feedbackLngLat: [
-          feature.properties.longitude,
-          feature.properties.latitude,
-        ],
-      })
+      showFeedbackForPoint(feature)
     }
   }
 

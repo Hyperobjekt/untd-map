@@ -3,7 +3,7 @@
   height: 56px;
   display: block;
   position: relative;
-  margin: 1.6rem 0;
+  margin: 3rem 0 1rem;
   .linear-scale-bar {
     height: 1px;
     width: 100%;
@@ -42,13 +42,13 @@
   .hash-group {
     position: absolute;
     box-sizing: content-box;
-    top: -17px;
+    top: -19px;
     z-index: 500;
     .linear-scale-hash-value {
       position: absolute;
       width: 16px;
       height: 16px;
-      top: 21px;
+      top: 23px;
       border-radius: 50%;
       //   margin-top: -8px;
       margin-left: -8px;

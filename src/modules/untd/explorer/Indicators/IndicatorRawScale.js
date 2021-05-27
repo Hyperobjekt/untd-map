@@ -5,15 +5,25 @@ import i18n from '@pureartisan/simple-i18n'
 import { Tooltip } from 'reactstrap'
 
 import {
-  getRoundedValue,
   getHashLeft,
   hasValue,
+  formatIndicatorValue,
+  roundIndicatorValue,
 } from './../utils'
 import useStore from './../store'
+
+const getRobotext = context => {
+  const roboKey =
+    context.diff === 0
+      ? 'RAW_ROBO_NO_DIFF'
+      : 'RAW_ROBO_DIFF'
+  return i18n.translate(roboKey, context)
+}
 
 const IndicatorRawScale = ({
   indicator,
   value,
+  region,
   ...props
 }) => {
   // console.log('IndicatorRawScale, ', props)
@@ -26,53 +36,34 @@ const IndicatorRawScale = ({
   if (!hasValue(value)) return null
 
   const high_is_good = !!Number(indicator.highisgood)
-  const currency = !!Number(indicator.currency)
-  const decimals = Number(indicator.decimals)
-  const alt_u = indicator.alt_u
   const min = Number(indicator.min)
   const max = Number(indicator.max)
   const mean = Number(indicator.mean)
-  const percent = !!Number(indicator.percent)
-
-  /**
-   * Founds a number in exponential notation to a whole number.
-   * @param Number val Number in scientific notation
-   * @returns String
-   */
-  const formatExponent = val => {
-    if (val < 1 && val > -1) {
-      return String(Math.round(val).toPrecision(1))
-    } else {
-      return getRoundedValue(val, 0, true, false, false)
-    }
-  }
-
-  const formatValue = val =>
-    String(val).indexOf('e') > 0
-      ? formatExponent(val)
-      : `${getRoundedValue(
-          val,
-          decimals,
-          true,
-          currency,
-          percent,
-        )}`
-
   const rightVal = !!high_is_good ? max : min
   const leftVal = !!high_is_good ? min : max
-
-  const rightLabel = formatValue(rightVal)
-  const leftLabel = formatValue(leftVal)
-  const valueLabel = formatValue(value)
-  const meanLabel = formatValue(mean)
+  const diff =
+    roundIndicatorValue(value, indicator) -
+    roundIndicatorValue(mean, indicator)
+  const diffValue = formatIndicatorValue(
+    Math.abs(diff),
+    indicator,
+  )
+  const diffLabel = diff > 0 ? 'higher' : 'lower'
+  const rightLabel = formatIndicatorValue(
+    rightVal,
+    indicator,
+  )
+  const leftLabel = formatIndicatorValue(leftVal, indicator)
+  const valueLabel = formatIndicatorValue(value, indicator)
+  const meanLabel = formatIndicatorValue(mean, indicator)
 
   const percentFromLeft = getHashLeft(
-    value,
+    roundIndicatorValue(value, indicator),
     !!high_is_good ? min : max,
     !!high_is_good ? max : min,
   )
   const meanPercentFromLeft = getHashLeft(
-    mean,
+    roundIndicatorValue(mean, indicator),
     !!high_is_good ? min : max,
     !!high_is_good ? max : min,
   )
@@ -93,63 +84,81 @@ const IndicatorRawScale = ({
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
 
+  const robotext = getRobotext({
+    name: i18n.translate(indicator.id),
+    value,
+    mean,
+    valueLabel,
+    meanLabel,
+    diff,
+    diffValue,
+    diffLabel,
+    region,
+  })
+
   return (
-    <div
-      className={clsx('linear-scale', `${indicator.id}`)}
-    >
-      <div className="linear-scale-bar" />
+    <div {...props}>
+      <p
+        className="gotham12"
+        dangerouslySetInnerHTML={{ __html: robotext }}
+      />
       <div
-        className="linear-scale-value hash-group"
-        style={{ left: `${percentFromLeft}%` }}
+        className={clsx('linear-scale', `${indicator.id}`)}
       >
-        <span
-          className={clsx('label', 'gotham14', 'grey2', {
-            'justify-right':
-              percentFromLeft > 92 &&
-              String(valueLabel).length > 3,
-            'justify-left':
-              percentFromLeft < 8 &&
-              String(valueLabel).length > 3,
-          })}
+        <div className="linear-scale-bar" />
+        <div
+          className="linear-scale-value hash-group"
+          style={{ left: `${percentFromLeft}%` }}
         >
-          {valueLabel}
-        </span>
-        <div className="linear-scale-hash-value" />
-      </div>
-      <div
-        className="linear-scale-mean hash-group"
-        style={{ left: `${meanPercentFromLeft}%` }}
-      >
-        <div className="linear-scale-hash-mean" />
-        <span
-          id={`linear_scale_tooltip_target_${indicator.id}`}
-          className={clsx('label', 'gotham12', 'grey2', {
-            'justify-right': meanPercentFromLeft > 90,
-            'justify-left': meanPercentFromLeft < 10,
-          })}
-          href="#"
+          <span
+            className={clsx('label', 'gotham14', 'grey2', {
+              'justify-right':
+                percentFromLeft > 92 &&
+                String(valueLabel).length > 3,
+              'justify-left':
+                percentFromLeft < 8 &&
+                String(valueLabel).length > 3,
+            })}
+          >
+            {valueLabel}
+          </span>
+          <div className="linear-scale-hash-value" />
+        </div>
+        <div
+          className="linear-scale-mean hash-group"
+          style={{ left: `${meanPercentFromLeft}%` }}
         >
-          {meanLabel}
-        </span>
-        <Tooltip
-          placement={
-            !!interactionsMobile ? 'auto' : 'right'
-          }
-          boundariesElement={`window`}
-          isOpen={tooltipOpen}
-          target={`linear_scale_tooltip_target_${indicator.id}`}
-          toggle={toggle}
-        >
-          {i18n.translate(`LINEAR_SCALE_MEAN_DESC`)}
-        </Tooltip>
-      </div>
-      <div className="linear-scale-labels">
-        <span className="label gotham12 grey2">
-          {leftLabel}
-        </span>
-        <span className="label gotham12 grey2">
-          {rightLabel}
-        </span>
+          <div className="linear-scale-hash-mean" />
+          <span
+            id={`linear_scale_tooltip_target_${indicator.id}`}
+            className={clsx('label', 'gotham12', 'grey2', {
+              'justify-right': meanPercentFromLeft > 90,
+              'justify-left': meanPercentFromLeft < 10,
+            })}
+            href="#"
+          >
+            {meanLabel}
+          </span>
+          <Tooltip
+            placement={
+              !!interactionsMobile ? 'auto' : 'right'
+            }
+            boundariesElement={`window`}
+            isOpen={tooltipOpen}
+            target={`linear_scale_tooltip_target_${indicator.id}`}
+            toggle={toggle}
+          >
+            {i18n.translate(`LINEAR_SCALE_MEAN_DESC`)}
+          </Tooltip>
+        </div>
+        <div className="linear-scale-labels">
+          <span className="label gotham12 grey2">
+            {leftLabel}
+          </span>
+          <span className="label gotham12 grey2">
+            {rightLabel}
+          </span>
+        </div>
       </div>
     </div>
   )

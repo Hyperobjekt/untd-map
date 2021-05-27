@@ -19,6 +19,7 @@ import {
   DesktopUnifiedShareBtn,
 } from './../Share'
 import { TourButton } from './../Tour'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 /**
  * Control panel that contains selectors and filters which alter map display.
@@ -52,16 +53,7 @@ const ControlPanel = ({ children }) => {
     shallow,
   )
 
-  const toggleIntroModal = () =>
-    setStoreValues({
-      showIntroModal: !showIntroModal,
-    })
-
-  // Handle clicks to any control panel button.
-  const handleClick = e => {
-    e.preventDefault()
-    // console.log('Button clicked, ', e.currentTarget.id)
-  }
+  const { openFeedback } = useFeedbackPanel()
 
   /**
    * Close the intro panel and start the tour
@@ -157,12 +149,6 @@ const ControlPanel = ({ children }) => {
     } else {
       return 'right'
     }
-  }
-
-  const launchFeedback = () => {
-    setStoreValues({
-      showFeedbackModal: true,
-    })
   }
 
   // Set tooltip position if browser width changes.
@@ -309,7 +295,7 @@ const ControlPanel = ({ children }) => {
         id="button_toggle_feedback"
         label={i18n.translate(`FEEDBACK_BUTTON_TOOLTIP`)}
         tooltip={buttonTooltipPosition}
-        onClick={launchFeedback}
+        onClick={openFeedback}
         color="none"
         styles={{ display: 'none' }}
         className={clsx(

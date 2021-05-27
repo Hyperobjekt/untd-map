@@ -10,6 +10,7 @@ import shallow from 'zustand/shallow'
 import { CoreButton } from './../../../core'
 import useStore from '../store'
 import { DEFAULT_VIEWPORT } from './../../../../constants/map'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 /**
  * MenuSearch: Autosuggest search input for header.
@@ -32,6 +33,8 @@ const GeocodeSearch = ({ ...props }) => {
     shallow,
   )
 
+  const { setFeedbackState } = useFeedbackPanel()
+
   // Tracking autosuggest suggestions
   const [suggestions, setSuggestions] = useState([])
   const [value, setValue] = useState('')
@@ -44,9 +47,9 @@ const GeocodeSearch = ({ ...props }) => {
     // like a point.
     if (props.context && props.context === 'feedback') {
       // console.log('context is feedback')
-      setStoreValues({
-        feedbackAddress: suggestion.suggestionValue,
-        feedbackLngLat: suggestion.suggestion.center,
+      setFeedbackState({
+        address: suggestion.suggestionValue,
+        point: suggestion.suggestion.center,
       })
     } else {
       if (!!suggestion.suggestion.bbox) {

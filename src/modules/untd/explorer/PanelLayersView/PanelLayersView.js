@@ -11,54 +11,11 @@ import { css, cx } from 'emotion'
 import useStore from './../store'
 import { POINT_CATEGORIES } from './../../../../constants/layers'
 import LayersInput from './LayersInput'
-import CoreButton from './../../../core/CoreButton'
 import MapLayerToggle from './MapLayerToggle'
 import { variables } from './../theme'
 import Panel from '../../../core/Panel/Panel'
 import PanelHeader from '../../../core/Panel/PanelHeader'
 import PanelBody from '../../../core/Panel/PanelBody'
-
-const btnReset = css`
-  height: 36px;
-  font-size: 12px !important;
-  font-weight: 200 !important;
-  margin: 16px auto 20px auto;
-  color: ${variables.colors.untdGray} !important;
-  background-color: #fff !important;
-  border: 1px solid #cfd3c2 !important;
-  padding: 0 14px !important;
-  svg {
-    width: 16px;
-    height: 16px;
-    margin-top: -3px;
-    margin-right: 6px;
-    path,
-    line,
-    rect {
-      stroke: ${variables.colors.untdGray} !important;
-    }
-  }
-  &:active,
-  &:hover {
-    background-color: ${variables.colors
-      .untdLemon} !important;
-    border-color: transparent !important;
-    color: ${variables.colors.untdGray} !important;
-    svg {
-      path,
-      line,
-      rect {
-        stroke: ${variables.colors.untdGray} !important;
-      }
-    }
-  }
-  &:focus {
-    border: 0;
-    border-color: ${variables.colors.untdLemon} !important;
-    outline: ${variables.colors.untdLemon} auto 1px !important;
-    box-shadow: none !important;
-  }
-`
 
 const getPointIndex = (collection, id) => {
   return collection
@@ -131,6 +88,13 @@ const PanelLayersView = ({ onClose, ...props }) => {
         <h2 className="gotham18">
           {i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}
         </h2>
+        <Button
+          onClick={toggleAll}
+          color="outlined"
+          className="knockout12"
+        >
+          {i18n.translate('BUTTON_RESET_POINTS')}
+        </Button>
       </PanelHeader>
       <PanelBody>
         <div className={clsx('points-group-parent')}>
@@ -144,21 +108,6 @@ const PanelLayersView = ({ onClose, ...props }) => {
               __html: i18n.translate(`UI_MAP_LAYER_1_DESC`),
             }}
           ></div>
-          <CoreButton
-            onClick={toggleAll}
-            label={i18n.translate('BUTTON_RESET_POINTS')}
-            color="primary"
-            id="button_toggle_all_points"
-            className={clsx(
-              `button-all-toggle`,
-              cx(btnReset),
-            )}
-          >
-            <GrPowerReset />
-            <span>
-              {i18n.translate('BUTTON_RESET_POINTS')}
-            </span>
-          </CoreButton>
           <div
             className={clsx(
               'layer-group',

@@ -9,6 +9,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
+  padding: 2rem 6rem 2rem 2rem;
   z-index: 501;
   // push others right
   h1,
@@ -23,7 +24,7 @@ const HeaderWrapper = styled.div`
 
 const CloseButton = styled(Button)`
   position: absolute;
-  top: 1.6rem;
+  top: 1.8rem;
   right: 1.6rem;
   svg {
     font-size: 24px;
@@ -39,7 +40,7 @@ const PanelHeader = ({
   return (
     <HeaderWrapper
       className={clsx(
-        'panel__header sticky-top p-4',
+        'panel__header sticky-top',
         className,
       )}
       {...props}

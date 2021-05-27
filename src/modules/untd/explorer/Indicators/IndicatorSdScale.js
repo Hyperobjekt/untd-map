@@ -1,19 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import {
-  setActiveQuintile,
-  getSDRobo,
-  hasValue,
-} from './../utils'
+import { setActiveQuintile, hasValue } from './../utils'
 import NonInteractiveScale from './../NonInteractiveScale'
 import { CRI_COLORS } from './../../../../constants/colors'
+import styled from 'styled-components'
+/**
+ * Get robotext for the sd bucket
+ * @param Number sd Number 0 - 4
+ */
+export const getSDRobo = ({ sd, region }) => {
+  const sdValue = i18n.translate(`SD_${sd}`)
+  return i18n.translate(`SD_ROBO`, { sdValue, region })
+}
 
-const IndicatorSdScale = ({ indicator, value }) => {
+const SdWrapper = styled.div`
+  .n-i-scale {
+    width: 80%;
+  }
+`
+
+const IndicatorSdScale = ({
+  indicator,
+  value,
+  region,
+  ...props
+}) => {
   if (!hasValue(value)) return null
   return (
-    <>
-      <p className="gotham12">{getSDRobo(value)}</p>
+    <SdWrapper {...props}>
+      <p
+        className="gotham12"
+        dangerouslySetInnerHTML={{
+          __html: getSDRobo({ sd: value, region }),
+        }}
+      />
+
       <NonInteractiveScale
         metric={indicator.id}
         showHash={false}
@@ -23,7 +45,7 @@ const IndicatorSdScale = ({ indicator, value }) => {
         min={0}
         max={4}
       />
-    </>
+    </SdWrapper>
   )
 }
 

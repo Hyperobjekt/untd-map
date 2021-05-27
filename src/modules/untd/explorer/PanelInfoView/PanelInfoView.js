@@ -42,7 +42,7 @@ const PanelInfoView = ({ onClose, ...props }) => {
       </PanelHeader>
       <PanelBody>
         <div
-          className="panel-content p-4"
+          className="panel-content p-5"
           dangerouslySetInnerHTML={{
             __html: getContents(),
           }}

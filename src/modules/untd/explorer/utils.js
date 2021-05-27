@@ -6,30 +6,63 @@ import { MAP_CONTROLS_CLASSES } from './../../../constants/map'
 import { DATA_FILES } from './../../../constants/map'
 import { UNTD_LAYERS } from './../../../constants/layers'
 
-/**
- * Get robotext for the sd bucket
- * @param Number sd Number 0 - 4
- */
-export const getSDRobo = sd => {
-  switch (true) {
-    case sd === 0:
-      return i18n.translate(`SD_ROBO_0`)
-      break
-    case sd === 1:
-      return i18n.translate(`SD_ROBO_1`)
-      break
-    case sd === 2:
-      return i18n.translate(`SD_ROBO_2`)
-      break
-    case sd === 3:
-      return i18n.translate(`SD_ROBO_3`)
-      break
-    case sd === 4:
-      return i18n.translate(`SD_ROBO_4`)
-      break
-    default:
-      return i18n.translate(`SD_ROBO_ERROR`)
+const roundValue = (num, dec) =>
+  Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
+
+export const roundIndicatorValue = (
+  val,
+  { decimals, percent },
+) => {
+  return Number(percent)
+    ? roundValue(val, decimals + 2)
+    : roundValue(val, decimals)
+}
+
+export const formatIndicatorValue = (
+  val,
+  { decimals = 1, currency = 0, percent = 0 },
+) => {
+  const isExponent = String(val).indexOf('e') > 0
+  if (isExponent) {
+    if (val < 1 && val > -1) {
+      return String(Math.round(val).toPrecision(1))
+    } else {
+      return getRoundedValue(val, 0, true, false, false)
+    }
   }
+  return getRoundedValue(
+    val,
+    Number(decimals),
+    true,
+    Number(currency),
+    Number(percent),
+  )
+}
+
+export const getIndicatorConfig = (
+  indicator,
+  activeLayerIndex,
+) => {
+  const high_is_good = !!Number(indicator.highisgood)
+  const currency = !!Number(indicator.currency)
+  const decimals = Number(indicator.decimals)
+  const alt_u = indicator.alt_u
+  const min = Number(indicator.min)
+  const max = Number(indicator.max)
+  const mean = Number(indicator.mean)
+  const percent = !!Number(indicator.percent)
+}
+
+/**
+ * Given a feature, returns the region that the feature belongs to
+ * @param {*} feature
+ * @returns {string}
+ */
+export const getRegionNameFromFeature = feature => {
+  if (!feature) return ''
+  const regionId = feature?.source || feature?.layer?.source
+  const layer = UNTD_LAYERS.find(l => l.id === regionId)
+  return i18n.translate(layer.label)
 }
 
 export const getActiveLayerIndex = layers => {

@@ -1,11 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
-import i18n from '@pureartisan/simple-i18n'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
-
-import useStore from './../store'
 import FeedbackContent from './FeedbackContent'
+import useFeedbackPanel from './useFeedbackPanel'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -13,44 +9,22 @@ import FeedbackContent from './FeedbackContent'
  * @param Object props    Props passed from parent
  */
 const FeedbackModal = ({ children, ...props }) => {
-  // console.log('FeedbackModal')
-
-  const { setStoreValues, showFeedbackModal } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      showFeedbackModal: state.showFeedbackModal,
-    }),
-    shallow,
-  )
-
-  const toggleFeedbackModal = () =>
-    setStoreValues({
-      showFeedbackModal: !showFeedbackModal,
-    })
-
-  /**
-   * Navigate to FAQ page.
-   */
-  const handleGoToFAQ = () => {
-    if (!!window) {
-      const href = window.location.origin + '/faq/'
-      window.location.href = href
-    }
-  }
+  const {
+    toggleFeedback,
+    feedbackState: { show },
+  } = useFeedbackPanel()
 
   return (
     <Modal
-      isOpen={showFeedbackModal}
-      toggle={toggleFeedbackModal}
+      isOpen={show}
+      toggle={toggleFeedback}
       className={'feedback-modal'}
       backdrop={true}
       keyboard={true}
       autoFocus={true}
       centered={true}
     >
-      <ModalHeader
-        toggle={toggleFeedbackModal}
-      ></ModalHeader>
+      <ModalHeader toggle={toggleFeedback}></ModalHeader>
       <ModalBody>
         <FeedbackContent />
       </ModalBody>

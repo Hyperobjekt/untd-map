@@ -19,8 +19,6 @@
   font-weight: 400;
 }
 
-@import url('https://cloud.typography.com/6135894/7078832/css/fonts.css');
-
 // Adobe Caslon Pro Regular
 @mixin adobe-caslon-regular {
   font-family: adobe-caslon-pro, serif;
@@ -65,6 +63,28 @@
 html {
   font-size: 62.5%; // sets sitewide font sizes based on user's font size in browser
 }
+
+// redefine spacers for bootstrap sizing utilities
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25,
+  ),
+  2: (
+    $spacer * 0.5,
+  ),
+  3: $spacer,
+  4: (
+    $spacer * 1.5,
+  ),
+  5: (
+    $spacer * 2,
+  ),
+  6: (
+    $spacer * 2.5,
+  ),
+);
 
 @import '~bootstrap/scss/bootstrap.scss';
 

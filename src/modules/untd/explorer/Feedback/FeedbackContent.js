@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import useStore from './../store'
 import { CoreButton } from './../../../core'
 import { GeocodeSearch } from './../GeocodeSearch'
+import useFeedbackPanel from './useFeedbackPanel'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -20,26 +21,19 @@ import { GeocodeSearch } from './../GeocodeSearch'
 const FeedbackContent = ({ children, ...props }) => {
   // console.log('FeedbackContent')
 
-  const {
-    setStoreValues,
-    feedbackFeature,
-    feedbackAddress,
-    feedbackLngLat,
-    breakpoint,
-    currentLocation,
-  } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      feedbackFeature: state.feedbackFeature,
-      feedbackFeatureType: state.feedbackFeatureType,
-      feedbackAddress: state.feedbackAddress,
-      feedbackLngLat: state.feedbackLngLat,
-      breakpoint: state.breakpoint,
-      currentLocation: state.currentLocation,
+  const { breakpoint, currentLocation } = useStore(
+    ({ breakpoint, currentLocation }) => ({
+      breakpoint,
+      currentLocation,
     }),
     shallow,
   )
-  // console.log('feedbackFeature, ', feedbackFeature)
+
+  const {
+    clearFeedback,
+    feedbackState,
+    setFeedbackState,
+  } = useFeedbackPanel()
 
   /**
    * Submit the form to netlify forms
@@ -66,12 +60,9 @@ const FeedbackContent = ({ children, ...props }) => {
             el.place_type.indexOf('address') > -1 ||
             el.place_type.indexOf('poi') > -1,
         )
-        setStoreValues({
-          feedbackLngLat: [
-            currentLocation[0],
-            currentLocation[1],
-          ],
-          feedbackAddress: addresses[0].place_name,
+        setFeedbackState({
+          point: [currentLocation[0], currentLocation[1]],
+          address: addresses[0].place_name,
         })
       })
   }
@@ -126,9 +117,9 @@ const FeedbackContent = ({ children, ...props }) => {
       //   // setIsSubmittedError(true);
       // }, 1400);
 
-      values.address = feedbackAddress
-      values.longitude = feedbackLngLat[0]
-      values.latitude = feedbackLngLat[1]
+      values.address = feedbackState.address
+      values.longitude = feedbackState.point[0]
+      values.latitude = feedbackState.point[1]
 
       // detect spam with honeypot
       if (honeypotRef.current.value !== '') return
@@ -199,18 +190,14 @@ const FeedbackContent = ({ children, ...props }) => {
    * @returns String
    */
   const getInstructions = () => {
-    return !!feedbackFeature
+    return !!feedbackState.feature
       ? i18n.translate(`FEEDBACK_INSTR_WITHFEATURE`)
       : i18n.translate(`FEEDBACK_INSTR`)
   }
 
   const handleCancel = () => {
     // console.log('handleCancel()')
-    setStoreValues({
-      showFeedbackModal: false,
-      feedbackAddress: '',
-      feedbackFeature: 0,
-    })
+    clearFeedback()
     formik.resetForm()
   }
 
@@ -230,7 +217,7 @@ const FeedbackContent = ({ children, ...props }) => {
           }}
         ></Col>
       </Row>
-      {!feedbackFeature && (
+      {!feedbackState.feature && (
         <Row className={clsx('row-location')}>
           <Col
             xs="12"
@@ -330,7 +317,7 @@ const FeedbackContent = ({ children, ...props }) => {
               <label htmlFor="address">Address</label>
               <Input
                 id="address"
-                value={feedbackAddress}
+                value={feedbackState.address}
                 type="text"
                 readOnly={true}
                 style={{ backgroundColor: 'transparent' }}
@@ -510,8 +497,8 @@ const FeedbackContent = ({ children, ...props }) => {
                 }`}
                 disabled={
                   formik.isSubmitting ||
-                  feedbackAddress.length === 0 ||
-                  feedbackLngLat.length < 2
+                  feedbackState.address.length === 0 ||
+                  feedbackState.point.length < 2
                 }
                 label={i18n.translate(`FEEDBACK_SUBMIT`)}
                 color="primary"

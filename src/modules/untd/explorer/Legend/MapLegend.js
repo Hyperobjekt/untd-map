@@ -87,7 +87,7 @@ const MapLegend = ({ ...props }) => {
       <div
         className={clsx(
           'map-legend',
-          'p-4',
+          'p-5',
           !!showMobileLegend
             ? 'show-mobile'
             : 'hide-mobile',
@@ -111,7 +111,7 @@ const MapLegend = ({ ...props }) => {
           </CoreButton>
         )}
         <div className="map-legend-metric-title">
-          <h3 className="gotham16 w600">
+          <h3 className="gotham16 w500">
             {metricLabel(metric)}
           </h3>
           {!(
