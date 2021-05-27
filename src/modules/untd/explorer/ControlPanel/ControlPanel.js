@@ -90,47 +90,32 @@ const ControlPanel = ({ children }) => {
     )
     // Conditionally adjust panel settings
     let newActiveState = false
+    // open panel
     if (
-      breakpoint === 'xs' ||
-      breakpoint === 'sm' ||
-      breakpoint === 'md'
+      !slideoutPanel.active &&
+      slideoutPanel.panel.length < 1
     ) {
-      // console.log('show the modal')
-      setStoreValues({
-        showPanelModal: true,
-        slideoutPanel: {
-          active: false,
-          panel: clicked,
-        },
-      })
+      // If never opened
+      newActiveState = true
+    } else if (
+      !!slideoutPanel.active &&
+      slideoutPanel.panel.length > 0 &&
+      slideoutPanel.panel === clicked
+    ) {
+      // Selected existing open panel
+      newActiveState = false
+      clicked = ''
     } else {
-      // Slideout panel size, handle as slideout.
-      if (
-        !slideoutPanel.active &&
-        slideoutPanel.panel.length < 1
-      ) {
-        // If never opened
-        newActiveState = true
-      } else if (
-        !!slideoutPanel.active &&
-        slideoutPanel.panel.length > 0 &&
-        slideoutPanel.panel === clicked
-      ) {
-        // Selected existing open panel
-        newActiveState = false
-        clicked = ''
-      } else {
-        // Selected different panel
-        newActiveState = true
-      }
-      // Reset panel state
-      setStoreValues({
-        slideoutPanel: {
-          active: newActiveState,
-          panel: clicked,
-        },
-      })
+      // Selected different panel
+      newActiveState = true
     }
+    // Reset panel state
+    setStoreValues({
+      slideoutPanel: {
+        active: newActiveState,
+        panel: clicked,
+      },
+    })
   }
 
   /**

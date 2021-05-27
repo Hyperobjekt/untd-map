@@ -179,31 +179,17 @@ const MapView = props => {
         !activeFeature ||
         activeFeature.id !== feature.id
       ) {
-        if (!!interactionsMobile) {
-          // If it isn't already having a selected hover state.
-          // Launch a modal for mobile.
-          setStoreValues({
-            activeFeature: feature,
-            showPanelModal: true,
-            slideoutPanel: {
-              active: false,
-              panel: 'location',
-            },
-          })
-        } else {
-          setStoreValues({
-            activeFeature: feature,
-            slideoutPanel: {
-              active: true,
-              panel: 'location',
-            },
-          })
-        }
+        setStoreValues({
+          activeFeature: feature,
+          slideoutPanel: {
+            active: true,
+            panel: 'location',
+          },
+        })
       } else {
         // Already selected.
         setStoreValues({
           activeFeature: 0,
-          showPanelModal: false,
           slideoutPanel: {
             active: false,
             panel: 'location',

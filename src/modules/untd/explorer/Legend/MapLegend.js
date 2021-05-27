@@ -43,33 +43,18 @@ const MapLegend = ({ ...props }) => {
     setStoreValues({ showMobileLegend: false })
     // setShowMobileLegend(false)
   }
-  // Active layers
-  const activeLayers = useStore(
-    state => [...state.activeLayers],
-    shallow,
-  )
 
   const slideoutPanel = useStore(
     state => state.slideoutPanel,
   )
   const toggleFilterPanel = () => {
     // console.log('toggleFilterPanel(), ', breakpoint)
-    if (breakpoint === 'md') {
-      setStoreValues({
-        slideoutPanel: {
-          active: false,
-          panel: 'filters', // filters or weights, presumably, possibly info
-        },
-        showPanelModal: true,
-      })
-    } else {
-      setStoreValues({
-        slideoutPanel: {
-          active: true,
-          panel: 'filters', // filters or weights, presumably, possibly info
-        },
-      })
-    }
+    setStoreValues({
+      slideoutPanel: {
+        active: true,
+        panel: 'filters', // filters or weights, presumably, possibly info
+      },
+    })
   }
 
   const metric = getMetric(activeMetric, indicators)
