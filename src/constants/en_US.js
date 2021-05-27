@@ -211,6 +211,7 @@ const en_US = {
   FEEDBACK_INSTR_WITHFEATURE: `<p>Use the form below to submit feedback about your selected point or geographic feature. The address field has been pre-populated with the selected location.</p>`,
   FEEDBACK_INSTR: `<p>Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know!</p><p>The "Use my current location" button will tie your feedback to your current location. You can also search for an addres or point of interest.</p>`,
   FEEDBACK_USE_CURRENT_LOC: `Use my current location`,
+  FEEDBACK_LOC_UNAVAILABLE: `Location access disabled`,
   FEEDBACK_SUBMIT: `Submit`,
   CONTACT_EMAIL: `analytics@childpovertyactionlab.org`,
   // CONTACT_MAILTO: `maito:{email}`,

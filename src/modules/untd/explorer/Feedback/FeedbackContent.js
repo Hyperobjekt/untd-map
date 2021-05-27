@@ -29,6 +29,8 @@ const FeedbackContent = ({ children, ...props }) => {
     shallow,
   )
 
+  const hasCurrentLocation = currentLocation.length === 2
+
   const {
     clearFeedback,
     feedbackState,
@@ -40,7 +42,7 @@ const FeedbackContent = ({ children, ...props }) => {
    */
   const submitForm = () => {}
 
-  const useCurrentLocation = () => {
+  const handleUseCurrentLocation = () => {
     // console.log('useCurrentLocation(), ', currentLocation)
     // Get current location from coords.
     const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -221,59 +223,54 @@ const FeedbackContent = ({ children, ...props }) => {
         <Row className={clsx('row-location')}>
           <Col
             xs="12"
-            md={currentLocation.length === 2 ? 6 : 12}
+            md={6}
             className={clsx(
-              currentLocation.length === 2 &&
-                breakpoint !== 'xs' &&
-                breakpoint !== 'sm'
+              breakpoint !== 'xs' && breakpoint !== 'sm'
                 ? 'pr-0'
                 : '',
             )}
           >
             <GeocodeSearch context="feedback" />
           </Col>
-          {currentLocation.length === 2 && (
-            <>
-              <Col
-                xs="12"
-                md="1"
-                className={clsx(
-                  'col-or',
-                  breakpoint !== 'xs' && breakpoint !== 'sm'
-                    ? 'pl-0 pr-0'
-                    : '',
+
+          <Col
+            xs="12"
+            md="1"
+            className={clsx(
+              'col-or',
+              breakpoint !== 'xs' &&
+                breakpoint !== 'sm' &&
+                'pl-0 pr-0',
+            )}
+          >
+            {i18n.translate(`OR`)}
+          </Col>
+          <Col
+            xs="12"
+            md="5"
+            className={clsx(
+              breakpoint !== 'xs' &&
+                breakpoint !== 'sm' &&
+                'pl-0 ',
+            )}
+          >
+            <CoreButton
+              id="button_use_current_loc"
+              disabled={!hasCurrentLocation}
+              onClick={handleUseCurrentLocation}
+              color="none"
+              className="feedback-use-my"
+            >
+              <MdMyLocation />
+              <span>
+                {i18n.translate(
+                  hasCurrentLocation
+                    ? `FEEDBACK_USE_CURRENT_LOC`
+                    : `FEEDBACK_LOC_UNAVAILABLE`,
                 )}
-              >
-                {i18n.translate(`OR`)}
-              </Col>
-              <Col
-                xs="12"
-                md="5"
-                className={clsx(
-                  breakpoint !== 'xs' && breakpoint !== 'sm'
-                    ? 'pl-0 '
-                    : '',
-                )}
-              >
-                <CoreButton
-                  id="button_use_current_loc"
-                  label={i18n.translate(
-                    `FEEDBACK_USE_CURRENT_LOC`,
-                  )}
-                  onClick={useCurrentLocation}
-                  color="none"
-                  className={clsx('feedback-use-my')}
-                >
-                  <MdMyLocation />
-                  <span>
-                    {i18n.translate(
-                      `FEEDBACK_USE_CURRENT_LOC`,
-                    )}
-                  </span>
-                </CoreButton>
-              </Col>
-            </>
-          )}
+              </span>
+            </CoreButton>
+          </Col>
         </Row>
       )}
       <form

@@ -265,7 +265,6 @@ const [useStore] = create((set, get) => ({
   browserWidth: null,
   schoolHint: null,
   showIntroModal: false,
-  showPanelModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.
   showMapModal: false,
   // Hovered feature ID
@@ -340,8 +339,6 @@ const [useStore] = create((set, get) => ({
       },
       // Active tab in slideout panel.
       activeFilterTab: state.defaultFilterTab,
-      // Close modal if displayed.
-      showPanelModal: false,
       // Return tour to 0.
       tourStepIndex: 0,
       // Run the tour.
