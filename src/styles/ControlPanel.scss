@@ -88,12 +88,12 @@
     flex: 0 0 40px;
     align-self: center;
     &:hover {
-      background-color: $color-untd-lemon; // #f6f6eb;
+      background-color: $color-hover;
     }
     &.active,
     &:focus {
-      background-color: $color-untd-lemon; // #ffeee5;
-      color: $color-untd-darklemon; // #e55934;
+      background-color: $color-active-light;
+      color: $color-active-dark;
     }
     &.button-launch-tour {
       svg {
@@ -256,10 +256,9 @@
     .button-panel-location,
     .button-panel-filters,
     .button-panel-layers {
-      &:hover,
       &.active,
       &:focus {
-        background-color: transparent !important; // $color-untd-lemon; // #ffeee5;
+        // background-color: transparent !important; // $color-untd-lemon; // #ffeee5;
         &:before {
           position: absolute;
           width: 30px;
@@ -268,11 +267,15 @@
           display: block;
           margin: auto;
           border-radius: 50%;
-          background-color: $color-untd-lemon;
+          background-color: $color-active-light;
           z-index: 10;
         }
         svg {
           z-index: 12;
+          path,
+          circle {
+            stroke: $color-active-dark;
+          }
         }
       }
     }

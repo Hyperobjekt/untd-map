@@ -24,8 +24,12 @@ const DemographicStat = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  min-width: 50%;
   margin-top: 1.5rem;
+  min-width: 50%;
+  max-width: 50%;
+  span {
+    max-width: 140px;
+  }
 `
 
 const DemographicsPanel = ({ activeFeature, ...props }) => {

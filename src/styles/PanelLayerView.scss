@@ -1,111 +1,26 @@
 .map-panel-slideout-layers {
-  .button-all-toggle {
-    color: $turtle-green;
-    @include font-gotham-book;
-    font-style: normal;
-    font-weight: 200;
-    font-size: 15px;
-  }
-
   .points-group-parent,
   .map-static-layer-toggle {
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;
   }
-
-  .layer-group-desc,
-  .layer-group-desc p {
-    color: $color-untd-gray;
-    font-size: 1.4rem;
-    line-height: 1.8rem;
-    letter-spacing: 1%;
-    margin-top: 1.3rem;
-  }
-
-  // .button-all-toggle {
-  //   height: 36px;
-  //   font-size: 12px;
-  //   font-weight: 200;
-  //   margin: 16px auto 20px auto;
-  //   color: $color-untd-gray;
-  //   background-color: #fff;
-  //   border: 1px solid #cfd3c2;
-  //   padding: 0 14px;
-  //   svg {
-  //     width: 16px;
-  //     height: 16px;
-  //     margin-top: -3px;
-  //     margin-right: 6px;
-  //     path,
-  //     line,
-  //     rect {
-  //       stroke: $color-untd-gray;
-  //     }
-  //   }
-  //   &:active {
-  //     background-color: $color-untd-lemon !important;
-  //     border-color: $color-untd-darklemon !important;
-  //     color: $color-untd-gray;
-  //   }
-  //   &:focus {
-  //     border: 0;
-  //     border-color: $color-untd-darklemon !important;
-  //     outline: $color-untd-gray auto 1px !important;
-  //     box-shadow: none;
-  //   }
-  // }
-
   .points-group-parent {
     .layer-group {
-      // margin-bottom: 16rem;
-
-      .points-cat-toggle {
-        @include font-gotham-book;
-        color: $color-untd-gray;
-        border: 0;
-        box-shadow: 0;
-        text-decoration: none !important;
-        font-size: 1.6rem !important;
-        color: $turtle-green;
-        padding: 0.375rem 0 0 !important;
-        &:focus,
-        &:active {
-          outline: 0;
-          box-shadow: none !important;
-          text-decoration: none !important;
-        }
-        svg {
-          margin-top: -2px;
-          margin-right: 0.6rem;
-        }
-      }
-
-      .subcat-parent {
-        margin-left: 1rem;
-      }
-
-      input {
-        margin-left: 0.5rem;
-      }
-
       .layer {
         display: block;
         position: relative;
-        padding-left: 28px;
         margin-bottom: 12px;
-        cursor: pointer;
-        // font-size: 22px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
-        margin: 1rem 1.2rem 0 1rem;
-
+        &:first-of-type {
+          margin-top: 1.5rem;
+        }
+        &:last-of-type {
+          margin-bottom: 2rem;
+        }
         label {
-          font-size: 1.3rem;
           cursor: pointer;
+          padding-left: 2.5rem;
+          display: flex;
           .icon {
-            display: inline-block;
+            display: block;
             max-width: 20px;
             max-height: 20px;
             svg {
@@ -115,7 +30,7 @@
             // background-size: 18px 18px;
             background-repeat: no-repeat;
             background-position: center;
-            margin-right: 9px;
+            margin-right: 1.5rem;
             &.color-social_infrastructure svg path,
             &.color-social_infrastructure svg line,
             &.color-social_infrastructure svg rect {
@@ -149,23 +64,15 @@
             }
           }
           .icon-info {
+            // tooltips removed based on design revisions
+            // styles left in, just in case they want to reactivate
+            display: none;
             width: 14px;
             height: 14px;
             color: $color-untd-gray;
+            margin-top: 3px;
+            margin-left: 5px;
           }
-        }
-        input {
-          margin-right: 0.35rem;
-          cursor: pointer;
-          // margin-top: 10px;
-        }
-
-        &:first-of-type {
-          margin-top: 2rem;
-        }
-        &:last-of-type {
-          margin-top: 1rem;
-          margin-bottom: 1.5rem;
         }
 
         svg {
@@ -183,27 +90,30 @@
           cursor: pointer;
           height: 0;
           width: 0;
+          pointer-events: none;
         }
 
         /* Create a custom checkbox */
         .checkmark {
           position: absolute;
           top: 0;
-          left: 0;
+          left: -2px;
           height: 18px;
           width: 18px;
-          background-color: #eee;
+          background-color: #e0e2e5;
           border-radius: 2px;
         }
 
         /* On mouse-over, add a grey background color */
-        &:hover .checkmark {
-          background-color: #ccc;
+        &:hover .checkmark,
+        input:focus ~ .checkmark {
+          background-color: #e0e2e5;
+          box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2);
         }
 
         /* When the checkbox is checked, add a blue background */
         input:checked ~ .checkmark {
-          background-color: #2c390b;
+          background-color: #54a074;
         }
 
         /* Create the checkmark/indicator (hidden when not checked) */
@@ -238,69 +148,74 @@
     background-color: $color-untd-anothergray;
     height: 0.5px;
     border: 0;
-    margin: 1rem 0;
+    margin: -1px 0 1rem 0;
   }
 
   // Static layers.
   .map-static-layer-toggle {
-    margin-bottom: 1rem;
-
-    h5 {
-      padding: 2rem 0 0rem;
-    }
     .map-layer-toggle {
       // Radio buttons container.
-      .layer {
-        label {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          font-size: 1.3rem;
-          input {
-            margin-right: 0.7rem;
-            position: relative;
-          }
-          input:focus {
-            outline: none;
-          }
-          /* make default radio 'invisible' */
-          input[type='radio'] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-          }
+      label {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        input {
+          height: 22px;
+          margin-right: 1rem;
+          position: relative;
+          cursor: pointer;
+        }
+        input:focus {
+          outline: none;
+        }
+        /* make default radio 'invisible' */
+        input[type='radio'] {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+        }
 
-          /* make new radio outer circle */
-          input[type='radio']:before {
-            content: ' ';
-            display: inline-block;
-            position: relative;
-            margin-top: 2px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: 2px solid $color-untd-gray;
-            background-color: transparent;
-          }
+        /* make new radio outer circle */
+        input[type='radio']:before {
+          content: ' ';
+          display: inline-block;
+          position: relative;
+          margin-top: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          border: 2px solid $color-untd-gray;
+          background-color: transparent;
+        }
 
-          /* change colour of radio outer circle when checked */
-          input[type='radio']:checked:before {
-            border-color: $color-untd-gray;
-          }
+        /* change colour of radio outer circle when checked */
+        input[type='radio']:checked:before {
+          border-color: $color-untd-gray;
+        }
 
-          /* make new radio inner circle when checked */
-          input[type='radio']:checked:after {
-            content: ' ';
-            display: block;
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            margin-top: 2px;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            background: $color-untd-gray;
+        /* make new radio inner circle when checked */
+        input[type='radio']:checked:after {
+          content: ' ';
+          display: block;
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          margin-top: 2px;
+          border-radius: 50%;
+          top: 3px;
+          left: 3px;
+          background: $color-untd-gray;
+          &:hover {
+            background: $color-untd-anothergray;
           }
+        }
+        input[type='radio']:hover:before {
+          background: $color-untd-anothergray;
+        }
+        input[type='radio']:hover:checked:after {
+          opacity: 0.9;
         }
       }
     }

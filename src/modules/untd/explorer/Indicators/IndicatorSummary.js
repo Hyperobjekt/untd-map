@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import IndicatorTooltip from '../PanelLocationView/IndicatorTooltip'
 import { Button } from 'reactstrap'
 import { MdCheck } from 'react-icons/md'
+import ActiveIndicator from '../App/ActiveIndicator'
 
 const Summary = styled.div`
   position: relative;
@@ -25,7 +26,7 @@ const Summary = styled.div`
     background: #f9fafb;
     .active-icon {
       opacity: 1;
-      color: #0a6;
+      color: #54a074;
     }
     .btn--activate {
       pointer-events: none;
@@ -33,9 +34,10 @@ const Summary = styled.div`
   }
   .active-icon {
     position: absolute;
-    top: 1.8rem;
+    top: 2rem;
     left: 2rem;
-    opacity: 0.333;
+    opacity: 0.2;
+    font-size: 1.6rem;
   }
 `
 
@@ -43,7 +45,7 @@ const SummaryTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 2rem 0rem 2rem 3rem;
+  padding: 2rem 0rem 2rem 2rem;
   & > * + * {
     margin-left: 0.8rem;
     position: relative;
@@ -82,7 +84,7 @@ const SummaryTitle = styled.div`
 `
 
 const SummaryBody = styled.div`
-  padding: 0rem 0rem 0rem 4rem;
+  padding: 0rem 0rem 0rem 3rem;
   p.gotham12 {
     max-width: 240px;
   }
@@ -128,7 +130,7 @@ const IndicatorSummary = ({
             onActivate && onActivate(indicator, e)
           }
         >
-          <MdCheck
+          <ActiveIndicator
             className="active-icon"
             aria-label={
               'activate ' + i18n.translate(indicator.id)

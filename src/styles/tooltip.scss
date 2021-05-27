@@ -1,8 +1,10 @@
 .tooltip {
   @include font-gotham-book;
-  z-index: 5000;
+  z-index: 9999;
   border-radius: 4px;
   margin-left: 16px;
+  transition: opacity 0.1s linear;
+  transition-delay: 0.4s;
   .arrow {
     display: none;
   }
@@ -10,9 +12,14 @@
     @include font-gotham-book;
     background-color: #2c390b;
     border-radius: 4px;
-    font-size: 1.4rem;
-    line-height: 2.2rem;
-    padding: 0.8rem 2rem;
+    line-height: 1.3333;
+    font-size: 1.3rem;
+    padding: 1rem;
+    text-align: left;
+    p {
+      line-height: 1.3333;
+      font-size: 1.3rem;
+    }
   }
 }
 .tooltip-share {

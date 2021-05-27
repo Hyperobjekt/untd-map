@@ -218,7 +218,7 @@ const en_US = {
   STATIC_LAYER_TIP: `Enable {type}.`,
   TREND_ROBO_DIFF: `From {years} the value <br /><strong>{diffLabel} by {diffValue}</strong>.`,
   TREND_ROBO_NO_DIFF: `From {years} the value <br /><strong>did not change</strong>.`,
-  LOCATION_SELECT_METRIC: `<p>{desc}</p><p>Click to apply this metric to the map.</p>`,
+  LOCATION_SELECT_METRIC: `{desc}`,
   LINEAR_SCALE_MEAN_DESC: `The mean of the total range of values in the data.`,
   LABEL_LOCATION_LINEAR_SCALE: ``,
   RAW_ROBO_DIFF: `The value is <strong>{valueLabel}</strong>, which is <strong>{diffValue} {diffLabel} than average</strong> compared to other {region}.`,

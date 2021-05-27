@@ -3,22 +3,23 @@ import { FiInfo } from 'react-icons/fi'
 import i18n from '@pureartisan/simple-i18n'
 import { Tooltip } from 'reactstrap'
 
+var makeId = function () {
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
+
 const IndicatorTooltip = ({ indicator }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
+  const [elId] = useState(makeId()) // prevent duplicate ids
   return (
     <>
-      <FiInfo
-        className="indicator-tip"
-        id={'tip_prompt_' + indicator.id}
-      />
+      <FiInfo className="indicator-tip" id={elId} />
       <Tooltip
         placement="top"
         isOpen={tooltipOpen}
-        target={'tip_prompt_' + indicator.id}
+        target={elId}
         toggle={toggle}
         autohide={false}
-        className="tip-prompt-layer"
         dangerouslySetInnerHTML={{
           __html: i18n.translate(`${indicator.id}_desc`),
         }}
