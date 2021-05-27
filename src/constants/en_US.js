@@ -82,6 +82,7 @@ const en_US = {
   UI_MAP_LAYERS_PLAYGRS: `Playgrounds`,
   UI_MAP_LAYERS_SMARKETS: `Supermarkets`,
   POPUP_CLICK_TO_FEEDBACK: `Click to add feedback about this feature.`,
+  POPUP_CLICK_TO_LEARN: `Click to learn more and add feedback about this feature.`,
   TERM_INDEX_AVERAGE: `Index Average`,
   TERM_PLURAL: `{term}s`,
   UI_MAP_PANEL_HEADING: `Data Controls`,
@@ -131,19 +132,32 @@ const en_US = {
   UI_MAP_METRIC_DEM_PERM: `Percent of Male Population, All Ages in Buffer`,
   UI_MAP_METRIC_DEM_PERSE: `Percent of Senior Population (65 and Over) in Buffer`,
   // End added 2020-08-26
-  UI_PANEL_INFO_TITLE: 'Exploring in the map view',
+  UI_PANEL_INFO_TITLE: 'Help',
   UI_PANEL_INFO_MAP: `
+
+  <h3>Exploring the map view</h3>
   <p>The map displays North Dallas geographic entities, each color-coded to show their score within the selected economic opportunity metric. The color scale has 5 blocks, each representing a quintile within the scale. The lighter the color, the higher the score.</p>
 
-  <p>You can change the metric shown on the map by clicking the METRICS button and making selections. You can also use this feature to filter geographic entities on the map by quintile.</p>
+  <h3>Viewing different metrics on the map</h3>
+  <p>You can change the metric shown on the map by clicking the DATA CONTROLS button and making selections. You can also use this feature to filter geographic entities on the map by quintile.</p>
 
-  <p>The map also contains point features for a wide variety of neighborhood assets. You can enable and disable these point features by clicking the FEATURES button.</p>
+  <h3>Viewing data for zip codes, census tracts or cities</h3>
+  <p>Press the "DATA CONTROLS" button in the side panel and select your desired geography by clicking the corresponding button under "Geography".  You can view detailed information about a specific place by clicking on it in the map.</p>
 
+  <h3>Viewing neighborhood assets</h3>
+  <p>The map contains a wide variety of neighborhood assets categorized by social infrastructure, commerce, schools, and public health. You can view these assets by clicking the POINTS & OVERLAYS button, selecting a category, and then clicking on the checkboxes to turn them on or off.</p>
+
+  <h3>Providing feedback for a location or asset</h3>
   <p>To add feedback about a geographic entity or point feature, click that location on the map. A panel will open with a pre-populated form.</p>
 
-  <p>You can also grab a snapshot of your screen using the camera button, and share a custom link to your current Explorer view via the SHARE buttons.</p>
+  <h3>Saving and images</h3>
+  <p>Press the camera icon on the right side of the map to capture an image of the map.  You can also use your device's built-in screenshot functionality to capture an image of the tool.</p>
 
-  <p>Questions? Visit our <a href="/faq" target="_blank">FAQ</a>.</p>`,
+  <h3>Sharing a custom view</h3>
+  <p>You can copy a link to your current Explorer view by pressing the "SHARE" button and selecting "Get a custom link".</p>
+
+  <h3>Questions?</h3>
+  <p>Visit our <a href="/faq" target="_blank">FAQ</a> or provide some feedback on the tool by clicking the "FEEDBACK" button.</p>`,
   UI_MAP_CLICK_SCHOOL_PROMPT: `Click on school to view full report.`,
   UI_MAP_SCHOOL_ACCESS_LINK: `Access full report.`,
   UI_MAP_FLY_TO_PROMPT: `Hover school for more information, or click

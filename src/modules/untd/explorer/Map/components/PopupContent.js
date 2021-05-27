@@ -12,14 +12,6 @@ import {
 } from './../../utils'
 import useStore from './../../store'
 
-const ClickToAdd = feature => {
-  return (
-    <p className={clsx('click-to-add')}>
-      {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
-    </p>
-  )
-}
-
 /**
  * Returns popup contents for map feature mouseover
  */
@@ -112,7 +104,9 @@ const PopupContent = ({ ...props }) => {
               {`${props.feature.properties.City}`}
             </div>
           </div>
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
+          </p>
         </div>
       )
     } else if (
@@ -127,7 +121,9 @@ const PopupContent = ({ ...props }) => {
               <h4>{featureLabel}</h4>
             </div>
           )}
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
+          </p>
         </div>
       )
     } else {
@@ -200,44 +196,42 @@ const PopupContent = ({ ...props }) => {
                     return a.order - b.order
                   })
                   .map(el => {
-                    if (!!props.feature.properties[el.id]) {
-                      return (
-                        <div
-                          className="indicator-item"
-                          key={`indicator-item-${el.id}`}
+                    if (!props.feature.properties[el.id])
+                      return null
+                    return (
+                      <div
+                        className="indicator-item"
+                        key={`indicator-item-${el.id}`}
+                      >
+                        <span
+                          className={clsx(
+                            'indicator-title',
+                          )}
                         >
-                          <span
-                            className={clsx(
-                              'indicator-title',
-                            )}
-                          >
-                            {i18n.translate(el.id)}:
-                          </span>{' '}
-                          <span
-                            className={clsx(
-                              'indicator-value',
-                            )}
-                          >
-                            {getRoundedValue(
-                              props.feature.properties[
-                                el.id
-                              ],
-                              el.decimals,
-                              true,
-                              el.currency,
-                              el.percent,
-                            )}
-                          </span>
-                        </div>
-                      )
-                    } else {
-                      return ''
-                    }
+                          {i18n.translate(el.id)}:
+                        </span>{' '}
+                        <span
+                          className={clsx(
+                            'indicator-value',
+                          )}
+                        >
+                          {getRoundedValue(
+                            props.feature.properties[el.id],
+                            el.decimals,
+                            true,
+                            el.currency,
+                            el.percent,
+                          )}
+                        </span>
+                      </div>
+                    )
                   })}
               </div>
             </div>
           )}
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_LEARN')}
+          </p>
         </div>
       )
     }
