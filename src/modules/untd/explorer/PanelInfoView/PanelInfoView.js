@@ -45,7 +45,10 @@ const PanelInfoView = ({ onClose, ...props }) => {
   }
 
   return (
-    <Panel className="map-panel-slideout-info" {...props}>
+    <Panel
+      className="map-panel-slideout-info tour-desk-11"
+      {...props}
+    >
       <PanelHeader onClose={onClose}>
         <h2 className="gotham18">
           {i18n.translate('UI_PANEL_INFO_TITLE')}
@@ -55,7 +58,7 @@ const PanelInfoView = ({ onClose, ...props }) => {
         {enableTour && (
           <div className="d-flex pb-0 pt-5 px-5">
             <CoreButton
-              className="p-3 text-nowrap"
+              className="p-3 text-nowrap tour-desk-12"
               color="light"
               label={i18n.translate(
                 'UI_MAP_INTRO_MODAL_TOUR_BTN',

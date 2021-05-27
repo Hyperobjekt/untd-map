@@ -10,7 +10,7 @@ import {
 } from './../../../../constants/colors'
 import { getQuintileDesc } from './../utils'
 
-const InteractiveScale = ({ ...props }) => {
+const InteractiveScale = ({ className, ...props }) => {
   // console.log('InteractiveScale, ', props)
   // Generic state setter.
   const setStoreValues = useStore(
@@ -89,6 +89,7 @@ const InteractiveScale = ({ ...props }) => {
           'button-metric',
           activeMetric === props.metric.id ? 'active' : '',
           'button-' + props.metric.id,
+          className,
         )}
         id={'metric_select_' + props.metric.id}
         aria-label={getScaleAriaLabel()}

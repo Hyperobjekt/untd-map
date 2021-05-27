@@ -33,7 +33,7 @@ const PanelFilterView = ({ onClose, ...props }) => {
 
   return (
     <Panel
-      className="map-panel-slideout-filters"
+      className="map-panel-slideout-filters tour-desk-5"
       {...props}
     >
       <PanelHeader
@@ -51,7 +51,10 @@ const PanelFilterView = ({ onClose, ...props }) => {
             'UI_MAP_FILTER_INSTRUCTIONS_UNTD',
           )}
         </label>
-        <ButtonGroup id="geographyGroup">
+        <ButtonGroup
+          id="geographyGroup"
+          className="tour-desk-6"
+        >
           {UNTD_LAYERS.map((el, i) => (
             <Button
               color="outlined"

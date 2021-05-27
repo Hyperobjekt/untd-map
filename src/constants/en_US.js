@@ -195,7 +195,7 @@ const en_US = {
   TOUR_DESK_STEP_5: `Use the metrics panel to customize which geographic entities are displayed on the map along with the active metric.`,
   TOUR_DESK_STEP_6: `Use the dropdown to switch between different types of regions like zip codes, census tracts, and so on.`,
   TOUR_MOBILE_STEP_7: `Tap a metric to toggle certain intervals on or off.`,
-  TOUR_DESK_STEP_7: `Click a metric to toggle certain intervals on or off.`,
+  TOUR_DESK_STEP_7: `Click a color to toggle certain intervals on or off.`,
   TOUR_DESK_STEP_8: `Click checkboxes within the features panel to toggle different types of features on or off.`,
   TOUR_MOBILE_STEP_8: `Tap checkboxes within the features panel to toggle different types of features on or off.`,
   TOUR_DESK_STEP_9: `Search for a location using the search bar. When selecting a location, the map will zoom and pan to center this location in the viewport. `,

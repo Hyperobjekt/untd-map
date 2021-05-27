@@ -17,7 +17,10 @@ const PanelLayersView = ({ onClose, ...props }) => {
 
   if (!pointLayers) return null
   return (
-    <Panel className="map-panel-slideout-layers" {...props}>
+    <Panel
+      className="map-panel-slideout-layers tour-desk-8"
+      {...props}
+    >
       <PanelHeader onClose={onClose}>
         <h2 className="gotham18">
           {i18n.translate(`UI_MAP_POINTS_OVERLAYS`)}

@@ -184,7 +184,7 @@ const GeocodeSearch = ({ ...props }) => {
   }
 
   return (
-    <div className="search-autosuggest input-group">
+    <div className="search-autosuggest input-group tour-desk-9">
       <div className={clsx('geocode-search-prompt')}>
         <FiSearch
           className="icon-search"

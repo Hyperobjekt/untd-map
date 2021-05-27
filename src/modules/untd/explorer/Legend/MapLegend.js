@@ -87,6 +87,7 @@ const MapLegend = ({ ...props }) => {
       <div
         className={clsx(
           'map-legend',
+          'tour-desk-4',
           'p-5',
           !!showMobileLegend
             ? 'show-mobile'
@@ -150,7 +151,10 @@ const MapLegend = ({ ...props }) => {
             </div>
           </div>
         </div>
-        <InteractiveScale metric={metric} />
+        <InteractiveScale
+          className="tour-desk-7"
+          metric={metric}
+        />
       </div>
     )
   } else {
