@@ -12,7 +12,7 @@ import styled from 'styled-components'
 const ContentWrapper = styled.div`
   padding: 2rem;
   h3 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
     &:first-child {

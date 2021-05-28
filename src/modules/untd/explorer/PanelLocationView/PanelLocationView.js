@@ -19,6 +19,7 @@ import Panel from '../../../core/Panel/Panel'
 import PanelBody from '../../../core/Panel/PanelBody'
 import { Button } from 'reactstrap'
 import useFeedbackPanel from '../Feedback/useFeedbackPanel'
+import { FeedbackIcon } from '../../../core/Icons'
 
 const PanelLocationView = ({ open, onClose, ...props }) => {
   // Generic store value setter.
@@ -75,7 +76,8 @@ const PanelLocationView = ({ open, onClose, ...props }) => {
           onClick={handleShowFeedback}
           color="outlined knockout12"
         >
-          Feedback
+          <FeedbackIcon className="mx-3 d-block" />
+          <span>{i18n.translate(`FEEDBACK`)}</span>
         </Button>
       </PanelHeader>
       {activeFeature && (

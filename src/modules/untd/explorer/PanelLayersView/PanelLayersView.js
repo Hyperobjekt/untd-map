@@ -7,6 +7,7 @@ import Panel from '../../../core/Panel/Panel'
 import PanelHeader from '../../../core/Panel/PanelHeader'
 import PanelBody from '../../../core/Panel/PanelBody'
 import usePointLayers from './usePointLayers'
+import { MdRefresh } from 'react-icons/md'
 
 const PanelLayersView = ({ onClose, ...props }) => {
   const {
@@ -30,7 +31,10 @@ const PanelLayersView = ({ onClose, ...props }) => {
           color="outlined"
           className="knockout12"
         >
-          {i18n.translate('BUTTON_RESET_POINTS')}
+          <MdRefresh />
+          <span>
+            {i18n.translate('BUTTON_RESET_POINTS')}
+          </span>
         </Button>
       </PanelHeader>
       <PanelBody>

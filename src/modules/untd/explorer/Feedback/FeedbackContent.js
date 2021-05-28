@@ -108,20 +108,11 @@ const FeedbackContent = ({ children, ...props }) => {
       signup: Yup.boolean(),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      console.log('onSubmit()', values)
-      // For testing form funct locally.
-      // setTimeout(() => {
-      //   alert(JSON.stringify(values, null, 2));
-      //   formik.setSubmitting(false);
-      //   // If submission succeeds.
-      //   setIsSubmitted(true);
-      //   // If submission fails.
-      //   // setIsSubmittedError(true);
-      // }, 1400);
-
       values.address = feedbackState.address
       values.longitude = feedbackState.point[0]
       values.latitude = feedbackState.point[1]
+
+      console.log('onSubmit()', values)
 
       // detect spam with honeypot
       if (honeypotRef.current.value !== '') return
@@ -148,12 +139,6 @@ const FeedbackContent = ({ children, ...props }) => {
           // Clear form fields
           formik.resetForm()
         } else {
-          // Catch submission errors.
-          // console.log(
-          //   'Submission error:',
-          //   response.status,
-          //   response.statusText,
-          // )
           // Turn off submitting state.
           formik.setSubmitting(false)
           // Enable display of submission error message.

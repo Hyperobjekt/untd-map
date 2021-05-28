@@ -276,6 +276,7 @@ const ControlPanel = ({ children }) => {
       {/* <div className="control-label">
         {i18n.translate('FEEDBACK')}
       </div> */}
+      <hr />
       <CoreButton
         id="button_toggle_feedback"
         label={i18n.translate(`FEEDBACK_BUTTON_TOOLTIP`)}
@@ -283,18 +284,16 @@ const ControlPanel = ({ children }) => {
         onClick={openFeedback}
         color="none"
         styles={{ display: 'none' }}
-        className={clsx(
-          'button-modal-feedback, button-feedback-link',
-        )}
+        className="button-feedback-link"
       >
-        <FeedbackIcon className="d-block d-lg-none" />
-        <span className="d-none d-lg-block">
+        <FeedbackIcon className="d-block d-md-none" />
+        <span className="d-none d-md-block">
           {i18n.translate(`FEEDBACK`)}
         </span>
       </CoreButton>
       {/* <Divider /> */}
-      <UnifiedShareBtn className="d-block d-lg-none" />
-      <DesktopUnifiedShareBtn className="d-none d-lg-block" />
+      <UnifiedShareBtn className="d-block d-md-none" />
+      <DesktopUnifiedShareBtn className="d-none d-md-block" />
     </div>
   )
 }

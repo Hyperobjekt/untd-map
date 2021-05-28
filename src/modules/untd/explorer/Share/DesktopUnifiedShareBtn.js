@@ -40,7 +40,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         className="tooltip-share"
       >
         <div className="tooltip-custom-content">
-          <div className="item">
+          <div className="item w-100">
             <TwitterShareBtn tooltip={false}>
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_TWITTER`)}

@@ -92,26 +92,27 @@ export const MOBILE_STEPS = [
     clickOn: ['#map_legend_toggle'],
   },
   {
-    target: '.modal .map-panel-slideout-filters',
+    target: '.tour-desk-5',
     text: 'TOUR_DESK_STEP_5',
     placement: 'center',
     disableBeacon: true,
     clickOn: ['#button_toggle_panel_filters'],
   },
   {
-    target: '.modal .map-panel-slideout-filters .dropdown',
+    target: '.tour-desk-6',
     text: 'TOUR_DESK_STEP_6',
     placement: 'bottom',
     disableBeacon: true,
   },
   {
-    target: '.modal .map-panel-slideout-filters .filter',
+    target: '.tour-desk-7',
     text: 'TOUR_MOBILE_STEP_7',
     placement: 'top',
     disableBeacon: true,
+    clickOn: ['#button_toggle_panel_filters'],
   },
   {
-    target: '.modal .map-panel-slideout-layers',
+    target: '.tour-desk-8',
     text: 'TOUR_MOBILE_STEP_8', // Search for a school...
     placement: 'center',
     disableBeacon: true,
@@ -121,7 +122,7 @@ export const MOBILE_STEPS = [
     ],
   },
   {
-    target: '.react-autosuggest__container',
+    target: '.tour-desk-9',
     text: 'TOUR_DESK_STEP_9', // Hover a school..., click a school...
     placement: 'bottom',
     disableBeacon: true,
@@ -134,7 +135,7 @@ export const MOBILE_STEPS = [
     disableBeacon: true,
   },
   {
-    target: '.modal .map-panel-slideout-info',
+    target: '.tour-desk-11',
     text: 'TOUR_DESK_STEP_11', // The map has additional layers...
     placement: 'center',
     disableBeacon: true,
@@ -145,6 +146,5 @@ export const MOBILE_STEPS = [
     text: 'TOUR_MOBILE_STEP_12', // The feeder view displays all of the....
     placement: 'center',
     disableBeacon: true,
-    clickOn: ['.modal .close'],
   },
 ]

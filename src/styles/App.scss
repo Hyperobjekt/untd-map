@@ -62,6 +62,9 @@ p {
   @include font-knockout-jr-lightweight;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  * {
+    @include font-knockout-jr-lightweight;
+  }
 }
 .knockout14 {
   font-size: 1.4rem;
@@ -69,8 +72,17 @@ p {
 .knockout13 {
   font-size: 1.3rem;
 }
-.knockout12 {
+.knockout12,
+.btn.knockout12 {
   font-size: 1.2rem;
+}
+.btn[class*='knockout'] {
+  svg {
+    margin-right: 0.5rem;
+    font-size: 1.6rem;
+    width: 1.6rem;
+    height: 1.6rem;
+  }
 }
 
 // color helpers
@@ -129,6 +141,7 @@ p {
   &:not(:disabled):not(.disabled).active {
     background-color: $color-active-light;
     color: $color-primary;
+    border-color: $color-active-dark;
     &:focus,
     &:hover {
       background-color: $color-active-hover;
