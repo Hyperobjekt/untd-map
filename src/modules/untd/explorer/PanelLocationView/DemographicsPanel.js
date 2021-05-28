@@ -1,23 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
-import clsx from 'clsx'
-
-import useStore from './../store'
-import { CoreButton } from './../../../core'
-import {
-  getGeoFeatureLabel,
-  setActiveQuintile,
-  getActiveLayerIndex,
-  getRoundedValue,
-} from './../utils'
-import NonInteractiveScale from './../NonInteractiveScale'
-import LinearScale from './../LinearScale'
-import TrendChart from './TrendChart'
-import IndicatorTooltip from './IndicatorTooltip'
-import { CRI_COLORS } from './../../../../constants/colors'
-import { UNTD_LAYERS } from './../../../../constants/layers'
+import { getRoundedValue } from './../utils'
 import styled from 'styled-components'
 
 const DemographicStat = styled.div`

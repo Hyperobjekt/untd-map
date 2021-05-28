@@ -7,13 +7,17 @@ var makeId = function () {
   return '_' + Math.random().toString(36).substr(2, 9)
 }
 
-const IndicatorTooltip = ({ indicator }) => {
+const IndicatorTooltip = ({ indicator, size }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
   const [elId] = useState(makeId()) // prevent duplicate ids
   return (
     <>
-      <FiInfo className="indicator-tip" id={elId} />
+      <FiInfo
+        className="indicator-tip"
+        style={{ fontSize: size }}
+        id={elId}
+      />
       <Tooltip
         placement="top"
         isOpen={tooltipOpen}

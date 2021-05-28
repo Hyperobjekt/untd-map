@@ -4,15 +4,14 @@ import clsx from 'clsx'
 
 import { hasValue } from './../utils'
 
-import IndicatorButton from './IndicatorButton'
 import IndicatorRawScale from './IndicatorRawScale'
 import IndicatorSdScale from './IndicatorSdScale'
 import IndicatorTrend from './IndicatorTrend'
 import styled from 'styled-components'
-import IndicatorTooltip from '../PanelLocationView/IndicatorTooltip'
 import { Button } from 'reactstrap'
 import { MdCheck } from 'react-icons/md'
 import ActiveIndicator from '../App/ActiveIndicator'
+import IndicatorTooltip from './IndicatorTooltip'
 
 const Summary = styled.div`
   position: relative;
@@ -140,7 +139,7 @@ const IndicatorSummary = ({
         <h3 className="indicator-name gotham14 w500">
           {i18n.translate(indicator.id)}
         </h3>
-        <IndicatorTooltip indicator={indicator} />
+        <IndicatorTooltip size={16} indicator={indicator} />
       </SummaryTitle>
       <SummaryBody>
         <IndicatorRawScale
