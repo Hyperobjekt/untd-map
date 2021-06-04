@@ -12,6 +12,7 @@ import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
 import { getMetric } from '../utils'
 import InteractiveScale from '../PanelFilterView/InteractiveScale'
 import { Button } from 'reactstrap'
+import ChoroplethLegend from './ChoroplethLegend'
 
 /**
  * Legend for map
@@ -119,26 +120,9 @@ const MapLegend = ({ ...props }) => {
             </Button>
           )}
         </div>
-        <div className="map-legend-zone-labels gotham12">
-          <div className="fewer">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_FEWER`)}
-            </div>
-          </div>
-          <div className="avg">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_AVG`)}
-            </div>
-          </div>
-          <div className="more">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_MORE`)}
-            </div>
-          </div>
-        </div>
-        <InteractiveScale
+        <ChoroplethLegend
+          interactive
           className="tour-desk-7"
-          metric={metric}
         />
       </div>
     )
