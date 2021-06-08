@@ -57,6 +57,7 @@ const PanelFilterView = ({ onClose, ...props }) => {
         >
           {UNTD_LAYERS.map((el, i) => (
             <Button
+              key={el.id}
               color="outlined"
               className="text-capitalize"
               value={el.id}

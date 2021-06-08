@@ -6,6 +6,10 @@ import { FiChevronRight } from 'react-icons/fi'
 import LayersInput from './LayersInput'
 import styled from 'styled-components'
 
+const Container = styled.div`
+  position: relative;
+`
+
 const CategoryButton = styled(Button)`
   display: flex;
   width: calc(100% + 4rem);
@@ -31,6 +35,12 @@ const CategoryButton = styled(Button)`
   }
 `
 
+const ButtonGroup = styled.div`
+  position: absolute;
+  right: 3.2rem;
+  top: 1.35rem;
+`
+
 const CategoryMarker = styled.span`
   width: 16px;
   height: 16px;
@@ -46,14 +56,21 @@ const PointLayerCategory = ({
   subcategories,
   color,
   onChange,
+  onChangeAll,
   defaultOpen = false,
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const toggleCategory = e => {
     setIsOpen(!isOpen)
   }
+  const handleToggleAll = e => {
+    onChangeAll && onChangeAll(id, true, e)
+  }
+  const handleToggleNone = e => {
+    onChangeAll && onChangeAll(id, false, e)
+  }
   return (
-    <>
+    <Container>
       <CategoryButton
         color="transparent"
         onClick={toggleCategory}
@@ -80,6 +97,23 @@ const PointLayerCategory = ({
           }}
         />
       </CategoryButton>
+      <ButtonGroup>
+        <Button
+          color="transparent"
+          className="knockout12"
+          onClick={handleToggleAll}
+        >
+          All
+        </Button>
+        <Button
+          color="transparent"
+          className="knockout12"
+          onClick={handleToggleNone}
+        >
+          None
+        </Button>
+      </ButtonGroup>
+
       <Collapse isOpen={isOpen}>
         {pointLayers.map(point => {
           return (
@@ -105,7 +139,7 @@ const PointLayerCategory = ({
             />
           ))}
       </Collapse>
-    </>
+    </Container>
   )
 }
 

@@ -100,7 +100,10 @@ LayersInput.propTypes = {
   tooltip: PropTypes.string,
   onChange: PropTypes.func,
   layer: PropTypes.object,
-  isChecked: PropTypes.bool,
+  isChecked: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.number,
+  ]),
   label: PropTypes.string,
   tooltip: PropTypes.string,
   id: PropTypes.string,

@@ -297,10 +297,10 @@ export const getPolygonLines = (type, context) => {
       'line-width': [
         'case',
         ['==', ['feature-state', 'hover'], true],
-        3,
+        2,
         ['==', ['feature-state', 'selected'], true],
         3,
-        1,
+        0.5,
       ],
     },
     filter: getFilter(

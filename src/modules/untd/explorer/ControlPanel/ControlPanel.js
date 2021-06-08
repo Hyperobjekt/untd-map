@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
@@ -8,7 +7,6 @@ import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'
 import {
   MetricsIcon,
-  FeaturesIcon,
   InfoIcon,
   LayersIcon,
   FeedbackIcon,
@@ -18,7 +16,6 @@ import {
   UnifiedShareBtn,
   DesktopUnifiedShareBtn,
 } from './../Share'
-import { TourButton } from './../Tour'
 import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 /**
