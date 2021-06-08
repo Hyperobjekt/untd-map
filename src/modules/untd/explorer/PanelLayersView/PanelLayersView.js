@@ -14,6 +14,7 @@ const PanelLayersView = ({ onClose, ...props }) => {
     pointLayers,
     resetAll,
     togglePointLayer,
+    toggleCategoryPointLayers,
   } = usePointLayers()
 
   if (!pointLayers) return null
@@ -55,6 +56,7 @@ const PanelLayersView = ({ onClose, ...props }) => {
                 defaultOpen={i === 0}
                 {...cat}
                 onChange={togglePointLayer}
+                onChangeAll={toggleCategoryPointLayers}
               />
             ))}
           </div>

@@ -99,6 +99,32 @@ export default function usePointLayers() {
     [pointTypes, activePointTypes],
   )
 
+  /** Toggles all point layers in a category */
+  const toggleCategoryPointLayers = useCallback(
+    (category, on, event) => {
+      // get the point layer indexes that belong to this category
+      const categoryIndexes = pointTypes.reduce(
+        (indexes, current, i) => {
+          if (current.category === category) indexes.push(i)
+          return indexes
+        },
+        [],
+      )
+      // update the value of indexes that belong to this category
+      const newActivePoints = activePointTypes.map(
+        (p, i) => {
+          if (categoryIndexes.indexOf(i) > -1)
+            return Number(on)
+          return p
+        },
+      )
+      setStoreValues({
+        activePointTypes: newActivePoints,
+      })
+    },
+    [pointTypes, activePointTypes],
+  )
+
   /**
    * Provides point layer state, with categories and subcategories
    */
@@ -127,5 +153,10 @@ export default function usePointLayers() {
     [activePointTypes, pointTypes],
   )
 
-  return { pointLayers, resetAll, togglePointLayer }
+  return {
+    pointLayers,
+    resetAll,
+    togglePointLayer,
+    toggleCategoryPointLayers,
+  }
 }
