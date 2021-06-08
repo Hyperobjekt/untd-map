@@ -251,6 +251,7 @@ const DataLoader = ({ ...props }) => {
   // Update overall loading tracking.
   useEffect(() => {
     files.forEach((el, i) => {
+      console.log('LOADING', el)
       const xhr = new XMLHttpRequest()
       const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${el.filename}.${el.ext}.gz`
       // console.log('path, ', path)
@@ -269,10 +270,12 @@ const DataLoader = ({ ...props }) => {
             // )
             if (el.ext === 'json' || el.ext === 'geojson') {
               const _data = JSON.parse(xhr.responseText)
+              console.log('GOT JSON', el, _data)
               if (
                 el.type !== 'point' &&
                 el.type !== 'data'
               ) {
+                console.log('ADD IDS')
                 // Add ids to every feature.
                 _data.features = _data.features.map(
                   feature => {
