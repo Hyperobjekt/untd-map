@@ -48,7 +48,6 @@ const PanelLocationView = ({ open, onClose, ...props }) => {
       Number(el.GEOID) ===
       Number(activeFeature?.properties?.GEOID),
   )
-  console.log({ trendData, trends })
 
   // Stores the index of the selected location's layer
   // for fetching min, max, and mean from indicator arrays.

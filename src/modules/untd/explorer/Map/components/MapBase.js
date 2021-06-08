@@ -9,17 +9,16 @@ import useResizeAware from 'react-resize-aware'
 import ReactMapGL, { NavigationControl } from 'react-map-gl'
 import { fromJS } from 'immutable'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import i18n from '@pureartisan/simple-i18n'
-import { css, cx } from 'emotion'
 import shallow from 'zustand/shallow'
+import styled from 'styled-components'
 
 import { defaultMapStyle } from '../selectors'
 import { getClosest } from '../utils'
 import {
   usePrevious,
   checkControlHovered,
-  useDebounce,
+
 } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
@@ -650,8 +649,8 @@ const MapBase = ({
             }}
           ></span>
         </div>
-        <div
-          className={clsx('map__zoom', cx(mapZoomStyles))}
+        <MapControls
+          className='map__zoom'
         >
           {activeView === 'explorer' && (
             <>
@@ -662,7 +661,6 @@ const MapBase = ({
               ></NavigationControl>
               <div
                 className="map-btn-group"
-                className={clsx(cx(btnGroupStyles))}
               >
                 <MapResetButton
                   resetViewport={handleResetViewport}
@@ -671,7 +669,7 @@ const MapBase = ({
               </div>
             </>
           )}
-        </div>
+        </MapControls>
         {children}
       </ReactMapGL>
       {activeView === 'explorer' && <LegendToggleBtn />}
@@ -703,7 +701,7 @@ MapBase.propTypes = {
 
 export default MapBase
 
-const mapZoomStyles = css`
+const MapControls = styled.div`
   position: absolute;
   bottom: 0px;
   top: 0px;
@@ -753,9 +751,8 @@ const mapZoomStyles = css`
     background-repeat: no-repeat;
     background-position: center center;
   }
-`
-
-const btnGroupStyles = css`
-  background-color: #fff;
-  width: 29px;
+  .map-btn-group {
+    background-color: #fff;
+    width: 29px;
+  }
 `

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-import { css, cx } from 'emotion'
+import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store'
@@ -50,7 +50,7 @@ const Layout = ({ children, ...props }) => {
     shallow,
   )
 
-  const mapViewStyles = css`
+  const MapViewContainer = styled.div`
     height: 100%;
     padding-left: ${(breakpoint === 'lg' ||
       breakpoint === 'xl') &&
@@ -59,12 +59,12 @@ const Layout = ({ children, ...props }) => {
       : 0};
   `
 
-  const canvasStyles = css`
+  const AppCanvas = styled(Canvas)`
     position: relative;
     height: 100%;
   `
 
-  const mainStyles = css`
+  const Main = styled.main`
     height: ${activeView === 'explorer'
       ? `calc(100vh - ` +
         variables.dimensions.navbarHeight +
@@ -104,7 +104,7 @@ const Layout = ({ children, ...props }) => {
         <Header>
           <Logo {...logoProps}>
             <div
-              className={clsx('cpal-logo')}
+              className='cpal-logo'
               role="image"
             ></div>
             <div
@@ -133,25 +133,24 @@ const Layout = ({ children, ...props }) => {
           </CoreButton>
         </Header>
       )}
-      <main className={clsx(cx(mainStyles))}>
-        <Canvas className={clsx(cx(canvasStyles))}>
+      <Main>
+        <AppCanvas>
           {activeView === 'explorer' && (
             <>
               <SlideoutPanel />
               <ControlPanel></ControlPanel>
             </>
           )}
-          <div
+          <MapViewContainer
             className={clsx(
               'view-parent',
               activeView
                 ? 'display-' + activeView
                 : 'display-map',
-              cx(mapViewStyles),
             )}
           >
             <MapView />
-          </div>
+          </MapViewContainer>
           {activeView === 'explorer' && (
             <>
               <ShareLinkModal className="modal-share-link" />
@@ -161,8 +160,8 @@ const Layout = ({ children, ...props }) => {
               <FeedbackModal />
             </>
           )}
-        </Canvas>
-      </main>
+        </AppCanvas>
+      </Main>
     </div>
   )
 }

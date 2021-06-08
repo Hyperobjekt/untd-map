@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
-import { setActiveQuintile, hasValue } from './../utils'
-import NonInteractiveScale from './../NonInteractiveScale'
-import { CRI_COLORS } from './../../../../constants/colors'
+import { hasValue } from './../utils'
 import styled from 'styled-components'
+import { ChoroplethLegend } from '../Legend/ChoroplethLegend'
 /**
  * Get robotext for the sd bucket
  * @param Number sd Number 0 - 4
@@ -15,7 +13,7 @@ export const getSDRobo = ({ sd, region }) => {
 }
 
 const SdWrapper = styled.div`
-  .n-i-scale {
+  .choropleth-legend {
     width: 80%;
   }
 `
@@ -30,20 +28,15 @@ const IndicatorSdScale = ({
   return (
     <SdWrapper {...props}>
       <p
-        className="gotham12"
+        className="gotham12 mb-3"
         dangerouslySetInnerHTML={{
           __html: getSDRobo({ sd: value, region }),
         }}
       />
-
-      <NonInteractiveScale
-        metric={indicator.id}
-        showHash={false}
-        quintiles={setActiveQuintile(value)}
-        colors={CRI_COLORS}
-        showMinMax={false}
-        min={0}
-        max={4}
+      <ChoroplethLegend
+        activeIndexes={[value]}
+        noLabels
+        condensed
       />
     </SdWrapper>
   )

@@ -1,13 +1,11 @@
 import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import clsx from 'clsx'
-import { css, cx } from 'emotion'
-
-import { CoreButton } from './../../../core'
 import useStore from './../store'
 import { variables } from './../theme'
+import { Button } from 'reactstrap'
+import styled from 'styled-components'
 
-const legendBtnStyles = css`
+const LegendButton = styled(Button)`
   position: absolute;
   top: calc(${variables.dimensions.navbarHeight} + 20px);
   left: 50%;
@@ -48,21 +46,18 @@ const LegendToggleBtn = ({ ...props }) => {
       (breakpoint === 'sm' && activeView === 'explorer'))
   ) {
     return (
-      <CoreButton
+      <LegendButton
         color=""
         active={true}
         id="map_legend_toggle"
-        className={clsx(
-          cx(legendBtnStyles),
-          `map-legend-btn`,
-        )}
+        className="map-legend-btn"
         onClick={() => {
           updateLegend()
         }}
-        label={i18n.translate(`UI_MAP_SEE_LEGEND`)}
+        aria-label={i18n.translate(`UI_MAP_SEE_LEGEND`)}
       >
         {i18n.translate(`UI_MAP_SEE_LEGEND`)}
-      </CoreButton>
+      </LegendButton>
     )
   } else {
     return ''

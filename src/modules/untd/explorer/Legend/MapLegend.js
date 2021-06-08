@@ -7,10 +7,7 @@ import { MdClose } from 'react-icons/md'
 
 import useStore from '../store'
 import { CoreButton } from './../../../core'
-import { CRI_COLORS } from './../../../../constants/colors'
-import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
 import { getMetric } from '../utils'
-import InteractiveScale from '../PanelFilterView/InteractiveScale'
 import { Button } from 'reactstrap'
 import ChoroplethLegend from './ChoroplethLegend'
 
@@ -21,7 +18,6 @@ const MapLegend = ({ ...props }) => {
   const {
     setStoreValues,
     activeMetric,
-    activeQuintiles,
     breakpoint,
     showMobileLegend,
     indicators,
@@ -30,7 +26,6 @@ const MapLegend = ({ ...props }) => {
     state => ({
       setStoreValues: state.setStoreValues,
       activeMetric: state.activeMetric,
-      activeQuintiles: state.activeQuintiles,
       breakpoint: state.breakpoint,
       showMobileLegend: state.showMobileLegend,
       indicators: state.indicators,
@@ -66,69 +61,62 @@ const MapLegend = ({ ...props }) => {
       : metric.id
   }
 
-  // console.log('legend, metric: ', metric)
-
-  if (!!metric) {
-    return (
-      <div
-        className={clsx(
-          'map-legend',
-          'tour-desk-4',
-          'p-5',
-          !!showMobileLegend
-            ? 'show-mobile'
-            : 'hide-mobile',
-        )}
-      >
-        {(breakpoint === 'xs' || breakpoint === 'sm') && (
-          <CoreButton
-            id="button_close_legend"
-            label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
-            onClick={handleClose}
-            color="none"
-            className={clsx(
-              'button-core',
-              'button-close-legend',
-            )}
-          >
-            <MdClose />
-            <span className="sr-only">
-              {i18n.translate(`BUTTON_CLOSE_PANEL`)}
-            </span>
-          </CoreButton>
-        )}
-        <div className="map-legend-metric-title">
-          <h3 className="gotham16 w500">
-            {metricLabel(metric)}
-          </h3>
-          {!(
-            breakpoint === 'xs' ||
-            breakpoint === 'sm' ||
-            activeView === 'embed'
-          ) && (
-            <Button
-              id="map_legend_open_filter"
-              color="outlined"
-              className="map-legend-open-filter-panel knockout12 px-2 py-0"
-              disabled={
-                slideoutPanel.active &&
-                slideoutPanel.panel === 'filters'
-              }
-              onClick={toggleFilterPanel}
-            >
-              {i18n.translate('LINK_OPEN_FILTER_PANEL')}
-            </Button>
+  if (!metric) return null
+  return (
+    <div
+      className={clsx(
+        'map-legend',
+        'tour-desk-4',
+        'p-5',
+        !!showMobileLegend ? 'show-mobile' : 'hide-mobile',
+      )}
+    >
+      {(breakpoint === 'xs' || breakpoint === 'sm') && (
+        <CoreButton
+          id="button_close_legend"
+          label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
+          onClick={handleClose}
+          color="none"
+          className={clsx(
+            'button-core',
+            'button-close-legend',
           )}
-        </div>
-        <ChoroplethLegend
-          interactive
-          className="tour-desk-7"
-        />
+        >
+          <MdClose />
+          <span className="sr-only">
+            {i18n.translate(`BUTTON_CLOSE_PANEL`)}
+          </span>
+        </CoreButton>
+      )}
+      <div className="map-legend-metric-title">
+        <h3 className="gotham16 w500">
+          {metricLabel(metric)}
+        </h3>
+        {!(
+          breakpoint === 'xs' ||
+          breakpoint === 'sm' ||
+          activeView === 'embed'
+        ) && (
+          <Button
+            id="map_legend_open_filter"
+            color="outlined"
+            className="map-legend-open-filter-panel knockout12 px-2 py-0"
+            disabled={
+              slideoutPanel.active &&
+              slideoutPanel.panel === 'filters'
+            }
+            onClick={toggleFilterPanel}
+          >
+            {i18n.translate('LINK_OPEN_FILTER_PANEL')}
+          </Button>
+        )}
       </div>
-    )
-  } else {
-    return null
-  }
+      <ChoroplethLegend
+        interactive
+        className="tour-desk-7"
+      />
+    </div>
+  )
 }
 
 MapLegend.defaultProps = {

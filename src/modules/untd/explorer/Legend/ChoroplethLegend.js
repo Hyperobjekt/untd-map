@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import styled from 'styled-components'
@@ -9,6 +15,7 @@ import {
   CHORO_STROKE,
 } from '../../../../constants/colors'
 import shallow from 'zustand/shallow'
+import useStore from '../store'
 
 /**
  * Button group container
@@ -20,6 +27,20 @@ const ToggleGroup = styled.div`
   padding-top: 32px;
   & > .btn + .btn {
     margin-left: 4px;
+  }
+  &.no-labels {
+    padding-top: 0;
+    & .btn span {
+      opacity: 0;
+    }
+    & .btn:before {
+      opacity: 0;
+    }
+  }
+  &.condensed {
+    & .btn {
+      height: 16px;
+    }
   }
 `
 
@@ -47,6 +68,7 @@ const ChoroplethToggle = styled(Button)`
     right: 0;
     opacity: 0;
     transition: opacity 0.2s ease;
+    pointer-events: none;
   }
   // line indicator above buttons
   &:before {
@@ -93,45 +115,50 @@ const ChoroplethToggle = styled(Button)`
     &:nth-child(1) {
       background-color: ${CHORO_COLORS[0]};
       border-color: ${CHORO_STROKE[0]};
-      &:hover {
+      &:not(.disabled):hover {
         background-color: ${CHORO_STROKE[0]};
       }
     }
     &:nth-child(2) {
       background-color: ${CHORO_COLORS[1]};
       border-color: ${CHORO_STROKE[1]};
-      &:hover {
+      &:not(.disabled):hover {
         background-color: ${CHORO_STROKE[1]};
       }
     }
     &:nth-child(3) {
       background-color: ${CHORO_COLORS[2]};
       border-color: ${CHORO_STROKE[2]};
-      &:hover {
+      &:not(.disabled):hover {
         background-color: ${CHORO_STROKE[2]};
       }
     }
     &:nth-child(4) {
       background-color: ${CHORO_COLORS[3]};
       border-color: ${CHORO_STROKE[3]};
-      &:hover {
+      &:not(.disabled):hover {
         background-color: ${CHORO_STROKE[3]};
       }
     }
     &:nth-child(5) {
       background-color: ${CHORO_COLORS[4]};
       border-color: ${CHORO_STROKE[4]};
-      &:hover {
+      &:not(.disabled):hover {
         background-color: ${CHORO_STROKE[4]};
       }
+    }
+    &.disabled {
+      opacity: 1;
     }
   }
 `
 
-const ChoroplethLegend = ({
+export const ChoroplethLegend = ({
   classes,
   className,
   interactive,
+  noLabels,
+  condensed,
   activeIndexes: defaultActiveIndexes = [0, 1, 2, 3, 4],
   labelIndexes: defaultLabelIndexes = [0, 2, 4],
   onClick,
@@ -158,11 +185,8 @@ const ChoroplethLegend = ({
 
   // update local state if new active indexes are provided
   useEffect(() => {
-    if (
-      !shallow(defaultActiveIndexes, activeIndexes) &&
-      !hoverRef.current
-    ) {
-      setLabelIndexes(defaultActiveIndexes)
+    if (!shallow(defaultActiveIndexes, activeIndexes)) {
+      setActiveIndexes(defaultActiveIndexes)
     }
   }, [
     defaultActiveIndexes,
@@ -181,7 +205,7 @@ const ChoroplethLegend = ({
   /** Restore the label state when done hovering */
   const handleToggleLeave = event => {
     if (!interactive) return
-    setLabelIndexes(hoverRef.current)
+    hoverRef.current && setLabelIndexes(hoverRef.current)
     hoverRef.current = null
     onHover && onHover(event)
   }
@@ -205,6 +229,10 @@ const ChoroplethLegend = ({
     <ToggleGroup
       onMouseLeave={handleToggleLeave}
       role="group"
+      className={clsx('choropleth-legend', {
+        'no-labels': noLabels,
+        condensed: condensed,
+      })}
       {...props}
     >
       {toggles.map((toggle, i) => (
@@ -219,6 +247,7 @@ const ChoroplethLegend = ({
           onMouseEnter={handleToggleEnter}
           onClick={handleToggleClick}
           aria-label={`toggle ${toggle}`}
+          disabled={!interactive}
         >
           <span>{toggle}</span>
         </ChoroplethToggle>
@@ -227,6 +256,44 @@ const ChoroplethLegend = ({
   )
 }
 
+export const ConnectedChoroplethLegend = props => {
+  const [activeQuintiles, setStoreValues] = useStore(
+    state => [state.activeQuintiles, state.setStoreValues],
+    shallow,
+  )
+
+  /** Memoized active indexes */
+  const activeIndexes = useMemo(
+    () =>
+      activeQuintiles.reduce((indexes, current, i) => {
+        if (current === 1) indexes.push(i)
+        return indexes
+      }, []),
+    [activeQuintiles],
+  )
+
+  const handleToggle = useCallback(
+    event => {
+      const index = Number(event.target.value)
+      const newActiveQuintiles = activeQuintiles.map(
+        (q, i) => (i === index ? Number(!q) : q),
+      )
+      setStoreValues({
+        activeQuintiles: newActiveQuintiles,
+      })
+    },
+    [setStoreValues, activeQuintiles],
+  )
+
+  return (
+    <ChoroplethLegend
+      activeIndexes={activeIndexes}
+      onClick={handleToggle}
+      {...props}
+    />
+  )
+}
+
 ChoroplethLegend.propTypes = {}
 
-export default ChoroplethLegend
+export default ConnectedChoroplethLegend

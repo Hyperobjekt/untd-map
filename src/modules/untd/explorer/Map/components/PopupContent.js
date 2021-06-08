@@ -3,14 +3,13 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 
-import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { CRI_COLORS } from './../../../../../constants/colors'
 import { UNTD_LAYERS } from './../../../../../constants/layers'
 import {
   getRoundedValue,
   getFeatureId,
 } from './../../utils'
 import useStore from './../../store'
+import { ChoroplethLegend } from '../../Legend/ChoroplethLegend'
 
 /**
  * Returns popup contents for map feature mouseover
@@ -43,12 +42,11 @@ const PopupContent = ({ ...props }) => {
   })
   // console.log('rawMetric,', rawMetric)
 
-  const setActiveQuintile = quintile => {
-    // console.log('setActiveQuintile, ', quintile)
-    const arr = [0, 0, 0, 0, 0]
-    arr[quintile] = 1
-    // console.log(arr)
-    return arr
+  const getActiveQuintile = (activeMetric, feature) => {
+    const quintile = Number(
+      props.feature.properties[activeMetric],
+    )
+    return isNaN(quintile) ? [] : [quintile]
   }
 
   const getFeatureLabel = feature => {
@@ -174,20 +172,17 @@ const PopupContent = ({ ...props }) => {
                 </span>
               </div>
               <div className="popup-metric-scale">
-                <NonInteractiveScale
-                  metric={activeMetric}
-                  showHash={false}
-                  quintiles={setActiveQuintile(
-                    Number(
-                      props.feature.properties[
-                        activeMetric
-                      ],
-                    ),
+                <ChoroplethLegend
+                  activeIndexes={getActiveQuintile(
+                    activeMetric,
+                    props.feature,
                   )}
-                  colors={CRI_COLORS}
-                  showMinMax={false}
-                  min={min}
-                  max={max}
+                  labelIndexes={getActiveQuintile(
+                    activeMetric,
+                    props.feature,
+                  )}
+                  noLabels
+                  condensed
                 />
               </div>
               <div className={clsx('popup-indicator-list')}>
