@@ -14,7 +14,7 @@ import shallow from 'zustand/shallow'
 import styled from 'styled-components'
 
 import { defaultMapStyle } from '../selectors'
-import { getClosest, isNonMapEvent } from '../utils'
+import { isNonMapEvent } from '../utils'
 import {
   usePrevious,
   checkControlHovered,
@@ -301,7 +301,7 @@ const MapBase = ({
       // const id = idMap[featureId]
       //   ? idMap[featureId]
       //   : featureId
-      if (!!featureId && !!type) {
+      if (!!featureId && !!type && type !== 'points') {
         const source = {
           source: type,
           id: featureId,
