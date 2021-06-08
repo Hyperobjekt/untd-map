@@ -14,11 +14,10 @@ import shallow from 'zustand/shallow'
 import styled from 'styled-components'
 
 import { defaultMapStyle } from '../selectors'
-import { getClosest } from '../utils'
+import { getClosest, isNonMapEvent } from '../utils'
 import {
   usePrevious,
   checkControlHovered,
-
 } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
@@ -39,7 +38,7 @@ import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
  */
 const getInteractiveLayerIds = layers => {
   // console.log('getInteractiveLayerIds', layers)
-  layers
+  return layers
     .filter(l => l.style.get('interactive'))
     .map(l => l.style.get('id'))
 }
@@ -353,25 +352,6 @@ const MapBase = ({
         canvas.setAttribute('role', 'img')
         canvas.setAttribute('aria-label', ariaLabel)
       }
-      // add geolocation
-      // const geolocateControl = new mapboxgl.GeolocateControl(
-      //   {
-      //     positionOptions: {
-      //       enableHighAccuracy: true,
-      //     },
-      //     trackUserLocation: true,
-      //   },
-      // )
-      const controlContainer = document.querySelector(
-        '.map__zoom:first-child',
-      )
-      // if (controlContainer && currentMap) {
-      //   controlContainer.appendChild(
-      //     geolocateControl.onAdd(currentMap),
-      //   )
-      // }
-
-      // Test query of sources
 
       // trigger load callback
       if (typeof onLoad === 'function') {
@@ -424,30 +404,12 @@ const MapBase = ({
     lngLat,
     srcEvent,
   }) => {
-    // console.log(
-    //   'handleHover, ',
-    //   features,
-    //   point,
-    //   lngLat,
-    //   srcEvent,
-    // )
-    // const type =
-    //   features && features.length > 0
-    //     ? features[0].layer.source
-    //     : null
+    if (!srcEvent) return
+    const isControl = isNonMapEvent(srcEvent)
+    // clear hovered feature if hovering a control
+    if (isControl) return onHover(null, point, lngLat)
     const newHoveredFeature =
       features && features.length > 0 ? features[0] : null
-    // const coords = lngLat
-    // // srcEvent && srcEvent.pageX && srcEvent.pageY
-    // //   ? [
-    // //       Math.round(srcEvent.pageX),
-    // //       Math.round(srcEvent.pageY),
-    // //     ]
-    // //   : null
-    // const geoCoordinates =
-    //   newHoveredFeature && newHoveredFeature.geometry
-    //     ? newHoveredFeature.geometry.coordinates
-    //     : null
     onHover(newHoveredFeature, point, lngLat)
   }
 
@@ -458,17 +420,8 @@ const MapBase = ({
     srcEvent,
     ...rest
   }) => {
-    // console.log('handleClick in MapBase, ', features)
     // was the click on a control
-    const isControl =
-      getClosest(srcEvent.target, '.mapboxgl-ctrl-group') ||
-      getClosest(srcEvent.target, '.map-legend') ||
-      getClosest(srcEvent.target, '#map_reset_button') ||
-      getClosest(srcEvent.target, '#map_capture_button') ||
-      getClosest(srcEvent.target, '.mapboxgl-popup') ||
-      getClosest(srcEvent.target, '.mapboxgl-popup-content')
-    // console.log('click, isControl is', isControl)
-    // if (!!isControl) return
+    const isControl = isNonMapEvent(srcEvent)
     // activate feature if one was clicked and this isn't a control click
     if (features && features.length > 0 && !isControl) {
       const coords =
@@ -508,9 +461,6 @@ const MapBase = ({
             selected: true,
           },
         )
-        // If not, set selected state and call onclick.
-        // onClick(features[0], coords, geoCoordinates)
-        // console.log('click, ', features[0].properties)
       }
       onClick(features[0], coords, geoCoordinates)
     }
@@ -571,15 +521,6 @@ const MapBase = ({
   const handleTouch = () => {
     // console.log('touch is happening')
     onTouch()
-  }
-
-  const handlePopupClose = () => {
-    //
-  }
-
-  const handlePopupClick = e => {
-    // console.log('popup clicked, ', e.currentTarget)
-    e.preventDefault()
   }
 
   const handleMouseMove = e => {
@@ -649,9 +590,7 @@ const MapBase = ({
             }}
           ></span>
         </div>
-        <MapControls
-          className='map__zoom'
-        >
+        <MapControls className="map__zoom">
           {activeView === 'explorer' && (
             <>
               <NavigationControl
@@ -659,9 +598,7 @@ const MapBase = ({
                 onViewportChange={setViewport}
                 captureClick={true}
               ></NavigationControl>
-              <div
-                className="map-btn-group"
-              >
+              <div className="map-btn-group">
                 <MapResetButton
                   resetViewport={handleResetViewport}
                 />

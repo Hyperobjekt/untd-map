@@ -1,6 +1,9 @@
 import { fromJS } from 'immutable'
 
-import { CRI_COLORS } from './../../../../constants/colors'
+import {
+  CHORO_COLORS,
+  CHORO_STROKE,
+} from './../../../../constants/colors'
 import {
   UNTD_LAYERS,
   POINT_CATEGORIES,
@@ -280,24 +283,24 @@ export const getPolygonLines = (type, context) => {
       'line-color': [
         'case',
         ['==', ['get', context.activeMetric], 0],
-        CRI_COLORS[0],
+        CHORO_STROKE[0],
         ['==', ['get', context.activeMetric], 1],
-        CRI_COLORS[1],
+        CHORO_STROKE[1],
         ['==', ['get', context.activeMetric], 2],
-        CRI_COLORS[2],
+        CHORO_STROKE[2],
         ['==', ['get', context.activeMetric], 3],
-        CRI_COLORS[3],
+        CHORO_STROKE[3],
         ['==', ['get', context.activeMetric], 4],
-        CRI_COLORS[4],
-        CRI_COLORS[2],
+        CHORO_STROKE[4],
+        CHORO_STROKE[2],
       ],
       'line-width': [
         'case',
         ['==', ['feature-state', 'hover'], true],
-        2,
+        3,
         ['==', ['feature-state', 'selected'], true],
-        4,
-        0.4,
+        3,
+        1,
       ],
     },
     filter: getFilter(
@@ -310,7 +313,7 @@ export const getPolygonLines = (type, context) => {
 
 export const getPolygonShapes = (type, context) => {
   // console.log('getPolygonShapes(), ', type, context)
-  // console.log('CRI_COLORS', CRI_COLORS)
+
   const isVisible =
     context.activeLayers[
       UNTD_LAYERS.findIndex(el => el.id === type)
@@ -328,24 +331,24 @@ export const getPolygonShapes = (type, context) => {
       'fill-color': [
         'case',
         ['==', ['get', context.activeMetric], 0],
-        CRI_COLORS[0],
+        CHORO_COLORS[0],
         ['==', ['get', context.activeMetric], 1],
-        CRI_COLORS[1],
+        CHORO_COLORS[1],
         ['==', ['get', context.activeMetric], 2],
-        CRI_COLORS[2],
+        CHORO_COLORS[2],
         ['==', ['get', context.activeMetric], 3],
-        CRI_COLORS[3],
+        CHORO_COLORS[3],
         ['==', ['get', context.activeMetric], 4],
-        CRI_COLORS[4],
-        CRI_COLORS[2],
+        CHORO_COLORS[4],
+        CHORO_COLORS[2],
       ],
       'fill-opacity': [
         'case',
         ['==', ['feature-state', 'hover'], true],
-        0.6,
+        1,
         ['==', ['feature-state', 'selected'], true],
-        0.8,
-        0.4,
+        1,
+        0.9,
       ],
     },
     filter: getFilter(
@@ -459,14 +462,14 @@ export const getPolygonLayers = (
   z = z + 2
   return [
     {
-      z: z,
+      z: 5,
       style: getPolygonShapes(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,
       type: `${type}Shapes`,
     },
     {
-      z: z + 1,
+      z: 20,
       style: getPolygonLines(type, context),
       idMap: true,
       hasFeatureId: true, // isCircleId,

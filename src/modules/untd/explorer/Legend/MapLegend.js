@@ -67,7 +67,9 @@ const MapLegend = ({ ...props }) => {
       className={clsx(
         'map-legend',
         'tour-desk-4',
-        'p-5',
+        'px-5',
+        'pt-4',
+        'pb-3',
         !!showMobileLegend ? 'show-mobile' : 'hide-mobile',
       )}
     >
@@ -115,6 +117,9 @@ const MapLegend = ({ ...props }) => {
         interactive
         className="tour-desk-7"
       />
+      <span className="hint">
+        click on a color to toggle filters
+      </span>
     </div>
   )
 }

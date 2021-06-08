@@ -214,33 +214,39 @@ const ControlPanel = ({ children }) => {
           </span>
         </CoreButton>
         <Divider />
-        <div className="control-label">
-          {i18n.translate('CONTROL_PANEL_LOCATION')}
-        </div>
-        <CoreButton
-          id="button_toggle_panel_location"
-          label={i18n.translate(
-            `BUTTON_TOGGLE_PANEL_LOCATION`,
-          )}
-          onClick={handlePanel}
-          color="none"
-          tooltip={buttonTooltipPosition}
-          className={clsx(
-            'button-panel-location',
-            slideoutPanel.active &&
-              slideoutPanel.panel === 'location' &&
-              !!activeFeature
-              ? 'active'
-              : '',
-          )}
-          disabled={!activeFeature}
-        >
-          <LocationIcon />
-          <span className="sr-only">
-            {i18n.translate(`BUTTON_TOGGLE_PANEL_LOCATION`)}
-          </span>
-        </CoreButton>
-        <Divider />
+        {Boolean(activeFeature) && (
+          <React.Fragment>
+            <div className="control-label">
+              {i18n.translate('CONTROL_PANEL_LOCATION')}
+            </div>
+            <CoreButton
+              id="button_toggle_panel_location"
+              label={i18n.translate(
+                `BUTTON_TOGGLE_PANEL_LOCATION`,
+              )}
+              onClick={handlePanel}
+              color="none"
+              tooltip={buttonTooltipPosition}
+              className={clsx(
+                'button-panel-location',
+                slideoutPanel.active &&
+                  slideoutPanel.panel === 'location' &&
+                  !!activeFeature
+                  ? 'active'
+                  : '',
+              )}
+              disabled={!activeFeature}
+            >
+              <LocationIcon />
+              <span className="sr-only">
+                {i18n.translate(
+                  `BUTTON_TOGGLE_PANEL_LOCATION`,
+                )}
+              </span>
+            </CoreButton>
+            <Divider />
+          </React.Fragment>
+        )}
       </>
       <div className="control-label">
         {i18n.translate('CONTROL_PANEL_INFO')}
