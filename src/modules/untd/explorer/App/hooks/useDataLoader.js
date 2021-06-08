@@ -5,18 +5,12 @@ import { Progress } from 'reactstrap'
 import clsx from 'clsx'
 import * as Papa from 'papaparse'
 import shallow from 'zustand/shallow'
-
 import useStore from './../store.js'
-import {
-  DATA_FILES,
-  ROUTE_SET,
-} from './../../../../constants/map'
+import { DATA_FILES, ROUTE_SET } from './../../../../constants/map'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 
 const isTruthy = val => {
-  return (
-    String(val).toLowerCase() === 'yes' || Number(val) === 1
-  )
+  return String(val).toLowerCase() === 'yes' || Number(val) === 1
 }
 
 /**
@@ -25,27 +19,21 @@ const isTruthy = val => {
  * y-axis of the trend charts for each metric is relevant
  * to the metric's overall data range for that shape type.
  */
-const addMinMaxToIndicators = (
-  indicators,
-  allData,
-  trendData,
-) => {
+const addMinMaxToIndicators = (indicators, allData, trendData) => {
   // create a copy of indicators
   const localIndicators = indicators.slice()
   return useMemo(() => {
     // Fetch each column in the dataset
-    const columns = Object.keys(trendData[0]).filter(
-      item => {
-        return (
-          indicators.filter(indicator => {
-            return (
-              `${item}_19_sd` === indicator.id &&
-              indicator.display === 1
-            )
-          }).length > 0
-        )
-      },
-    )
+    const columns = Object.keys(trendData[0]).filter(item => {
+      return (
+        indicators.filter(indicator => {
+          return (
+            `${item}_19_sd` === indicator.id &&
+            indicator.display === 1
+          )
+        }).length > 0
+      )
+    })
     columns.forEach(col => {
       // console.log('col: ', col, `${col}_19_sd`)
       const metric = allData.find(el => {
@@ -115,9 +103,7 @@ const validateJson = (file, data) => {
   }
 
   // Check that every feature has an ID.
-  const missingIds = data.features.filter(
-    d => !Boolean(d.id),
-  )
+  const missingIds = data.features.filter(d => !Boolean(d.id))
   // points do not need id on the root level, so ignore
   if (missingIds.length > 0 && file.id !== 'points')
     issues.push(
@@ -133,23 +119,6 @@ const validateJson = (file, data) => {
       `Some features in collection <code>${file.id}</code> are missing a GEOID.`,
     )
   return issues
-}
-
-const addIds = (file, data) => {
-  // Add ids to every feature.
-  data.features = data.features.map(feature => {
-    feature.id = Math.round(Math.random() * 1000000000000)
-    return feature
-  })
-
-  // Create an object to save to the store.
-  let obj = {}
-  obj[file.id] = {
-    type: `geojson`,
-    data: data,
-  }
-  // console.log('setting remote json, ', el.id)
-  return obj
 }
 
 /**
@@ -239,7 +208,7 @@ const createStrings = data => {
   return [strings, issues]
 }
 
-const createPointTypes = data => {
+const createPoints = data => {
   const pointTypes = []
   const pointCategories = []
   const issues = []
@@ -264,9 +233,7 @@ const createPointTypes = data => {
           index: pointTypes.length,
           icon: `${r.variable}-icon`,
           category: r['category'] ? r['category'] : false,
-          subcategory: r['subcategory']
-            ? r['subcategory']
-            : false,
+          subcategory: r['subcategory'] ? r['subcategory'] : false,
           category_order: r['category_order']
             ? r['category_order']
             : 0,
@@ -317,6 +284,7 @@ const createPointTypes = data => {
   return [pointTypes, pointCategories, issues]
 }
 
+/** Create indicators for the store */
 const createIndicators = data => {
   const indicators = []
   const issues = []
@@ -355,9 +323,7 @@ const createIndicators = data => {
           currency: Number(r['currency']),
           percent: Number(r['percent']),
           decimals: Number(r['decimals']),
-          category: r['category']
-            .toLowerCase()
-            .replace(/ /g, ''),
+          category: r['category'].toLowerCase().replace(/ /g, ''),
           subcategory: r['subcategory'],
           categoryOrder: r['category_order'],
           subcategoryOrder: r['subcategory_order'],
@@ -389,15 +355,14 @@ const createIndicators = data => {
   return [indicators, issues]
 }
 
+/** Validates all indicators and points have a category */
 const validateCategories = (strings, indicators) => {
   // Check that each category assigned to a point or indicator
   // has a language pack entry.
   const missingIndicatorCategories = []
   indicators.forEach(i => {
     if (!strings[i.category]) {
-      if (
-        missingIndicatorCategories.indexOf(i.category) < 0
-      ) {
+      if (missingIndicatorCategories.indexOf(i.category) < 0) {
         missingIndicatorCategories.push(i.category)
         issues.push(
           `Missing entry for category <code>${i.category}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${i.category}</code> that contains a label and description.`,
@@ -420,166 +385,108 @@ const validateCategories = (strings, indicators) => {
   return issues
 }
 
-const shapeDictData = (file, data) => {
-  const [strings, stringIssues] = createStrings(result.data)
-  const tooltipItems = createTooltipItems(result.data)
-  const [
-    pointTypes,
-    pointCategories,
-    pointIssues,
-  ] = createPointTypes(result.data)
-  const [inidcators, indicatorIssues] = createIndicators(
-    result.data,
+/** Shapes the dictionary data */
+const shapeDictData = data => {
+  const [strings, stringIssues] = createStrings(data)
+  const tooltipItems = createTooltipItems(data)
+  const [pointTypes, pointCategories, pointIssues] = createPoints(
+    data,
   )
-  const categoryIssues = validateCategories(
-    strings,
-    indicators,
-  )
+  const [indicators, indicatorIssues] = createIndicators(data)
+  const categoryIssues = validateCategories(strings, indicators)
   const allIssues = stringIssues
     .concat(pointIssues)
     .concat(indicatorIssues)
     .concat(categoryIssues)
 
-  addDataIssuesLog(allIssues)
-  setLang('en_US', strings)
-  incrementLangUpdates()
-  addTooltipItems(tooltipItems)
-  addIndicators(indicators)
-
-  const indicatorKeys = indicators.map(el => {
-    return el.id
-  })
-  const routeSet = ROUTE_SET
-  // console.log('routeSet, ', routeSet)
-  const metricIndex = routeSet
-    .map(el => {
-      return el.id
-    })
-    .indexOf('metric')
-  // console.log('metricIndex, ', metricIndex)
-  routeSet[metricIndex].options = indicatorKeys
-  // console.log('routeSet, ', routeSet)
-  // Save point types to point type list
-  const activePointTypes = pointTypes.map(el => {
-    return 0
-  })
-  // console.log('result.data, ', result.data)
-  setStoreValues({
-    routeSet: routeSet,
-    pointTypes: pointTypes,
-    activePointTypes: activePointTypes,
-    allData: result.data,
-  })
+  return {
+    strings,
+    pointTypes,
+    pointCategories,
+    tooltipItems,
+    issues: allIssues,
+    data,
+  }
 }
 
+/** Loads the point JSON data */
 const loadPointJson = (json, file) => {
   if (file.type !== 'point') return
   const issues = validateJson(file, json)
   if (issues) console.warn(issues)
   // Make a list of point types.
-  const [pointTypeLayers, remoteJson] = shapePointData(json)
-  setStoreValues({ pointTypeLayers })
-  setRemoteJson(remoteJson)
+  return shapePointData(json)
+  // setStoreValues({ pointTypeLayers })
+  // setRemoteJson(remoteJson)
 }
 
 const loadCsvData = (file, data) => {
-  // Parse the file and merge with lang file.
-  Papa.parse(data, {
-    header: true,
-    complete: result => {
-      if (file.type === 'data')
-        return setStoreValues({
-          [file.storeTarget]: result.data,
-        })
-      if (file.type === 'dict')
-        return shapeDictData(file, data)
-    },
+  return new Promise((resolve, reject) => {
+    Papa.parse(data, {
+      header: true,
+      complete: result => {
+        if (file.type === 'dict')
+          return resolve(shapeDictData(result.data))
+        return reject('received non-dict csv data')
+      },
+    })
   })
 }
 
 const loadDataFile = file => {
-  const xhr = new XMLHttpRequest()
-  const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${file.filename}.${file.ext}.gz`
-  // console.log('path, ', path)
-  xhr.open('GET', path, true)
-  xhr.onload = function (e) {
-    // early exit, not ready
-    if (xhr.readyState !== 4) return
-    // early exit, something failed
-    if (xhr.status !== 200)
-      return setStoreValues({
-        dataLoaderFailed: true,
-      })
-    // Increment counter for loaded files.
-    loadedCount++
-    if (file.ext === 'json' || file.ext === 'geojson') {
-      loadPointJson(JSON.parse(xhr.responseText), file, xhr)
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    const path = `${process.env.GATSBY_DATA_ENDPOINT}/${process.env.GATSBY_DATA_BRANCH}/${file.filename}.${file.ext}.gz`
+    // console.log('path, ', path)
+    xhr.open('GET', path, true)
+    xhr.onload = function (e) {
+      // early exit, not ready
+      if (xhr.readyState !== 4) return reject('non-ready status')
+      // early exit, something failed
+      if (xhr.status !== 200) return reject('non-200 status')
+      // load point json
+      if (file.ext === 'json' || file.ext === 'geojson') {
+        resolve(
+          loadPointJson(JSON.parse(xhr.responseText), file, xhr),
+        )
+      }
+      // load dict csv
+      if (file.ext === 'csv') {
+        return loadCsvData(file, xhr.responseText).then(result =>
+          resolve(result),
+        )
+      }
     }
-    if (file.ext === 'csv') {
-      loadCsvData(file, xhr.responseText)
+    xhr.onerror = function (e) {
+      // Flag something failed.
+      reject(xhr.statusText)
     }
-    setStoreValues({
-      dataLoadedPercent: (loadedCount / files.length) * 100,
-      allDataLoaded:
-        loadedCount === files.length ? true : false,
-    })
-  }
-  xhr.onerror = function (e) {
-    console.error(xhr.statusText)
-    // Flag something failed.
-    setStoreValues({
-      dataLoaderFailed: true,
-    })
-  }
-  xhr.send(null)
+    xhr.send(null)
+  })
 }
 
-const DataLoader = ({ ...props }) => {
-  const {
-    setStoreValues,
-    setRemoteJson,
-    setLang,
-    incrementLangUpdates,
-    addIndicators,
-    addTooltipItems,
-    addDataIssuesLog,
-  } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      setRemoteJson: state.setRemoteJson,
-      setLang: state.setLang,
-      incrementLangUpdates: state.incrementLangUpdates,
-      addIndicators: state.addIndicators,
-      addTooltipItems: state.addTooltipItems,
-      addDataIssuesLog: state.addDataIssuesLog,
-    }),
-    shallow,
-  )
-
-  // console.log(
-  //   'DataLoader: process.env.GATSBY_SHOW_DATA_ISSUES, ',
-  //   process.env.GATSBY_SHOW_DATA_ISSUES,
-  // )
-
-  const showDataIssues = Number(
-    process.env.GATSBY_SHOW_DATA_ISSUES,
-  )
-  const gitBranch = process.env.GATSBY_DATA_BRANCH
-
+const useDataLoader = () => {
   // Fetch each file, and update the objects you need to update.
   const files = DATA_FILES
-  // Counter for loaded files.
-  let loadedCount = 0
-
-  // Load each file.
-  // Set each file to the store.
-  // Update loaded percent.
-  // Update overall loading tracking.
   useEffect(() => {
+    const loadedCount = 0
     files.forEach((file, i) => {
-      loadDataFile(file)
+      loadDataFile(file).then(result => {
+        const stateChanges = {}
+        if (file.type === 'point') {
+          // add state changes
+        }
+        if (file.type === 'dict') {
+          // add state changes
+        }
+        loadedCount++
+        stateChanges['dataLoadedPercent'] =
+          (loadedCount / files.length) * 100
+        stateChanges['allDataLoaded'] = loadedCount === files.length
+        setStoreValues(stateChanges)
+      })
     })
   }, [])
 }
 
-export default DataLoader
+export default useDataLoader

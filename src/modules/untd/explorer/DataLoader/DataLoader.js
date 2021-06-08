@@ -7,16 +7,11 @@ import * as Papa from 'papaparse'
 import shallow from 'zustand/shallow'
 
 import useStore from './../store.js'
-import {
-  DATA_FILES,
-  ROUTE_SET,
-} from './../../../../constants/map'
+import { DATA_FILES, ROUTE_SET } from './../../../../constants/map'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 
 const isTruthy = val => {
-  return (
-    String(val).toLowerCase() === 'yes' || Number(val) === 1
-  )
+  return String(val).toLowerCase() === 'yes' || Number(val) === 1
 }
 
 const GenerateMinMaxes = () => {
@@ -55,18 +50,16 @@ const GenerateMinMaxes = () => {
     if (!!allDataLoaded && !trendMinMaxSet) {
       // console.log('calculating trend minmaxes')
       // Fetch each column in the dataset
-      const columns = Object.keys(trendData[0]).filter(
-        item => {
-          return (
-            indicators.filter(indicator => {
-              return (
-                `${item}_19_sd` === indicator.id &&
-                indicator.display === 1
-              )
-            }).length > 0
-          )
-        },
-      )
+      const columns = Object.keys(trendData[0]).filter(item => {
+        return (
+          indicators.filter(indicator => {
+            return (
+              `${item}_19_sd` === indicator.id &&
+              indicator.display === 1
+            )
+          }).length > 0
+        )
+      })
       columns.forEach(col => {
         // console.log('col: ', col, `${col}_19_sd`)
         const metric = allData.find(el => {
@@ -137,14 +130,10 @@ const DataLoaderContent = ({ ...props }) => {
     dataIssuesLog: state.dataIssuesLog,
   }))
 
-  const showDataIssues = Number(
-    process.env.GATSBY_SHOW_DATA_ISSUES,
-  )
+  const showDataIssues = Number(process.env.GATSBY_SHOW_DATA_ISSUES)
   const gitBranch = process.env.GATSBY_DATA_BRANCH
 
-  const [renderDataIssues, setRenderDataIssues] = useState(
-    false,
-  )
+  const [renderDataIssues, setRenderDataIssues] = useState(false)
 
   useEffect(() => {
     // console.log('allDataLoaded changed, ', allDataLoaded)
@@ -167,9 +156,7 @@ const DataLoaderContent = ({ ...props }) => {
     <div
       className={clsx(
         'data-loader',
-        !!allDataLoaded && !renderDataIssues
-          ? 'all-loaded'
-          : '',
+        !!allDataLoaded && !renderDataIssues ? 'all-loaded' : '',
       )}
     >
       <div className="center">
@@ -235,9 +222,7 @@ const DataLoader = ({ ...props }) => {
   //   process.env.GATSBY_SHOW_DATA_ISSUES,
   // )
 
-  const showDataIssues = Number(
-    process.env.GATSBY_SHOW_DATA_ISSUES,
-  )
+  const showDataIssues = Number(process.env.GATSBY_SHOW_DATA_ISSUES)
   const gitBranch = process.env.GATSBY_DATA_BRANCH
 
   // Fetch each file, and update the objects you need to update.
@@ -271,20 +256,15 @@ const DataLoader = ({ ...props }) => {
             if (el.ext === 'json' || el.ext === 'geojson') {
               const _data = JSON.parse(xhr.responseText)
               console.log('GOT JSON', el, _data)
-              if (
-                el.type !== 'point' &&
-                el.type !== 'data'
-              ) {
+              if (el.type !== 'point' && el.type !== 'data') {
                 console.log('ADD IDS')
                 // Add ids to every feature.
-                _data.features = _data.features.map(
-                  feature => {
-                    feature.id = Math.round(
-                      Math.random() * 1000000000000,
-                    )
-                    return feature
-                  },
-                )
+                _data.features = _data.features.map(feature => {
+                  feature.id = Math.round(
+                    Math.random() * 1000000000000,
+                  )
+                  return feature
+                })
 
                 // Create an object to save to the store.
                 let obj = {}
@@ -323,17 +303,11 @@ const DataLoader = ({ ...props }) => {
                 d => !Boolean(d.id),
               )
               // points do not need id on the root level, so ignore
-              if (
-                missingIds.length > 0 &&
-                el.id !== 'points'
-              ) {
+              if (missingIds.length > 0 && el.id !== 'points') {
                 addDataIssuesLog([
                   `Some features in collection <code>${el.id}</code> are missing an id.`,
                 ])
-                console.warn(
-                  `features missing id: `,
-                  missingIds,
-                )
+                console.warn(`features missing id: `, missingIds)
               }
               if (missingGeoids.length > 0) {
                 addDataIssuesLog([
@@ -351,9 +325,7 @@ const DataLoader = ({ ...props }) => {
                 const point_types = []
                 _data.features.forEach(el => {
                   if (
-                    point_types.indexOf(
-                      el.properties.variable,
-                    ) <= -1
+                    point_types.indexOf(el.properties.variable) <= -1
                   ) {
                     point_types.push(el.properties.variable)
                   }
@@ -364,9 +336,7 @@ const DataLoader = ({ ...props }) => {
                   const obj = {}
                   const pointData = {
                     features: _data.features.filter(
-                      feature =>
-                        feature.properties.variable ===
-                        type,
+                      feature => feature.properties.variable === type,
                     ),
                     type: 'FeatureCollection',
                   }
@@ -429,18 +399,14 @@ const DataLoader = ({ ...props }) => {
                           strings[r[el.lang_key]] =
                             r[el.lang_label].length > 0
                               ? r[el.lang_label]
-                              : `${
-                                  r[el.lang_key]
-                                } label not provided`
+                              : `${r[el.lang_key]} label not provided`
                         } else {
                           addDataIssuesLog([
                             `Label not provided for <code>${r.variable}</code> in data dictionary.`,
                           ])
                         }
                         if (r[el.lang_desc].length > 0) {
-                          strings[
-                            `${r[el.lang_key]}_desc`
-                          ] =
+                          strings[`${r[el.lang_key]}_desc`] =
                             r[el.lang_desc].length > 0
                               ? r[el.lang_desc]
                               : `${
@@ -454,30 +420,19 @@ const DataLoader = ({ ...props }) => {
                       }
 
                       // Build list of tooltip items
-                      if (
-                        !!r.variable &&
-                        isTruthy(r.tooltip)
-                      ) {
+                      if (!!r.variable && isTruthy(r.tooltip)) {
                         // TODO: ADD CHECK FOR DUPLICATE tooltip items.
                         // console.log('tooltip item, ', r)
                         tooltipItems.push({
                           id: r[el.lang_key]
                             ? r[el.lang_key]
                             : r.variable,
-                          display: isTruthy(
-                            r['display_variable'],
-                          ),
+                          display: isTruthy(r['display_variable']),
                           min: r['min'] ? r['min'] : 0,
                           max: r['max'] ? r['max'] : 100,
-                          range: r['range']
-                            ? r['range']
-                            : null,
-                          mean: r['mean']
-                            ? r['mean']
-                            : null,
-                          highisgood: isTruthy(
-                            r['highisgood'],
-                          ),
+                          range: r['range'] ? r['range'] : null,
+                          mean: r['mean'] ? r['mean'] : null,
+                          highisgood: isTruthy(r['highisgood']),
                           currency: isTruthy(r['currency']),
                           percent: isTruthy(r['percent']),
                           decimals: Number(r['decimals']),
@@ -491,17 +446,12 @@ const DataLoader = ({ ...props }) => {
                       }
 
                       // Build point types list
-                      if (
-                        r.type === 'point' &&
-                        !!r.variable
-                      ) {
+                      if (r.type === 'point' && !!r.variable) {
                         const pointAlreadyExists =
                           pointTypes.length === 0
                             ? false
                             : !!pointTypes.find(item => {
-                                return (
-                                  item.id === r.variable
-                                )
+                                return item.id === r.variable
                               })
                         if (!pointAlreadyExists) {
                           pointTypes.push({
@@ -519,47 +469,36 @@ const DataLoader = ({ ...props }) => {
                             subcategory: r['subcategory']
                               ? r['subcategory']
                               : false,
-                            category_order: r[
-                              'category_order'
-                            ]
+                            category_order: r['category_order']
                               ? r['category_order']
                               : 0,
-                            subcategory_order: r[
-                              'subcategory_order'
-                            ]
+                            subcategory_order: r['subcategory_order']
                               ? r['subcategory_order']
                               : 0,
                           })
                           if (
                             r['category'] &&
-                            pointCategories.indexOf(
-                              r['category'],
-                            ) <= -1
+                            pointCategories.indexOf(r['category']) <=
+                              -1
                           ) {
-                            pointCategories.push(
-                              r['category'],
-                            )
+                            pointCategories.push(r['category'])
                           }
                           // Check for category and subcategory.
                           if (
-                            String(r['category_order'])
-                              .length < 1
+                            String(r['category_order']).length < 1
                           ) {
                             addDataIssuesLog([
                               `No <code>category_order</code> set for point type <code>${r.variable}</code>`,
                             ])
                           }
                           if (
-                            String(r['subcategory_order'])
-                              .length < 1
+                            String(r['subcategory_order']).length < 1
                           ) {
                             addDataIssuesLog([
                               `No <code>subcategory_order</code> set for point type <code>${r.variable}</code>`,
                             ])
                           }
-                          if (
-                            String(r['category']).length < 1
-                          ) {
+                          if (String(r['category']).length < 1) {
                             addDataIssuesLog([
                               `No category set for point type <code>${r.variable}</code>`,
                             ])
@@ -570,9 +509,7 @@ const DataLoader = ({ ...props }) => {
                           const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
                           if (
                             r['category'] &&
-                            r['category'].match(
-                              capAndSpecCharsRegex,
-                            )
+                            r['category'].match(capAndSpecCharsRegex)
                           ) {
                             addDataIssuesLog([
                               `Category <code>${r['category']}</code> listed for point type <code>${r.variable}</code> has capital letters, spaces, or special characters. The map app will probably still work but cannot make clear assumptions about category names or sorting if the category is not in the format of a category ID.`,
@@ -591,9 +528,7 @@ const DataLoader = ({ ...props }) => {
                           indicators.length === 0
                             ? false
                             : !!indicators.find(item => {
-                                return (
-                                  item.id === r[el.lang_key]
-                                )
+                                return item.id === r[el.lang_key]
                               })
                         // console.log(
                         //   'exists: ',
@@ -616,22 +551,17 @@ const DataLoader = ({ ...props }) => {
                         if (
                           !exists &&
                           r[el.ind_key] === el.ind_flag &&
-                          Number(r['display_variable']) ===
-                            1
+                          Number(r['display_variable']) === 1
                         ) {
                           // console.log('adding an indicator')
                           indicators.push({
                             id: r[el.lang_key]
                               ? r[el.lang_key]
                               : r.variable,
-                            display: isTruthy(
-                              r['display_variable'],
-                            )
+                            display: isTruthy(r['display_variable'])
                               ? 1
                               : 0,
-                            highisgood: isTruthy(
-                              r['highisgood'],
-                            )
+                            highisgood: isTruthy(r['highisgood'])
                               ? 1
                               : 0,
                             min: Number(r['min']),
@@ -643,10 +573,8 @@ const DataLoader = ({ ...props }) => {
                               .toLowerCase()
                               .replace(/ /g, ''),
                             subcategory: r['subcategory'],
-                            categoryOrder:
-                              r['category_order'],
-                            subcategoryOrder:
-                              r['subcategory_order'],
+                            categoryOrder: r['category_order'],
+                            subcategoryOrder: r['subcategory_order'],
                             years: r['years'].toLowerCase(),
                             placeTypes: r['place']
                               .toLowerCase()
@@ -660,9 +588,7 @@ const DataLoader = ({ ...props }) => {
                           const capAndSpecCharsRegex = /([\@\!\%\^\&\*\(\)\#\ \.\+\/A-Z])/g
                           if (
                             r['category'] &&
-                            r['category'].match(
-                              capAndSpecCharsRegex,
-                            )
+                            r['category'].match(capAndSpecCharsRegex)
                           ) {
                             addDataIssuesLog([
                               `Category <code>${
@@ -688,31 +614,24 @@ const DataLoader = ({ ...props }) => {
                             i.category,
                           ) < 0
                         ) {
-                          missingIndicatorCategories.push(
-                            i.category,
-                          )
+                          missingIndicatorCategories.push(i.category)
                         }
                       }
                     })
-                    missingIndicatorCategories.forEach(
-                      el => {
-                        addDataIssuesLog([
-                          `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
-                        ])
-                      },
-                    )
+                    missingIndicatorCategories.forEach(el => {
+                      addDataIssuesLog([
+                        `Missing entry for category <code>${el}</code> detected when checking indicator category entries in data dictionary. Please add a row with varable <code>${el}</code> that contains a label and description.`,
+                      ])
+                    })
                     // pointTypes
                     const missingPointCategories = []
                     pointTypes.forEach(p => {
                       if (!strings[p.category]) {
                         if (
-                          missingPointCategories.indexOf(
-                            p.category,
-                          ) < 0
+                          missingPointCategories.indexOf(p.category) <
+                          0
                         ) {
-                          missingPointCategories.push(
-                            p.category,
-                          )
+                          missingPointCategories.push(p.category)
                         }
                       }
                     })
@@ -737,11 +656,9 @@ const DataLoader = ({ ...props }) => {
                     //   indicators,
                     // )
                     addIndicators(indicators)
-                    const indicatorKeys = indicators.map(
-                      el => {
-                        return el.id
-                      },
-                    )
+                    const indicatorKeys = indicators.map(el => {
+                      return el.id
+                    })
                     const routeSet = ROUTE_SET
                     // console.log('routeSet, ', routeSet)
                     const metricIndex = routeSet
@@ -750,16 +667,12 @@ const DataLoader = ({ ...props }) => {
                       })
                       .indexOf('metric')
                     // console.log('metricIndex, ', metricIndex)
-                    routeSet[
-                      metricIndex
-                    ].options = indicatorKeys
+                    routeSet[metricIndex].options = indicatorKeys
                     // console.log('routeSet, ', routeSet)
                     // Save point types to point type list
-                    const activePointTypes = pointTypes.map(
-                      el => {
-                        return 0
-                      },
-                    )
+                    const activePointTypes = pointTypes.map(el => {
+                      return 0
+                    })
                     // console.log('result.data, ', result.data)
                     setStoreValues({
                       routeSet: routeSet,
@@ -772,8 +685,7 @@ const DataLoader = ({ ...props }) => {
               })
             }
             setStoreValues({
-              dataLoadedPercent:
-                (loadedCount / files.length) * 100,
+              dataLoadedPercent: (loadedCount / files.length) * 100,
               allDataLoaded:
                 loadedCount === files.length ? true : false,
             })
