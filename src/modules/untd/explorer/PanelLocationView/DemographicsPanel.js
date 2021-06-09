@@ -1,23 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
-import clsx from 'clsx'
+import { getRoundedValue } from './../utils'
+import styled from 'styled-components'
 
-import useStore from './../store'
-import { CoreButton } from './../../../core'
-import {
-  getGeoFeatureLabel,
-  setActiveQuintile,
-  getActiveLayerIndex,
-  getRoundedValue,
-} from './../utils'
-import NonInteractiveScale from './../NonInteractiveScale'
-import LinearScale from './../LinearScale'
-import TrendChart from './TrendChart'
-import IndicatorTooltip from './IndicatorTooltip'
-import { CRI_COLORS } from './../../../../constants/colors'
-import { UNTD_LAYERS } from './../../../../constants/layers'
+const DemographicStat = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  min-width: 50%;
+  max-width: 50%;
+  span {
+    max-width: 140px;
+  }
+`
 
 const DemographicsPanel = ({ activeFeature, ...props }) => {
   const demographics = Object.keys(activeFeature.properties)
@@ -37,36 +33,33 @@ const DemographicsPanel = ({ activeFeature, ...props }) => {
   )
 
   return (
-    <div className={clsx('panel-demographics')}>
-      <h6>{i18n.translate(`PANEL_LOCATION_DEMO`)}</h6>
-      <div
-        className={clsx('demo-total-group', 'demo-group')}
-      >
-        <span className={clsx('demo-label')}>
+    <div {...props}>
+      <h3 className="gotham16 mb-5">
+        {i18n.translate(`PANEL_LOCATION_DEMO`)}
+      </h3>
+      <DemographicStat>
+        <span className="knockout12 grey2">
           {i18n.translate(demoTotal.id)}
         </span>
-        {`: `}
-        <span className={clsx('demo-value')}>
+        <span className="gotham18">
           {getRoundedValue(demoTotal.value)}
         </span>
+      </DemographicStat>
+      <div className="d-flex flex-wrap">
+        {demographics
+          .filter(el => el.id.indexOf('tot') < 0)
+          .sort((a, b) => b.value - a.value)
+          .map(d => (
+            <DemographicStat key={`demo-${d.id}`}>
+              <span className="knockout12 grey2">
+                {i18n.translate(d.id)}
+              </span>
+              <span className="gotham18">
+                {getRoundedValue(d.value)}
+              </span>
+            </DemographicStat>
+          ))}
       </div>
-      {demographics
-        .filter(el => el.id.indexOf('tot') < 0)
-        .sort((a, b) => b.value - a.value)
-        .map(d => (
-          <div
-            className={clsx('demo-group')}
-            key={`demo-${d.id}`}
-          >
-            <span className={clsx('demo-label')}>
-              {i18n.translate(d.id)}
-            </span>
-            {`: `}
-            <span className={clsx('demo-value')}>
-              {getRoundedValue(d.value)}
-            </span>
-          </div>
-        ))}
     </div>
   )
 }

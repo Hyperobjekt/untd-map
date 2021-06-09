@@ -95,3 +95,15 @@ export const getStateViewportByFips = (
   )
   return bound
 }
+
+/** Returns true if a non-map event (e.g. overlay control element) */
+export const isNonMapEvent = event => {
+  return (
+    getClosest(event.target, '.mapboxgl-ctrl-group') ||
+    getClosest(event.target, '.map-legend') ||
+    getClosest(event.target, '#map_reset_button') ||
+    getClosest(event.target, '#map_capture_button') ||
+    getClosest(event.target, '.mapboxgl-popup') ||
+    getClosest(event.target, '.mapboxgl-popup-content')
+  )
+}

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
@@ -8,7 +7,6 @@ import useStore from './../store'
 import { Divider, CoreButton } from './../../../core'
 import {
   MetricsIcon,
-  FeaturesIcon,
   InfoIcon,
   LayersIcon,
   FeedbackIcon,
@@ -18,7 +16,7 @@ import {
   UnifiedShareBtn,
   DesktopUnifiedShareBtn,
 } from './../Share'
-import { TourButton } from './../Tour'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 /**
  * Control panel that contains selectors and filters which alter map display.
@@ -52,16 +50,7 @@ const ControlPanel = ({ children }) => {
     shallow,
   )
 
-  const toggleIntroModal = () =>
-    setStoreValues({
-      showIntroModal: !showIntroModal,
-    })
-
-  // Handle clicks to any control panel button.
-  const handleClick = e => {
-    e.preventDefault()
-    // console.log('Button clicked, ', e.currentTarget.id)
-  }
+  const { openFeedback } = useFeedbackPanel()
 
   /**
    * Close the intro panel and start the tour
@@ -98,47 +87,32 @@ const ControlPanel = ({ children }) => {
     )
     // Conditionally adjust panel settings
     let newActiveState = false
+    // open panel
     if (
-      breakpoint === 'xs' ||
-      breakpoint === 'sm' ||
-      breakpoint === 'md'
+      !slideoutPanel.active &&
+      slideoutPanel.panel.length < 1
     ) {
-      // console.log('show the modal')
-      setStoreValues({
-        showPanelModal: true,
-        slideoutPanel: {
-          active: false,
-          panel: clicked,
-        },
-      })
+      // If never opened
+      newActiveState = true
+    } else if (
+      !!slideoutPanel.active &&
+      slideoutPanel.panel.length > 0 &&
+      slideoutPanel.panel === clicked
+    ) {
+      // Selected existing open panel
+      newActiveState = false
+      clicked = ''
     } else {
-      // Slideout panel size, handle as slideout.
-      if (
-        !slideoutPanel.active &&
-        slideoutPanel.panel.length < 1
-      ) {
-        // If never opened
-        newActiveState = true
-      } else if (
-        !!slideoutPanel.active &&
-        slideoutPanel.panel.length > 0 &&
-        slideoutPanel.panel === clicked
-      ) {
-        // Selected existing open panel
-        newActiveState = false
-        clicked = ''
-      } else {
-        // Selected different panel
-        newActiveState = true
-      }
-      // Reset panel state
-      setStoreValues({
-        slideoutPanel: {
-          active: newActiveState,
-          panel: clicked,
-        },
-      })
+      // Selected different panel
+      newActiveState = true
     }
+    // Reset panel state
+    setStoreValues({
+      slideoutPanel: {
+        active: newActiveState,
+        panel: clicked,
+      },
+    })
   }
 
   /**
@@ -157,12 +131,6 @@ const ControlPanel = ({ children }) => {
     } else {
       return 'right'
     }
-  }
-
-  const launchFeedback = () => {
-    setStoreValues({
-      showFeedbackModal: true,
-    })
   }
 
   // Set tooltip position if browser width changes.
@@ -243,33 +211,39 @@ const ControlPanel = ({ children }) => {
           </span>
         </CoreButton>
         <Divider />
-        <div className="control-label">
-          {i18n.translate('CONTROL_PANEL_LOCATION')}
-        </div>
-        <CoreButton
-          id="button_toggle_panel_location"
-          label={i18n.translate(
-            `BUTTON_TOGGLE_PANEL_LOCATION`,
-          )}
-          onClick={handlePanel}
-          color="none"
-          tooltip={buttonTooltipPosition}
-          className={clsx(
-            'button-panel-location',
-            slideoutPanel.active &&
-              slideoutPanel.panel === 'location' &&
-              !!activeFeature
-              ? 'active'
-              : '',
-          )}
-          disabled={!activeFeature}
-        >
-          <LocationIcon />
-          <span className="sr-only">
-            {i18n.translate(`BUTTON_TOGGLE_PANEL_LOCATION`)}
-          </span>
-        </CoreButton>
-        <Divider />
+        {Boolean(activeFeature) && (
+          <React.Fragment>
+            <div className="control-label">
+              {i18n.translate('CONTROL_PANEL_LOCATION')}
+            </div>
+            <CoreButton
+              id="button_toggle_panel_location"
+              label={i18n.translate(
+                `BUTTON_TOGGLE_PANEL_LOCATION`,
+              )}
+              onClick={handlePanel}
+              color="none"
+              tooltip={buttonTooltipPosition}
+              className={clsx(
+                'button-panel-location',
+                slideoutPanel.active &&
+                  slideoutPanel.panel === 'location' &&
+                  !!activeFeature
+                  ? 'active'
+                  : '',
+              )}
+              disabled={!activeFeature}
+            >
+              <LocationIcon />
+              <span className="sr-only">
+                {i18n.translate(
+                  `BUTTON_TOGGLE_PANEL_LOCATION`,
+                )}
+              </span>
+            </CoreButton>
+            <Divider />
+          </React.Fragment>
+        )}
       </>
       <div className="control-label">
         {i18n.translate('CONTROL_PANEL_INFO')}
@@ -305,25 +279,24 @@ const ControlPanel = ({ children }) => {
       {/* <div className="control-label">
         {i18n.translate('FEEDBACK')}
       </div> */}
+      <hr />
       <CoreButton
         id="button_toggle_feedback"
         label={i18n.translate(`FEEDBACK_BUTTON_TOOLTIP`)}
         tooltip={buttonTooltipPosition}
-        onClick={launchFeedback}
+        onClick={openFeedback}
         color="none"
         styles={{ display: 'none' }}
-        className={clsx(
-          'button-modal-feedback, button-feedback-link',
-        )}
+        className="button-feedback-link"
       >
-        <FeedbackIcon className="d-block d-lg-none" />
-        <span className="d-none d-lg-block">
+        <FeedbackIcon className="d-block d-md-none" />
+        <span className="d-none d-md-block">
           {i18n.translate(`FEEDBACK`)}
         </span>
       </CoreButton>
       {/* <Divider /> */}
-      <UnifiedShareBtn className="d-block d-lg-none" />
-      <DesktopUnifiedShareBtn className="d-none d-lg-block" />
+      <UnifiedShareBtn className="d-block d-md-none" />
+      <DesktopUnifiedShareBtn className="d-none d-md-block" />
     </div>
   )
 }

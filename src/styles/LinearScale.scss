@@ -1,15 +1,15 @@
 .linear-scale {
   width: 100%;
-  height: 100px;
+  height: 56px;
   display: block;
   position: relative;
-  margin: 0 0 2rem;
+  margin: 3rem 0 1rem;
   .linear-scale-bar {
     height: 1px;
     width: 100%;
     display: block;
     position: absolute;
-    top: 40px;
+    top: 12px;
     left: 0;
     background-color: $color-untd-anothergray;
     background-size: 100% 1px;
@@ -18,7 +18,7 @@
       content: '';
       display: block;
       position: absolute;
-      height: 43px;
+      height: 36px;
       width: 1px;
       left: 0;
       top: -10px;
@@ -33,22 +33,22 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 1.4rem;
-    color: $color-untd-gray;
     // margin: 32px 0 0;
     position: absolute;
     left: 0;
-    top: 75px;
+    top: 40px;
   }
   .linear-scale-value,
   .hash-group {
     position: absolute;
     box-sizing: content-box;
-    top: 8px;
+    top: -19px;
     z-index: 500;
     .linear-scale-hash-value {
+      position: absolute;
       width: 16px;
       height: 16px;
+      top: 23px;
       border-radius: 50%;
       //   margin-top: -8px;
       margin-left: -8px;
@@ -59,19 +59,12 @@
       width: 50px;
       text-align: center;
       margin-left: -50%;
-      font-size: 14px;
-      font-weight: 500;
-      color: $color-untd-gray;
     }
-  }
-  .linear-scale-value .label {
-    font-size: 16px;
-    font-weight: 600;
   }
   .linear-scale-mean {
     width: auto;
     position: absolute;
-    top: 42px;
+    top: 12px;
     z-index: 499;
     .linear-scale-hash-mean {
       width: 1px;
@@ -88,9 +81,10 @@
   }
 
   .label.justify-right {
-    width: 56px;
+    position: absolute;
     text-align: right;
-    margin-left: -100%;
+    margin-left: 0;
+    right: 0;
   }
   .label.justify-left {
     margin-left: 0;

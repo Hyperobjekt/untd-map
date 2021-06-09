@@ -3,22 +3,13 @@ import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import shallow from 'zustand/shallow'
 
-import NonInteractiveScale from './../../NonInteractiveScale/NonInteractiveScale'
-import { CRI_COLORS } from './../../../../../constants/colors'
 import { UNTD_LAYERS } from './../../../../../constants/layers'
 import {
   getRoundedValue,
   getFeatureId,
 } from './../../utils'
 import useStore from './../../store'
-
-const ClickToAdd = feature => {
-  return (
-    <p className={clsx('click-to-add')}>
-      {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
-    </p>
-  )
-}
+import { ChoroplethLegend } from '../../Legend/ChoroplethLegend'
 
 /**
  * Returns popup contents for map feature mouseover
@@ -51,12 +42,11 @@ const PopupContent = ({ ...props }) => {
   })
   // console.log('rawMetric,', rawMetric)
 
-  const setActiveQuintile = quintile => {
-    // console.log('setActiveQuintile, ', quintile)
-    const arr = [0, 0, 0, 0, 0]
-    arr[quintile] = 1
-    // console.log(arr)
-    return arr
+  const getActiveQuintile = (activeMetric, feature) => {
+    const quintile = Number(
+      props.feature.properties[activeMetric],
+    )
+    return isNaN(quintile) ? [] : [quintile]
   }
 
   const getFeatureLabel = feature => {
@@ -112,7 +102,9 @@ const PopupContent = ({ ...props }) => {
               {`${props.feature.properties.City}`}
             </div>
           </div>
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
+          </p>
         </div>
       )
     } else if (
@@ -127,7 +119,9 @@ const PopupContent = ({ ...props }) => {
               <h4>{featureLabel}</h4>
             </div>
           )}
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_FEEDBACK')}
+          </p>
         </div>
       )
     } else {
@@ -178,20 +172,17 @@ const PopupContent = ({ ...props }) => {
                 </span>
               </div>
               <div className="popup-metric-scale">
-                <NonInteractiveScale
-                  metric={activeMetric}
-                  showHash={false}
-                  quintiles={setActiveQuintile(
-                    Number(
-                      props.feature.properties[
-                        activeMetric
-                      ],
-                    ),
+                <ChoroplethLegend
+                  activeIndexes={getActiveQuintile(
+                    activeMetric,
+                    props.feature,
                   )}
-                  colors={CRI_COLORS}
-                  showMinMax={false}
-                  min={min}
-                  max={max}
+                  labelIndexes={getActiveQuintile(
+                    activeMetric,
+                    props.feature,
+                  )}
+                  noLabels
+                  condensed
                 />
               </div>
               <div className={clsx('popup-indicator-list')}>
@@ -200,44 +191,42 @@ const PopupContent = ({ ...props }) => {
                     return a.order - b.order
                   })
                   .map(el => {
-                    if (!!props.feature.properties[el.id]) {
-                      return (
-                        <div
-                          className="indicator-item"
-                          key={`indicator-item-${el.id}`}
+                    if (!props.feature.properties[el.id])
+                      return null
+                    return (
+                      <div
+                        className="indicator-item"
+                        key={`indicator-item-${el.id}`}
+                      >
+                        <span
+                          className={clsx(
+                            'indicator-title',
+                          )}
                         >
-                          <span
-                            className={clsx(
-                              'indicator-title',
-                            )}
-                          >
-                            {i18n.translate(el.id)}:
-                          </span>{' '}
-                          <span
-                            className={clsx(
-                              'indicator-value',
-                            )}
-                          >
-                            {getRoundedValue(
-                              props.feature.properties[
-                                el.id
-                              ],
-                              el.decimals,
-                              true,
-                              el.currency,
-                              el.percent,
-                            )}
-                          </span>
-                        </div>
-                      )
-                    } else {
-                      return ''
-                    }
+                          {i18n.translate(el.id)}:
+                        </span>{' '}
+                        <span
+                          className={clsx(
+                            'indicator-value',
+                          )}
+                        >
+                          {getRoundedValue(
+                            props.feature.properties[el.id],
+                            el.decimals,
+                            true,
+                            el.currency,
+                            el.percent,
+                          )}
+                        </span>
+                      </div>
+                    )
                   })}
               </div>
             </div>
           )}
-          <ClickToAdd />
+          <p className="hint mt-3">
+            {i18n.translate('POPUP_CLICK_TO_LEARN')}
+          </p>
         </div>
       )
     }

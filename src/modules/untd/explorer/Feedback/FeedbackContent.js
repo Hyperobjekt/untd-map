@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import useStore from './../store'
 import { CoreButton } from './../../../core'
 import { GeocodeSearch } from './../GeocodeSearch'
+import useFeedbackPanel from './useFeedbackPanel'
 
 /**
  * Layout sets up the basic layout for the explorer.
@@ -20,33 +21,28 @@ import { GeocodeSearch } from './../GeocodeSearch'
 const FeedbackContent = ({ children, ...props }) => {
   // console.log('FeedbackContent')
 
-  const {
-    setStoreValues,
-    feedbackFeature,
-    feedbackAddress,
-    feedbackLngLat,
-    breakpoint,
-    currentLocation,
-  } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      feedbackFeature: state.feedbackFeature,
-      feedbackFeatureType: state.feedbackFeatureType,
-      feedbackAddress: state.feedbackAddress,
-      feedbackLngLat: state.feedbackLngLat,
-      breakpoint: state.breakpoint,
-      currentLocation: state.currentLocation,
+  const { breakpoint, currentLocation } = useStore(
+    ({ breakpoint, currentLocation }) => ({
+      breakpoint,
+      currentLocation,
     }),
     shallow,
   )
-  // console.log('feedbackFeature, ', feedbackFeature)
+
+  const hasCurrentLocation = currentLocation.length === 2
+
+  const {
+    clearFeedback,
+    feedbackState,
+    setFeedbackState,
+  } = useFeedbackPanel()
 
   /**
    * Submit the form to netlify forms
    */
   const submitForm = () => {}
 
-  const useCurrentLocation = () => {
+  const handleUseCurrentLocation = () => {
     // console.log('useCurrentLocation(), ', currentLocation)
     // Get current location from coords.
     const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -66,12 +62,9 @@ const FeedbackContent = ({ children, ...props }) => {
             el.place_type.indexOf('address') > -1 ||
             el.place_type.indexOf('poi') > -1,
         )
-        setStoreValues({
-          feedbackLngLat: [
-            currentLocation[0],
-            currentLocation[1],
-          ],
-          feedbackAddress: addresses[0].place_name,
+        setFeedbackState({
+          point: [currentLocation[0], currentLocation[1]],
+          address: addresses[0].place_name,
         })
       })
   }
@@ -115,20 +108,11 @@ const FeedbackContent = ({ children, ...props }) => {
       signup: Yup.boolean(),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      console.log('onSubmit()', values)
-      // For testing form funct locally.
-      // setTimeout(() => {
-      //   alert(JSON.stringify(values, null, 2));
-      //   formik.setSubmitting(false);
-      //   // If submission succeeds.
-      //   setIsSubmitted(true);
-      //   // If submission fails.
-      //   // setIsSubmittedError(true);
-      // }, 1400);
+      values.address = feedbackState.address
+      values.longitude = feedbackState.point[0]
+      values.latitude = feedbackState.point[1]
 
-      values.address = feedbackAddress
-      values.longitude = feedbackLngLat[0]
-      values.latitude = feedbackLngLat[1]
+      console.log('onSubmit()', values)
 
       // detect spam with honeypot
       if (honeypotRef.current.value !== '') return
@@ -155,12 +139,6 @@ const FeedbackContent = ({ children, ...props }) => {
           // Clear form fields
           formik.resetForm()
         } else {
-          // Catch submission errors.
-          // console.log(
-          //   'Submission error:',
-          //   response.status,
-          //   response.statusText,
-          // )
           // Turn off submitting state.
           formik.setSubmitting(false)
           // Enable display of submission error message.
@@ -199,18 +177,14 @@ const FeedbackContent = ({ children, ...props }) => {
    * @returns String
    */
   const getInstructions = () => {
-    return !!feedbackFeature
+    return !!feedbackState.feature
       ? i18n.translate(`FEEDBACK_INSTR_WITHFEATURE`)
       : i18n.translate(`FEEDBACK_INSTR`)
   }
 
   const handleCancel = () => {
     // console.log('handleCancel()')
-    setStoreValues({
-      showFeedbackModal: false,
-      feedbackAddress: '',
-      feedbackFeature: 0,
-    })
+    clearFeedback()
     formik.resetForm()
   }
 
@@ -230,63 +204,58 @@ const FeedbackContent = ({ children, ...props }) => {
           }}
         ></Col>
       </Row>
-      {!feedbackFeature && (
+      {!feedbackState.feature && (
         <Row className={clsx('row-location')}>
           <Col
             xs="12"
-            md={currentLocation.length === 2 ? 6 : 12}
+            md={6}
             className={clsx(
-              currentLocation.length === 2 &&
-                breakpoint !== 'xs' &&
-                breakpoint !== 'sm'
+              breakpoint !== 'xs' && breakpoint !== 'sm'
                 ? 'pr-0'
                 : '',
             )}
           >
             <GeocodeSearch context="feedback" />
           </Col>
-          {currentLocation.length === 2 && (
-            <>
-              <Col
-                xs="12"
-                md="1"
-                className={clsx(
-                  'col-or',
-                  breakpoint !== 'xs' && breakpoint !== 'sm'
-                    ? 'pl-0 pr-0'
-                    : '',
+
+          <Col
+            xs="12"
+            md="1"
+            className={clsx(
+              'col-or',
+              breakpoint !== 'xs' &&
+                breakpoint !== 'sm' &&
+                'pl-0 pr-0',
+            )}
+          >
+            {i18n.translate(`OR`)}
+          </Col>
+          <Col
+            xs="12"
+            md="5"
+            className={clsx(
+              breakpoint !== 'xs' &&
+                breakpoint !== 'sm' &&
+                'pl-0 ',
+            )}
+          >
+            <CoreButton
+              id="button_use_current_loc"
+              disabled={!hasCurrentLocation}
+              onClick={handleUseCurrentLocation}
+              color="none"
+              className="feedback-use-my"
+            >
+              <MdMyLocation />
+              <span>
+                {i18n.translate(
+                  hasCurrentLocation
+                    ? `FEEDBACK_USE_CURRENT_LOC`
+                    : `FEEDBACK_LOC_UNAVAILABLE`,
                 )}
-              >
-                {i18n.translate(`OR`)}
-              </Col>
-              <Col
-                xs="12"
-                md="5"
-                className={clsx(
-                  breakpoint !== 'xs' && breakpoint !== 'sm'
-                    ? 'pl-0 '
-                    : '',
-                )}
-              >
-                <CoreButton
-                  id="button_use_current_loc"
-                  label={i18n.translate(
-                    `FEEDBACK_USE_CURRENT_LOC`,
-                  )}
-                  onClick={useCurrentLocation}
-                  color="none"
-                  className={clsx('feedback-use-my')}
-                >
-                  <MdMyLocation />
-                  <span>
-                    {i18n.translate(
-                      `FEEDBACK_USE_CURRENT_LOC`,
-                    )}
-                  </span>
-                </CoreButton>
-              </Col>
-            </>
-          )}
+              </span>
+            </CoreButton>
+          </Col>
         </Row>
       )}
       <form
@@ -330,7 +299,7 @@ const FeedbackContent = ({ children, ...props }) => {
               <label htmlFor="address">Address</label>
               <Input
                 id="address"
-                value={feedbackAddress}
+                value={feedbackState.address}
                 type="text"
                 readOnly={true}
                 style={{ backgroundColor: 'transparent' }}
@@ -510,8 +479,8 @@ const FeedbackContent = ({ children, ...props }) => {
                 }`}
                 disabled={
                   formik.isSubmitting ||
-                  feedbackAddress.length === 0 ||
-                  feedbackLngLat.length < 2
+                  feedbackState.address.length === 0 ||
+                  feedbackState.point.length < 2
                 }
                 label={i18n.translate(`FEEDBACK_SUBMIT`)}
                 color="primary"

@@ -1,34 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import shallow from 'zustand/shallow'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
-
 import useStore from './../store'
 import { CoreButton } from './../../../core'
-import { getGeoFeatureLabel } from './../utils'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 const FeedbackPanel = ({ ...props }) => {
-  const { setStoreValues, activeFeature } = useStore(
-    state => ({
-      setStoreValues: state.setStoreValues,
-      activeFeature: state.activeFeature,
-    }),
-    shallow,
+  const activeFeature = useStore(
+    state => state.activeFeature,
   )
 
-  const handleFeedback = () => {
-    // console.log('handleFeedback')
-    setStoreValues({
-      showFeedbackModal: true,
-      feedbackFeature: activeFeature,
-      feedbackAddress: getGeoFeatureLabel(activeFeature),
-      feedbackLngLat: [
-        activeFeature.properties.INTPTLAT,
-        activeFeature.properties.INTPTLON,
-      ],
-    })
-  }
+  const { showFeedbackForRegion } = useFeedbackPanel()
+
+  const handleFeedback = () =>
+    showFeedbackForRegion(activeFeature)
 
   return (
     <div className={clsx('panel-bottom-sticky')}>

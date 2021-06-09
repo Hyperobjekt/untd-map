@@ -21,9 +21,6 @@ const SlideoutPanel = ({ ...props }) => {
   )
 
   const handleClose = () => {
-    // console.log('handleClose')
-    const panelState = slideoutPanel
-    panelState.active = false
     // Set focus on the clicked button.
     const panelBtnId =
       'button_toggle_panel_' + slideoutPanel.panel
@@ -31,58 +28,31 @@ const SlideoutPanel = ({ ...props }) => {
     panelBtn.focus()
     // Update store.
     setStoreValues({
-      slideoutPanel: { ...panelState },
+      slideoutPanel: { ...slideoutPanel, active: false },
     })
   }
 
-  // Toggle focus and tabindex on slideout panel when active.
-  useEffect(() => {
-    // console.log('Slideout panel active state changed.')
-    const closeBtn = document.getElementById(
-      'button_close_panel',
-    )
-    // console.log('closeBtn, ', closeBtn)
-    if (!!closeBtn) {
-      if (!!slideoutPanel.active) {
-        closeBtn.setAttribute('tabindex', '0')
-        closeBtn.focus()
-      } else {
-        closeBtn.setAttribute('tabindex', '-1')
-      }
-    }
-  }, [slideoutPanel.active])
+  const isPanelOpen = panelId =>
+    slideoutPanel.panel === panelId && slideoutPanel.active
 
   return (
-    <div
-      className={clsx(
-        'map-panel-slideout',
-        slideoutPanel.active ? 'active' : '',
-        slideoutPanel.panel.length > 0
-          ? 'panel-view-' + slideoutPanel.panel
-          : 'panel-view-none',
-      )}
-    >
-      <CoreButton
-        id="button_close_panel"
-        label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
-        onClick={handleClose}
-        color="none"
-        className={clsx(
-          'button-core',
-          'button-close-panel',
-        )}
-        tabIndex="-1"
-      >
-        <MdClose />
-        <span className="sr-only">
-          {i18n.translate(`BUTTON_CLOSE_PANEL`)}
-        </span>
-      </CoreButton>
-
-      <PanelFilterView />
-      <PanelLayersView />
-      <PanelLocationView />
-      <PanelInfoView />
+    <div className="map-panel-slideout">
+      <PanelFilterView
+        open={isPanelOpen('filters')}
+        onClose={handleClose}
+      />
+      <PanelLayersView
+        open={isPanelOpen('layers')}
+        onClose={handleClose}
+      />
+      <PanelLocationView
+        open={isPanelOpen('location')}
+        onClose={handleClose}
+      />
+      <PanelInfoView
+        open={isPanelOpen('info')}
+        onClose={handleClose}
+      />
     </div>
   )
 }

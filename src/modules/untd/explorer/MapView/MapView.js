@@ -17,6 +17,7 @@ import {
 } from './../utils'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import useStore from './../store'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
 
 const MapView = props => {
   // Generic state updates for store.
@@ -69,6 +70,8 @@ const MapView = props => {
     }),
     shallow,
   )
+
+  const { showFeedbackForPoint } = useFeedbackPanel()
 
   const [idMap, addToIdMap] = useIdMap()
   const isLoaded = useRef(false)
@@ -176,31 +179,17 @@ const MapView = props => {
         !activeFeature ||
         activeFeature.id !== feature.id
       ) {
-        if (!!interactionsMobile) {
-          // If it isn't already having a selected hover state.
-          // Launch a modal for mobile.
-          setStoreValues({
-            activeFeature: feature,
-            showPanelModal: true,
-            slideoutPanel: {
-              active: false,
-              panel: 'location',
-            },
-          })
-        } else {
-          setStoreValues({
-            activeFeature: feature,
-            slideoutPanel: {
-              active: true,
-              panel: 'location',
-            },
-          })
-        }
+        setStoreValues({
+          activeFeature: feature,
+          slideoutPanel: {
+            active: true,
+            panel: 'location',
+          },
+        })
       } else {
         // Already selected.
         setStoreValues({
           activeFeature: 0,
-          showPanelModal: false,
           slideoutPanel: {
             active: false,
             panel: 'location',
@@ -213,16 +202,7 @@ const MapView = props => {
       feature.source &&
       feature.source.indexOf('points') > -1
     ) {
-      // console.log('point feature clicked')
-      setStoreValues({
-        showFeedbackModal: true,
-        feedbackFeature: feature,
-        feedbackAddress: `${feature.properties.Name}, ${feature.properties.Address}, ${feature.properties.City}`,
-        feedbackLngLat: [
-          feature.properties.longitude,
-          feature.properties.latitude,
-        ],
-      })
+      showFeedbackForPoint(feature)
     }
   }
 

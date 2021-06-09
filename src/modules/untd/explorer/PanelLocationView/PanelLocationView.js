@@ -7,221 +7,108 @@ import clsx from 'clsx'
 import useStore from './../store'
 import {
   getGeoFeatureLabel,
-  setActiveQuintile,
-  getActiveLayerIndex,
-  getSDRobo,
+  getRegionNameFromFeature,
 } from './../utils'
-import NonInteractiveScale from './../NonInteractiveScale'
-import LinearScale from './../LinearScale'
-import TrendChart from './TrendChart'
-import IndicatorButton from './IndicatorButton'
 import DemographicsPanel from './DemographicsPanel'
-import FeedbackPanel from './FeedbackPanel'
-import { CRI_COLORS } from './../../../../constants/colors'
-import { UNTD_LAYERS } from './../../../../constants/layers'
+import IndicatorSummary from '../Indicators/IndicatorSummary'
+import useCategorizedIndicators from '../App/hooks/useCategorizedIndicators'
+import useActiveMetric from '../App/hooks/useActiveMetric'
+import styled from 'styled-components'
+import PanelHeader from '../../../core/Panel/PanelHeader'
+import Panel from '../../../core/Panel/Panel'
+import PanelBody from '../../../core/Panel/PanelBody'
+import { Button } from 'reactstrap'
+import useFeedbackPanel from '../Feedback/useFeedbackPanel'
+import { FeedbackIcon } from '../../../core/Icons'
 
-const PanelLocationView = ({ ...props }) => {
+const PanelLocationView = ({ open, onClose, ...props }) => {
   // Generic store value setter.
   const {
     activeFeature,
-    indicators,
     activeLayers,
     trendData,
   } = useStore(
     state => ({
       activeFeature: state.activeFeature,
-      indicators: state.indicators,
       activeLayers: state.activeLayers,
       trendData: state.trendData,
     }),
     shallow,
   )
+  const [activeMetric, setActiveMetric] = useActiveMetric()
+  const categories = useCategorizedIndicators()
+  const region = getRegionNameFromFeature(activeFeature)
 
-  // console.log(
-  //   'panelLocationView, ',
-  //   indicators,
-  //   // trendData,
-  //   // activeFeature,
-  // )
+  // component is ready to render if there is an active feature
+  const isReady = Boolean(activeFeature)
 
-  const validTrendRows = !!activeFeature
-    ? trendData.filter(
-        el =>
-          Number(el.GEOID) ===
-          Number(activeFeature.properties.GEOID),
-      )
-    : false
-  // console.log('validTrendRows, ', validTrendRows)
+  // get trend data for active feature
+  const trends = trendData.filter(
+    el =>
+      Number(el.GEOID) ===
+      Number(activeFeature?.properties?.GEOID),
+  )
 
   // Stores the index of the selected location's layer
   // for fetching min, max, and mean from indicator arrays.
   const activeLayerIndex = activeLayers.indexOf(1)
 
-  if (!!activeFeature) {
-    return (
-      <div className={clsx('map-panel-slideout-location')}>
-        <div className={clsx('panel-sticky')}>
-          <h5>{getGeoFeatureLabel(activeFeature)}</h5>
-        </div>
-        <DemographicsPanel activeFeature={activeFeature} />
-        {/* Indicators */}
-        <div className={clsx('panel-indicators')}>
-          {indicators
-            .filter(el => {
-              return el.display === 1
-            })
-            .filter((el, i) => {
-              return (
-                el.placeTypes.indexOf(
-                  UNTD_LAYERS[
-                    getActiveLayerIndex(activeLayers)
-                  ].id,
-                ) > -1
-              )
-            })
-            .sort((a, b) => {
-              return a.order - b.order
-            })
-            .map(indicator => {
-              // console.log('indicator, ', indicator)
-
-              // Set up object to pass to linear scale.
-              const rawMetric = {
-                min: indicator.raw.min[activeLayerIndex],
-                max: indicator.raw.max[activeLayerIndex],
-                mean: indicator.raw.mean[activeLayerIndex],
-                decimals: indicator.raw.decimals,
-                highisgood: indicator.raw.highisgood,
-                currency: indicator.raw.currency,
-                percent: indicator.raw.percent,
-                id: indicator.raw.id,
-              }
-
-              // Is there a raw value available for the metric on the feature?
-              const rawName = indicator.raw.id
-              const hasRawValue =
-                activeFeature.properties[rawName] &&
-                activeFeature.properties[rawName] !==
-                  undefined &&
-                activeFeature.properties[rawName] !== 'NA'
-                  ? activeFeature.properties[rawName]
-                  : false
-
-              // Is there an sd value available for the metric on the feature?
-              const hasSdValue =
-                String(
-                  activeFeature.properties[indicator.id],
-                ).length > 0 &&
-                activeFeature.properties[indicator.id] !==
-                  undefined &&
-                activeFeature.properties[indicator.id] !==
-                  'NA'
-                  ? true
-                  : false
-
-              // console.log('hasRawValue, ', hasRawValue)
-              if (!!hasSdValue || !!hasRawValue) {
-                return (
-                  <div
-                    className={clsx(
-                      'indicator-group',
-                      `layer-order-${indicator.order}`,
-                    )}
-                    key={indicator.id}
-                  >
-                    {/* Metric title and button to switch metrics. */}
-                    <IndicatorButton
-                      indicator={indicator}
-                    />
-                    <div
-                      className={clsx('charts-subgroup')}
-                    >
-                      {/* Linear scale */}
-                      {!!hasRawValue && !!rawMetric && (
-                        <LinearScale
-                          indicator={rawMetric}
-                          value={hasRawValue}
-                        />
-                      )}
-                      {/* Standard deviation scale */}
-                      {!!hasSdValue && (
-                        <>
-                          <h6
-                            className={clsx(
-                              'label-sd-scale',
-                            )}
-                          >
-                            {i18n.translate(
-                              `LABEL_LOCATION_SD_SCALE`,
-                            )}
-                          </h6>
-                          <div
-                            className={clsx(
-                              'sd-scale-group',
-                            )}
-                          >
-                            <div
-                              className={clsx(
-                                'sd-scale-parent',
-                              )}
-                            >
-                              <NonInteractiveScale
-                                metric={indicator.id}
-                                showHash={false}
-                                quintiles={setActiveQuintile(
-                                  Number(
-                                    activeFeature
-                                      .properties[
-                                      indicator.id
-                                    ],
-                                  ),
-                                )}
-                                colors={CRI_COLORS}
-                                showMinMax={false}
-                                min={0}
-                                max={4}
-                              />
-                            </div>
-                            <div
-                              className={clsx(
-                                'sd-scale-desc',
-                              )}
-                            >
-                              {getSDRobo(
-                                Number(
-                                  activeFeature.properties[
-                                    indicator.id
-                                  ],
-                                ),
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      )}
-                      {/* Check for trend item, display trend chart */}
-                      {!!validTrendRows[0][
-                        String(rawName).replace('_19', '')
-                      ] && (
-                        <TrendChart
-                          data={validTrendRows}
-                          config={indicator.trend}
-                        />
-                      )}
-                    </div>
-                  </div>
-                )
-              } else {
-                return ''
-              }
-            })}
-        </div>
-        {/* Feedback panel */}
-        <FeedbackPanel />
-      </div>
-    )
-  } else {
-    return ''
+  const handleActivateIndicator = indicator => {
+    setActiveMetric(indicator.id)
   }
+
+  const { showFeedbackForRegion } = useFeedbackPanel()
+  const handleShowFeedback = () =>
+    showFeedbackForRegion(activeFeature)
+
+  return (
+    <Panel
+      className="map-panel-slideout-location"
+      open={open && isReady}
+      {...props}
+    >
+      <PanelHeader onClose={onClose}>
+        <h2 className="gotham18">
+          {getGeoFeatureLabel(activeFeature)}
+        </h2>
+        <Button
+          onClick={handleShowFeedback}
+          color="outlined knockout12"
+        >
+          <FeedbackIcon className="mx-3 d-block" />
+          <span>{i18n.translate(`FEEDBACK`)}</span>
+        </Button>
+      </PanelHeader>
+      {activeFeature && (
+        <PanelBody>
+          <DemographicsPanel
+            className="p-5"
+            activeFeature={activeFeature}
+          />
+          {categories.map(({ name, indicators }) => (
+            <div
+              className="px-5 pt-5 pb-0 border-top"
+              key={name}
+            >
+              <h3 className="gotham16 mb-5">{name}</h3>
+              {indicators.map(indicator => (
+                <IndicatorSummary
+                  key={indicator.id}
+                  indicator={indicator}
+                  data={activeFeature.properties}
+                  trends={trends}
+                  active={activeMetric === indicator.id}
+                  onActivate={handleActivateIndicator}
+                  activeLayerIndex={activeLayerIndex}
+                  region={region}
+                />
+              ))}
+            </div>
+          ))}
+        </PanelBody>
+      )}
+    </Panel>
+  )
 }
 
 export default PanelLocationView

@@ -1,3 +1,214 @@
+/**
+ * GLOBAL BOOTSTRAP OVERRIDES
+ */
+
+// set readable text size for elements
+button,
+label,
+p {
+  font-size: 1.4rem;
+}
+
+// gotham typeface helpers
+[class*='gotham'] {
+  @include font-gotham-book;
+  margin: 0;
+  // only 400 / 500 available for gotham
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+  }
+}
+.gotham18 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham16 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham15 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.285714285714286;
+  letter-spacing: 0.01em; // 1%
+}
+.gotham14 {
+  font-size: 1.4rem;
+  font-weight: normal;
+}
+.gotham13 {
+  font-size: 1.3rem;
+  font-weight: normal;
+}
+.gotham12 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  strong {
+    font-weight: 500;
+  }
+}
+
+// knockout typeface helpers
+[class*='knockout'] {
+  @include font-knockout-jr-lightweight;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  * {
+    @include font-knockout-jr-lightweight;
+  }
+}
+.knockout14 {
+  font-size: 1.4rem;
+}
+.knockout13 {
+  font-size: 1.3rem;
+}
+.knockout12,
+.btn.knockout12 {
+  font-size: 1.2rem;
+}
+.btn[class*='knockout'] {
+  svg {
+    margin-right: 0.5rem;
+    font-size: 1.6rem;
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}
+
+// color helpers
+.grey0 {
+  color: #000;
+}
+.grey1 {
+  color: $color-untd-darkgray;
+}
+.grey2 {
+  color: $color-untd-gray;
+}
+.grey3 {
+  color: $color-untd-lightgray;
+}
+.grey4 {
+  color: $color-untd-anothergray;
+}
+.grey9 {
+  color: #fff;
+}
+
+// font weight helpers
+.w300 {
+  font-weight: 300;
+}
+.w400 {
+  font-weight: 400;
+}
+.w500 {
+  font-weight: 500;
+}
+.w600 {
+  font-weight: 600;
+}
+.w700 {
+  font-weight: 700;
+}
+.w800 {
+  font-weight: 800;
+}
+.w900 {
+  font-weight: 900;
+}
+
+// provide a basic primary button
+.btn {
+  font-size: 1.4rem;
+}
+
+// outlined buttons
+.btn.btn-outlined {
+  background-color: transparent;
+  color: $color-primary;
+  border-color: #ccc;
+  &:not(:disabled):not(.disabled).active {
+    background-color: $color-active-light;
+    color: $color-primary;
+    border-color: $color-active-dark;
+    &:focus,
+    &:hover {
+      background-color: $color-active-hover;
+    }
+  }
+  &:not(:disabled):not(.disabled):hover,
+  &:not(:disabled):not(.disabled):focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-shadow: none;
+  }
+  &:not(:disabled):not(.disabled):active {
+    background-color: rgba(0, 0, 0, 0.07);
+    color: $color-primary;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+// transparent buttons
+.btn.btn-transparent {
+  background-color: transparent;
+  color: $color-primary;
+  border: none;
+  &:not(:disabled):not(.disabled).active {
+    background-color: $color-active-light;
+    color: $color-primary;
+    &:focus {
+      background-color: $color-active-hover;
+    }
+  }
+  &:not(:disabled):not(.disabled):hover,
+  &:not(:disabled):not(.disabled):focus {
+    background-color: $color-hover;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+  &:not(:disabled):not(.disabled):focus {
+    text-decoration: underline;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+  &:not(:disabled):not(.disabled):active {
+    background-color: $color-hover-active;
+    color: $color-primary;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+// drop rounded corners from button lists
+.list-group-item > .btn {
+  border-radius: 0;
+}
+
+// text hints
+.hint {
+  color: $color-untd-gray;
+  font-size: 1.2rem;
+  margin-top: 0.8rem;
+  display: block;
+  margin-bottom: 0;
+}
+
 // @import url('https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css');
 
 // #demo,

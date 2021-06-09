@@ -10,7 +10,7 @@ const en_US = {
   BUTTON_SEARCH: `Select to search`,
   INPUT_SEARCH: `Search for an address or location...`,
   INPUT_PLACEHOLDER_SEARCH: `Search... `,
-  LINK_OPEN_FILTER_PANEL: `(change)`,
+  LINK_OPEN_FILTER_PANEL: `change`,
   BUTTON_TOGGLE_PANEL_FILTERS: `Toggle metrics/filters panel`,
   BUTTON_TOGGLE_PANEL_LAYERS: `Toggle layers panel`,
   BUTTON_TOGGLE_PANEL_WEIGHT: `Toggle weights panel`,
@@ -43,7 +43,7 @@ const en_US = {
   UI_MAP_FILTERS_INDICATORS: `Indicators`,
   UI_MAP_BUTTON_RESET_FILTER: `Reset active filter`,
   UI_MAP_FILTER_INSTRUCTIONS: `<p>Click the scale(s) below to activate metrics on the map. The brackets within each scale can be clicked on and off to filter the schools on the map. Clear filters by pressing the "reset" {icon} button above.</p>`,
-  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `<p>Different metrics are available for different geographic entities. Use the control below to select a different geographic entity.`,
+  UI_MAP_FILTER_INSTRUCTIONS_UNTD: `Select a region`,
   SELECT_VIEW: `Select a view`,
   SELECT_ITEM_MAP: `Map view`,
   SELECT_ITEM_FEEDER: `Feeder view`,
@@ -68,8 +68,8 @@ const en_US = {
   UI_MAP_LAYERS_COUNTIES: `Counties`,
   UI_MAP_LAYERS_TRACTS: `census tracts`,
   UI_MAP_FEATURE_TRACT: `census tract`,
-  UI_MAP_LAYERS_PLACES: `places`,
-  UI_MAP_FEATURE_PLACE: `place`,
+  UI_MAP_LAYERS_PLACES: `cities`,
+  UI_MAP_FEATURE_PLACE: `city`,
   UI_MAP_LAYER_0_TITLE: `Geographic Layers`,
   UI_MAP_LAYER_0_DESC: `<p>Toggle these layers on and off to learn more about the region.</p>`,
   UI_MAP_LAYER_1_TITLE: `Points Features`,
@@ -82,6 +82,7 @@ const en_US = {
   UI_MAP_LAYERS_PLAYGRS: `Playgrounds`,
   UI_MAP_LAYERS_SMARKETS: `Supermarkets`,
   POPUP_CLICK_TO_FEEDBACK: `Click to add feedback about this feature.`,
+  POPUP_CLICK_TO_LEARN: `Click to learn more and add feedback about this feature.`,
   TERM_INDEX_AVERAGE: `Index Average`,
   TERM_PLURAL: `{term}s`,
   UI_MAP_PANEL_HEADING: `Data Controls`,
@@ -131,19 +132,32 @@ const en_US = {
   UI_MAP_METRIC_DEM_PERM: `Percent of Male Population, All Ages in Buffer`,
   UI_MAP_METRIC_DEM_PERSE: `Percent of Senior Population (65 and Over) in Buffer`,
   // End added 2020-08-26
-  UI_PANEL_INFO_MAP: `<h5>Exploring in the map view</h5>
+  UI_PANEL_INFO_TITLE: 'Help',
+  UI_PANEL_INFO_MAP: `
 
+  <h3>Exploring the map view</h3>
   <p>The map displays North Dallas geographic entities, each color-coded to show their score within the selected economic opportunity metric. The color scale has 5 blocks, each representing a quintile within the scale. The lighter the color, the higher the score.</p>
 
-  <p>You can change the metric shown on the map by clicking the METRICS button and making selections. You can also use this feature to filter geographic entities on the map by quintile.</p>
+  <h3>Viewing different metrics on the map</h3>
+  <p>You can change the metric shown on the map by clicking the DATA CONTROLS button and making selections. You can also use this feature to filter geographic entities on the map by quintile.</p>
 
-  <p>The map also contains point features for a wide variety of neighborhood assets. You can enable and disable these point features by clicking the FEATURES button.</p>
+  <h3>Viewing data for zip codes, census tracts or cities</h3>
+  <p>Press the "DATA CONTROLS" button in the side panel and select your desired geography by clicking the corresponding button under "Geography".  You can view detailed information about a specific place by clicking on it in the map.</p>
 
+  <h3>Viewing neighborhood assets</h3>
+  <p>The map contains a wide variety of neighborhood assets categorized by social infrastructure, commerce, schools, and public health. You can view these assets by clicking the POINTS & OVERLAYS button, selecting a category, and then clicking on the checkboxes to turn them on or off.</p>
+
+  <h3>Providing feedback for a location or asset</h3>
   <p>To add feedback about a geographic entity or point feature, click that location on the map. A panel will open with a pre-populated form.</p>
 
-  <p>You can also grab a snapshot of your screen using the camera button, and share a custom link to your current Explorer view via the SHARE buttons.</p>
+  <h3>Saving and images</h3>
+  <p>Press the camera icon on the right side of the map to capture an image of the map.  You can also use your device's built-in screenshot functionality to capture an image of the tool.</p>
 
-  <p>Questions? Visit our <a href="/faq" target="_blank">FAQ</a>.</p>`,
+  <h3>Sharing a custom view</h3>
+  <p>You can copy a link to your current Explorer view by pressing the "SHARE" button and selecting "Get a custom link".</p>
+
+  <h3>Questions?</h3>
+  <p>Visit our <a href="/faq" target="_blank">FAQ</a> or provide some feedback on the tool by clicking the "FEEDBACK" button.</p>`,
   UI_MAP_CLICK_SCHOOL_PROMPT: `Click on school to view full report.`,
   UI_MAP_SCHOOL_ACCESS_LINK: `Access full report.`,
   UI_MAP_FLY_TO_PROMPT: `Hover school for more information, or click
@@ -181,7 +195,7 @@ const en_US = {
   TOUR_DESK_STEP_5: `Use the metrics panel to customize which geographic entities are displayed on the map along with the active metric.`,
   TOUR_DESK_STEP_6: `Use the dropdown to switch between different types of regions like zip codes, census tracts, and so on.`,
   TOUR_MOBILE_STEP_7: `Tap a metric to toggle certain intervals on or off.`,
-  TOUR_DESK_STEP_7: `Click a metric to toggle certain intervals on or off.`,
+  TOUR_DESK_STEP_7: `Click a color to toggle certain intervals on or off.`,
   TOUR_DESK_STEP_8: `Click checkboxes within the features panel to toggle different types of features on or off.`,
   TOUR_MOBILE_STEP_8: `Tap checkboxes within the features panel to toggle different types of features on or off.`,
   TOUR_DESK_STEP_9: `Search for a location using the search bar. When selecting a location, the map will zoom and pan to center this location in the viewport. `,
@@ -189,7 +203,7 @@ const en_US = {
   TOUR_DESK_STEP_11: `The info panel contains additional information about the interface and its use.`,
   TOUR_DESK_STEP_12: `If necessary, use the "Tour" button to display this information again.`,
   TOUR_MOBILE_STEP_12: `If necessary, use the "Tour" button in the info panel to display this information again.`,
-  BUTTON_RESET_POINTS: `Reset all point features`,
+  BUTTON_RESET_POINTS: `Reset`,
   TOOLTIP_PLACE_TRACT: `Census tract {label}`,
   TOOLTIP_PLACE_ZIP: `Zip code {label}`,
   TOOLTIP_PLACE_COUNTY: `{label} County`,
@@ -197,6 +211,7 @@ const en_US = {
   FEEDBACK_INSTR_WITHFEATURE: `<p>Use the form below to submit feedback about your selected point or geographic feature. The address field has been pre-populated with the selected location.</p>`,
   FEEDBACK_INSTR: `<p>Use the form below to submit feedback about the map. If there's a location in your neighborhood that is no longer there, something new, or inaccurate information, please let us know!</p><p>The "Use my current location" button will tie your feedback to your current location. You can also search for an addres or point of interest.</p>`,
   FEEDBACK_USE_CURRENT_LOC: `Use my current location`,
+  FEEDBACK_LOC_UNAVAILABLE: `Location access disabled`,
   FEEDBACK_SUBMIT: `Submit`,
   CONTACT_EMAIL: `analytics@childpovertyactionlab.org`,
   // CONTACT_MAILTO: `maito:{email}`,
@@ -211,21 +226,25 @@ const en_US = {
   PANEL_LOCATION_DEMO: `Demographics`,
   UI_PANEL_LOCATION_FEEDBACK_PROMPT: `Add feedback about this location`,
   UI_PANEL_LOCATION_FEEDBACK_HEADING: `Your feedback`,
-  UI_MAP_POINTS_OVERLAYS: `POINTS & OVERLAYS`,
+  UI_MAP_POINTS_OVERLAYS: `Points & Overlays`,
   UI_MAP_POINTS: `Points`,
   STATIC_LAYER_NONE: `None`,
   UI_MAP_LAYERS_NONE: `None`,
   STATIC_LAYER_TIP: `Enable {type}.`,
-  TREND_CHART_HEADING: `{years} year trend`,
-  LOCATION_SELECT_METRIC: `<p>{desc}</p><p>Click to apply this metric to the map.</p>`,
+  TREND_ROBO_DIFF: `From {years} the value <br /><strong>{diffLabel} by {diffValue}</strong>.`,
+  TREND_ROBO_NO_DIFF: `From {years} the value <br /><strong>did not change</strong>.`,
+  LOCATION_SELECT_METRIC: `{desc}`,
   LINEAR_SCALE_MEAN_DESC: `The mean of the total range of values in the data.`,
   LABEL_LOCATION_LINEAR_SCALE: ``,
+  RAW_ROBO_DIFF: `The value is <strong>{valueLabel}</strong>, which is <strong>{diffValue} {diffLabel} than average</strong> compared to other {region}.`,
+  RAW_ROBO_NO_DIFF: `The value is <strong>{valueLabel}</strong>, which is <strong>about average</strong> compared to other {region}.`,
   LABEL_LOCATION_SD_SCALE: `Standard Deviation Scale`,
-  SD_ROBO_0: `Falls within 3 standard deviations below the mean`,
-  SD_ROBO_1: `Falls within 2 standard deviations below the mean`,
-  SD_ROBO_2: `Falls within 1 standard deviations from the mean`,
-  SD_ROBO_3: `Falls within 2 standard deviations above the mean`,
-  SD_ROBO_4: `Falls within 3 standard deviations above the mean`,
+  SD_0: `well below average`,
+  SD_1: `below average`,
+  SD_2: `about average`,
+  SD_3: `above average`,
+  SD_4: `well above average`,
+  SD_ROBO: `Compared to all other {region},<br />the value is <strong>{sdValue}</strong>.`,
   SD_ROBO_ERROR: `Description unavailable`,
   PLACEHOLDER_ROBO: `Sit voluptate veniam aliqua et robo`,
 }

@@ -2,24 +2,22 @@
 @import url('https://cloud.typography.com/6135894/7078832/css/fonts.css');
 
 @mixin font-knockout-jr-lightweight {
-  font-family: 'Knockout 29 A', 'Knockout 29 B';
+  font-family: 'Knockout 29 A', 'Knockout 29 B', sans-serif;
   font-style: normal;
   font-weight: 400;
 }
 
 @mixin font-knockout-lightweight {
-  font-family: 'Knockout 49 A', 'Knockout 49 B';
+  font-family: 'Knockout 49 A', 'Knockout 49 B', sans-serif;
   font-style: normal;
   font-weight: 400;
 }
 
 @mixin font-gotham-book {
-  font-family: 'Gotham A', 'Gotham B';
+  font-family: 'Gotham A', 'Gotham B', sans-serif;
   font-style: normal;
   font-weight: 400;
 }
-
-@import url('https://cloud.typography.com/6135894/7078832/css/fonts.css');
 
 // Adobe Caslon Pro Regular
 @mixin adobe-caslon-regular {
@@ -66,6 +64,28 @@ html {
   font-size: 62.5%; // sets sitewide font sizes based on user's font size in browser
 }
 
+// redefine spacers for bootstrap sizing utilities
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25,
+  ),
+  2: (
+    $spacer * 0.5,
+  ),
+  3: $spacer,
+  4: (
+    $spacer * 1.5,
+  ),
+  5: (
+    $spacer * 2,
+  ),
+  6: (
+    $spacer * 2.5,
+  ),
+);
+
 @import '~bootstrap/scss/bootstrap.scss';
 
 // @import 'breakpoints';
@@ -91,7 +111,6 @@ html {
 @import 'PanelLayerView';
 @import 'PanelLocationView';
 @import 'PanelInfoView';
-@import 'PanelModal';
 // Interactive scale appears in filter panel
 @import 'InteractiveScale';
 // Non-interactive scale appears in legend and popup tooltips (and in location slideout)

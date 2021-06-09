@@ -56,16 +56,6 @@
         justify-content: center;
         align-items: center;
         margin-right: 1rem;
-        &:hover,
-        &:focus {
-          background-color: $color-untd-lemon !important;
-          color: $color-untd-darklemon !important;
-          svg {
-            stroke: $color-untd-darklemon !important;
-            fill: $color-untd-darklemon !important;
-            color: $color-untd-darklemon !important;
-          }
-        }
         svg {
           font-size: 3rem;
           margin: auto;

@@ -7,9 +7,9 @@ import { MdClose } from 'react-icons/md'
 
 import useStore from '../store'
 import { CoreButton } from './../../../core'
-import { CRI_COLORS } from './../../../../constants/colors'
-import NonInteractiveScale from './../NonInteractiveScale/NonInteractiveScale'
 import { getMetric } from '../utils'
+import { Button } from 'reactstrap'
+import ChoroplethLegend from './ChoroplethLegend'
 
 /**
  * Legend for map
@@ -18,7 +18,6 @@ const MapLegend = ({ ...props }) => {
   const {
     setStoreValues,
     activeMetric,
-    activeQuintiles,
     breakpoint,
     showMobileLegend,
     indicators,
@@ -27,7 +26,6 @@ const MapLegend = ({ ...props }) => {
     state => ({
       setStoreValues: state.setStoreValues,
       activeMetric: state.activeMetric,
-      activeQuintiles: state.activeQuintiles,
       breakpoint: state.breakpoint,
       showMobileLegend: state.showMobileLegend,
       indicators: state.indicators,
@@ -41,33 +39,18 @@ const MapLegend = ({ ...props }) => {
     setStoreValues({ showMobileLegend: false })
     // setShowMobileLegend(false)
   }
-  // Active layers
-  const activeLayers = useStore(
-    state => [...state.activeLayers],
-    shallow,
-  )
 
   const slideoutPanel = useStore(
     state => state.slideoutPanel,
   )
   const toggleFilterPanel = () => {
     // console.log('toggleFilterPanel(), ', breakpoint)
-    if (breakpoint === 'md') {
-      setStoreValues({
-        slideoutPanel: {
-          active: false,
-          panel: 'filters', // filters or weights, presumably, possibly info
-        },
-        showPanelModal: true,
-      })
-    } else {
-      setStoreValues({
-        slideoutPanel: {
-          active: true,
-          panel: 'filters', // filters or weights, presumably, possibly info
-        },
-      })
-    }
+    setStoreValues({
+      slideoutPanel: {
+        active: true,
+        panel: 'filters', // filters or weights, presumably, possibly info
+      },
+    })
   }
 
   const metric = getMetric(activeMetric, indicators)
@@ -78,92 +61,67 @@ const MapLegend = ({ ...props }) => {
       : metric.id
   }
 
-  // console.log('legend, metric: ', metric)
-
-  if (!!metric) {
-    return (
-      <div
-        className={clsx(
-          'map-legend',
-          !!showMobileLegend
-            ? 'show-mobile'
-            : 'hide-mobile',
-        )}
-      >
-        {(breakpoint === 'xs' || breakpoint === 'sm') && (
-          <CoreButton
-            id="button_close_legend"
-            label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
-            onClick={handleClose}
-            color="none"
-            className={clsx(
-              'button-core',
-              'button-close-legend',
-            )}
-          >
-            <MdClose />
-            <span className="sr-only">
-              {i18n.translate(`BUTTON_CLOSE_PANEL`)}
-            </span>
-          </CoreButton>
-        )}
+  if (!metric) return null
+  return (
+    <div
+      className={clsx(
+        'map-legend',
+        'tour-desk-4',
+        'px-5',
+        'pt-4',
+        'pb-3',
+        !!showMobileLegend ? 'show-mobile' : 'hide-mobile',
+      )}
+    >
+      {(breakpoint === 'xs' || breakpoint === 'sm') && (
+        <CoreButton
+          id="button_close_legend"
+          label={i18n.translate(`BUTTON_CLOSE_PANEL`)}
+          onClick={handleClose}
+          color="none"
+          className={clsx(
+            'button-core',
+            'button-close-legend',
+          )}
+        >
+          <MdClose />
+          <span className="sr-only">
+            {i18n.translate(`BUTTON_CLOSE_PANEL`)}
+          </span>
+        </CoreButton>
+      )}
+      <div className="map-legend-metric-title">
+        <h3 className="gotham16 w500">
+          {metricLabel(metric)}
+        </h3>
         {!(
           breakpoint === 'xs' ||
           breakpoint === 'sm' ||
           activeView === 'embed'
         ) && (
-          <div className="map-legend-label">
-            {i18n.translate(`UI_MAP_LEGEND_TITLE`)}
-            <span
-              id="map_legend_open_filter"
-              className={clsx(
-                'map-legend-open-filter-panel',
-                !!slideoutPanel.active &&
-                  slideoutPanel.panel === 'filters'
-                  ? 'disabled'
-                  : '',
-              )}
-              onClick={toggleFilterPanel}
-            >
-              {i18n.translate('LINK_OPEN_FILTER_PANEL')}
-            </span>
-          </div>
+          <Button
+            id="map_legend_open_filter"
+            color="outlined"
+            className="map-legend-open-filter-panel knockout12 px-2 py-0"
+            disabled={
+              slideoutPanel.active &&
+              slideoutPanel.panel === 'filters'
+            }
+            onClick={toggleFilterPanel}
+          >
+            {i18n.translate('LINK_OPEN_FILTER_PANEL')}
+          </Button>
         )}
-        <div className="map-legend-metric-title">
-          {metricLabel(metric)}
-        </div>
-        <div className="map-legend-zone-labels">
-          <div className="fewer">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_FEWER`)}
-            </div>
-          </div>
-          <div className="avg">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_AVG`)}
-            </div>
-          </div>
-          <div className="more">
-            <div className="vertically-center">
-              {i18n.translate(`UI_MAP_LEGEND_MORE`)}
-            </div>
-          </div>
-        </div>
-        <NonInteractiveScale
-          metric={activeMetric}
-          quintiles={activeQuintiles}
-          colors={CRI_COLORS}
-          showHash={false}
-          hashLeft={null}
-          showMinMax={false}
-          min={0}
-          max={100}
-        />
       </div>
-    )
-  } else {
-    return null
-  }
+      <ChoroplethLegend
+        interactive
+        className="tour-desk-7"
+      />
+      <span className="hint">
+        click on a color to toggle filters
+      </span>
+    </div>
+  )
 }
 
 MapLegend.defaultProps = {

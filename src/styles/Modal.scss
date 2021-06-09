@@ -36,27 +36,6 @@
       .cta {
         font-weight: 400;
       }
-      .btn.button-core {
-        border-radius: 0;
-        font-size: 1.4rem;
-        line-height: 1.4rem;
-        font-weight: 300;
-        padding: 1rem;
-        svg {
-          margin-right: 1rem;
-          margin-top: -3px;
-          transition: color 50ms ease-in-out;
-        }
-        &:hover,
-        &:focus {
-          border-color: transparent;
-          color: $cpal-orange;
-          background-color: $cpal-orange-light;
-          svg {
-            color: $cpal-orange;
-          }
-        }
-      }
     }
     .modal-header {
       border-bottom: none;
@@ -236,15 +215,20 @@
         align-items: center;
       }
       .feedback-use-my.btn {
-        border-radius: 4px;
-        background-color: #a45e0b;
-        color: #fff;
         width: 100%;
         height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
-        &:hover {
+        &.disabled,
+        &:disabled {
+          background: #eee;
+        }
+        &:not(.disabled):not(:disabled) {
+          background-color: #a45e0b;
+          color: #fff;
+        }
+        &:not(.disabled):not(:disabled):hover {
           background-color: lighten(#a45e0b, 5%);
           color: $white;
           svg {
@@ -257,12 +241,6 @@
           margin-top: 0;
           margin-right: 0.6rem;
         }
-        span {
-          // margin-top: -2px;
-        }
-      }
-      button {
-        font-size: 14px;
       }
       input {
         height: 40px;

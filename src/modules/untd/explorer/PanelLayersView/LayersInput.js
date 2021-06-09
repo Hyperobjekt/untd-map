@@ -10,7 +10,7 @@ import { toSentenceCase } from './../utils'
 import * as Icons from './../../../core/Icons'
 import useStore from './../store'
 
-const LayersInput = ({ ...props }) => {
+const LayersInput = props => {
   const {
     pointTypes,
     interactionsMobile,
@@ -38,11 +38,7 @@ const LayersInput = ({ ...props }) => {
     : Icons['FeaturesIcon']
 
   return (
-    <div
-      className="layer"
-      key={`layer-wrapper-${props.layer.id}`}
-      id={`layer-${props.layer.id}`}
-    >
+    <div className="layer" id={`layer-${props.layer.id}`}>
       <label
         key={`label-${props.layer.id}`}
         id={`label-${props.layer.id}`}
@@ -57,7 +53,7 @@ const LayersInput = ({ ...props }) => {
           className={props.isChecked ? 'checked' : ''}
           checked={props.isChecked}
           readOnly={true}
-          onClick={props.update}
+          onClick={props.onChange}
         />
         <div className={clsx('checkmark')}></div>
         <div
@@ -69,7 +65,9 @@ const LayersInput = ({ ...props }) => {
         >
           <ThisIcon />
         </div>
-        {toSentenceCase(i18n.translate(props.label))}
+        <span>
+          {toSentenceCase(i18n.translate(props.label))}
+        </span>
         {!!props.tooltip &&
           props.tooltip.length > 0 &&
           !interactionsMobile && (
@@ -100,9 +98,12 @@ const LayersInput = ({ ...props }) => {
 
 LayersInput.propTypes = {
   tooltip: PropTypes.string,
-  update: PropTypes.func,
+  onChange: PropTypes.func,
   layer: PropTypes.object,
-  isChecked: PropTypes.bool,
+  isChecked: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.number,
+  ]),
   label: PropTypes.string,
   tooltip: PropTypes.string,
   id: PropTypes.string,

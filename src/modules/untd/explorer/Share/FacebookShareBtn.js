@@ -40,7 +40,7 @@ const FacebookShareBtn = ({ children, ...props }) => {
       label={i18n.translate(`BUTTON_SHARE_FACEBOOK`)}
       tooltip={props.tooltip ? buttonTooltipPosition : ''}
       onClick={handleShare}
-      color="none"
+      color="transparent"
       className={clsx(
         props.className,
         'button-share-facebook button-share',

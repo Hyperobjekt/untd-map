@@ -1,102 +1,18 @@
 .map-panel-slideout {
-  // These change based on device width.
-  height: calc(100vh - 64px - 64px - 16px - 16px);
-  // max-height: 480px;
-  top: calc(64px + 16px);
-  left: -352px;
-  // Do not change based on device width.
-  background-color: #fff;
   position: absolute;
-  transition: left 500ms ease-in-out;
-  width: 350px;
-  z-index: 400; // 1999;
-  box-shadow: 1px 1px 2px #ddd;
-  &.active {
-    left: 0px;
-    transition: left 500ms ease-in-out;
-  }
-  .button-close-panel {
-    position: absolute;
-    right: 0;
-    z-index: 2000;
-    background-color: $white;
-    svg {
-      width: 24px;
-      height: 24px;
-      // fill: #606b44 !important;
-      margin-top: 4px;
-    }
-    &:hover,
-    &:focus {
-      color: $cpal-orange;
-    }
-  }
-  .map-panel-slideout-filters,
-  .map-panel-slideout-layers,
-  .map-panel-slideout-location,
-  .map-panel-slideout-info {
-    .panel-sticky {
-      position: sticky;
-      top: 0;
-      left: 0;
-      background-color: $white;
-      padding: 2.8rem 2rem 2rem;
-      border-bottom: 1px solid $color-untd-anothergray;
-      z-index: 501;
-      h5 {
-        @include font-gotham-book;
-        font-weight: 600;
-        font-size: 1.8rem;
-        line-height: 1.8rem;
-        letter-spacing: 1%;
-      }
-    }
-  }
-  .map-panel-slideout-filters,
-  .map-panel-slideout-layers,
-  .map-panel-slideout-location,
-  .map-panel-slideout-info {
-    display: none;
-  }
-  &.panel-view-filters {
-    .map-panel-slideout-filters {
-      display: block;
-    }
-  }
-  &.panel-view-layers {
-    .map-panel-slideout-layers {
-      display: block;
-    }
-  }
-  &.panel-view-location {
-    .map-panel-slideout-location {
-      display: block;
-    }
-  }
-  &.panel-view-info {
-    .map-panel-slideout-info {
-      display: block;
-    }
+  z-index: 402; // above control panel
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+@include media-breakpoint-up(md) {
+  .map-panel-slideout {
+    left: 70px;
+    z-index: 400; // behind control panel
   }
 }
 
-@media only screen and (min-width: 768px) {
-  .map-panel-slideout {
-    // These change based on device width.
-    height: calc(100vh - 64px - 64px - 16px - 16px);
-    // max-height: 480px;
-    top: calc(64px + 16px + 16px);
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  .map-panel-slideout {
-    top: 0;
-    height: 100%;
-    left: -350px;
-    &.active {
-      left: 72px;
-      transition: left 500ms ease-in-out;
-    }
-  }
+.panel__header {
+  border-bottom: 1px solid $color-untd-anothergray;
 }

@@ -63,52 +63,32 @@ const MapLayerToggle = ({ ...props }) => {
         )
         const toggle = () => setTooltipOpen(!tooltipOpen)
         return (
-          <div className="layer" key={`layer-${el.id}`}>
-            <label
-              key={`label-${el.id}`}
-              id={`label-${el.id}`}
-            >
-              <input
-                type="radio"
-                id={'layer_static_' + i}
-                name="scales"
-                key={el.id}
-                data-only-one={el.only_one}
-                data-only-one-name={el.only_one_name}
-                checked={
-                  activeStaticLayers[i] === 1 ? true : false
-                }
-                readOnly={true}
-                onClick={e => {
-                  updateLayers(e)
-                }}
-              />
-              <span>
-                {i18n.translate(getLayerLabel(el.id))}
-              </span>
-              {!!el.tooltip && el.tooltip.length > 0 && (
-                <FiInfo id={'tip_prompt_' + el.id} />
-              )}
-            </label>
+          <label
+            key={`label-${el.id}`}
+            id={`label-${el.id}`}
+          >
+            <input
+              type="radio"
+              id={'layer_static_' + i}
+              name="scales"
+              key={el.id}
+              data-only-one={el.only_one}
+              data-only-one-name={el.only_one_name}
+              checked={
+                activeStaticLayers[i] === 1 ? true : false
+              }
+              readOnly={true}
+              onClick={e => {
+                updateLayers(e)
+              }}
+            />
+            <span>
+              {i18n.translate(getLayerLabel(el.id))}
+            </span>
             {!!el.tooltip && el.tooltip.length > 0 && (
-              <Tooltip
-                placement="top"
-                isOpen={tooltipOpen}
-                target={'tip_prompt_' + el.id}
-                toggle={toggle}
-                autohide={false}
-                className={'tip-prompt-layer'}
-                dangerouslySetInnerHTML={{
-                  __html: i18n.translate(
-                    `STATIC_LAYER_TIP`,
-                    {
-                      type: el.tooltip,
-                    },
-                  ),
-                }}
-              ></Tooltip>
+              <FiInfo id={'tip_prompt_' + el.id} />
             )}
-          </div>
+          </label>
         )
       })}
     </div>

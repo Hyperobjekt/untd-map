@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -17,20 +17,20 @@ import clsx from 'clsx'
  * @param String bsColor    Bootstrap color type for button, see https://reactstrap.github.io/components/buttons/
  * @param Function onClick  Click handler for button
  */
-const CoreButton = ({ children, ...props }) => {
+const CoreButton = ({
+  children,
+  className,
+  tooltip,
+  tooltipAutoHide,
+  tooltipClassName,
+  label,
+  popover,
+  ...props
+}) => {
   // console.log('CoreButton, ', props)
   // to manage tooltip state
   const [tooltipOpen, setTooltipOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen)
-
-  // Updates tooltip position when props.tooltip changes
-  const [position, setPosition] = useState('right')
-  useEffect(() => {
-    // console.log('tooltip changed')
-    if (!!props.tooltip) {
-      setPosition(props.tooltip)
-    }
-  }, [props.tooltip])
 
   // Manage popover state
   const [popoverOpen, setPopoverOpen] = useState(false)
@@ -38,47 +38,37 @@ const CoreButton = ({ children, ...props }) => {
 
   return (
     <Button
-      id={props.id}
-      aria-label={props.label}
-      onClick={props.onClick}
-      color={props.color}
-      label={props.label}
-      className={clsx(props.className, 'button-core')}
-      disabled={props.disabled ? props.disabled : false}
+      aria-label={label}
+      className={clsx(className, 'button-core')}
+      {...props}
     >
       {children}
-      {props.tooltip && props.tooltip.length > 0 ? (
+      {tooltip && tooltip.length > 0 && (
         <Tooltip
-          placement={position}
+          placement={tooltip}
           isOpen={tooltipOpen}
           target={props.id}
           toggle={toggle}
-          autohide={props.tooltipAutoHide}
+          autohide={tooltipAutoHide}
           trigger="hover"
-          className={
-            props.tooltipCss ? props.tooltipCss : ''
-          }
+          className={tooltipClassName}
         >
-          {props.label}
+          {label}
         </Tooltip>
-      ) : (
-        ''
       )}
-      {props.popover && props.popover.length > 0 ? (
+      {popover && popover.length > 0 && (
         <Popover
-          placement={props.popover}
+          placement={popover}
           isOpen={popoverOpen}
           target={props.id}
           toggle={togglePopover}
         >
           <PopoverBody
             dangerouslySetInnerHTML={{
-              __html: props.label,
+              __html: label,
             }}
           ></PopoverBody>
         </Popover>
-      ) : (
-        ''
       )}
     </Button>
   )

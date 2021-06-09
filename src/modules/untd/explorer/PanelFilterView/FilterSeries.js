@@ -1,102 +1,70 @@
-import React, { useState } from 'react'
-import clsx from 'clsx'
+import React from 'react'
 import i18n from '@pureartisan/simple-i18n'
 import PropTypes from 'prop-types'
-import { FiInfo } from 'react-icons/fi'
-import { Tooltip } from 'reactstrap'
-
 import useStore from './../store.js'
-import InteractiveScale from './InteractiveScale'
-import { UNTD_LAYERS } from './../../../../constants/layers'
-import { getActiveLayerIndex } from './../utils'
-
-const IndicatorTooltip = ({ indicator, ...rest }) => {
-  const [tooltipOpen, setTooltipOpen] = useState(false)
-  const toggle = () => setTooltipOpen(!tooltipOpen)
-  return (
-    <>
-      <FiInfo
-        className={clsx('indicator-tip')}
-        id={'tip_prompt_' + indicator.id}
-      />
-      <Tooltip
-        placement="top"
-        isOpen={tooltipOpen}
-        target={'tip_prompt_' + indicator.id}
-        toggle={toggle}
-        autohide={false}
-        className={'tip-prompt-layer'}
-        dangerouslySetInnerHTML={{
-          __html: i18n.translate(`${indicator.id}_desc`),
-        }}
-      ></Tooltip>
-    </>
-  )
-}
+import shallow from 'zustand/shallow'
+import styled from 'styled-components'
+import useCategorizedIndicators from '../App/hooks/useCategorizedIndicators.js'
+import IndicatorList from '../Indicators/IndicatorList.js'
 
 const FilterSeries = ({ ...props }) => {
   // console.log('FilterSeries, tab = ', props)
   const {
-    activeLayers,
-    indicators,
     interactionsMobile,
-  } = useStore(state => ({
-    activeLayers: state.activeLayers,
-    indicators: state.indicators,
-    interactionsMobile: state.interactionsMobile,
-  }))
+    setStoreValues,
+    activeMetric,
+  } = useStore(
+    ({
+      activeLayers,
+      indicators,
+      interactionsMobile,
+      setStoreValues,
+      activeMetric,
+    }) => ({
+      activeLayers,
+      indicators,
+      interactionsMobile,
+      setStoreValues,
+      activeMetric,
+    }),
+    shallow,
+  )
+  const indicatorsByCategory = useCategorizedIndicators()
 
-  const layerObj =
-    UNTD_LAYERS[getActiveLayerIndex(activeLayers)]
+  if (indicatorsByCategory.length === 0)
+    return i18n.translate(`MAP_FILTERS_SELECT_NONE`)
 
-  const layerIndicators = indicators.filter((el, i) => {
-    return el.placeTypes.indexOf(layerObj.id) > -1
-  })
-
-  if (layerIndicators && layerIndicators.length > 0) {
-    return (
-      <div className="filter-panel-filter-series filter-panel-indicator-series">
-        {layerIndicators
-          .filter(el => {
-            return el.display === 1
-          })
-          .sort((a, b) => {
-            return a.order - b.order
-          })
-          .map(indicator => {
-            // console.log('indicator, ', indicator)
-            return (
-              <div
-                className={clsx(
-                  'filter',
-                  `layer-order-${indicator.order}`,
-                )}
-                key={indicator.id}
-              >
-                <h6>
-                  {i18n.translate(indicator.id)}
-                  {!interactionsMobile && (
-                    <IndicatorTooltip
-                      indicator={indicator}
-                    />
-                  )}
-                </h6>
-                <InteractiveScale metric={indicator} />
-              </div>
-            )
-          })}
-      </div>
-    )
-  } else {
-    return (
-      <div className="filter-panel-filter-series filter-panel-indicator-series">
-        <div className="info">
-          <p>{i18n.translate(`MAP_FILTERS_SELECT_NONE`)}</p>
-        </div>
-      </div>
-    )
+  const handleIndicatorSelect = indicator => {
+    setStoreValues({
+      activeMetric: indicator.id,
+    })
   }
+
+  return (
+    <>
+      {indicatorsByCategory.map(({ name, indicators }) => (
+        <CategoryWrapper key={name}>
+          <h3 className="gotham16">{name}</h3>
+          <IndicatorList
+            indicators={indicators}
+            showHints={!interactionsMobile}
+            onSelect={handleIndicatorSelect}
+            activeId={activeMetric}
+          />
+        </CategoryWrapper>
+      ))}
+    </>
+  )
 }
+
+const CategoryWrapper = styled.div`
+  padding: 2rem;
+  .list-group {
+    margin-top: 1.2rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+  }
+`
 
 FilterSeries.propTypes = {
   tab: PropTypes.string,

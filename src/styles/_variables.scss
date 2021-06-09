@@ -55,6 +55,11 @@ $color-untd-lightgray: #b5bcc6;
 $color-untd-anothergray: #e0e2e5;
 $color-untd-another-another-gray: #86939c;
 $color-untd-lightblue: #f9fafb;
+$color-active-light: #f3fcf6;
+$color-active-dark: #54a074;
+$color-active-hover: darken($color-active-light, 5%);
+$color-hover: rgba(0, 0, 0, 0.05);
+$color-hover-active: rgba(0, 0, 0, 0.07);
 
 // _______________ SPACING _______________ //
 // space elements in increments of .8rem (8px)

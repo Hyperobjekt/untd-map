@@ -1,5 +1,3 @@
-import { css } from 'emotion'
-
 export const variables = {
   colors: {
     primary: '#20232a',
@@ -50,69 +48,5 @@ export const variables = {
   breakpoints: [0, 320, 768, 992, 1280],
   fonts: {
     primary: 'halyard-text',
-  },
-}
-
-export const theme = {
-  elements: {
-    redBorder: { border: '1px solid red' },
-    // icon: css(`
-    //   width: 16px,
-    //   height: 16px,
-    // `),
-    // mapButton: css`
-    //   background-color: ${variables.colors.white} !important,
-    //   box-shadow: 1px 1px 3px #ccc,
-    //   border-radius: 0 !important,
-    //   height: 29px,
-    //   width: 29px,
-    // `,
-    // tooltip: css(`
-    //   z-index: 5000,
-    //   border-radius: 0,
-    //   margin-left: 16px,
-    //   .arrow {
-    //     display: none,
-    //   }
-    //   .tooltip-inner {
-    //     background-color: #2c390b,
-    //     border-radius: 0,
-    //     font-size: 1.4rem,
-    //     font-family: halyard-text,
-    //     padding: 0.8rem,
-    //   }
-    // `),
-    // Tooltip triggered by desktop universal share.
-    tooltipCustomShare: css`
-      opacity: 1,
-      .tooltip {
-        opacity: 1,
-        .tooltip-inner {
-          border-radius: 2px,
-          background-color: ${variables.colors.white},
-          box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05),
-          text-align: left,
-          opacity: 1,
-          padding: 1rem,
-          .item {
-            margin-bottom: 0.4rem,
-            &:last-of-type {
-              margin-bottom: 0,
-            }
-            span {
-              font-family: ${variables.fonts.primary},
-              font-weight: 300,
-              font-size: 1.3rem,
-              line-height: 1.5rem,
-            }
-            svg {
-              width: 14px,
-              height: 14px,
-              margin-right: 1rem,
-            }
-          }
-        }
-      }
-    `,
   },
 }

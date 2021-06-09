@@ -1,52 +1,16 @@
 .popup-content {
   // @include font-knockout-jr-lightweight;
   @include font-gotham-book;
-  padding: 24px;
+  padding: 2rem;
   margin: 0 !important;
   width: 282px;
 
-  .n-i-scale {
-    margin-top: 6px;
-    margin-bottom: 8px;
-    padding-right: 1px;
-    padding-left: 1px;
-    &:after,
-    &:before {
-      display: none;
-    }
-    .n-i-scale-quintiles {
-      width: 100%;
-      top: -5px !important;
-      // The line through the quintiles.
-      border: 1px solid #ccc;
-      height: 9px;
-      box-sizing: content-box;
-      margin-top: 0.6rem;
-      &:after,
-      &:before {
-        display: none !important;
-      }
-      .n-i-scale-quintile {
-        height: 13px;
-        border-right: 1px solid #ccc;
-        top: -1px;
-        width: 16.665%;
-        &.quintile-4 {
-          border-right: 0;
-        }
-        &:before,
-        &:after {
-          display: none !important;
-        }
-      }
-    }
-  }
   .popup-place-name,
   .popup-place-name h4 {
     @include font-gotham-book;
     color: $color-untd-darkgray;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1.6rem;
     line-height: 1.8rem;
     letter-spacing: 1%;

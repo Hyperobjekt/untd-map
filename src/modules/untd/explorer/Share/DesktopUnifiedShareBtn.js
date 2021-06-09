@@ -3,10 +3,6 @@ import PropTypes from 'prop-types'
 import i18n from '@pureartisan/simple-i18n'
 import clsx from 'clsx'
 import { Tooltip } from 'reactstrap'
-import { css, cx } from 'emotion'
-
-import useStore from './../store'
-import { theme } from './../theme'
 import { CoreButton } from './../../../core'
 import TwitterShareBtn from './TwitterShareBtn'
 import { FacebookShareBtn } from '.'
@@ -26,6 +22,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
       className={clsx(
         props.className,
         'button-d-u-share-link',
+        'tour-desk-10',
       )}
     >
       {i18n.translate('CONTROL_PANEL_SHARE_TC')}
@@ -39,7 +36,7 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         className="tooltip-share"
       >
         <div className="tooltip-custom-content">
-          <div className="item">
+          <div className="item w-100">
             <TwitterShareBtn tooltip={false}>
               <span className="btn-label">
                 {i18n.translate(`BUTTON_SHARE_TWITTER`)}
