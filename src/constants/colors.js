@@ -28,15 +28,15 @@ export const NO_DATA_COLOR = '#ccc'
 
 export const CHORO_COLORS = [
   '#93A1C9',
-  '#ACC1DF',
+  '#c8d8e6',
   '#E3F4F4',
-  '#B4DBC7',
+  '#c7e5d9',
   '#8EC7A3',
 ]
 export const CHORO_STROKE = [
   '#5A688F',
-  '#667FA4',
+  '#93A1C9',
   '#9FC7C7',
-  '#75B192',
+  '#8EC7A3',
   '#6AA680',
 ]
