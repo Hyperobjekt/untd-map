@@ -10,7 +10,6 @@ import {
   getFeatureId,
   getFeatureTypeObj,
   getFeatureSource,
-  getFeatureType,
 } from './../utils'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import useStore from './../store'
@@ -130,11 +129,8 @@ const MapView = props => {
     if (!!interactionsMobile) return
     const source = getFeatureSource(feature)
     const source_data = getFeatureTypeObj(feature)
-    console.log({ source, source_data, feature })
     if (!!source_data && !!source) {
       const id = getFeatureId(feature)
-      const type = getFeatureType(feature)
-      // console.log('setting hovered, ', feature, id, source)
       setHovered(id, source, geoCoords, feature)
     } else {
       setHovered(false, false, geoCoords, false)
@@ -142,15 +138,7 @@ const MapView = props => {
   }
 
   /** handler for map click */
-  // const eventSchoolPage = useStore(
-  //   state => state.eventSchoolPage,
-  // )
   const handleClick = (feature, coords, geoCoords) => {
-    // console.log('handle click, ', feature)
-    // If the item is hovered, navigate to the school.
-    // If the item is not hovered, set it as hovered.
-    // setHovered(id, type, geoCoords, feature)
-
     // If feature source = one of the interactive geo layers
     if (
       feature.source &&
@@ -200,7 +188,6 @@ const MapView = props => {
     // window.CPAL.trigger('map')
     isLoaded.current = true
   }
-
   return (
     <MapBase
       sources={!!allDataLoaded ? remoteJson : null}
