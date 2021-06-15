@@ -16,9 +16,9 @@ import copy from 'copy-to-clipboard'
 
 import { CoreButton } from './../../../core'
 import useStore from './../store'
+import clsx from 'clsx'
 
-const ShareLinkModal = props => {
-  const { className } = props
+const ShareLinkModal = ({ className, ...props }) => {
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
@@ -60,7 +60,7 @@ const ShareLinkModal = props => {
       <Modal
         isOpen={!!shareLinkModal}
         toggle={toggle}
-        className={className}
+        className={clsx(className, 'bs-expl')}
         backdrop={false}
         keyboard={true}
         autoFocus={true}

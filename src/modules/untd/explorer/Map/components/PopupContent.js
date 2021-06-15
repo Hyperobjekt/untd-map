@@ -231,7 +231,6 @@ const PopupContent = ({ ...props }) => {
       )
     }
   } else {
-    setStoreValues({ showMapModal: false })
     return null
   }
 }

@@ -6,14 +6,11 @@ import { getLayers } from './selectors'
 import MapBase, { useIdMap } from './../Map'
 
 import {
-  getMetric,
   getQuintilesPhrase,
-  getFeatureProperty,
   getFeatureId,
   getFeatureTypeObj,
   getFeatureSource,
   getFeatureType,
-  useDebounce,
 } from './../utils'
 import { UNTD_LAYERS } from './../../../../constants/layers'
 import useStore from './../store'
@@ -27,8 +24,6 @@ const MapView = props => {
     pointTypes,
     activeMetric,
     activeQuintiles,
-    breakpoint,
-    showMapModal,
     interactionsMobile,
     hoveredID,
     hoveredType,
@@ -41,7 +36,6 @@ const MapView = props => {
     pointTypeLayers,
     activeLayers,
     activePointTypes,
-    activeView,
     activeStaticLayers,
     activeFeature,
   } = useStore(
@@ -50,8 +44,6 @@ const MapView = props => {
       pointTypes: state.pointTypes,
       activeMetric: state.activeMetric,
       activeQuintiles: state.activeQuintiles,
-      breakpoint: state.breakpoint,
-      showMapModal: state.showMapModal,
       interactionsMobile: state.interactionsMobile,
       hoveredID: state.hoveredID,
       hoveredType: state.hoveredType,
@@ -64,7 +56,6 @@ const MapView = props => {
       pointTypeLayers: state.pointTypeLayers,
       activeLayers: state.activeLayers,
       activePointTypes: state.activePointTypes,
-      activeView: state.activeView,
       activeStaticLayers: state.activeStaticLayers,
       activeFeature: state.activeFeature,
     }),

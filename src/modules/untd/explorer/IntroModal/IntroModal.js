@@ -57,7 +57,7 @@ const IntroModal = ({ children, ...props }) => {
     <Modal
       isOpen={showIntroModal}
       toggle={toggleIntroModal}
-      className={'intro-modal'}
+      className="intro-modal bs-expl"
       backdrop={true}
       keyboard={true}
       autoFocus={true}

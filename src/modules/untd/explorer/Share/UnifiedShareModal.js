@@ -1,11 +1,10 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -14,19 +13,17 @@ import i18n from '@pureartisan/simple-i18n'
 import { FaCopy } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
 
-import { CoreButton } from './../../../core'
 import useStore from './../store'
 import TwitterShareBtn from './TwitterShareBtn'
 import FacebookShareBtn from './FacebookShareBtn'
 import MailShareBtn from './MailShareBtn'
 import clsx from 'clsx'
 
-const UnifiedShareModal = props => {
+const UnifiedShareModal = ({ className, ...props }) => {
   // Generic store value setter.
   const setStoreValues = useStore(
     state => state.setStoreValues,
   )
-  const { className } = props
   const unifiedShareModal = useStore(
     state => state.unifiedShareModal,
   )
@@ -68,7 +65,7 @@ const UnifiedShareModal = props => {
       <Modal
         isOpen={!!unifiedShareModal}
         toggle={toggle}
-        className={className}
+        className={clsx(className, 'bs-expl')}
         backdrop={true}
         keyboard={true}
         autoFocus={true}
@@ -92,7 +89,7 @@ const UnifiedShareModal = props => {
               <Input
                 value={shareLinkValue}
                 readOnly={true}
-                ariaLabelledby={'share_input_label'}
+                aria-labelledby={'share_input_label'}
               />
               <InputGroupAddon addonType="append">
                 <Button color="secondary" onClick={onCopy}>

@@ -93,6 +93,7 @@ const Layout = ({ children, ...props }) => {
   return (
     <div
       className={clsx(
+        'bs-expl', // explorer bootstrap override class
         'layout',
         'breakpoint-' + breakpoint,
         'view-' + activeView,
@@ -103,10 +104,7 @@ const Layout = ({ children, ...props }) => {
       {activeView === 'explorer' && (
         <Header>
           <Logo {...logoProps}>
-            <div
-              className='cpal-logo'
-              role="image"
-            ></div>
+            <div className="cpal-logo" role="image"></div>
             <div
               className="logo"
               dangerouslySetInnerHTML={{

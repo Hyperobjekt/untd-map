@@ -52,6 +52,7 @@ const SummaryTitle = styled.div`
   }
   h3 {
     pointer-events: none;
+    margin-bottom: 0;
   }
   .btn {
     border: 0;

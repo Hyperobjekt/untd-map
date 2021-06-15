@@ -24,7 +24,6 @@ import MapCaptureButton from './MapCaptureButton'
 import MapLegend, { LegendToggleBtn } from './../../Legend'
 import MapPopup from './MapPopup'
 // import LegendToggleBtn from './../Legend/LegendToggleBtn'
-import MapMobileModal from './MapMobileModal'
 import { BOUNDS } from './../../../../../constants/map'
 import { UNTD_LAYERS } from './../../../../../constants/layers'
 import useStore from './../../store'
@@ -612,7 +611,6 @@ const MapBase = ({
         {children}
       </ReactMapGL>
       {activeView === 'explorer' && <LegendToggleBtn />}
-      <MapMobileModal hoveredFeature={hoveredFeature} />
     </div>
   )
 }

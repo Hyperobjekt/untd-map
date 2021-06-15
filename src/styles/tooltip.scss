@@ -1,4 +1,5 @@
-.tooltip {
+/** namespace to `bs-expl` so styles are not overwritten by untd-site bootstrap styles */
+.bs-expl .tooltip {
   @include font-gotham-book;
   z-index: 9999;
   border-radius: 4px;
