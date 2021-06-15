@@ -22,6 +22,10 @@ and this project adheres to
   [#68](https://github.com/Hyperobjekt/untd-map/issues/68)
 - fix location panel data readout when switching regions
   [#64](https://github.com/Hyperobjekt/untd-map/issues/64)
+- maintain proper focus when opening / closing panels
+  [#69](https://github.com/Hyperobjekt/untd-map/issues/69)
+- hide inactive panels from screen reader / tab order
+  [#70](https://github.com/Hyperobjekt/untd-map/issues/70)
 
 ## [1.0.0] - 2021-06-08
 

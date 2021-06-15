@@ -1,6 +1,6 @@
 {
   "name": "@hyperobjekt/untd-map",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "UNTD Map React component",
   "repository": "https://github.com/Hyperobjekt/untd-map",
   "main": "lib/index.js",
