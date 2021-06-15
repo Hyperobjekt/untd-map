@@ -11,15 +11,10 @@ import * as Icons from './../../../core/Icons'
 import useStore from './../store'
 
 const LayersInput = props => {
-  const {
-    pointTypes,
-    interactionsMobile,
-    mapImagesAdded,
-  } = useStore(
+  const { pointTypes, interactionsMobile } = useStore(
     state => ({
       pointTypes: state.pointTypes,
       interactionsMobile: state.interactionsMobile,
-      mapImagesAdded: state.mapImagesAdded,
     }),
     shallow,
   )
