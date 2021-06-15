@@ -15,10 +15,7 @@ import styled from 'styled-components'
 
 import { defaultMapStyle } from '../selectors'
 import { isNonMapEvent } from '../utils'
-import {
-  usePrevious,
-  checkControlHovered,
-} from './../../utils'
+import { checkControlHovered } from './../../utils'
 import MapResetButton from './MapResetButton'
 import MapCaptureButton from './MapCaptureButton'
 import MapLegend, { LegendToggleBtn } from './../../Legend'
@@ -30,6 +27,7 @@ import useStore from './../../store'
 import { variables } from './../../theme'
 import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
 import useMapImageLoader from '../hooks/useMapImageLoader'
+import useMapFeatureStates from '../hooks/useMapFeatureStates'
 
 /**
  * Returns an array of layer ids for layers that have the
@@ -40,10 +38,6 @@ const getInteractiveLayerIds = layers => {
   return layers
     .filter(l => l.style.get('interactive'))
     .map(l => l.style.get('id'))
-}
-
-const matchFeatureId = (layer, id) => {
-  return
 }
 
 /**
@@ -107,7 +101,6 @@ const MapBase = ({
     allData,
     loadedSources,
     rangedSources,
-    activeFeature,
   } = useStore(
     state => ({
       setStoreValues: state.setStoreValues,
@@ -120,7 +113,6 @@ const MapBase = ({
       allData: state.allData,
       loadedSources: state.loadedSources,
       rangedSources: state.rangedSources,
-      activeFeature: state.activeFeature,
     }),
     shallow,
   )
@@ -143,26 +135,16 @@ const MapBase = ({
     currentMap.getCanvas &&
     currentMap.getCanvas()
 
-  // storing previous hover / selected IDs
-  const prev = usePrevious({
-    hoveredId,
-    hoveredType,
-    selectedIds,
-    activeFeature,
-  })
-
   /** Load map images for point layers */
   useMapImageLoader({ map: currentMap, loaded })
+
+  /** Manage feature states */
+  useMapFeatureStates(currentMap)
 
   /**
    * Adds shape range data to indicators array as they are loaded.
    */
   useEffect(() => {
-    // console.log(
-    //   'in useeffect, ',
-    //   loadedSources,
-    //   rangedSources,
-    // )
     if (!!allDataLoaded) {
       // console.log(
       //   'updating indicators from basemap, ',
@@ -254,65 +236,39 @@ const MapBase = ({
     }
   }, [allDataLoaded, ...loadedSources])
 
+  // when sources load on the map, trigger setting min / max
   useEffect(() => {
-    if (!!currentMap) {
-      function sourceCallback() {
-        const newLoadedSources = loadedSources.slice()
-        UNTD_LAYERS.forEach((layer, ind) => {
-          // console.log(
-          //   `Checking the untd_layers, ${layer.id}`,
-          // )
-          if (
-            currentMap.getSource(layer.id) &&
-            currentMap.isSourceLoaded(layer.id) &&
-            currentMap.querySourceFeatures(layer.id)
-              .length > 0
-          ) {
-            if (loadedSources.indexOf(layer.id) < 0) {
-              // pushLoadedSources(layer.id)
-              // const newLoadedSources = loadedSources.slice()
-              newLoadedSources[ind] = layer.id
-            } else {
-              // console.log(
-              //   `${layer.id} is already in loadedSources.`,
-              // )
-            }
-          }
-        })
-        setStoreValues({
-          loadedSources: newLoadedSources,
-        })
-      }
-      currentMap.on('sourcedata', sourceCallback)
-    }
-  }, [currentMap])
+    if (!currentMap) return
+    function sourceCallback() {
+      const newLoadedSources = loadedSources.slice()
 
-  const setFeatureState = useCallback(
-    (featureId, type, state) => {
-      if (
-        !loaded ||
-        !featureId ||
-        !currentMap ||
-        !currentMap.setFeatureState
-      )
-        return
-      // console.log('setFeatureState', featureId, type, state)
-      // console.log('layers = ', layers)
-      // const layer = layers.find(l => l.type === type)
-      // console.log('layer = ', layer)
-      // const id = idMap[featureId]
-      //   ? idMap[featureId]
-      //   : featureId
-      if (!!featureId && !!type && type !== 'points') {
-        const source = {
-          source: type,
-          id: featureId,
+      UNTD_LAYERS.forEach((layer, ind) => {
+        // console.log(
+        //   `Checking the untd_layers, ${layer.id}`,
+        // )
+        if (
+          currentMap.getSource(layer.id) &&
+          currentMap.isSourceLoaded(layer.id) &&
+          currentMap.querySourceFeatures(layer.id).length >
+            0
+        ) {
+          if (loadedSources.indexOf(layer.id) < 0) {
+            // pushLoadedSources(layer.id)
+            // const newLoadedSources = loadedSources.slice()
+            newLoadedSources[ind] = layer.id
+          } else {
+            // console.log(
+            //   `${layer.id} is already in loadedSources.`,
+            // )
+          }
         }
-        currentMap.setFeatureState(source, state)
-      }
-    },
-    [layers, idMap, currentMap, loaded],
-  )
+      })
+      setStoreValues({
+        loadedSources: newLoadedSources,
+      })
+    }
+    currentMap.on('sourcedata', sourceCallback)
+  }, [currentMap])
 
   // update map style layers when layers change
   const mapStyle = useMemo(
@@ -406,10 +362,10 @@ const MapBase = ({
     lngLat,
     srcEvent,
   }) => {
-    if (!srcEvent) return
-    const isControl = isNonMapEvent(srcEvent)
-    // clear hovered feature if hovering a control
-    if (isControl) return onHover(null, point, lngLat)
+    const isControl = srcEvent && isNonMapEvent(srcEvent)
+    // clear hovered feature if hovering a control (or no srcEvent)
+    if (!srcEvent || isControl)
+      return onHover(null, point, lngLat)
     const newHoveredFeature =
       features && features.length > 0 ? features[0] : null
     onHover(newHoveredFeature, point, lngLat)
@@ -437,33 +393,7 @@ const MapBase = ({
         features[0] && features[0].geometry
           ? features[0].geometry.coordinates
           : null
-      // Does the feature already have a selected state?
-      if (features[0].state.selected === true) {
-        setFeatureState(
-          features[0].id,
-          features[0].source,
-          {
-            selected: false,
-          },
-        )
-      } else {
-        // Set previous to not clicked
-        setFeatureState(
-          prev.activeFeature.id,
-          features[0].source,
-          {
-            selected: false,
-          },
-        )
-        // Set current to clicked
-        setFeatureState(
-          features[0].id,
-          features[0].source,
-          {
-            selected: true,
-          },
-        )
-      }
+
       onClick(features[0], coords, geoCoordinates)
     }
   }
@@ -480,31 +410,6 @@ const MapBase = ({
       height: sizes.height,
     })
   }, [sizes, setViewport])
-
-  // set hovered feature state when hoveredId changes
-  useEffect(() => {
-    // console.log(
-    //   'hoveredId changed, hoveredId',
-    //   hoveredId,
-    //   hoveredType,
-    // )
-    // const activeSource =
-    //   UNTD_LAYERS[activeLayers.indexOf(1)]
-    if (prev && prev.hoveredId && prev.hoveredType) {
-      // Set state for unhovered school.
-      setFeatureState(prev.hoveredId, prev.hoveredType, {
-        hover: false,
-      })
-    }
-    if (hoveredId) {
-      // console.log('setting hovered')
-      // Set state for hovered school.
-      setFeatureState(hoveredId, hoveredType, {
-        hover: true,
-      })
-    }
-    // eslint-disable-next-line
-  }, [hoveredId, loaded]) // update only when hovered id changes
 
   /** handler for resetting the viewport */
   const handleResetViewport = e => {

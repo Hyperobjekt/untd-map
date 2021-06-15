@@ -9,7 +9,6 @@ import IndicatorSdScale from './IndicatorSdScale'
 import IndicatorTrend from './IndicatorTrend'
 import styled from 'styled-components'
 import { Button } from 'reactstrap'
-import { MdCheck } from 'react-icons/md'
 import ActiveIndicator from '../App/ActiveIndicator'
 import IndicatorTooltip from './IndicatorTooltip'
 

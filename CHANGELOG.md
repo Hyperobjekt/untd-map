@@ -8,6 +8,21 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2021-06-15
+
+- fix crash when resizing browser window
+  [#73](https://github.com/Hyperobjekt/untd-map/issues/73)
+- fix style issues when embedded within container site
+  [#74](https://github.com/Hyperobjekt/untd-map/issues/74)
+- ensure tooltip dismisses when leaving the map
+  [#71](https://github.com/Hyperobjekt/untd-map/issues/71)
+- fix search placeholder text
+  [#72](https://github.com/Hyperobjekt/untd-map/issues/72)
+- fix readout for unavailable data
+  [#68](https://github.com/Hyperobjekt/untd-map/issues/68)
+- fix location panel data readout when switching regions
+  [#64](https://github.com/Hyperobjekt/untd-map/issues/64)
+
 ## [1.0.0] - 2021-06-08
 
 - initial release 🎉

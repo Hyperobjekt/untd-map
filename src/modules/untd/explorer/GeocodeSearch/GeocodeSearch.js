@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import i18n from '@pureartisan/simple-i18n'
-import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import Autosuggest from 'react-autosuggest'
 import { FiSearch } from 'react-icons/fi'
 import { MdClose } from 'react-icons/md'
@@ -140,6 +138,8 @@ const GeocodeSearch = ({ ...props }) => {
 
   const handleBlur = e => {
     // console.log('handleBlur, ', e)
+    // setValue('')
+    // setSuggestions([])
   }
 
   const handleFetchRequested = ({ value }) => {
@@ -175,24 +175,22 @@ const GeocodeSearch = ({ ...props }) => {
   }
 
   const inputProps = {
+    id: 'location_search',
     value: value, // usually comes from the application state
     onChange: handleChange, // called every time the input value changes
     onBlur: handleBlur, // called when the input loses focus, e.g. when user presses Tab
     type: 'search',
-    // placeholder: i18n.translate(`INPUT_SEARCH`),
-    'aria-label': i18n.translate(`INPUT_SEARCH`),
+    placeholder: getPrompt(),
   }
-
   return (
     <div className="search-autosuggest input-group tour-desk-9">
-      <div className={clsx('geocode-search-prompt')}>
-        <FiSearch
-          className="icon-search"
-          aria-hidden="true"
-          style={{ display: !!value ? 'none' : 'block' }}
-        />
-        <span>{getPrompt()}</span>
-      </div>
+      <label htmlFor="location_search" className="sr-only">
+        {i18n.translate(`INPUT_SEARCH`)}
+      </label>
+      <FiSearch
+        className="icon-search geocode-search-prompt"
+        aria-hidden="true"
+      />
       <Autosuggest
         suggestions={suggestions}
         onSuggestionSelected={handleSelection}
@@ -202,19 +200,16 @@ const GeocodeSearch = ({ ...props }) => {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-
       <CoreButton
         id="button_search_clear"
-        aria-label={i18n.translate(`BUTTON_SEARCH`)}
         onClick={handleClear}
         color="none"
         className="button-search-clear"
         style={{ display: !!value ? 'block' : 'none' }}
       >
-        <MdClose />
-        <span className="sr-only">
-          {i18n.translate(`BUTTON_SEARCH`)}
-        </span>
+        <MdClose
+          aria-label={i18n.translate(`BUTTON_SEARCH`)}
+        />
       </CoreButton>
     </div>
   )

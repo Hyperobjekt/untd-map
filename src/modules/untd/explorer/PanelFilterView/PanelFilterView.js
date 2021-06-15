@@ -24,7 +24,12 @@ const PanelFilterView = ({ onClose, ...props }) => {
     const layerIndex = UNTD_LAYERS.findIndex(
       layer => layer.id === e.currentTarget.value,
     )
+    const currentIndex = activeLayers.findIndex(
+      l => l === 1,
+    )
+    if (layerIndex === currentIndex) return
     setStoreValues({
+      activeFeature: 0, // clear active location when changing regions
       activeLayers: activeLayers.map((layer, index) =>
         index === layerIndex ? 1 : 0,
       ),

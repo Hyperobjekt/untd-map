@@ -30,25 +30,17 @@
   // }
 
   .geocode-search-prompt {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
     position: absolute;
-    height: 100%;
-    width: 100%;
-    padding: 8px 8px 8px 12px;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    pointer-events: none;
     color: $color-untd-gray;
-    svg {
-      margin-right: 8px;
-    }
-    span {
-      line-height: 12px;
-    }
   }
   .react-autosuggest__container {
     flex: 1 1 80%;
     .react-autosuggest__input {
-      padding-left: 16px;
+      padding-left: 36px;
       // height: 30px;
       font-size: 12px;
     }
@@ -56,7 +48,7 @@
       display: none;
     }
     .react-autosuggest__suggestions-container {
-      top: 30px;
+      top: 38px;
       z-index: 3000;
       background-color: transparent;
       width: 100%;

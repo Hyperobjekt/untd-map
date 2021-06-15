@@ -24,11 +24,18 @@ export default function Panel({
   open,
   ...props
 }) {
-  const styles = useSpring({ x: open ? 0 : -350 })
+  const styles = useSpring({
+    x: open ? 0 : -350,
+  })
   return (
     <StyledPanel
       className={clsx('panel', className)}
-      style={styles}
+      style={{
+        ...styles,
+        visibility: styles.x.interpolate(x =>
+          x > -350 ? 'visible' : 'hidden',
+        ),
+      }}
       {...props}
     />
   )
