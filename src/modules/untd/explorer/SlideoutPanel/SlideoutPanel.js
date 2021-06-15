@@ -44,32 +44,36 @@ const SlideoutPanel = ({ ...props }) => {
 
   // set focus to first button in panel when it opens
   useLayoutEffect(() => {
-    if (activePanel) setFocus(`#panel_${activePanel}`)
+    if (!activePanel) return
+    // add short timeout so the `visibility` prop on the panel
+    // is set to `visible` (otherwise, no focus)
+    setTimeout(() => setFocus(`#panel_${activePanel}`), 1)
   }, [activePanel])
 
   return (
     <div className="map-panel-slideout">
       <PanelFilterView
         id="panel_filters"
-        tabindex="-1"
+        tabIndex="-1"
         open={isPanelOpen('filters')}
+        aria-hidden={!isPanelOpen('filters')}
         onClose={handleClose}
       />
       <PanelLayersView
         id="panel_layers"
-        tabindex="-1"
+        tabIndex="-1"
         open={isPanelOpen('layers')}
         onClose={handleClose}
       />
       <PanelLocationView
         id="panel_location"
-        tabindex="-1"
+        tabIndex="-1"
         open={isPanelOpen('location')}
         onClose={handleLocationClose}
       />
       <PanelInfoView
         id="panel_info"
-        tabindex="-1"
+        tabIndex="-1"
         open={isPanelOpen('info')}
         onClose={handleClose}
       />
