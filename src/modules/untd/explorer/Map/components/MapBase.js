@@ -25,12 +25,12 @@ import MapLegend, { LegendToggleBtn } from './../../Legend'
 import MapPopup from './MapPopup'
 // import LegendToggleBtn from './../Legend/LegendToggleBtn'
 import MapMobileModal from './MapMobileModal'
-import AddMapImages from './AddMapImages'
 import { BOUNDS } from './../../../../../constants/map'
 import { UNTD_LAYERS } from './../../../../../constants/layers'
 import useStore from './../../store'
 import { variables } from './../../theme'
 import { ZoomIn, ZoomOut } from './../../../../core/Bitmaps'
+import useMapImageLoader from '../hooks/useMapImageLoader'
 
 /**
  * Returns an array of layer ids for layers that have the
@@ -151,6 +151,9 @@ const MapBase = ({
     selectedIds,
     activeFeature,
   })
+
+  /** Load map images for point layers */
+  useMapImageLoader({ map: currentMap, loaded })
 
   /**
    * Adds shape range data to indicators array as they are loaded.
@@ -579,7 +582,6 @@ const MapBase = ({
         {...viewport}
         {...rest}
       >
-        <AddMapImages loaded={loaded} map={currentMap} />
         <MapPopup />
         <MapLegend />
         <div className="custom-attribution">
