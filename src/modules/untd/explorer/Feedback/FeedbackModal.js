@@ -18,7 +18,7 @@ const FeedbackModal = ({ children, ...props }) => {
     <Modal
       isOpen={show}
       toggle={toggleFeedback}
-      className={'feedback-modal'}
+      className="feedback-modal bs-expl"
       backdrop={true}
       keyboard={true}
       autoFocus={true}

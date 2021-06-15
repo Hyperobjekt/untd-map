@@ -32,8 +32,9 @@ const DesktopUnifiedShareBtn = ({ ...props }) => {
         target="button_d_u_share_link"
         toggle={toggle}
         autohide={false}
+        hideArrow={true}
         trigger="hover"
-        className="tooltip-share"
+        className="tooltip-share bs-expl"
       >
         <div className="tooltip-custom-content">
           <div className="item w-100">

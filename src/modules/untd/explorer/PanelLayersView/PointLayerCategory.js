@@ -97,22 +97,24 @@ const PointLayerCategory = ({
           }}
         />
       </CategoryButton>
-      <ButtonGroup>
-        <Button
-          color="transparent"
-          className="knockout12"
-          onClick={handleToggleAll}
-        >
-          All
-        </Button>
-        <Button
-          color="transparent"
-          className="knockout12"
-          onClick={handleToggleNone}
-        >
-          None
-        </Button>
-      </ButtonGroup>
+      {depth === 0 && (
+        <ButtonGroup>
+          <Button
+            color="transparent"
+            className="knockout12"
+            onClick={handleToggleAll}
+          >
+            All
+          </Button>
+          <Button
+            color="transparent"
+            className="knockout12"
+            onClick={handleToggleNone}
+          >
+            None
+          </Button>
+        </ButtonGroup>
+      )}
 
       <Collapse isOpen={isOpen}>
         {pointLayers.map(point => {

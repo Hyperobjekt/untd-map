@@ -266,7 +266,6 @@ const [useStore] = create((set, get) => ({
   schoolHint: null,
   showIntroModal: false,
   enableTour: true, // Set this true to show the launch tour button in intro modal.
-  showMapModal: false,
   // Hovered feature ID
   hoveredID: null,
   // Hovered feature type.
