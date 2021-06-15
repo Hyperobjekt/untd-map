@@ -406,10 +406,10 @@ const MapBase = ({
     lngLat,
     srcEvent,
   }) => {
-    if (!srcEvent) return
-    const isControl = isNonMapEvent(srcEvent)
-    // clear hovered feature if hovering a control
-    if (isControl) return onHover(null, point, lngLat)
+    const isControl = srcEvent && isNonMapEvent(srcEvent)
+    // clear hovered feature if hovering a control (or no srcEvent)
+    if (!srcEvent || isControl)
+      return onHover(null, point, lngLat)
     const newHoveredFeature =
       features && features.length > 0 ? features[0] : null
     onHover(newHoveredFeature, point, lngLat)
