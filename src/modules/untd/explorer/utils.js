@@ -680,3 +680,8 @@ export const replaceWeirdQuestionmark = str => {
 /** Returns true if value has is numeric */
 export const hasValue = value =>
   (value || value === 0) && !isNaN(value)
+
+export const setFocus = selector => {
+  const el = document.querySelector(selector)
+  if (el) el.focus()
+}

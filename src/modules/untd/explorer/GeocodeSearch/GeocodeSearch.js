@@ -184,7 +184,7 @@ const GeocodeSearch = ({ ...props }) => {
   }
   return (
     <div className="search-autosuggest input-group tour-desk-9">
-      <label for="location_search" className="sr-only">
+      <label htmlFor="location_search" className="sr-only">
         {i18n.translate(`INPUT_SEARCH`)}
       </label>
       <FiSearch
