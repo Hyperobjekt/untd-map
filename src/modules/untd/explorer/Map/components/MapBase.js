@@ -138,8 +138,8 @@ const MapBase = ({
   /** Load map images for point layers */
   useMapImageLoader({ map: currentMap, loaded })
 
-  /** Manage feature states */
-  useMapFeatureStates(currentMap)
+  /** Manage feature states (for hover + selected styles) */
+  useMapFeatureStates(currentMap, loaded)
 
   /**
    * Adds shape range data to indicators array as they are loaded.

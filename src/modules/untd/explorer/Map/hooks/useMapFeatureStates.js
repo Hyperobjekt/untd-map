@@ -8,7 +8,7 @@ import { usePrevious } from '../../utils'
  * or selected states.
  * @param {*} map
  */
-export default function useMapFeatureStates(map) {
+export default function useMapFeatureStates(map, loaded) {
   const {
     hoveredId,
     hoveredType,
@@ -41,7 +41,8 @@ export default function useMapFeatureStates(map) {
         !map ||
         !map.setFeatureState ||
         !source ||
-        source === 'points'
+        source === 'points' ||
+        !loaded
       )
         return
       map.setFeatureState(
@@ -52,7 +53,7 @@ export default function useMapFeatureStates(map) {
         state,
       )
     },
-    [map],
+    [map, loaded],
   )
 
   // update selected state when active feature changes
