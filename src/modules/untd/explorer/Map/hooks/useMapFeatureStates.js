@@ -36,6 +36,7 @@ export default function useMapFeatureStates(map, loaded) {
 
   const setFeatureState = useCallback(
     (id, source, state) => {
+      // do nothing if we don't have everything we need to update feature state
       if (
         !id ||
         !map ||
