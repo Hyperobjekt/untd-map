@@ -229,10 +229,14 @@ export const ChoroplethLegend = ({
     <ToggleGroup
       onMouseLeave={handleToggleLeave}
       role="group"
-      className={clsx('choropleth-legend', {
-        'no-labels': noLabels,
-        condensed: condensed,
-      })}
+      className={clsx(
+        'choropleth-legend',
+        {
+          'no-labels': noLabels,
+          condensed: condensed,
+        },
+        className,
+      )}
       {...props}
     >
       {toggles.map((toggle, i) => (
