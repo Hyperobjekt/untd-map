@@ -118,7 +118,7 @@ const MapLegend = ({ ...props }) => {
         className="tour-desk-7"
       />
       <span className="hint">
-        click on a color to toggle filters
+        Click on a color to toggle filters.
       </span>
     </div>
   )
