@@ -8,9 +8,15 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2021-06-19
+
+- update language
+- fix incorrect step reference in tour
+
 ## [1.0.2] - 2021-06-18
 
-- fix crash when trying to set feature state when style is not loaded
+- fix crash when trying to set feature state when style is
+  not loaded
 
 ## [1.0.1] - 2021-06-15
 

@@ -17,13 +17,13 @@ To use components from this library, first add the repo
 using npm:
 
 ```
-npm install git+ssh://git@github.com:Hyperobjekt/untd-map.git
+npm install @hyperobjekt/untd-map
 ```
 
 You can then import any components into your project.
 
 ```jsx
-import { Header } from 'untd-components'
+import { Header } from '@hyperobjekt/untd-map'
 
 function AppHeader() {
   return (
