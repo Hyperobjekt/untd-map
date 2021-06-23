@@ -39,26 +39,25 @@ function AppHeader() {
 
 This library can be published via NPM.
 
-1. Increment the package version in `package.json`.
+1. Increment the package version in `package.json` and add details to `CHANGELOG.md`.
 2. Commit that change:
    `git add * ; git commit -a -m 'Update package version to [version]'`.
 3. Run `npm publish`. This builds two versions of the
    javascript library and the demo files. The libraries are
    pushed up to NPM's repository.
-4. Commit the publish (so you don't dirty up your next
-   working branch).
-   `git add * && git commit -a -m 'Staging build'`.
-5. Update the plugin in the site where you're using it:
-   `git checkout -b update-explorer ; npm update untd-map`.
-6. Commit that update, merge to master, and push.
-   `git add * ; git commit -a -m 'Update untd-map' ; git checkout master ; git merge update-explorer ; git push origin master`
+
+Once the update is published, go to the repo where the package is in use and update it there (e.g. `untd-site`):
+
+```
+npm install @hyperobjekt/untd-map@{VERSION}
+```
 
 ## Contributing
 
-1. To contribute, check out a new branch off of the `master`
+1. To contribute, check out a new branch off of the `development`
    branch.
 2. When you have finished, submit your changes as a pull
-   request relative to the `master` branch.
+   request relative to the `development` branch.
 
 ## Implementation Details
 
@@ -86,15 +85,15 @@ across a series of staging and production sites:
 To test updates to the dataset (:microscope: and make sure
 they don't break the app :fire:), follow these steps:
 
-1. Make your changes to `master`.
+1. Make your changes to `development`.
 
 ```bash
 git add *
 git commit -a -m 'Blah updates'
-git push origin master
+git push origin development
 ```
 
-2. Check out `testing` and merge `master` into `testing`.
+2. Check out `testing` and merge `development` into `testing`.
    Push `testing` back to origin.
 
 ```bash
